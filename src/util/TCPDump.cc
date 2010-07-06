@@ -519,7 +519,6 @@ void TCPDumper::tcpDump(bool l2r, const char *label, TCPSegment *tcpseg, const s
 
 void TCPDump::initialize()
 {
-    struct pcap_hdr fh;
     const char* file = this->par("dumpFile");
     snaplen = this->par("snaplen");
     tcpdump.setVerbosity(par("verbosity"));
@@ -527,24 +526,13 @@ void TCPDump::initialize()
 
     if (strcmp(file,"")!=0)
     {
-        tcpdump.dumpfile = fopen(file, "wb");
-        if (!tcpdump.dumpfile)
+        tcpdump.dumpfile.open(file, snaplen);
+        if (tcpdump.dumpfile.fail())
         {
             fprintf(stderr, "Cannot open file [%s] for writing: %s\n", file, strerror(errno));
             exit(-1);
         }
-
-        fh.magic = PCAP_MAGIC;
-        fh.version_major = 2;
-        fh.version_minor = 4;
-        fh.thiszone = 0;
-        fh.sigfigs = 0;
-        fh.snaplen = snaplen;
-        fh.network = 0;
-        fwrite(&fh, sizeof(fh), 1, tcpdump.dumpfile);
     }
-    else
-        tcpdump.dumpfile = NULL;
 }
 
 void TCPDump::handleMessage(cMessage *msg)
@@ -626,31 +614,11 @@ void TCPDump::handleMessage(cMessage *msg)
     }
 
 
-    if (tcpdump.dumpfile!=NULL && dynamic_cast<IPDatagram *>(msg))
+    if (tcpdump.dumpfile.isOpen())
     {
-        uint8 buf[MAXBUFLENGTH];
-        memset((void*)&buf, 0, sizeof(buf));
-
-        const simtime_t stime = simulation.getSimTime();
-        // Write PCap header
-
-        struct pcaprec_hdr ph;
-        ph.ts_sec = (int32)stime.dbl();
-        ph.ts_usec = (uint32)((stime.dbl() - ph.ts_sec)*1000000);
-         // Write Ethernet header
-        uint32 hdr = 2; //AF_INET
-                     //We do not want this to end in an error if EtherAutoconf messages
-        IPDatagram *ipPacket = check_and_cast<IPDatagram *>(msg);
-        // IP header:
-        //struct sockaddr_in *to = (struct sockaddr_in*) malloc(sizeof(struct sockaddr_in));
-        //int32 tosize = sizeof(struct sockaddr_in);
-        int32 serialized_ip = IPSerializer().serialize(ipPacket, buf, sizeof(buf));
-        ph.incl_len = serialized_ip + sizeof(uint32);
-
-        ph.orig_len = ph.incl_len;
-        fwrite(&ph, sizeof(ph), 1, tcpdump.dumpfile);
-        fwrite(&hdr, sizeof(uint32), 1, tcpdump.dumpfile);
-        fwrite(buf, serialized_ip, 1, tcpdump.dumpfile);
+        IPDatagram *ipPacket = dynamic_cast<IPDatagram *>(msg);
+        if (ipPacket)
+            tcpdump.dumpfile.write(ipPacket);
     }
 
 
@@ -667,8 +635,8 @@ void TCPDump::handleMessage(cMessage *msg)
 
 void TCPDump::finish()
 {
-     tcpdump.dump("", "tcpdump finished");
-     if (strcmp(this->par("dumpFile"),"")!=0)
-          fclose(tcpdump.dumpfile);
+    tcpdump.dump("", "tcpdump finished");
+    if(tcpdump.dumpfile.isOpen())
+        tcpdump.dumpfile.close();
 }
 

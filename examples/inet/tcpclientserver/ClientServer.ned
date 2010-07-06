@@ -18,6 +18,7 @@
 
 package inet.examples.inet.tcpclientserver;
 
+import inet.util.PcapTrace;
 import inet.networklayer.autorouting.FlatNetworkConfigurator;
 import inet.nodes.inet.StandardHost;
 import ned.DatarateChannel;
@@ -43,7 +44,10 @@ network ClientServer
         }
         configurator: FlatNetworkConfigurator {
             parameters:
-                @display("p=109,142");
+                @display("p=53,144");
+        }
+        pcapTrace: PcapTrace {
+            @display("p=181,152");
         }
     connections:
         client1.pppg++ <--> C <--> server.pppg++;
