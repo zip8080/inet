@@ -14,7 +14,7 @@ class IPDatagram;
 class PcapFile
 {
     std::fstream f;
-public:
+  public:
     void open(const char* filename, int snaplen);
     bool fail() { return f.fail(); }
     void close() { f.close(); }
