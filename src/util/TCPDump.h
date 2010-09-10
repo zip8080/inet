@@ -59,7 +59,7 @@ class TCPDumper
         void dumpIPv6(bool l2r, const char *label, IPv6Datagram_Base *dgram, const char *comment=NULL);//FIXME: Temporary hack
         void udpDump(bool l2r, const char *label, IPDatagram *dgram, const char *comment);
         const char* intToChunk(int32 type);
-        PcapFile dumpfile;
+        PcapOutFile dumpfile;
     private:
         int verbosity;
 };

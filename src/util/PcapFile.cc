@@ -1,5 +1,5 @@
 /**
- * pcap file writer.
+ * pcap file reader/writer.
  *
  * @author Zoltan Bojthe
  */
@@ -34,9 +34,8 @@ struct pcaprec_hdr {
      uint32 orig_len;   /* actual length of packet */
 };
 
-void PcapFile::open(const char* filename, int snaplen)
+void PcapFile::writeHeader(int snaplen)
 {
-    f.open(filename, std::ios::out | std::ios::trunc | std::ios::binary);
     if (!f.fail())
     {
         // Write PCAP header:
@@ -52,7 +51,30 @@ void PcapFile::open(const char* filename, int snaplen)
     }
 }
 
-void PcapFile::write(IPDatagram *ipPacket)
+bool PcapFile::readHeader()
+{
+    if (f.fail())
+        return false;
+
+    struct pcap_hdr fh;
+    f.read((char *)&fh, sizeof(fh));
+    if (f.fail())
+        return false;
+
+    return (
+            fh.magic == PCAP_MAGIC &&
+            fh.version_major == 2 &&
+            fh.version_minor == 4
+        );
+}
+
+void PcapOutFile::open(const char* filename, int snaplen)
+{
+    f.open(filename, std::ios::out | std::ios::trunc | std::ios::binary);
+    writeHeader(snaplen);
+}
+
+void PcapOutFile::write(IPDatagram *ipPacket)
 {
     uint8 buf[MAXBUFLENGTH];
     memset((void*)&buf, 0, sizeof(buf));
@@ -75,4 +97,55 @@ void PcapFile::write(IPDatagram *ipPacket)
     f.write((char *)&ph, sizeof(ph));
     f.write((char *)&hdr, sizeof(uint32));
     f.write((char *)buf, serialized_ip);
+}
+
+void PcapInFile::open(const char* filename)
+{
+    f.open(filename, std::ios::in | std::ios::binary);
+    if (!readHeader())
+        f.close();
+}
+
+IPDatagram* PcapInFile::read(simtime_t &stime)
+{
+    uint8 buf[MAXBUFLENGTH];
+    memset((void*)&buf, 0, sizeof(buf));
+
+    struct pcaprec_hdr ph;
+    uint32 hdr;
+    f.read((char *)&ph, sizeof(ph));
+    if (f.fail())
+        return NULL;
+
+    stime = simtime_t((double)ph.ts_sec + (0.0000001 * ph.ts_usec));
+
+    // Read Ethernet header
+    f.read((char *)&hdr, sizeof(hdr));
+    if (f.fail())
+        return NULL;
+
+    ASSERT(ph.orig_len == ph.incl_len);
+
+    // Read packet
+    uint32 len = ph.incl_len;
+    f.read((char *)buf, len);
+    if (f.fail())
+        return NULL;
+
+    IPDatagram *ipPacket = new IPDatagram();
+    IPSerializer().parse(buf, len, ipPacket);
+
+    // Remove encapsulated packet without change the packet length
+    cPacket* packet = ipPacket->getEncapsulatedPacket();
+    packet->setByteLength(0);
+    ipPacket->decapsulate();
+
+    return ipPacket;
+}
+
+void PcapInFile::restart()
+{
+    f.seekg(0, std::ios::beg);
+    if (!readHeader())
+        f.close();
 }

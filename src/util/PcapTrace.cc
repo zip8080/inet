@@ -15,7 +15,7 @@ class PcapTrace : public cSimpleModule, protected cListener
 {
   protected:
     static simsignal_t messageSentSignal;
-    PcapFile f;
+    PcapOutFile f;
   protected:
     virtual void initialize();
     virtual void handleMessage(cMessage *msg);
