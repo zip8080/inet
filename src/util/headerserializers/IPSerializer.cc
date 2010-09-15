@@ -17,6 +17,7 @@
 //
 
 #include <algorithm> // std::min
+
 #include "headers/defs.h"
 
 namespace INETFw // load headers into a namespace, to avoid conflicts with platform definitions of the same stuff
@@ -103,7 +104,7 @@ int IPSerializer::serialize(const IPDatagram *dgram, unsigned char *buf, unsigne
     return packetLength;
 }
 
-void IPSerializer::parse(const unsigned char *buf, unsigned int bufsize, IPDatagram *dest)
+void IPSerializer::parse(const unsigned char *buf, unsigned int bufsize, IPDatagram *dest, bool withEncapsulated)
 {
     const struct ip *ip = (const struct ip *) buf;
     unsigned int totalLength, headerLength;
@@ -129,28 +130,55 @@ void IPSerializer::parse(const unsigned char *buf, unsigned int bufsize, IPDatag
     dest->setByteLength(IP_HEADER_BYTES);
 
     cPacket *encapPacket = NULL;
-    switch (dest->getTransportProtocol())
+    unsigned int encapLength = std::min(totalLength, bufsize) - headerLength;
+    if (withEncapsulated)
     {
-      case IP_PROT_ICMP:
-        encapPacket = new ICMPMessage("icmp-from-wire");
-        ICMPSerializer().parse(buf + headerLength, std::min(totalLength, bufsize) - headerLength, (ICMPMessage *)encapPacket);
-        break;
-      case IP_PROT_UDP:
-        encapPacket = new UDPPacket("udp-from-wire");
-        UDPSerializer().parse(buf + headerLength, std::min(totalLength, bufsize) - headerLength, (UDPPacket *)encapPacket);
-        break;
-      case IP_PROT_SCTP:
-        encapPacket = new SCTPMessage("sctp-from-wire");
-        SCTPSerializer().parse(buf + headerLength, (unsigned int)(std::min(totalLength, bufsize) - headerLength), (SCTPMessage *)encapPacket);
-        break;
-      case IP_PROT_TCP:
-        encapPacket = new TCPSegment("tcp-from-wire");
-        TCPSerializer().parse(buf + headerLength, (unsigned int)(std::min(totalLength, bufsize) - headerLength), (TCPSegment *)encapPacket);
-        break;
-      default:
-        opp_error("IPSerializer: cannot serialize protocol %d", dest->getTransportProtocol());
+        switch (dest->getTransportProtocol())
+        {
+          case IP_PROT_ICMP:
+            encapPacket = new ICMPMessage("icmp-from-wire");
+            ICMPSerializer().parse(buf + headerLength, encapLength, (ICMPMessage *)encapPacket);
+            break;
+          case IP_PROT_UDP:
+            encapPacket = new UDPPacket("udp-from-wire");
+            UDPSerializer().parse(buf + headerLength, encapLength, (UDPPacket *)encapPacket);
+            break;
+          case IP_PROT_SCTP:
+            encapPacket = new SCTPMessage("sctp-from-wire");
+            SCTPSerializer().parse(buf + headerLength, encapLength, (SCTPMessage *)encapPacket);
+            break;
+          case IP_PROT_TCP:
+            encapPacket = new TCPSegment("tcp-from-wire");
+            TCPSerializer().parse(buf + headerLength, encapLength, (TCPSegment *)encapPacket);
+            break;
+          default:
+            opp_error("IPSerializer: cannot serialize protocol %d", dest->getTransportProtocol());
+        }
     }
-
+    else
+    {
+        const char* packetname = "unknown-from-wire";
+        switch (dest->getTransportProtocol())
+        {
+          case IP_PROT_ICMP:
+            packetname = "icmp-from-wire";
+            break;
+          case IP_PROT_UDP:
+            packetname = "udp-from-wire";
+            break;
+          case IP_PROT_SCTP:
+            packetname = "sctp-from-wire";
+            break;
+          case IP_PROT_TCP:
+            packetname = "tcp-from-wire";
+            break;
+          default:
+            ;
+        }
+        encapPacket = new cPacket(packetname);
+        encapPacket->setByteLength(encapLength);
+        dest->setName(packetname);
+    }
     ASSERT(encapPacket);
     dest->encapsulate(encapPacket);
     dest->setName(encapPacket->getName());

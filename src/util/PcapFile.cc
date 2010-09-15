@@ -34,7 +34,7 @@ struct pcaprec_hdr {
      uint32 orig_len;   /* actual length of packet */
 };
 
-void PcapFile::writeHeader(int snaplen)
+void PcapOutFile::writeHeader(int snaplen)
 {
     if (!f.fail())
     {
@@ -51,7 +51,7 @@ void PcapFile::writeHeader(int snaplen)
     }
 }
 
-bool PcapFile::readHeader()
+bool PcapInFile::readHeader()
 {
     if (f.fail())
         return false;
@@ -102,12 +102,15 @@ void PcapOutFile::write(IPDatagram *ipPacket)
 void PcapInFile::open(const char* filename)
 {
     f.open(filename, std::ios::in | std::ios::binary);
+    if(!f.is_open())
+        return;
     if (!readHeader())
         f.close();
 }
 
-IPDatagram* PcapInFile::read(simtime_t &stime)
+cMessage* PcapInFile::read(simtime_t &stime)
 {
+    cMessage* ret = NULL;
     uint8 buf[MAXBUFLENGTH];
     memset((void*)&buf, 0, sizeof(buf));
 
@@ -115,14 +118,9 @@ IPDatagram* PcapInFile::read(simtime_t &stime)
     uint32 hdr;
     f.read((char *)&ph, sizeof(ph));
     if (f.fail())
-        return NULL;
+        return ret;
 
     stime = simtime_t((double)ph.ts_sec + (0.0000001 * ph.ts_usec));
-
-    // Read Ethernet header
-    f.read((char *)&hdr, sizeof(hdr));
-    if (f.fail())
-        return NULL;
 
     ASSERT(ph.orig_len == ph.incl_len);
 
@@ -130,17 +128,21 @@ IPDatagram* PcapInFile::read(simtime_t &stime)
     uint32 len = ph.incl_len;
     f.read((char *)buf, len);
     if (f.fail())
-        return NULL;
+        return ret;
+    switch(*(uint32*)buf) // Read packet type header
+    {
+      case 2:
+        {
+            IPDatagram *ipPacket = new IPDatagram();
+            IPSerializer().parse(buf+sizeof(hdr), len, ipPacket, false);
+            ret = ipPacket;
+        }
+        break;
 
-    IPDatagram *ipPacket = new IPDatagram();
-    IPSerializer().parse(buf, len, ipPacket);
-
-    // Remove encapsulated packet without change the packet length
-    cPacket* packet = ipPacket->getEncapsulatedPacket();
-    packet->setByteLength(0);
-    ipPacket->decapsulate();
-
-    return ipPacket;
+      default:
+        ret = new cMessage();
+    }
+    return ret;
 }
 
 void PcapInFile::restart()

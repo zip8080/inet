@@ -26,15 +26,15 @@
  */
 class PcapTrafficGenerator : public cSimpleModule
 {
+  public:
+    PcapTrafficGenerator() : enabled(false) {}
   protected:
+    bool enabled;
     PcapInFile pcapFile;
-    cMessage timer;
-    simtime_t minPcapTime;
-    bool minPcapTimeUndef;
     // parameters:
-    simtime_t timeshift;    // simtime = pcap_time + timeshift
-    simtime_t endtime;      // simtime of last sent packet, 0 is infinity
-    simtime_t repeattime;   // simtime = pcap_time + timeshift + [0..n] * repeattime
+    simtime_t timeShift;    // simtime = pcap_time + timeshift
+    simtime_t endTime;      // simtime of last sent packet, 0 is infinity
+    simtime_t repeatGap;   // simtime = pcap_time + timeshift + [0..n] * repeattime
 
   protected:
     virtual void initialize();

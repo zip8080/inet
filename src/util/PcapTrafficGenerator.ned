@@ -22,10 +22,10 @@ package inet.util;
 simple PcapTrafficGenerator like TrafficGenerator
 {
     parameters:
-        string pcapfile = default("");
-        double timeshift @unit("s") = default(0);    // simtime = pcap_time + timeshift
-        double endtime @unit("s") = default(0);      // simtime of last sent packet, 0 is infinity
-        double repeattime @unit("s") = default(0);   // simtime = pcap_time + timeshift + [0..n] * repeattime 
+        string pcapFile = default("");
+        double timeShift @unit("s") = default(0);   // simtime = pcap_time + timeshift
+        double endTime @unit("s") = default(0);     // simtime of last sent packet, 0 is infinity
+        double repeatGap @unit("s") = default(0);   // wait time after last packet, before resend first packet of pcap file, when smaller or equal than 0 then no repeating 
     gates:
         output out;
 }

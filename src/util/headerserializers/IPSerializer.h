@@ -40,8 +40,9 @@ class IPSerializer
         /**
          * Puts a packet sniffed from the wire into an IPDatagram. Does NOT
          * verify the checksum.
+         * @param withEncapsulated: enable/disable parsing of encapsulated TCP/UDP/etc. packet.
          */
-        void parse(const unsigned char *buf, unsigned int bufsize, IPDatagram *dest);
+        void parse(const unsigned char *buf, unsigned int bufsize, IPDatagram *dest, bool withEncapsulated = true);
 };
 
 #endif

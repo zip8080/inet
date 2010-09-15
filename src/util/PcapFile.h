@@ -11,34 +11,33 @@
 
 class IPDatagram;
 
-class PcapFile
+class PcapOutFile
 {
   protected:
     std::fstream f;
+  protected:
+    void writeHeader(int snaplen);
+  public:
+    bool fail() { return f.fail(); }
+    void close() { f.close(); }
+    bool isOpen() { return f.is_open(); }
+    void open(const char* filename, int snaplen);
+    void write(IPDatagram *ipPacket);
+};
 
+class PcapInFile
+{
+  protected:
+    std::fstream f;
+  protected:
+    bool readHeader();
   public:
     bool fail() { return f.fail(); }
     void close() { f.close(); }
     bool eof() { return f.eof(); }
     bool isOpen() { return f.is_open(); }
-    bool readHeader();
-    void writeHeader(int snaplen);
-};
-
-
-class PcapOutFile : public PcapFile
-{
-  public:
-    void open(const char* filename, int snaplen);
-    void write(IPDatagram *ipPacket);
-};
-
-class PcapInFile : public PcapFile
-{
-    std::fstream f;
-  public:
     void open(const char* filename);
-    IPDatagram* read(simtime_t &stime);
+    cMessage* read(simtime_t &stime);
     void restart();
 };
 

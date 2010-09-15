@@ -15,26 +15,59 @@
 
 #include "PcapTrafficGenerator.h"
 
+#include "InterfaceTableAccess.h"
+#include "IPControlInfo.h"
+#include "IPDatagram.h"
+#include "IPRoute.h"
+#include "RoutingTableAccess.h"
+
 Define_Module(PcapTrafficGenerator);
 
 void PcapTrafficGenerator::initialize()
 {
-    const char* file = this->par("pcapfile");
-    pcapFile.open(file);
-    timeshift = this->par("timeshift");    // simtime = pcap_time + timeshift
-    endtime = this->par("endtime");      // simtime of last sent packet, 0 is infinity
-    repeattime = this->par("repeattime");   // simtime = pcap_time + timeshift + [0..n] * repeattime
+    const char* filename = this->par("pcapFile");
+    enabled = filename && *filename;
+    if (enabled)
+    {
+        timeShift = this->par("timeShift");
+        endTime = this->par("endTime");
+        repeatGap = this->par("repeatGap");
 
-    minPcapTime = 0;
-    minPcapTimeUndef = true;
-    scheduleNextPacket();
+        ev << getFullPath() << ".PcapTrafficGenerator::initialize(): "
+                <<"file:" << filename
+                << ", timeShift:" << timeShift
+                << ", endTime:" << endTime
+                << ", repeatGap:" << repeatGap
+                << endl;
+
+        pcapFile.open(filename);
+        scheduleNextPacket();
+    }
 }
 
 void PcapTrafficGenerator::handleMessage(cMessage *msg)
 {
-    if (msg->isSelfMessage())
+    if (!enabled)
     {
-        send(msg, "out");
+        error("disbled PcapTrafficGenerator received a message (module=%s)", getFullPath().c_str());
+    }
+    else if (msg->isSelfMessage())
+    {
+        if (msg->isPacket())
+        {
+            IPDatagram* ipd = dynamic_cast<IPDatagram*>(msg);
+            if (ipd)
+            {
+                IPAddress destAddr = ipd->getDestAddress();
+                IPRoutingDecision *controlInfo = new IPRoutingDecision();
+
+                ipd->setControlInfo(controlInfo);
+                ipd->setTransportProtocol(IP_PROT_NONE);
+                send(msg, "out");
+                msg = NULL;
+            }
+        }
+        delete msg;
         scheduleNextPacket();
     }
     else
@@ -43,6 +76,9 @@ void PcapTrafficGenerator::handleMessage(cMessage *msg)
 
 void PcapTrafficGenerator::scheduleNextPacket()
 {
+    if (!enabled)
+        return;
+
     simtime_t curtime = simTime();
     simtime_t pcaptime = 0;
     cMessage* msg = NULL;
@@ -54,24 +90,15 @@ void PcapTrafficGenerator::scheduleNextPacket()
     {
         delete msg;
         msg = (cMessage*)pcapFile.read(pcaptime);
-        if (msg)
-        {
-            if (minPcapTimeUndef)
-            {
-                minPcapTime = pcaptime;
-                minPcapTimeUndef = false;
-            }
-            else
-                if (repeattime > SIMTIME_ZERO && minPcapTime + repeattime < pcaptime)
-                    error("The 'repeattime' parameter smaller than timelength of pcap file at module %s", getFullPath().c_str());
-        }
-        if (!msg && pcapFile.eof() && repeattime > SIMTIME_ZERO)
+        if (!msg && pcapFile.eof() && repeatGap > SIMTIME_ZERO)
         {
             pcapFile.restart();
+            timeShift = curtime + repeatGap;
             msg = (cMessage*)pcapFile.read(pcaptime);
         }
-    } while (msg && (curtime > (pcaptime + timeshift)));
+        pcaptime += timeShift;
+    } while (msg && (curtime > (pcaptime)));
 
     if (msg)
-        scheduleAt(pcaptime + timeshift, msg);
+        scheduleAt(pcaptime, msg);
 }
