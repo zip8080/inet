@@ -9,13 +9,13 @@
 
 #include "IPDatagram.h"
 #include "IPSerializer.h"
-#include "PcapFile.h"
+#include "IPPcapFile.h"
 
 class PcapTrace : public cSimpleModule, protected cListener
 {
   protected:
     static simsignal_t messageSentSignal;
-    PcapOutFile f;
+    IPPcapFileWriter f;
   protected:
     virtual void initialize();
     virtual void handleMessage(cMessage *msg);
@@ -40,7 +40,7 @@ void PcapTrace::initialize()
     const char *filename = par("filename");
     int snaplen = par("snaplen");
     f.open(filename, snaplen);
-    if (f.fail())
+    if (!f.isOpen())
         throw cRuntimeError("Cannot open file \"%s\" for writing", filename);
 
     dump();

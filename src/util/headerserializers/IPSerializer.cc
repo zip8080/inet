@@ -157,8 +157,8 @@ void IPSerializer::parse(const unsigned char *buf, unsigned int bufsize, IPDatag
     }
     else
     {
-        const char* packetname = "unknown-from-wire";
-        switch (dest->getTransportProtocol())
+        const char* packetname = "packet-from-wire";
+/*        switch (dest->getTransportProtocol())
         {
           case IP_PROT_ICMP:
             packetname = "icmp-from-wire";
@@ -175,8 +175,9 @@ void IPSerializer::parse(const unsigned char *buf, unsigned int bufsize, IPDatag
           default:
             ;
         }
+*/
         encapPacket = new cPacket(packetname);
-        encapPacket->setByteLength(encapLength);
+        encapPacket->setByteLength(totalLength - headerLength);
         dest->setName(packetname);
     }
     ASSERT(encapPacket);

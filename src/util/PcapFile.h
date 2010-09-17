@@ -1,5 +1,5 @@
 /**
- * pcap file writer.
+ * pcap file reader/writer.
  *
  * @author Zoltan Bojthe
  */
@@ -7,38 +7,42 @@
 #ifndef __INET_UTIL_PCAPFILE_H
 #define __INET_UTIL_PCAPFILE_H
 
-#include <fstream>
 
-class IPDatagram;
+// Foreign declarations
+#ifndef lib_pcap_pcap_h
+typedef void *pcap_t;
+typedef void *pcap_dumper_t;
+#endif
 
-class PcapOutFile
+class PcapFileWriter
 {
   protected:
-    std::fstream f;
-  protected:
-    void writeHeader(int snaplen);
+    pcap_t *pcap;
+    pcap_dumper_t *pcapDumper;
+    uint32  snapLen;
   public:
-    bool fail() { return f.fail(); }
-    void close() { f.close(); }
-    bool isOpen() { return f.is_open(); }
-    void open(const char* filename, int snaplen);
-    void write(IPDatagram *ipPacket);
+    PcapFileWriter();
+    ~PcapFileWriter();
+    void open(const char* filename, unsigned int snaplen);
+    void close();
+    bool isOpen() { return NULL != pcapDumper; }
+    void write(uint32 sec, uint32 usec, const void *buff, uint32 capLen, uint32 fullLen);
 };
 
-class PcapInFile
+class PcapFileReader
 {
   protected:
-    std::fstream f;
-  protected:
-    bool readHeader();
+    pcap_t *pcap;
+    fpos_t pos0;
   public:
-    bool fail() { return f.fail(); }
-    void close() { f.close(); }
-    bool eof() { return f.eof(); }
-    bool isOpen() { return f.is_open(); }
+    PcapFileReader();
+    virtual ~PcapFileReader();
     void open(const char* filename);
-    cMessage* read(simtime_t &stime);
+    void close();
+    bool eof();
+    bool isOpen() { return NULL != pcap; }
     void restart();
+    const void* read(uint32 &sec, uint32 &usec, uint32 &capLen, uint32& origLen);
 };
 
 #endif //__INET_UTIL_PCAPFILE_H

@@ -527,7 +527,7 @@ void TCPDump::initialize()
     if (strcmp(file,"")!=0)
     {
         tcpdump.dumpfile.open(file, snaplen);
-        if (tcpdump.dumpfile.fail())
+        if (!tcpdump.dumpfile.isOpen())
         {
             fprintf(stderr, "Cannot open file [%s] for writing: %s\n", file, strerror(errno));
             exit(-1);

@@ -4,150 +4,132 @@
  * @author Zoltan Bojthe
  */
 
+#include <stdio.h>
+
 #include <omnetpp.h>
+
+#ifdef HAVE_PCAP
+// prevent pcap.h to redefine int8_t,... types on Windows
+#include "bsdint.h"
+#define HAVE_U_INT8_T
+#define HAVE_U_INT16_T
+#define HAVE_U_INT32_T
+#define HAVE_U_INT64_T
+#include <pcap.h>
+#endif
 
 #include "PcapFile.h"
 
 #include "IPDatagram.h"
 #include "IPSerializer.h"
 
-
-#define PCAP_MAGIC          0xa1b2c3d4
-#define MAXBUFLENGTH        65536
-
-/* "libpcap" file header (minus magic number). */
-struct pcap_hdr {
-     uint32 magic;      /* magic */
-     uint16 version_major;   /* major version number */
-     uint16 version_minor;   /* minor version number */
-     uint32 thiszone;   /* GMT to local correction */
-     uint32 sigfigs;        /* accuracy of timestamps */
-     uint32 snaplen;        /* max length of captured packets, in octets */
-     uint32 network;        /* data link type */
-};
-
-/* "libpcap" record header. */
-struct pcaprec_hdr {
-     int32  ts_sec;     /* timestamp seconds */
-     uint32 ts_usec;        /* timestamp microseconds */
-     uint32 incl_len;   /* number of octets of packet saved in file */
-     uint32 orig_len;   /* actual length of packet */
-};
-
-void PcapOutFile::writeHeader(int snaplen)
+PcapFileReader::PcapFileReader() :
+    pcap(NULL)
 {
-    if (!f.fail())
+}
+
+PcapFileReader::~PcapFileReader()
+{
+    close();
+}
+
+void PcapFileReader::open(const char* filename)
+{
+    char errbuf[PCAP_ERRBUF_SIZE];
+
+    pcap = pcap_open_offline(filename, errbuf);
+
+    if(!pcap)
+        throw cRuntimeError("Pcap open file '%s' error: %s\n", filename, errbuf);
+    fgetpos(pcap_file(pcap), &pos0);
+}
+
+const void* PcapFileReader::read(uint32 &sec, uint32 &usec, uint32 &capLen, uint32& origLen)
+{
+    if (!pcap)
+        return NULL;
+
+    struct pcap_pkthdr ph;
+    const u_char* buf = pcap_next(pcap, &ph);
+    if (buf)
     {
-        // Write PCAP header:
-        struct pcap_hdr fh;
-        fh.magic = PCAP_MAGIC;
-        fh.version_major = 2;
-        fh.version_minor = 4;
-        fh.thiszone = 0;
-        fh.sigfigs = 0;
-        fh.snaplen = snaplen;
-        fh.network = 0;
-        f.write((char *)&fh, sizeof(fh));
+        sec = ph.ts.tv_sec;
+        usec = ph.ts.tv_usec;
+        capLen = ph.caplen;
+        origLen = ph.len;
+    }
+    return buf;
+}
+
+bool PcapFileReader::eof()
+{
+    return !pcap || feof(pcap_file(pcap));
+}
+
+void PcapFileReader::restart()
+{
+    if (pcap)
+        fsetpos(pcap_file(pcap), &pos0);
+}
+
+void PcapFileReader::close()
+{
+    if (pcap)
+    {
+        pcap_close(pcap);
+        pcap = NULL;
     }
 }
 
-bool PcapInFile::readHeader()
+PcapFileWriter::PcapFileWriter() :
+    pcap(NULL), pcapDumper(NULL)
 {
-    if (f.fail())
-        return false;
-
-    struct pcap_hdr fh;
-    f.read((char *)&fh, sizeof(fh));
-    if (f.fail())
-        return false;
-
-    return (
-            fh.magic == PCAP_MAGIC &&
-            fh.version_major == 2 &&
-            fh.version_minor == 4
-        );
 }
 
-void PcapOutFile::open(const char* filename, int snaplen)
+PcapFileWriter::~PcapFileWriter()
 {
-    f.open(filename, std::ios::out | std::ios::trunc | std::ios::binary);
-    writeHeader(snaplen);
+    close();
 }
 
-void PcapOutFile::write(IPDatagram *ipPacket)
+void PcapFileWriter::close()
 {
-    uint8 buf[MAXBUFLENGTH];
-    memset((void*)&buf, 0, sizeof(buf));
-
-    const simtime_t stime = simulation.getSimTime();
-    // Write PCap header
-
-    struct pcaprec_hdr ph;
-    ph.ts_sec = (int32)stime.dbl();
-    ph.ts_usec = (uint32)((stime.dbl() - ph.ts_sec)*1000000);
-     // Write Ethernet header
-    uint32 hdr = 2; //AF_INET
-                 //We do not want this to end in an error if EtherAutoconf messages
-    // IP header:
-    //struct sockaddr_in *to = (struct sockaddr_in*) malloc(sizeof(struct sockaddr_in));
-    //int32 tosize = sizeof(struct sockaddr_in);
-    int32 serialized_ip = IPSerializer().serialize(ipPacket, buf, sizeof(buf));
-    ph.incl_len = serialized_ip + sizeof(uint32);
-    ph.orig_len = ph.incl_len;
-    f.write((char *)&ph, sizeof(ph));
-    f.write((char *)&hdr, sizeof(uint32));
-    f.write((char *)buf, serialized_ip);
-}
-
-void PcapInFile::open(const char* filename)
-{
-    f.open(filename, std::ios::in | std::ios::binary);
-    if(!f.is_open())
-        return;
-    if (!readHeader())
-        f.close();
-}
-
-cMessage* PcapInFile::read(simtime_t &stime)
-{
-    cMessage* ret = NULL;
-    uint8 buf[MAXBUFLENGTH];
-    memset((void*)&buf, 0, sizeof(buf));
-
-    struct pcaprec_hdr ph;
-    uint32 hdr;
-    f.read((char *)&ph, sizeof(ph));
-    if (f.fail())
-        return ret;
-
-    stime = simtime_t((double)ph.ts_sec + (0.0000001 * ph.ts_usec));
-
-    ASSERT(ph.orig_len == ph.incl_len);
-
-    // Read packet
-    uint32 len = ph.incl_len;
-    f.read((char *)buf, len);
-    if (f.fail())
-        return ret;
-    switch(*(uint32*)buf) // Read packet type header
+    if (pcapDumper)
     {
-      case 2:
-        {
-            IPDatagram *ipPacket = new IPDatagram();
-            IPSerializer().parse(buf+sizeof(hdr), len, ipPacket, false);
-            ret = ipPacket;
-        }
-        break;
-
-      default:
-        ret = new cMessage();
+        pcap_dump_close(pcapDumper);
+        pcapDumper = NULL;
     }
-    return ret;
+    if (pcap)
+    {
+        pcap_close(pcap);
+        pcap = NULL;
+    }
 }
 
-void PcapInFile::restart()
+void PcapFileWriter::open(const char* filename, unsigned int snaplen)
 {
-    f.seekg(0, std::ios::beg);
-    if (!readHeader())
-        f.close();
+    char errbuf[PCAP_ERRBUF_SIZE];
+
+    pcap = pcap_open_offline(filename, errbuf);
+
+    if(!pcap)
+        throw cRuntimeError("Pcap open dumpfile '%s' error: %s\n", filename, errbuf);
+    pcapDumper = pcap_dump_open(pcap,filename);
+    if(!pcapDumper)
+    {
+        throw cRuntimeError("Pcap dump open dumpfile '%s' error: %s\n", filename, pcap_geterr(pcap));
+    }
+    snapLen = snaplen;
+    if (0 != pcap_set_snaplen(pcap, snapLen))
+        throw cRuntimeError("Pcap open dumpfile '%s' error: Invalid snaplen=%d\n", filename, snaplen);
+}
+
+void PcapFileWriter::write(uint32 sec, uint32 usec, const void *buff, uint32 capLen, uint32 fullLen)
+{
+    struct pcap_pkthdr ph;
+    ph.ts.tv_sec = sec;
+    ph.ts.tv_usec = usec;
+    ph.len = fullLen;
+    ph.caplen = std::min(std::min(snapLen, capLen), fullLen);
+
+    pcap_dump((unsigned char *)pcapDumper, &ph, (const unsigned char *)buff);
 }
