@@ -18,7 +18,7 @@
 
 #include <omnetpp.h>
 
-#include "IPPcapFile.h"
+#include "InetPcapFile.h"
 
 
 /**
@@ -30,7 +30,7 @@ class PcapTrafficGenerator : public cSimpleModule
     PcapTrafficGenerator() : enabled(false) {}
   protected:
     bool enabled;
-    IPPcapFileReader pcapFile;
+    InetPcapFileReader pcapFile;
     // parameters:
     simtime_t timeShift;    // simtime = pcap_time + timeshift
     simtime_t endTime;      // simtime of last sent packet, 0 is infinity

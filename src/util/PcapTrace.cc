@@ -9,13 +9,13 @@
 
 #include "IPDatagram.h"
 #include "IPSerializer.h"
-#include "IPPcapFile.h"
+#include "InetPcapFile.h"
 
 class PcapTrace : public cSimpleModule, protected cListener
 {
   protected:
     static simsignal_t messageSentSignal;
-    IPPcapFileWriter f;
+    InetPcapFileWriter f;
   protected:
     virtual void initialize();
     virtual void handleMessage(cMessage *msg);

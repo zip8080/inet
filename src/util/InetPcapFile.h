@@ -20,18 +20,36 @@ class InetPcapFileWriter : public PcapFileWriter
     void write(cPacket *packet);
 };
 
-class InetPcapParser
+class InetPcapParserIf : public cPolymorphic
 {
   public:
-    cPacket* parse(const unsigned char *buf, uint32 caplen, uint32 totlen);
+    virtual ~InetPcapParserIf() {};
+    virtual cPacket* parse(const unsigned char *buf, uint32 caplen, uint32 totlen) = 0;
+};
+
+class InetPcapParser : public InetPcapParserIf
+{
+  public:
+    virtual ~InetPcapParser() {};
+    virtual cPacket* parse(const unsigned char *buf, uint32 caplen, uint32 totlen);
+};
+
+class IPDatagramPcapParser : public InetPcapParserIf
+{
+  public:
+    virtual ~IPDatagramPcapParser() {};
+    virtual cPacket* parse(const unsigned char *buf, uint32 caplen, uint32 totlen);
 };
 
 class InetPcapFileReader : public PcapFileReader
 {
     uint32 sec0;
     uint32 usec0;
+    InetPcapParserIf *parser;
   public:
-    ~InetPcapFileReader() {};
+    InetPcapFileReader() : parser(NULL) {};
+    ~InetPcapFileReader() { delete parser; };
+    void setParser(const char* parserName);
     void open(const char* filename);
     cPacket* read(simtime_t &stime);
 };

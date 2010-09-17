@@ -26,7 +26,8 @@ Define_Module(PcapTrafficGenerator);
 void PcapTrafficGenerator::initialize()
 {
     const char* filename = this->par("pcapFile");
-    enabled = filename && *filename;
+    const char* parserName = this->par("pcapParser");
+    enabled = filename && *filename && parserName && *parserName;
     if (enabled)
     {
         timeShift = this->par("timeShift");
@@ -41,6 +42,7 @@ void PcapTrafficGenerator::initialize()
                 << endl;
 
         pcapFile.open(filename);
+        pcapFile.setParser(parserName);
         scheduleNextPacket();
     }
 }

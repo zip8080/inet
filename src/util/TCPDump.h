@@ -25,7 +25,7 @@
 #include "IPAddress.h"
 //#include "IPDatagram_m.h"
 #include "IPDatagram.h"
-#include "IPPcapFile.h"
+#include "InetPcapFile.h"
 #include "SCTPMessage.h"
 #include "TCPSegment.h"
 #include "IPv6Datagram_m.h"
@@ -59,7 +59,7 @@ class TCPDumper
         void dumpIPv6(bool l2r, const char *label, IPv6Datagram_Base *dgram, const char *comment=NULL);//FIXME: Temporary hack
         void udpDump(bool l2r, const char *label, IPDatagram *dgram, const char *comment);
         const char* intToChunk(int32 type);
-        IPPcapFileWriter dumpfile;
+        InetPcapFileWriter dumpfile;
     private:
         int verbosity;
 };
