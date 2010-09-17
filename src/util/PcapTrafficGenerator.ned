@@ -23,6 +23,7 @@ simple PcapTrafficGenerator like TrafficGenerator
 {
     parameters:
         string pcapFile = default("");
+        string pcapParser = default("IPDatagramPcapParser");
         double timeShift @unit("s") = default(0);   // simtime = pcap_time + timeshift
         double endTime @unit("s") = default(0);     // simtime of last sent packet, 0 is infinity
         double repeatGap @unit("s") = default(0);   // wait time after last packet, before resend first packet of pcap file, when smaller or equal than 0 then no repeating 
