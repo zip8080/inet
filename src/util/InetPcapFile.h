@@ -12,11 +12,29 @@
 // Foreign declarations
 class IPDatagram;
 
+class InetPcapSerializerIf : public cPolymorphic
+{
+  public:
+    virtual ~InetPcapSerializerIf() {};
+    virtual uint32 serialize(const cPacket* packet, unsigned char *buf, uint32 buflen) = 0;
+};
+
+class IPDatagramPcapSerializer : public InetPcapSerializerIf
+{
+  public:
+    virtual ~IPDatagramPcapSerializer() {};
+    virtual uint32 serialize(const cPacket* packet, unsigned char *buf, uint32 buflen);
+};
+
 
 class InetPcapFileWriter : public PcapFileWriter
 {
+protected:
+    InetPcapSerializerIf *serializer;
   public:
-    ~InetPcapFileWriter() {};
+    InetPcapFileWriter() : serializer(NULL) {}
+    ~InetPcapFileWriter() { delete serializer; }
+    void setSerializer(const char* serializerName);
     void write(cPacket *packet);
 };
 
@@ -43,11 +61,12 @@ class IPDatagramPcapParser : public InetPcapParserIf
 
 class InetPcapFileReader : public PcapFileReader
 {
+  protected:
     uint32 sec0;
     uint32 usec0;
     InetPcapParserIf *parser;
   public:
-    InetPcapFileReader() : parser(NULL) {};
+    InetPcapFileReader() : sec0(0), usec0(0), parser(NULL) {};
     ~InetPcapFileReader() { delete parser; };
     void setParser(const char* parserName);
     void open(const char* filename);

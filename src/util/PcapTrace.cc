@@ -38,10 +38,12 @@ void PcapTrace::initialize()
         return;
 
     const char *filename = par("filename");
+    const char *pcapSerializer = par("pcapSerializer");
     int snaplen = par("snaplen");
     f.open(filename, snaplen);
     if (!f.isOpen())
         throw cRuntimeError("Cannot open file \"%s\" for writing", filename);
+    f.setSerializer(pcapSerializer);
 
     dump();
 

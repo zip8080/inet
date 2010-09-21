@@ -24,6 +24,7 @@ simple PcapTrace
     parameters:
         bool enabled = default(true);
         string filename = default("pcap-trace.pcap");
+        string pcapSerializer = default("IPDatagramPcapSerializer");
         string moduleName = default("");
         string gateName = default("");
         int gateIndex = default(-1);

@@ -399,6 +399,10 @@ void IP::reassembleAndDeliver(IPDatagram *datagram)
         // tunnelled IP packets are handled separately
         send(packet, "preRoutingOut");
     }
+    else if (protocol==IP_PROT_NONE)
+    {
+        delete packet;
+    }
     else
     {
         int gateindex = mapping.getOutputGateForProtocol(protocol);

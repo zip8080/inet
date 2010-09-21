@@ -35,29 +35,77 @@ cPacket* InetPcapParser::parse(const unsigned char *buf, uint32 caplen, uint32 t
     return ret;
 }
 
+namespace {
+bool isIpHeader(const unsigned char *buf, uint32 caplen, uint32 totlen)
+{
+    switch (buf[0]&0xF0)
+    {
+    case 0x40:  // IPv4
+        if ((totlen > 20) && ((((unsigned int)(buf[2])<<8) + buf[3]) == totlen))   // 20=IPv4 minimal header length
+            return true;
+        break;
+
+    case 0x60:  // IPv6
+        if ((totlen > 40) && ((((unsigned int)(buf[4])<<8) + buf[5])+40 == totlen))   // 40=IPv6 header length
+            return true;
+        break;
+
+    default:
+        break;
+    }
+    return false;
+}
+
+bool isEthHeader(const unsigned char *buf, uint32 caplen, uint32 totlen)
+{
+    return buf[12] == 8 && buf[13] == 0;
+}
+
+uint32 isNullHeader(const unsigned char *buf, uint32 caplen, uint32 totlen)
+{
+    if (buf[1] | buf[2])
+        return false;
+    if (buf[0] && buf[3])
+        return false;
+    switch(buf[0]|buf[3])
+    {
+    case 2:
+    case 24:
+    case 28:
+    case 30:
+        return 4;
+
+    default:
+        break;
+    }
+    return 0;
+}
+
+} // namespace
+
 cPacket* IPDatagramPcapParser::parse(const unsigned char *buf, uint32 caplen, uint32 totlen)
 {
     cPacket* ret = NULL;
 
     uint32 hdrlen = 0;
+    uint32 x;
 
-    if ( ((*(uint32*)buf == 2) && (buf[4]&0xF0 == 0x40)))
+    x = isNullHeader(buf, caplen, totlen);
+    if (x && isIpHeader(buf+x, caplen-x, totlen-x))
     {
         hdrlen = sizeof(uint32);
     }
-    else if (buf[12] == 8 && buf[13] == 0 && (buf[14]&0xF0 == 0x40))
+    if (!hdrlen)
     {
-        hdrlen = 14; // skip the {srcMAC, dstMAC, type=8} ethernet frame
+        x = isEthHeader(buf, caplen, totlen);
+        if (x && isIpHeader(buf+x, caplen-x, totlen-x))
+        {
+            hdrlen = x; // skip the {srcMAC, dstMAC, type=8} ethernet frame
+        }
     }
+
     if (hdrlen)
     {
-        /* FIXME :
-         * totlen >= caplen
-         * Should modify all parse() functions, for use two length parameters: total length of packet and stored length.
-         * Should modify also all serialize functions, for return larger length than buffer length, but not write
-         * out of buffer.
-         */
-
         IPDatagram *ipPacket = new IPDatagram();
         IPSerializer().parse(buf+hdrlen, caplen-hdrlen, ipPacket, false);
         ret = ipPacket;
@@ -69,6 +117,9 @@ cPacket* InetPcapFileReader::read(simtime_t &stime)
 {
     if (!pcap)
         return NULL;
+
+    if (!parser)
+        throw cRuntimeError("InetPcapFileReader haven't a parser!");
 
     uint32 sec, usec, caplen, len;
 
@@ -83,28 +134,41 @@ cPacket* InetPcapFileReader::read(simtime_t &stime)
     return ret;
 }
 
+uint32 IPDatagramPcapSerializer::serialize(const cPacket* packet, unsigned char *buf, uint32 buflen)
+{
+    const IPDatagram *ipPacket = dynamic_cast<const IPDatagram *>(packet);
+
+    if (ipPacket)
+    {
+        // IP header:
+        *(uint32*)buf = 2; // IP header
+        int32 serialized_ip = IPSerializer().serialize(ipPacket, buf+sizeof(uint32), buflen-sizeof(uint32));
+        uint32 len = serialized_ip+sizeof(uint32);
+        return len;
+    }
+    return 0;
+}
+
 void InetPcapFileWriter::write(cPacket *packet)
 {
     if (!pcapDumper)
         return;
 
-    IPDatagram *ipPacket = dynamic_cast<IPDatagram *>(packet);
+    if (!serializer)
+        throw cRuntimeError("InetPcapFileWriter haven't a serializer!");
 
-    if (ipPacket)
+    uint32 bufLen = snapLen;
+    uint8 buf[bufLen];
+
+    memset((void*)buf, 0, snapLen);
+
+    uint32 len = serializer->serialize(packet, buf, bufLen);
+    if (len)
     {
-        uint8 buf[snapLen];
-
-        memset((void*)buf, 0, snapLen);
-
         const simtime_t stime = simulation.getSimTime();
         uint32 sec = (uint32)stime.dbl();
         uint32 usec = (uint32)((stime.dbl() - sec)*1000000);
-
-        // IP header:
-        *(uint32*)buf = 2; // IP header
-        int32 serialized_ip = IPSerializer().serialize(ipPacket, buf+sizeof(uint32), snapLen-sizeof(uint32));
-        uint32 len = serialized_ip+sizeof(uint32);
-        PcapFileWriter::write(sec, usec, buf, snapLen, len);
+        PcapFileWriter::write(sec, usec, buf, std::min(bufLen, len), len);
     }
 }
 
@@ -113,5 +177,13 @@ void InetPcapFileReader::setParser(const char* parserName)
     delete parser;
     parser = check_and_cast<InetPcapParserIf*>(createOne(parserName));
     if (!parser)
-        throw cRuntimeError("Invalid pcap parser name: %s", parserName);
+        throw cRuntimeError("InetPcapFileReader: Invalid pcap parser name: %s", parserName);
+}
+
+void InetPcapFileWriter::setSerializer(const char* serializerName)
+{
+    delete serializer;
+    serializer = check_and_cast<InetPcapSerializerIf*>(createOne(serializerName));
+    if (!serializer)
+        throw cRuntimeError("InetPcapFileWriter: Invalid pcap serializer name: %s", serializerName);
 }

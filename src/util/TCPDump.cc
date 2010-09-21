@@ -520,6 +520,7 @@ void TCPDumper::tcpDump(bool l2r, const char *label, TCPSegment *tcpseg, const s
 void TCPDump::initialize()
 {
     const char* file = this->par("dumpFile");
+    const char* pcapSerializer = this->par("pcapSerializer");
     snaplen = this->par("snaplen");
     tcpdump.setVerbosity(par("verbosity"));
 
@@ -532,6 +533,7 @@ void TCPDump::initialize()
             fprintf(stderr, "Cannot open file [%s] for writing: %s\n", file, strerror(errno));
             exit(-1);
         }
+        tcpdump.dumpfile.setSerializer(pcapSerializer);
     }
 }
 

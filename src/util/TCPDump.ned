@@ -24,6 +24,7 @@ package inet.util;
 simple TCPDump {
     parameters:
         string dumpFile = default("");
+        string pcapSerializer = default("IPDatagramPcapSerializer");
         bool threadEnable = default(false);
         int snaplen = default(65535);
         int verbosity = default(0);

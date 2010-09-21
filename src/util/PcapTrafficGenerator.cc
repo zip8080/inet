@@ -81,26 +81,34 @@ void PcapTrafficGenerator::scheduleNextPacket()
     if (!enabled)
         return;
 
-    simtime_t curtime = simTime();
-    simtime_t pcaptime = 0;
-    cMessage* msg = NULL;
-
     if (!pcapFile.isOpen())
         return;
 
-    do
+    simtime_t curtime = simTime();
+    simtime_t pcaptime = curtime - timeShift;
+    cMessage* msg = NULL;
+
+    while (!pcapFile.eof())
     {
-        delete msg;
         msg = (cMessage*)pcapFile.read(pcaptime);
-        if (!msg && pcapFile.eof() && repeatGap > SIMTIME_ZERO)
+        pcaptime += timeShift;
+        if (endTime > SIMTIME_ZERO && pcaptime > endTime)
+        {
+            delete msg;
+            pcapFile.close();
+            enabled = false;
+            break;
+        }
+        if (msg && pcaptime >= curtime)
+        {
+            scheduleAt(pcaptime, msg);
+            break;
+        }
+        if (pcapFile.eof() && repeatGap > SIMTIME_ZERO)
         {
             pcapFile.restart();
-            timeShift = curtime + repeatGap;
-            msg = (cMessage*)pcapFile.read(pcaptime);
+            timeShift = pcaptime + repeatGap;
         }
-        pcaptime += timeShift;
-    } while (msg && (curtime > (pcaptime)));
-
-    if (msg)
-        scheduleAt(pcaptime, msg);
+        delete msg;
+    }
 }
