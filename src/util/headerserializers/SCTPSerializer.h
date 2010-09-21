@@ -39,8 +39,16 @@ class SCTPSerializer
         /**
          * Puts a packet sniffed from the wire into an SCTPMessage.
          */
-        void parse(const uint8 *buf, uint32 bufsize, SCTPMessage *dest);
+        void parse(const uint8 *buf, uint32 bufsize, SCTPMessage *dest)
+        {
+            parse(buf, bufsize, bufsize, dest);
+        }
 
+        void parse(const uint8 *buf, uint32 bufsize, uint32 totalLength, SCTPMessage *dest);
+
+        /**
+         * Calculates checksum.
+         */
         static uint32 checksum(const uint8 *buf, register uint32 len);
 };
 

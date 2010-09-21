@@ -43,7 +43,12 @@ class IPSerializer
          * verify the checksum.
          * @param withEncapsulated: enable/disable parsing of encapsulated TCP/UDP/etc. packet.
          */
-        void parse(const unsigned char *buf, unsigned int bufsize, IPDatagram *dest, bool withEncapsulated = true);
+        void parse(const unsigned char *buf, unsigned int bufsize, IPDatagram *dest, bool withEncapsulated = true)
+        {
+            parse(buf, bufsize, bufsize, dest, withEncapsulated);
+        }
+
+        void parse(const unsigned char *buf, unsigned int bufsize, unsigned int fullLength, IPDatagram *dest, bool withEncapsulated = true);
 };
 
 #endif

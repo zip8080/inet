@@ -40,6 +40,8 @@ using namespace INETFw;
 
 int ICMPSerializer::serialize(const ICMPMessage *pkt, unsigned char *buf, unsigned int bufsize)
 {
+    ASSERT(bufsize < sizeof(struct icmp));
+
     struct icmp *icmp = (struct icmp *) (buf);
     int packetLength;
 
@@ -104,8 +106,10 @@ int ICMPSerializer::serialize(const ICMPMessage *pkt, unsigned char *buf, unsign
     return packetLength;
 }
 
-void ICMPSerializer::parse(const unsigned char *buf, unsigned int bufsize, ICMPMessage *pkt)
+void ICMPSerializer::parse(const unsigned char *buf, unsigned int bufsize, unsigned int totalLength, ICMPMessage *pkt)
 {
+    ASSERT(bufsize < sizeof(struct icmp));
+
     struct icmp *icmp = (struct icmp*) buf;
 
     switch(icmp->icmp_type)
@@ -122,7 +126,7 @@ void ICMPSerializer::parse(const unsigned char *buf, unsigned int bufsize, ICMPM
             pp = new PingPayload(name);
             pp->setOriginatorId(ntohs(icmp->icmp_id));
             pp->setSeqNo(ntohs(icmp->icmp_seq));
-            pp->setByteLength(bufsize - 4);
+            pp->setByteLength(totalLength - 4);
             pp->setDataArraySize(bufsize - ICMP_MINLEN);
             for(unsigned int i=0; i<bufsize - ICMP_MINLEN; i++)
                 pp->setData(i, icmp->icmp_data[i]);
@@ -142,7 +146,7 @@ void ICMPSerializer::parse(const unsigned char *buf, unsigned int bufsize, ICMPM
             pp = new PingPayload(name);
             pp->setOriginatorId(ntohs(icmp->icmp_id));
             pp->setSeqNo(ntohs(icmp->icmp_seq));
-            pp->setByteLength(bufsize - 4);
+            pp->setByteLength(totalLength - 4);
             pp->setDataArraySize(bufsize - ICMP_MINLEN);
             for (unsigned int i=0; i<bufsize - ICMP_MINLEN; i++)
                 pp->setData(i, icmp->icmp_data[i]);

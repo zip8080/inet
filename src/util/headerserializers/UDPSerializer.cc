@@ -41,6 +41,8 @@ using namespace INETFw;
 
 int UDPSerializer::serialize(const UDPPacket *pkt, unsigned char *buf, unsigned int bufsize)
 {
+    ASSERT(bufsize < sizeof(struct udphdr));
+
     struct udphdr *udphdr = (struct udphdr *) (buf);
     int packetLength;
 
@@ -52,8 +54,9 @@ int UDPSerializer::serialize(const UDPPacket *pkt, unsigned char *buf, unsigned 
     return packetLength;
 }
 
-void UDPSerializer::parse(const unsigned char *buf, unsigned int bufsize, UDPPacket *dest)
+void UDPSerializer::parse(const unsigned char *buf, unsigned int bufsize, unsigned int totalLength, UDPPacket *dest)
 {
+    ASSERT(bufsize < sizeof(struct udphdr));
 
     struct udphdr *udphdr = (struct udphdr*) buf;
 

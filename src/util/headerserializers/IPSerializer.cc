@@ -117,7 +117,7 @@ int IPSerializer::serialize(const IPDatagram *dgram, unsigned char *buf, unsigne
     return packetLength;
 }
 
-void IPSerializer::parse(const unsigned char *buf, unsigned int bufsize, IPDatagram *dest, bool withEncapsulated)
+void IPSerializer::parse(const unsigned char *buf, unsigned int bufsize, unsigned int fullLength, IPDatagram *dest, bool withEncapsulated)
 {
     const struct ip *ip = (const struct ip *) buf;
     unsigned int totalLength, headerLength;
@@ -153,22 +153,22 @@ void IPSerializer::parse(const unsigned char *buf, unsigned int bufsize, IPDatag
         {
           case IP_PROT_ICMP:
             encapPacket = new ICMPMessage("icmp-from-wire");
-            ICMPSerializer().parse(buf + headerLength, encapLength, (ICMPMessage *)encapPacket);
+            ICMPSerializer().parse(buf + headerLength, encapLength, totalLength, (ICMPMessage *)encapPacket);
             break;
 
           case IP_PROT_UDP:
             encapPacket = new UDPPacket("udp-from-wire");
-            UDPSerializer().parse(buf + headerLength, encapLength, (UDPPacket *)encapPacket);
+            UDPSerializer().parse(buf + headerLength, encapLength, totalLength, (UDPPacket *)encapPacket);
             break;
 
           case IP_PROT_SCTP:
             encapPacket = new SCTPMessage("sctp-from-wire");
-            SCTPSerializer().parse(buf + headerLength, encapLength, (SCTPMessage *)encapPacket);
+            SCTPSerializer().parse(buf + headerLength, encapLength, totalLength, (SCTPMessage *)encapPacket);
             break;
 
           case IP_PROT_TCP:
             encapPacket = new TCPSegment("tcp-from-wire");
-            TCPSerializer().parse(buf + headerLength, encapLength, (TCPSegment *)encapPacket, true);
+            TCPSerializer().parse(buf + headerLength, encapLength, totalLength, (TCPSegment *)encapPacket, true);
             break;
 
           default:

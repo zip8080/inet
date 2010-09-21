@@ -43,7 +43,7 @@ class TCPSerializer
          * Returns the length of data written into buffer.
          * TODO msg why not a const reference?
          */
-        int serialize(const TCPSegment *source, unsigned char *destbuf, unsigned int bufsize);
+        unsigned int serialize(const TCPSegment *source, unsigned char *destbuf, unsigned int bufsize);
 
         /**
          * Serializes a TCPSegment for transmission on the wire.
@@ -53,21 +53,31 @@ class TCPSerializer
          * TODO msg why not a const reference?
          * TODO pseudoheader vs IPv6, pseudoheder.len should calculated by the serialize(), etc
          */
-        int serialize(const TCPSegment *source, unsigned char *destbuf, unsigned int bufsize,
+        unsigned int serialize(const TCPSegment *source, unsigned char *destbuf, unsigned int bufsize,
                 const IPvXAddress &srcIp, const IPvXAddress &destIp);
 
         /**
          * Puts a packet sniffed from the wire into a TCPSegment.
          * TODO dest why not reference?
          */
-        void parse(const unsigned char *srcbuf, unsigned int bufsize, TCPSegment *dest,
+        void parse(const unsigned char *srcbuf, unsigned int bufsize, unsigned int totalLength, TCPSegment *dest,
                 bool withBytes);
+        void parse(const unsigned char *srcbuf, unsigned int bufsize, TCPSegment *dest, bool withBytes)
+        {
+            parse(srcbuf, bufsize, bufsize, dest, withBytes);
+        }
 
         /**
          * Calculate checksum with pseudo header.
          */
-        static uint16_t checksum(const void *addr, unsigned int count,
+        static uint16_t checksum(const void *addr, unsigned int count, unsigned int totalLength,
                 const IPvXAddress &srcIp, const IPvXAddress &destIp);
+
+        static uint16_t checksum(const void *addr, unsigned int length,
+                const IPvXAddress &srcIp, const IPvXAddress &destIp)
+        {
+            return checksum(addr, length, length, srcIp, destIp);
+        }
 };
 
 #endif

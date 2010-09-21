@@ -42,14 +42,12 @@ namespace INETFw // load headers into a namespace, to avoid conflicts with platf
 
 using namespace INETFw;
 
-int TCPSerializer::serialize(const TCPSegment *tcpseg,
+unsigned int TCPSerializer::serialize(const TCPSegment *tcpseg,
         unsigned char *buf, unsigned int bufsize)
 {
     ASSERT(buf);
     ASSERT(tcpseg);
-    //cMessage* cmsg;
     struct tcphdr *tcp = (struct tcphdr*) (buf);
-    //int writtenbytes = sizeof(struct tcphdr)+tcpseg->payloadLength();
     int writtenbytes = tcpseg->getByteLength();
 
     // fill TCP header structure
@@ -81,6 +79,8 @@ int TCPSerializer::serialize(const TCPSegment *tcpseg,
     unsigned short numOptions = tcpseg->getOptionsArraySize();
     unsigned int lengthCounter = 0;
     unsigned char * options = (unsigned char * )tcp->th_options;
+    unsigned int dataLength = 0;
+
     if (numOptions > 0) // options present?
     {
         unsigned int maxOptLength = tcpseg->getHeaderLength()-TCP_HEADER_OCTETS;
@@ -95,6 +95,7 @@ int TCPSerializer::serialize(const TCPSegment *tcpseg,
             lengthCounter += length;
 
             ASSERT(lengthCounter <= maxOptLength);
+            ASSERT(TCP_HEADER_OCTETS + lengthCounter <= bufsize);
 
             options[0] = kind;
             if(length>1)
@@ -125,35 +126,37 @@ int TCPSerializer::serialize(const TCPSegment *tcpseg,
     // write data
     if (tcpseg->getByteLength() > tcpseg->getHeaderLength()) // data present? FIXME TODO: || tcpseg->getEncapsulatedPacket()!=NULL
     {
-        unsigned int dataLength = tcpseg->getByteLength() - tcpseg->getHeaderLength();
+        dataLength = tcpseg->getByteLength() - tcpseg->getHeaderLength();
         char *tcpData = (char *)options+lengthCounter;
 
         if (tcpseg->getByteArray().getDataArraySize() > 0)
         {
             ASSERT(tcpseg->getByteArray().getDataArraySize() == dataLength);
-            tcpseg->getByteArray().copyDataToBuffer(tcpData, dataLength);
+            tcpseg->getByteArray().copyDataToBuffer(tcpData, std::min(dataLength, bufsize-(TCP_HEADER_OCTETS+lengthCounter)));
         }
         else
-            memset(tcpData, 't', dataLength); // fill data part with 't'
+            memset(tcpData, 't', std::min(dataLength, bufsize-(TCP_HEADER_OCTETS+lengthCounter))); // fill data part with 't'
     }
-    return writtenbytes;
+    return TCP_HEADER_OCTETS + lengthCounter + dataLength;
 }
 
-int TCPSerializer::serialize(const TCPSegment *tcpseg,
+unsigned int TCPSerializer::serialize(const TCPSegment *tcpseg,
         unsigned char *buf, unsigned int bufsize,
         const IPvXAddress &srcIp, const IPvXAddress &destIp)
 {
-    int writtenbytes = serialize(tcpseg, buf, bufsize);
+    unsigned int writtenbytes = serialize(tcpseg, buf, bufsize);
     struct tcphdr *tcp = (struct tcphdr*) (buf);
-    tcp->th_sum = checksum(tcp, writtenbytes, srcIp, destIp);
+    tcp->th_sum = checksum(tcp, std::min(writtenbytes, bufsize), writtenbytes, srcIp, destIp);
 
     return writtenbytes;
 }
 
-void TCPSerializer::parse(const unsigned char *buf, unsigned int bufsize, TCPSegment *tcpseg, bool withBytes)
+void TCPSerializer::parse(const unsigned char *buf, unsigned int bufsize, unsigned int totalLength, TCPSegment *tcpseg, bool withBytes)
 {
     ASSERT(buf);
     ASSERT(tcpseg);
+    ASSERT(bufsize < sizeof(struct tcphdr));
+
     struct tcphdr const * const tcp = (struct tcphdr * const ) (buf);
 
     // fill TCP header structure
@@ -224,8 +227,8 @@ void TCPSerializer::parse(const unsigned char *buf, unsigned int bufsize, TCPSeg
         } // for j
     } // if options present
 
-    tcpseg->setByteLength(bufsize);
-    tcpseg->setPayloadLength(bufsize - hdrLength);
+    tcpseg->setByteLength(totalLength);
+    tcpseg->setPayloadLength(totalLength - tcpseg->getHeaderLength());
 
     if(withBytes)
     {
@@ -234,7 +237,7 @@ void TCPSerializer::parse(const unsigned char *buf, unsigned int bufsize, TCPSeg
     }
 }
 
-uint16_t TCPSerializer::checksum(const void *addr, unsigned int count,
+uint16_t TCPSerializer::checksum(const void *addr, unsigned int count, unsigned int totalLength,
         const IPvXAddress &srcIp, const IPvXAddress &destIp)
 {
     uint32_t sum = TCPIPchecksum::_checksum(addr, count);
@@ -247,7 +250,7 @@ uint16_t TCPSerializer::checksum(const void *addr, unsigned int count,
     //sum += destip;
     sum += htons(TCPIPchecksum::_checksum(destIp.words(), sizeof(uint32)*destIp.wordCount()));
 
-    sum += htons(count); // TCP length
+    sum += htons(totalLength); // TCP length
 
     sum += htons(IP_PROT_TCP); // PTCL
 

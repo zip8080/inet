@@ -524,8 +524,10 @@ uint32 SCTPSerializer::checksum(const uint8_t *buf, register uint32 len)
     return htonl(crc32c);
 }
 
-void SCTPSerializer::parse(const uint8_t *buf, uint32 bufsize, SCTPMessage *dest)
+void SCTPSerializer::parse(const uint8_t *buf, uint32 bufsize, uint32 totalLength, SCTPMessage *dest)
 {
+    //FIXME: use totalLength parameter. The totalLength >= bufsize, it's stored original packet length.
+
     int32 size_common_header = sizeof(struct common_header);
     int32 size_init_chunk = sizeof(struct init_chunk);
     int32 size_init_ack_chunk = sizeof(struct init_ack_chunk);

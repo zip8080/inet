@@ -39,7 +39,12 @@ class UDPSerializer
         /**
          * Puts a packet sniffed from the wire into an UDPPacket.
          */
-        void parse(const unsigned char *buf, unsigned int bufsize, UDPPacket *pkt);
+        void parse(const unsigned char *buf, unsigned int bufsize, UDPPacket *pkt)
+        {
+            parse(buf, bufsize, bufsize, pkt);
+        }
+
+        void parse(const unsigned char *buf, unsigned int bufsize, unsigned int totalLength, UDPPacket *pkt);
 };
 
 #endif

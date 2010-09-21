@@ -39,8 +39,12 @@ class ICMPSerializer
         /**
          * Puts a packet sniffed from the wire into an ICMPMessage.
          */
-        void parse(const unsigned char *buf, unsigned int bufsize, ICMPMessage *pkt);
+        void parse(const unsigned char *buf, unsigned int bufsize, ICMPMessage *pkt)
+        {
+            parse(buf, bufsize, bufsize, pkt);
+        }
+
+        void parse(const unsigned char *buf, unsigned int bufsize, unsigned int totalLength, ICMPMessage *pkt);
 };
 
 #endif
-
