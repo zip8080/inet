@@ -30,6 +30,7 @@ TCPSocket::TCPSocket()
     yourPtr = NULL;
 
     gateToTcp = NULL;
+    dataTransferMode = TCP_TRANSFER_UNDEFINED;
 }
 
 TCPSocket::TCPSocket(cMessage *msg)
@@ -44,7 +45,7 @@ TCPSocket::TCPSocket(cMessage *msg)
     localPrt = remotePrt = -1;
     cb = NULL;
     yourPtr = NULL;
-
+    dataTransferMode = TCP_TRANSFER_UNDEFINED;    // FIXME set dataTransferMode
     gateToTcp = NULL;
 
     if (msg->getKind()==TCP_I_ESTABLISHED)
@@ -127,8 +128,7 @@ void TCPSocket::listen(bool fork)
     openCmd->setLocalPort(localPrt);
     openCmd->setConnId(connId);
     openCmd->setFork(fork);
-    openCmd->setSendQueueClass(sendQueueClass.c_str());
-    openCmd->setReceiveQueueClass(receiveQueueClass.c_str());
+    openCmd->setDataTransferMode(dataTransferMode);
     openCmd->setTcpAlgorithmClass(tcpAlgorithmClass.c_str());
 
     msg->setControlInfo(openCmd);
@@ -154,8 +154,7 @@ void TCPSocket::connect(IPvXAddress remoteAddress, int remotePort)
     openCmd->setLocalPort(localPrt);
     openCmd->setRemoteAddr(remoteAddr);
     openCmd->setRemotePort(remotePrt);
-    openCmd->setSendQueueClass(sendQueueClass.c_str());
-    openCmd->setReceiveQueueClass(receiveQueueClass.c_str());
+    openCmd->setDataTransferMode(dataTransferMode);
     openCmd->setTcpAlgorithmClass(tcpAlgorithmClass.c_str());
 
     msg->setControlInfo(openCmd);
@@ -178,7 +177,7 @@ void TCPSocket::send(cMessage *msg)
 void TCPSocket::close()
 {
     if (sockstate!=CONNECTED && sockstate!=PEER_CLOSED && sockstate!=CONNECTING && sockstate!=LISTENING)
-        opp_error("TCPSocket::close(): not connected or close() already called");
+        opp_error("TCPSocket::close(): not connected or close() already called (sockstate=%s)", stateName(sockstate));
 
     cMessage *msg = new cMessage("CLOSE", TCP_C_CLOSE);
     TCPCommand *cmd = new TCPCommand();
@@ -301,5 +300,39 @@ void TCPSocket::processMessage(cMessage *msg)
         default:
              opp_error("TCPSocket: invalid msg kind %d, one of the TCP_I_xxx constants expected", msg->getKind());
     }
+}
+
+TCPDataTransferMode TCPSocket::convertStringToDataTransferMode(const char * transferMode)
+{
+    if(0 == transferMode || 0 == transferMode[0])
+        return TCP_TRANSFER_UNDEFINED;
+
+    if (0==strcmp(transferMode, "bytecount"))
+        return TCP_TRANSFER_BYTECOUNT;
+
+    if (0 == strcmp(transferMode, "object"))
+        return TCP_TRANSFER_OBJECT;
+
+    if (0 == strcmp(transferMode, "bytestream"))
+        return TCP_TRANSFER_BYTESTREAM;
+
+    return TCP_TRANSFER_UNDEFINED;
+}
+
+void TCPSocket::readDataTransferModePar(cComponent &component)
+{
+    //FIXME inkabb legyen egy kulon string to enum konverter fveny, ez pedig nem kell.
+
+    const char *transferMode = component.par("dataTransferMode");
+
+    if(0 == transferMode)
+        throw cRuntimeError("Missing dataTransferMode parameter at %s.", component.getFullPath().c_str());
+
+    TCPDataTransferMode x = convertStringToDataTransferMode(transferMode);
+
+    if (x == TCP_TRANSFER_UNDEFINED)
+        throw cRuntimeError("Invalid '%s' dataTransferMode parameter at %s.", transferMode, component.getFullPath().c_str());
+
+    dataTransferMode = x;
 }
 

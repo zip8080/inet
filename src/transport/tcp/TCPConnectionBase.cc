@@ -76,7 +76,7 @@ TCPStateVariables::TCPStateVariables()
     snd_ws = false;
     rcv_ws = false;
     rcv_wnd_scale = 0;        // will be set from configureStateVariables()
-    snd_wnd_scale = 0;      
+    snd_wnd_scale = 0;
 
     ts_support = false;       // will be set from configureStateVariables()
     ts_enabled = false;
@@ -105,6 +105,7 @@ TCPStateVariables::TCPStateVariables()
     snd_sacks = 0;
     rcv_sacks = 0;
     rcv_oooseg = 0;
+    rcv_naseg = 0;
 
     maxRcvBuffer  = 0;  // will be set from configureStateVariables()
     usedRcvBuffer = 0;
@@ -158,6 +159,7 @@ std::string TCPStateVariables::detailedInfo() const
     out << "rcv_sacks = " << rcv_sacks << "\n";
     out << "dupacks = " << dupacks << "\n";
     out << "rcv_oooseg = " << rcv_oooseg << "\n";
+    out << "rcv_naseg = " << rcv_naseg << "\n";
     return out.str();
 }
 
@@ -165,6 +167,7 @@ TCPConnection::TCPConnection()
 {
     // Note: this ctor is NOT used to create live connections, only
     // temporary ones to invoke segmentArrivalWhileClosed() on
+    transferMode = TCP_TRANSFER_BYTECOUNT;
     sendQueue = NULL;
     rexmitQueue = NULL;
     receiveQueue = NULL;
@@ -172,7 +175,7 @@ TCPConnection::TCPConnection()
     state = NULL;
     the2MSLTimer = connEstabTimer = finWait2Timer = synRexmitTimer = NULL;
     sndWndVector = rcvWndVector = rcvAdvVector = sndNxtVector = sndAckVector = rcvSeqVector = rcvAckVector = unackedVector =
-    dupAcksVector = sndSacksVector = rcvSacksVector = rcvOooSegVector =
+    dupAcksVector = sndSacksVector = rcvSacksVector = rcvOooSegVector = rcvNASegVector =
     tcpRcvQueueBytesVector = tcpRcvQueueDropsVector = pipeVector = sackedBytesVector = NULL;
 }
 
@@ -193,7 +196,7 @@ TCPConnection::TCPConnection(TCP *_mod, int _appGateIndex, int _connId)
     fsm.setName(fsmname);
     fsm.setState(TCP_S_INIT);
 
-
+    transferMode = TCP_TRANSFER_UNDEFINED;
     // queues and algorithm will be created on active or passive open
     sendQueue = NULL;
     rexmitQueue = NULL;
@@ -225,6 +228,7 @@ TCPConnection::TCPConnection(TCP *_mod, int _appGateIndex, int _connId)
     sndSacksVector = NULL;
     rcvSacksVector = NULL;
     rcvOooSegVector = NULL;
+    rcvNASegVector = NULL;
     tcpRcvQueueBytesVector = NULL;
     tcpRcvQueueDropsVector = NULL;
     pipeVector = NULL;
@@ -245,6 +249,7 @@ TCPConnection::TCPConnection(TCP *_mod, int _appGateIndex, int _connId)
         sndSacksVector = new cOutVector("sent sacks");
         rcvSacksVector = new cOutVector("rcvd sacks");
         rcvOooSegVector = new cOutVector("rcvd oooseg");
+        rcvNASegVector = new cOutVector("rcvd naseg");
         sackedBytesVector = new cOutVector("rcvd sackedBytes");
         tcpRcvQueueBytesVector = new cOutVector("tcpRcvQueueBytes");
         tcpRcvQueueDropsVector = new cOutVector("tcpRcvQueueDrops");
@@ -277,6 +282,7 @@ TCPConnection::~TCPConnection()
     delete sndSacksVector;
     delete rcvSacksVector;
     delete rcvOooSegVector;
+    delete rcvNASegVector;
     delete tcpRcvQueueBytesVector;
     delete tcpRcvQueueDropsVector;
     delete pipeVector;

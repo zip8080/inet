@@ -25,16 +25,16 @@ package inet.applications.tcpapp;
 // result in sending back the same message unmodified.) The reply can also be
 // delayed by a constant time (echoDelay parameter).
 //
-// When TCPEchoApp receives data packets from TCP (and such, when they can be
-// echoed) depends on the sendQueue/receiveQueue setting of TCP.
-// With TCPVirtualBytesSendQueue/RcvQueue, TCP passes up data to us
+// When ~TCPEchoApp receives data packets from ~TCP (and such, when they can be
+// echoed) depends on the sendQueue/receiveQueue setting of ~TCP.
+// With TCPVirtualBytesSendQueue/RcvQueue, ~TCP passes up data to us
 // as soon as a segment arrives, so it can be echoed immediately.
-// With TCPMsgBasedSendQueue/RcvQueue, our local TCP reproduces the same
-// messages that the sender app passed down to its TCP -- so if the sender
+// With TCPMsgBasedSendQueue/RcvQueue, our local ~TCP reproduces the same
+// messages that the sender app passed down to its ~TCP -- so if the sender
 // app sent a single 100 MB message, it will be echoed only when all
 // 100 megabytes have arrived.
 //
-// Compatible with both IPv4 and IPv6.
+// Compatible with both IPv4 (~IP) and ~IPv6.
 //
 simple TCPEchoApp like TCPApp
 {
@@ -43,9 +43,12 @@ simple TCPEchoApp like TCPApp
         int port; // port number to listen on
         double echoFactor = default(1);
         double echoDelay @unit("s") = default(0s);
+        string dataTransferMode @enum("bytecount", "object", "bytestream") = default("bytecount");
         @display("i=block/app");
+        @statistic[rcvdPkBytes](title="Received packet bytes"; record=count,sum,vector);
+        @statistic[sentPkBytes](title="Sent packet bytes"; record=count,sum,vector);
+
     gates:
         input tcpIn @labels(TCPCommand/up);
         output tcpOut @labels(TCPCommand/down);
 }
-

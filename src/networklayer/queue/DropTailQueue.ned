@@ -20,17 +20,15 @@ package inet.networklayer.queue;
 
 //
 // Drop-tail queue, to be used in network interfaces.
-// Conforms to the OutputQueue interface.
+// Conforms to the ~OutputQueue interface.
 //
 simple DropTailQueue like OutputQueue
 {
     parameters:
         int frameCapacity = default(100);
         @display("i=block/queue");
+        @statistic[queueLength](title="Used queue length"; record=histogram,stats,vector; interpolationmode=sample-hold);
     gates:
         input in;
         output out;
 }
-
-
-

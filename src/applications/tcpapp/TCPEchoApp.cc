@@ -13,6 +13,8 @@
 
 
 #include "TCPEchoApp.h"
+
+#include "ByteArrayMessage.h"
 #include "TCPSocket.h"
 #include "TCPCommand_m.h"
 
@@ -21,6 +23,7 @@ Define_Module(TCPEchoApp);
 
 void TCPEchoApp::initialize()
 {
+    cSimpleModule::initialize();
     const char *address = par("address");
     int port = par("port");
     delay = par("echoDelay");
@@ -30,8 +33,12 @@ void TCPEchoApp::initialize()
     WATCH(bytesRcvd);
     WATCH(bytesSent);
 
+    rcvdPkBytesSignal = registerSignal("rcvdPkBytes");
+    sentPkBytesSignal = registerSignal("sentPkBytes");
+
     TCPSocket socket;
     socket.setOutputGate(gate("tcpOut"));
+    socket.readDataTransferModePar(*this);
     socket.bind(address[0] ? IPvXAddress(address) : IPvXAddress(), port);
     socket.listen();
 }
@@ -39,7 +46,11 @@ void TCPEchoApp::initialize()
 void TCPEchoApp::sendDown(cMessage *msg)
 {
     if (msg->isPacket())
+    {
         bytesSent += ((cPacket *)msg)->getByteLength();
+        emit(sentPkBytesSignal, (long)(((cPacket *)msg)->getByteLength()));
+    }
+
     send(msg, "tcpOut");
 }
 
@@ -53,6 +64,7 @@ void TCPEchoApp::handleMessage(cMessage *msg)
     {
         // we'll close too
         msg->setKind(TCP_C_CLOSE);
+
         if (delay==0)
             sendDown(msg);
         else
@@ -62,6 +74,7 @@ void TCPEchoApp::handleMessage(cMessage *msg)
     {
         cPacket *pkt = check_and_cast<cPacket *>(msg);
         bytesRcvd += pkt->getByteLength();
+        emit(rcvdPkBytesSignal, (long)(pkt->getByteLength()));
 
         if (echoFactor==0)
         {
@@ -78,8 +91,23 @@ void TCPEchoApp::handleMessage(cMessage *msg)
             delete ind;
 
             long byteLen = pkt->getByteLength()*echoFactor;
-            if (byteLen<1) byteLen=1;
+
+            if (byteLen < 1)
+                byteLen = 1;
+
             pkt->setByteLength(byteLen);
+
+            ByteArrayMessage *baMsg = dynamic_cast<ByteArrayMessage *>(pkt);
+
+            // if (dataTransferMode == TCP_TRANSFER_BYTESTREAM)
+            if (baMsg)
+            {
+                ByteArray& outdata = baMsg->getByteArray();
+                ByteArray indata = outdata;
+                outdata.setDataArraySize(byteLen);
+                for (long i=0; i < byteLen; i++)
+                    outdata.setData(i, indata.getData(i/echoFactor));
+            }
 
             if (delay==0)
                 sendDown(pkt);
@@ -103,5 +131,6 @@ void TCPEchoApp::handleMessage(cMessage *msg)
 
 void TCPEchoApp::finish()
 {
+    recordScalar("bytesRcvd", bytesRcvd);
+    recordScalar("bytesSent", bytesSent);
 }
-

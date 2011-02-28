@@ -36,6 +36,8 @@
 #include <dlfcn.h>
 #include <netinet/in.h>
 
+#include "TCP_NSC_VirtualDataQueues.h"
+#include "TCP_NSC_DataStreamQueues.h"
 
 Define_Module(TCP_NSC);
 
@@ -47,17 +49,16 @@ const IPvXAddress TCP_NSC::localInnerGwS("1.0.0.254");
 const IPvXAddress TCP_NSC::remoteFirstInnerIpS("2.0.0.1");
 
 const char * TCP_NSC::stackNameParamNameS = "stackName";
-
 const char * TCP_NSC::bufferSizeParamNameS = "stackBufferSize";
 
 bool TCP_NSC::testingS;
 bool TCP_NSC::logverboseS;
 
+#ifdef tcpEV
+#undef tcpEV
+#endif
 // macro for normal ev<< logging (note: deliberately no parens in macro def)
-// FIXME
-//#define tcpEV (((ev.disable_tracing) || (TCP_NSC::testingS)) ? ev : std::cout)
-#define tcpEV ev
-//#define tcpEV std::cout
+#define tcpEV ((ev.disable_tracing) || (TCP_NSC::testingS)) ? ev : ev
 
 struct nsc_iphdr
 {
@@ -106,22 +107,6 @@ struct nsc_ipv6hdr
     uint32_t saddr[4];
     uint32_t daddr[4];
 } __attribute__((packed));
-
-static char *flags2str(unsigned char flags)
-{
-    static char buf[512];
-    buf[0]='\0';
-    if(flags & TH_FIN) strcat(buf, " FIN");
-    if(flags & TH_SYN) strcat(buf, " SYN");
-    if(flags & TH_RST) strcat(buf, " RST");
-    if(flags & TH_PUSH) strcat(buf, " PUSH");
-    if(flags & TH_ACK) strcat(buf, " ACK");
-    if(flags & TH_URG) strcat(buf, " URG");
-//    if(flags & TH_ECE) strcat(buf, " ECE");
-//    if(flags & TH_CWR) strcat(buf, " CWR");
-
-    return buf;
-}
 
 static std::ostream& operator<<(std::ostream& osP, const TCP_NSC_Connection& connP)
 {
@@ -235,105 +220,19 @@ IPvXAddress const & TCP_NSC::mapNsc2Remote(uint32_t nscAddrP)
 }
 // x == mapNsc2Remote(mapRemote2Nsc(x))
 
-void TCP_NSC::decode_tcp(const void *packet_data, int hdr_len)
-{
-    struct tcphdr const *tcp = (struct tcphdr const*)packet_data;
-    char buf[4096];
-
-    sprintf(buf, "Src port:%hu Dst port:%hu Seq:%u Ack:%u Off:%hhu %s\n",
-            ntohs(tcp->th_sport), ntohs(tcp->th_dport), ntohl(tcp->th_seq),
-            ntohl(tcp->th_ack), (unsigned char)tcp->th_offs,
-            flags2str(tcp->th_flags)
-          );
-    tcpEV << this << ": " << buf;
-    sprintf(buf, "Win:%hu Sum:%hu Urg:%hu\n",
-            ntohs(tcp->th_win), ntohs(tcp->th_sum), ntohs(tcp->th_urp));
-    tcpEV << this << ": " << buf;
-
-    if(hdr_len > 20)
-    {
-        unsigned char const *opt = (unsigned char const*)packet_data + sizeof(struct tcphdr);
-
-        tcpEV << this << ": " << ("Options: ");
-        while(
-                (*opt != 0) &&
-                ((unsigned int)opt < (unsigned int)packet_data + tcp->th_offs*4)
-             )
-        {
-            unsigned char len = opt[1];
-            if(len == 0 && opt[0] != 1)
-            {
-                sprintf(buf, "0-length option(%u)\n", opt[0]);
-                tcpEV << this << ": " << buf;
-                break;
-            }
-
-            len -= 2;
-
-            switch(*opt)
-            {
-                case 1: tcpEV << ("No-Op "); opt++; break;
-                case 2: {       unsigned short mss = 0;
-                            //assert(len == 2);
-                            if(len == 2) {
-                                mss = (opt[2] << 8) + (opt[3]);
-                                sprintf(buf, "MSS(%u) ", mss);
-                                tcpEV << buf;
-                            } else {
-                                sprintf(buf, "MSS:l:%u ", len);
-                                tcpEV << buf;
-                            }
-                            opt += opt[1];
-                            break;
-                        }
-                case 3: {
-                            unsigned char ws = 0;
-                            ASSERT(len == 1);
-                            ws = opt[2];
-                            sprintf(buf, "WS(%u) ", ws);
-                            tcpEV << buf;
-                            opt += opt[1];
-                            break;
-                        }
-                case 4: {
-                            sprintf(buf, "SACK-Permitted ");
-                            tcpEV << buf;
-                            opt += opt[1];
-                            break;
-                        }
-                case 5: {
-                            tcpEV << ("SACK ");
-                            opt += opt[1];
-                            break;
-                        }
-                case 8: {
-                            int i;
-                            tcpEV << ("Timestamp(");
-                            for(i = 0; i < len; i++) {
-                                sprintf(buf, "%02x", opt[2+i]);
-                                tcpEV << buf;
-                            }
-                            tcpEV << (") ");
-                            opt += opt[1];
-                            break;
-                        }
-                default:{
-                            sprintf(buf, "%u:%u ", opt[0], opt[1]);
-                            tcpEV << buf;
-                            opt += opt[1];
-                            break;
-                        }
-            };
-
-        }
-        tcpEV << ("\n");
-    }
-
-}
-
 void TCP_NSC::initialize()
 {
     tcpEV << this << ": initialize\n";
+
+    const char *q;
+    q = par("sendQueueClass");
+    if (*q != '\0')
+        error("Don't use obsolete sendQueueClass = \"%s\" parameter", q);
+
+    q = par("receiveQueueClass");
+    if (*q != '\0')
+        error("Don't use obsolete receiveQueueClass = \"%s\" parameter", q);
+
     WATCH_MAP(tcpAppConnMapM);
 
     cModule *netw = simulation.getSystemModule();
@@ -384,7 +283,6 @@ TCP_NSC::~TCP_NSC()
 // send a TCP_I_ESTABLISHED msg to Application Layer
 void TCP_NSC::sendEstablishedMsg(TCP_NSC_Connection &connP)
 {
-
     cMessage *msg = connP.createEstablishedMsg();
     if(msg)
     {
@@ -505,14 +403,11 @@ void TCP_NSC::handleIpInputMessage(TCPSegment* tcpsegP)
     conn = findConnByInetSockPair(inetSockPair);
     if (!conn)
         conn = findConnByInetSockPair(inetSockPairAny);
+
+    totalTcpLen = TCPSerializer().serialize(tcpsegP, (unsigned char *)tcph, totalTcpLen);
     if(conn)
     {
-        totalTcpLen = conn->receiveQueueM->insertBytesFromSegment(tcpsegP, (void *)tcph, totalTcpLen);
-    }
-    else
-    {
-        totalTcpLen = TCPSerializer().serialize(tcpsegP, (unsigned char *)tcph, totalTcpLen);
-        //TODO the PayLoad data are destroyed...
+        conn->receiveQueueM->notifyAboutIncomingSegmentProcessing(tcpsegP);
     }
 
     // calculate TCP checksum
@@ -523,8 +418,6 @@ void TCP_NSC::handleIpInputMessage(TCPSegment* tcpsegP)
     ih->tot_len = htons(totalIpLen);
     ih->check = 0;
     ih->check = TCPIPchecksum::checksum(ih, ipHdrLen);
-
-    decode_tcp( (void *)tcph, totalTcpLen);
 
     // receive msg from network
 
@@ -622,8 +515,16 @@ void TCP_NSC::handleIpInputMessage(TCPSegment* tcpsegP)
             }
             if(hasData)
             {
-                while(cPacket *dataMsg = c.receiveQueueM->extractBytesUpTo())
+                cPacket *dataMsg;
+                while(NULL != (dataMsg = c.receiveQueueM->extractBytesUpTo()))
                 {
+                    TCPConnectInfo *tcpConnectInfo = new TCPConnectInfo();
+                    tcpConnectInfo->setConnId(c.connIdM);
+                    tcpConnectInfo->setLocalAddr(c.inetSockPairM.localM.ipAddrM);
+                    tcpConnectInfo->setRemoteAddr(c.inetSockPairM.remoteM.ipAddrM);
+                    tcpConnectInfo->setLocalPort(c.inetSockPairM.localM.portM);
+                    tcpConnectInfo->setRemotePort(c.inetSockPairM.remoteM.portM);
+                    dataMsg->setControlInfo(tcpConnectInfo);
                     // send Msg to Application layer:
                     send(dataMsg, "appOut", c.appGateIndexM);
                 }
@@ -646,6 +547,27 @@ void TCP_NSC::handleIpInputMessage(TCPSegment* tcpsegP)
     delete tcpsegP;
 }
 
+TCP_NSC_SendQueue* TCP_NSC::createSendQueue(TCPDataTransferMode transferModeP)
+{
+    switch (transferModeP)
+    {
+        case TCP_TRANSFER_BYTECOUNT:   return new TCP_NSC_VirtualDataSendQueue();
+        case TCP_TRANSFER_BYTESTREAM:  return new TCP_NSC_DataStreamSendQueue();
+        case TCP_TRANSFER_OBJECT:      //return new TCP_NSC_MsgBasedSendQueue();
+        default: throw cRuntimeError("Invalid TCP data transfer mode: %d at %s", transferModeP, this->getFullPath().c_str());
+    }
+}
+
+TCP_NSC_ReceiveQueue* TCP_NSC::createReceiveQueue(TCPDataTransferMode transferModeP)
+{
+    switch (transferModeP)
+    {
+        case TCP_TRANSFER_BYTECOUNT:   return new TCP_NSC_VirtualDataReceiveQueue();
+        case TCP_TRANSFER_BYTESTREAM:  return new TCP_NSC_DataStreamReceiveQueue();
+        case TCP_TRANSFER_OBJECT:      //return new TCP_NSC_MsgBasedReceiveQueue();
+        default: throw cRuntimeError("Invalid TCP data transfer mode: %d at %s", transferModeP, this->getFullPath().c_str());
+    }
+}
 void TCP_NSC::handleAppMessage(cMessage *msgP)
 {
     TCPCommand *controlInfo = check_and_cast<TCPCommand *>(msgP->getControlInfo());
@@ -655,24 +577,20 @@ void TCP_NSC::handleAppMessage(cMessage *msgP)
     if (!conn)
     {
         TCPOpenCommand *openCmd = check_and_cast<TCPOpenCommand *>(controlInfo);
+
         // add into appConnMap
         conn = &tcpAppConnMapM[connId];
         conn->connIdM = connId;
         conn->appGateIndexM = msgP->getArrivalGate()->getIndex();
         conn->pNscSocketM = NULL;  // will be filled in within processAppCommand()
 
+        TCPDataTransferMode transferMode = (TCPDataTransferMode)(openCmd->getDataTransferMode());
         // create send queue
-        const char *sendQueueClass = openCmd->getSendQueueClass();
-        if (!sendQueueClass || !sendQueueClass[0])
-            sendQueueClass = this->par("sendQueueClass");
-        conn->sendQueueM = check_and_cast<TCP_NSC_SendQueue *>(createOne(sendQueueClass));
+        conn->sendQueueM = createSendQueue(transferMode);
         conn->sendQueueM->setConnection(conn);
 
         // create receive queue
-        const char *receiveQueueClass = openCmd->getReceiveQueueClass();
-        if (!receiveQueueClass || !receiveQueueClass[0])
-            receiveQueueClass = this->par("receiveQueueClass");
-        conn->receiveQueueM = check_and_cast<TCP_NSC_ReceiveQueue *>(createOne(receiveQueueClass));
+        conn->receiveQueueM = createReceiveQueue(transferMode);
         conn->receiveQueueM->setConnection(conn);
 
         tcpEV << this << ": TCP connection created for " << msgP << "\n";
@@ -711,7 +629,6 @@ void TCP_NSC::handleMessage(cMessage *msgP)
         // must be a TCPSegment
         TCPSegment *tcpseg = check_and_cast<TCPSegment *>(msgP);
         handleIpInputMessage(tcpseg);
-
     }
     else // must be from app
     {
@@ -919,7 +836,7 @@ void TCP_NSC::sendToIP(const void *dataP, int lenP)
     {
         tcpseg = new TCPSegment("tcp-segment");
 
-        TCPSerializer().parse((const unsigned char *)tcph, totalLen-ipHdrLen, tcpseg);
+        TCPSerializer().parse((const unsigned char *)tcph, totalLen-ipHdrLen, tcpseg, true);
         dest = mapNsc2Remote(ntohl(iph->daddr));
     }
     ASSERT(tcpseg);
@@ -1038,7 +955,9 @@ void TCP_NSC::process_OPEN_PASSIVE(TCP_NSC_Connection& connP, TCPCommand *tcpCom
 
     TCPOpenCommand *openCmd = check_and_cast<TCPOpenCommand *>(tcpCommandP);
 
-    ASSERT(openCmd->getFork()==true);
+    if (!openCmd->getFork())
+        opp_error("TCP_NSC supports Forking mode only");
+
 
     TCP_NSC_Connection::SockPair inetSockPair, nscSockPair;
     inetSockPair.localM.ipAddrM = openCmd->getLocalAddr();
@@ -1139,6 +1058,10 @@ void TCP_NSC::process_STATUS(TCP_NSC_Connection& connP, TCPCommand *tcpCommandP,
     connP.pNscSocketM->get_var("cwnd_", result, sizeof(result));
     statusInfo->setSnd_wnd(atoi(result));
 
+    statusInfo->setLocalAddr(connP.localM.ipAddrM);
+    statusInfo->setRemoteAddr(connP.remoteM.ipAddrM);
+    statusInfo->setLocalPort(connP.localM.portM);
+    statusInfo->setRemotePort(connP.remoteM.portM);
     //connP.pNscSocketM->get_var("ssthresh_", result, sizeof(result));
     //connP.pNscSocketM->get_var("rxtcur_", result, sizeof(result));
 
@@ -1147,10 +1070,6 @@ void TCP_NSC::process_STATUS(TCP_NSC_Connection& connP, TCPCommand *tcpCommandP,
     statusInfo->setState(fsm.getState());
     statusInfo->setStateName(stateName(fsm.getState()));
 
-    statusInfo->setLocalAddr(localAddr);
-    statusInfo->setRemoteAddr(remoteAddr);
-    statusInfo->setLocalPort(localPort);
-    statusInfo->setRemotePort(remotePort);
 
     statusInfo->setSnd_mss(state->snd_mss);
     statusInfo->setSnd_una(state->snd_una);

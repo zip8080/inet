@@ -25,6 +25,14 @@
 #include "ICMPMessage_m.h"
 #include "ICMPv6Message_m.h"
 
+#include "TCPDataStreamRcvQueue.h"
+#include "TCPDataStreamSendQueue.h"
+#include "TCPMsgBasedRcvQueue.h"
+#include "TCPMsgBasedSendQueue.h"
+#include "TCPVirtualDataRcvQueue.h"
+#include "TCPVirtualDataSendQueue.h"
+
+
 Define_Module(TCP);
 
 
@@ -57,6 +65,15 @@ static std::ostream& operator<<(std::ostream& os, const TCPConnection& conn)
 
 void TCP::initialize()
 {
+    const char *q;
+    q = par("sendQueueClass");
+    if (*q != '\0')
+        error("Don't use obsolete sendQueueClass = \"%s\" parameter", q);
+
+    q = par("receiveQueueClass");
+    if (*q != '\0')
+        error("Don't use obsolete receiveQueueClass = \"%s\" parameter", q);
+
     lastEphemeralPort = EPHEMERAL_PORTRANGE_START;
     WATCH(lastEphemeralPort);
 
@@ -404,4 +421,26 @@ void TCP::removeConnection(TCPConnection *conn)
 void TCP::finish()
 {
     tcpEV << getFullPath() << ": finishing with " << tcpConnMap.size() << " connections open.\n";
+}
+
+TCPSendQueue* TCP::createSendQueue(TCPDataTransferMode transferModeP)
+{
+    switch (transferModeP)
+    {
+        case TCP_TRANSFER_BYTECOUNT:   return new TCPVirtualDataSendQueue();
+        case TCP_TRANSFER_OBJECT:      return new TCPMsgBasedSendQueue();
+        case TCP_TRANSFER_BYTESTREAM:  return new TCPDataStreamSendQueue();
+        default: throw cRuntimeError("Invalid TCP data transfer mode: %d", transferModeP);
+    }
+}
+
+TCPReceiveQueue* TCP::createReceiveQueue(TCPDataTransferMode transferModeP)
+{
+    switch (transferModeP)
+    {
+        case TCP_TRANSFER_BYTECOUNT:   return new TCPVirtualDataRcvQueue();
+        case TCP_TRANSFER_OBJECT:      return new TCPMsgBasedRcvQueue();
+        case TCP_TRANSFER_BYTESTREAM:  return new TCPDataStreamRcvQueue;
+        default: throw cRuntimeError("Invalid TCP data transfer mode: %d", transferModeP);
+    }
 }

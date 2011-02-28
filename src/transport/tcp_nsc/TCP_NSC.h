@@ -27,13 +27,17 @@
 
 #include "INETDefs.h"
 #include "IPvXAddress.h"
+#include "TCPCommand_m.h"
 
 #include <sim_interface.h> // NSC. We need this here to derive from classes
+
+#include "TCPCommand_m.h"
 #include "TCP_NSC_Connection.h"
 
 // forward declarations:
-class TCPCommand;
 class TCPSegment;
+class TCP_NSC_SendQueue;
+class TCP_NSC_ReceiveQueue;
 
 /**
  * Encapsulates a Network Simulation Cradle (NSC) instance.
@@ -119,6 +123,16 @@ class INET_API TCP_NSC : public cSimpleModule, ISendCallback, IInterruptCallback
     // send a connection established msg to application layer
     void sendEstablishedMsg(TCP_NSC_Connection &connP);
 
+    /**
+     * To be called from TCPConnection: create a new send queue.
+     */
+    virtual TCP_NSC_SendQueue* createSendQueue(TCPDataTransferMode transferModeP);
+
+    /**
+     * To be called from TCPConnection: create a new receive queue.
+     */
+    virtual TCP_NSC_ReceiveQueue* createReceiveQueue(TCPDataTransferMode transferModeP);
+
   protected:
     typedef std::map<int,TCP_NSC_Connection> TcpAppConnMap; // connId-to-TCP_NSC_Connection
     typedef std::map<u_int32_t, IPvXAddress> Nsc2RemoteMap;
@@ -136,9 +150,6 @@ class INET_API TCP_NSC : public cSimpleModule, ISendCallback, IInterruptCallback
     INetStack *pStackM;
 
     cMessage *pNsiTimerM;
-
-    void decode_tcpip(const void *, int);
-    void decode_tcp(const void *, int);
 
   public:
     static bool testingS;    // switches between tcpEV and testingEV

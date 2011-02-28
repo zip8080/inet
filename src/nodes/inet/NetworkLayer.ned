@@ -28,7 +28,7 @@ import inet.networklayer.ipv4.IP;
 
 
 //
-// Network layer of an \IP node.
+// Network layer of an IP node.
 //
 // Interfaces to transport layer: TCP, UDP, echo/ping, RSVP
 //

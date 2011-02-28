@@ -159,10 +159,8 @@ class INET_API TCPSocket
 
     cGate *gateToTcp;
 
-    std::string sendQueueClass;
-    std::string receiveQueueClass;
+    TCPDataTransferMode dataTransferMode;
     std::string tcpAlgorithmClass;
-
 
   protected:
     void sendToTCP(cMessage *msg);
@@ -237,14 +235,10 @@ class INET_API TCPSocket
     void bind(IPvXAddress localAddr, int localPort);
 
     /**
-     * Returns the current sendQueueClass parameter.
+     * Returns the current dataTransferMode parameter.
+     * @see TCPCommand
      */
-    const char *getSendQueueClass() const {return sendQueueClass.c_str();}
-
-    /**
-     * Returns the current receiveQueueClass parameter.
-     */
-    const char *getReceiveQueueClass() const {return receiveQueueClass.c_str();}
+    TCPDataTransferMode getDataTransferMode() const {return dataTransferMode;}
 
     /**
      * Returns the current tcpAlgorithmClass parameter.
@@ -252,14 +246,24 @@ class INET_API TCPSocket
     const char *getTCPAlgorithmClass() const {return tcpAlgorithmClass.c_str();}
 
     /**
-     * Sets the sendQueueClass parameter of the next connect() or listen() call.
+     * Convert a string to TCPDataTransferMode enum.
+     * Returns TCP_TRANSFER_UNDEFINED when string has an invalid value
+     * Generate runtime error, when string is NULL;
      */
-    void setSendQueueClass(const char *sendQueueClass) { this->sendQueueClass = sendQueueClass; }
+    static TCPDataTransferMode convertStringToDataTransferMode(const char * transferMode);
 
     /**
-     * Sets the receiveQueueClass parameter of the next connect() or listen() call.
+     * Sets the dataTransferMode parameter of the subsequent connect() or listen() calls.
+     * @see TCPCommand
      */
-    void setReceiveQueueClass(const char *receiveQueueClass) { this->receiveQueueClass = receiveQueueClass; }
+    void setDataTransferMode(TCPDataTransferMode transferMode) { dataTransferMode = transferMode; }
+
+    /**
+     * Read "dataTransferMode" parameter from ini/ned, and set dataTransferMode member value
+     *
+     * Generate runtime error when parameter is missing or value is invalid.
+     */
+    void readDataTransferModePar(cComponent &component);
 
     /**
      * Sets the tcpAlgorithmClass parameter of the next connect() or listen() call.

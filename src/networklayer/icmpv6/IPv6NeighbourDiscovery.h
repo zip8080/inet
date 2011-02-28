@@ -19,24 +19,26 @@
 #ifndef IPV6NEIGHBOURDISCOVERY_H
 #define IPV6NEIGHBOURDISCOVERY_H
 
-#include <stdio.h>
-#include <string.h>
+
 #include <vector>
 #include <set>
+#include <map>
+
 #include <omnetpp.h>
+
 #include "IPv6Address.h"
 #include "IPv6Datagram.h"
 #include "IPv6NDMessage_m.h"
 #include "IPv6ControlInfo.h"
-#include "IPv6InterfaceData.h"
 #include "InterfaceEntry.h"
-#include "IInterfaceTable.h"
-#include "InterfaceTableAccess.h"
-#include "RoutingTable6.h"
-#include "RoutingTable6Access.h"
 #include "IPv6NeighbourCache.h"
-#include "ICMPv6.h"
-#include "ICMPv6Access.h"
+
+
+//Forward declarations:
+class ICMPv6;
+class IInterfaceTable;
+class RoutingTable6;
+
 
 /**
  * Implements RFC 2461 Neighbor Discovery for IPv6.
@@ -51,6 +53,9 @@ class INET_API IPv6NeighbourDiscovery : public cSimpleModule
     public:
         IPv6NeighbourDiscovery();
         virtual ~IPv6NeighbourDiscovery();
+
+    private:
+        simsignal_t startDADSignal;
 
     public:
         /**
@@ -106,7 +111,7 @@ class INET_API IPv6NeighbourDiscovery : public cSimpleModule
         //stores information about Router Discovery for an interface
         struct RDEntry {
             int interfaceId; //interface on which Router Discovery is performed
-            int numRSSent; //number of Router Solicitations sent since start of sim
+            unsigned int numRSSent; //number of Router Solicitations sent since start of sim
             cMessage *timeoutMsg; //the message to cancel when RA is received
         };
         typedef std::set<RDEntry*> RDList; //FIXME why ptrs are stored?
@@ -114,7 +119,7 @@ class INET_API IPv6NeighbourDiscovery : public cSimpleModule
         //An entry that stores information for an Advertising Interface
         struct AdvIfEntry {
             int interfaceId;
-            int numRASent;//number of Router Advertisements sent since start of sim
+            unsigned int numRASent;//number of Router Advertisements sent since start of sim
             simtime_t nextScheduledRATime;//stores time when next RA will be sent.
             cMessage *raTimeoutMsg;//the message to cancel when resetting RA timer
         };
@@ -327,4 +332,6 @@ class INET_API IPv6NeighbourDiscovery : public cSimpleModule
         /*ICMPv6DestUnreachableMsg *createAndSendUnreachableMessage(
             const IPv6Address& destAddress, InterfaceEntry *ie);*/
 };
+
 #endif //IPV6NEIGHBOURDISCOVERY_H
+

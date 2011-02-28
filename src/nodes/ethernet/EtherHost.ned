@@ -22,17 +22,18 @@ package inet.nodes.ethernet;
 import inet.applications.ethernet.EtherAppCli;
 import inet.applications.ethernet.EtherAppSrv;
 import inet.linklayer.ethernet.EtherLLC;
-import inet.linklayer.ethernet.EtherMAC;
+import inet.linklayer.ethernet.IEtherMAC;
 
 
 //
 // An example host with one Ethernet port and traffic generators that
 // generate Ethernet traffic directly. This host model does not contain
-// higher layer protocols (\IP, \TCP).
+// higher layer protocols (IP, TCP).
 //
 module EtherHost
 {
     parameters:
+        string macType = default("EtherMAC"); // ~EtherMAC or ~EtherMACFullDuplex
         @node();
         @labels(node,ethernet-node);
         @display("i=device/pc2");
@@ -56,7 +57,7 @@ module EtherHost
                 upperLayerIn[2];
                 upperLayerOut[2];
         }
-        mac: EtherMAC {
+        mac: <macType> like IEtherMAC {
             parameters:
                 queueModule = "";
                 @display("p=155,200;q=queue");

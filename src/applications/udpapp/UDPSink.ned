@@ -20,13 +20,14 @@
 package inet.applications.udpapp;
 
 //
-// Consumes and prints packets received from the UDP module.
+// Consumes and prints packets received from the ~UDP module.
 //
 simple UDPSink like UDPApp
 {
     parameters:
         int localPort; // if -1, app doesn't bind in UDP
         @display("i=block/sink");
+        @statistic[rcvdPkBytes](title="Received packet bytes"; record=count,sum,vector);
     gates:
         input udpIn @labels(UDPControlInfo/up);
         output udpOut @labels(UDPControlInfo/down);

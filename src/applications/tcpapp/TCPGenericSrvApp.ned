@@ -23,20 +23,21 @@ package inet.applications.tcpapp;
 // protocols or applications.
 //
 // Requires message object preserving sendQueue/receiveQueue classes
-// to be used with TCP (that is, TCPMsgBasedSendQueue and TCPMsgBasedRcvQueue;
+// to be used with ~TCP (that is, TCPMsgBasedSendQueue and TCPMsgBasedRcvQueue;
 // TCPVirtualBytesSendQueue/RcvQueue are not good).
 //
-// The module accepts any number of incoming \TCP connections, and expects
-// to receive messages of class GenericAppMsg on them. A message should
-// contain how large the reply should be (number of bytes). TCPGenericSrvApp
+// The module accepts any number of incoming TCP connections, and expects
+// to receive messages of class ~GenericAppMsg on them. A message should
+// contain how large the reply should be (number of bytes). ~TCPGenericSrvApp
 // will just change the length of the received message accordingly, and send
 // back the same message object. The reply can be delayed by a constant time
 // (replyDelay parameter).
 //
-// Compatible with both IPv4 and IPv6.
+// Compatible with both IPv4 (~IP) and ~IPv6.
 //
-// @see GenericAppMsg, TCPBasicClientApp, TelnetApp
+// @see ~GenericAppMsg, ~TCPBasicClientApp, ~TelnetApp
 //
+
 simple TCPGenericSrvApp like TCPApp
 {
     parameters:
@@ -44,8 +45,9 @@ simple TCPGenericSrvApp like TCPApp
         int port = default(1000);     // port number to listen on
         double replyDelay @unit("s") = default(0s);
         @display("i=block/app");
+        @statistic[rcvdPkBytes](title="Received packet bytes";record=count,sum,vector);
+        @statistic[sentPkBytes](title="Sent packet bytes";record=count,sum,vector);
     gates:
         input tcpIn @labels(TCPCommand/up);
         output tcpOut @labels(TCPCommand/down);
 }
-

@@ -20,12 +20,16 @@
 package inet.applications.generic;
 
 //
-// Consumes and prints packets received from the IP module.
+// Consumes and prints packets received from the ~IP module.
 // Compatible with both IPv4 and IPv6.
 //
 simple IPTrafSink like IPTrafficGenerator
 {
-    @display("i=block/sink");
+    parameters:
+        @display("i=block/sink");
+        @statistic[rcvdPkBytes](title="Received packet bytes"; record=count,sum,vector);
+        @statistic[endToEndDelay](title="End to end delay"; record=stats,histogram,vector);
+
     gates:
         input ipIn @labels(IPControlInfo/up);
         input ipv6In @labels(IPv6ControlInfo/up);
@@ -43,8 +47,8 @@ simple IPTrafSink like IPTrafficGenerator
 // or with the module name. (The IPAddressResolver class is used to resolve
 // the address.) To disable the model, set destAddresses to "".
 //
-// The peer can be IPTrafSink or another IPTrafGen (it handles received packets
-// exactly like IPTrafSink).
+// The peer can be ~IPTrafSink or another ~IPTrafGen (it handles received packets
+// exactly like ~IPTrafSink).
 //
 simple IPTrafGen like IPTrafficGenerator
 {
@@ -52,16 +56,17 @@ simple IPTrafGen like IPTrafficGenerator
         double startTime @unit("s") = default(1s); // the time application generates first packet
         volatile double packetInterval @unit("s") = default(10ms); // may be a random value, e.g. exponential(1)
         int numPackets = default(0); // max number of packets to generate
-        int protocol; // value for IPDatagram protocol field
+        int protocol; // value for ~IPDatagram protocol field
         volatile int packetLength @unit("B"); // in bytes (changed 2005-11-04)
-        string destAddresses = default(""); // list of \IP addresses, separated by spaces
+        string destAddresses = default(""); // list of IP addresses, separated by spaces
         @display("i=block/source");
+        @statistic[rcvdPkBytes](title="Received packet bytes"; record=count,sum,vector);
+        @statistic[sentPkBytes](title="Sent packet bytes"; record=count,sum,vector);
+        @statistic[endToEndDelay](title="End to end delay"; record=stats,histogram,vector);
+
     gates:
         input ipIn @labels(IPControlInfo/up);
         input ipv6In @labels(IPv6ControlInfo/up);
         output ipOut @labels(IPControlInfo/down);
         output ipv6Out @labels(IPv6ControlInfo/down);
 }
-
-
-

@@ -32,7 +32,7 @@ class NotificationBoard;
 /**
  * PPP implementation.
  */
-class INET_API PPP : public cSimpleModule, public INotifiable
+class INET_API PPP : public cSimpleModule, public INotifiable, public cListener
 {
   protected:
     long txQueueLimit;
@@ -57,6 +57,14 @@ class INET_API PPP : public cSimpleModule, public INotifiable
     long numBitErr;
     long numDroppedIfaceDown;
 
+    simsignal_t txStateSignal;
+    simsignal_t txPkBytesSignal;
+    simsignal_t rxPkBytesOkSignal;
+    simsignal_t droppedPkBytesIfaceDownSignal;
+    simsignal_t droppedPkBytesBitErrorSignal;
+    simsignal_t passedUpPkBytesSignal;
+    simsignal_t rcvdPkBytesFromHLSignal;
+
   protected:
     virtual InterfaceEntry *registerInterface(double datarate);
     virtual void startTransmitting(cPacket *msg);
@@ -67,6 +75,8 @@ class INET_API PPP : public cSimpleModule, public INotifiable
     virtual void updateDisplayString();
     virtual void updateHasSubcribers();
     virtual void receiveChangeNotification(int category, const cPolymorphic *details);
+    virtual void receiveSignal(cComponent *src, simsignal_t id, cObject *obj);
+    virtual void refreshOutGateConnection(bool connected);
 
   public:
     PPP();
@@ -79,5 +89,3 @@ class INET_API PPP : public cSimpleModule, public INotifiable
 };
 
 #endif
-
-

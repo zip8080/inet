@@ -22,18 +22,19 @@ package inet.linklayer.ethernet;
 //
 // Ethernet network interface. Assumes inifinite queue.
 //
-// @see EthernetInterface
+// @see ~EthernetInterface
 //
 module EthernetInterfaceNoQueue
 {
     parameters:
+        string macType = default("EtherMAC"); // ~EtherMAC or ~EtherMACFullDuplex
         @display("i=block/ifcard");
     gates:
         input netwIn;
         output netwOut;
         inout phys @labels(EtherFrame);
     submodules:
-        mac: EtherMAC {
+        mac: <macType> like IEtherMAC {
             parameters:
                 queueModule = "";
                 txQueueLimit = 100000; // prevents overflow in bogus simulations
@@ -50,4 +51,3 @@ module EthernetInterfaceNoQueue
         encap.lowerLayerIn <-- mac.upperLayerOut;
         mac.phys <--> phys;
 }
-

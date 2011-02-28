@@ -95,6 +95,11 @@ void UDP::initialize()
     WATCH(numPassedUp);
     WATCH(numDroppedWrongPort);
     WATCH(numDroppedBadChecksum);
+    rcvdPkSignal = registerSignal("rcvdPk");
+    sentPkSignal = registerSignal("sentPk");
+    passedUpPkSignal = registerSignal("passedUpPk");
+    droppedPkWrongPortSignal = registerSignal("droppedPkWrongPort");
+    droppedPkBadChecksumSignal = registerSignal("droppedPkBadChecksum");
 }
 
 void UDP::bind(int gateIndex, UDPControlInfo *ctrl)
@@ -275,6 +280,7 @@ void UDP::sendUp(cPacket *payload, UDPPacket *udpHeader, IPControlInfo *ipCtrl, 
     udpCtrl->setInterfaceId(ipCtrl->getInterfaceId());
     payload->setControlInfo(udpCtrl);
 
+    emit(passedUpPkSignal, payload);
     send(payload, "appOut", sd->appGateIndex);
     numPassedUp++;
 }
@@ -292,12 +298,14 @@ void UDP::sendUp(cPacket *payload, UDPPacket *udpHeader, IPv6ControlInfo *ipCtrl
     udpCtrl->setInterfaceId(ipCtrl->getInterfaceId());
     payload->setControlInfo(udpCtrl);
 
+    emit(passedUpPkSignal, payload);
     send(payload, "appOut", sd->appGateIndex);
     numPassedUp++;
 }
 
 void UDP::processUndeliverablePacket(UDPPacket *udpPacket, cPolymorphic *ctrl)
 {
+    emit(droppedPkWrongPortSignal, udpPacket);
     numDroppedWrongPort++;
 
     // send back ICMP PORT_UNREACHABLE
@@ -336,8 +344,8 @@ void UDP::processICMPError(cPacket *msg)
         type = icmpMsg->getType();
         code = icmpMsg->getCode();
         // Note: we must NOT use decapsulate() because payload in ICMP is conceptually truncated
-        IPDatagram *datagram = check_and_cast<IPDatagram *>(icmpMsg->getEncapsulatedMsg());
-        UDPPacket *packet = check_and_cast<UDPPacket *>(datagram->getEncapsulatedMsg());
+        IPDatagram *datagram = check_and_cast<IPDatagram *>(icmpMsg->getEncapsulatedPacket());
+        UDPPacket *packet = check_and_cast<UDPPacket *>(datagram->getEncapsulatedPacket());
         localAddr = datagram->getSrcAddress();
         remoteAddr = datagram->getDestAddress();
         localPort = packet->getSourcePort();
@@ -350,8 +358,8 @@ void UDP::processICMPError(cPacket *msg)
         type = icmpMsg->getType();
         code = -1; // FIXME this is dependent on getType()...
         // Note: we must NOT use decapsulate() because payload in ICMP is conceptually truncated
-        IPv6Datagram *datagram = check_and_cast<IPv6Datagram *>(icmpMsg->getEncapsulatedMsg());
-        UDPPacket *packet = check_and_cast<UDPPacket *>(datagram->getEncapsulatedMsg());
+        IPv6Datagram *datagram = check_and_cast<IPv6Datagram *>(icmpMsg->getEncapsulatedPacket());
+        UDPPacket *packet = check_and_cast<UDPPacket *>(datagram->getEncapsulatedPacket());
         localAddr = datagram->getSrcAddress();
         remoteAddr = datagram->getDestAddress();
         localPort = packet->getSourcePort();
@@ -407,13 +415,15 @@ void UDP::sendUpErrorNotification(SockDesc *sd, int msgkind, const IPvXAddress& 
 
 void UDP::processUDPPacket(UDPPacket *udpPacket)
 {
+    emit(rcvdPkSignal, udpPacket);
     // simulate checksum: discard packet if it has bit error
     EV << "Packet " << udpPacket->getName() << " received from network, dest port " << udpPacket->getDestinationPort() << "\n";
     if (udpPacket->hasBitError())
     {
         EV << "Packet has bit error, discarding\n";
-        delete udpPacket;
+        emit(droppedPkBadChecksumSignal, udpPacket);
         numDroppedBadChecksum++;
+        delete udpPacket;
         return;
     }
 
@@ -433,7 +443,7 @@ void UDP::processUDPPacket(UDPPacket *udpPacket)
     int matches = 0;
 
     // deliver a copy of the packet to each matching socket
-    cPacket *payload = udpPacket->getEncapsulatedMsg();
+    cPacket *payload = udpPacket->getEncapsulatedPacket();
     if (dynamic_cast<IPControlInfo *>(ctrl)!=NULL)
     {
         IPControlInfo *ctrl4 = (IPControlInfo *)ctrl;
@@ -448,7 +458,7 @@ void UDP::processUDPPacket(UDPPacket *udpPacket)
             }
         }
     }
-    else if (dynamic_cast<IPv6ControlInfo *>(udpPacket->getControlInfo())!=NULL)
+    else if (dynamic_cast<IPv6ControlInfo *>(ctrl)!=NULL)
     {
         IPv6ControlInfo *ctrl6 = (IPv6ControlInfo *)ctrl;
         for (SockDescList::iterator it=list.begin(); it!=list.end(); ++it)
@@ -504,6 +514,7 @@ void UDP::processMsgFromApp(cPacket *appData)
         udpPacket->setControlInfo(ipControlInfo);
         delete udpCtrl;
 
+        emit(sentPkSignal, udpPacket);
         send(udpPacket,"ipOut");
     }
     else
@@ -518,6 +529,7 @@ void UDP::processMsgFromApp(cPacket *appData)
         udpPacket->setControlInfo(ipControlInfo);
         delete udpCtrl;
 
+        emit(sentPkSignal, udpPacket);
         send(udpPacket,"ipv6Out");
     }
     numSent++;

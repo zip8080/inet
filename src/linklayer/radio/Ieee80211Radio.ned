@@ -1,6 +1,6 @@
 //
 // Copyright (C) Andras Varga, Levente Meszaros
-// Based on the Mobility Framework's SnrEval by Marc Loebbers
+// Based on the Mobility Framework's ~SnrEval by Marc Loebbers
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public License
@@ -22,12 +22,12 @@ package inet.linklayer.radio;
 //
 // Physical layer for the IEEE 802.11 models. Its external interface
 // (including gates and how it communicates with other modules)
-// is the same as the Radio module's.
+// is the same as the ~Radio module's.
 //
 // The implementation is largely based on the Mobility Framework's
 // SnrEval80211 and Decider80211 modules.
 //
-// @see Radio
+// @see ~Radio
 // @author Andras Varga
 //
 simple Ieee80211Radio like Radio
@@ -40,10 +40,10 @@ simple Ieee80211Radio like Radio
         double pathLossAlpha = default(2); // used by the path loss calculation
         double shadowingDeviation @unit("dB") = default(0dB); // used by the shadowing model calculation
         double snirThreshold @unit("dB") = default(4dB); // if signal-noise ratio is below this threshold, frame is considered noise (in dB)
-        double sensitivity @unit("mW"); // received signals with power below sensitivity are ignored
+        double sensitivity @unit("dBm"); // received signals with power below sensitivity are ignored
         @display("i=block/wrxtx");
     gates:
         input uppergateIn @labels(PhyControlInfo/down,Ieee80211Frame);   // from higher layer protocol (MAC)
         output uppergateOut @labels(PhyControlInfo/up,Ieee80211Frame); // to decider (decider connects to higher layer protocol, i.e. the MAC)
-        input radioIn @labels(AirFrame); // to receive frames (AirFrame) on the radio channel
+        input radioIn @labels(AirFrame); // to receive frames (~AirFrame) on the radio channel
 }

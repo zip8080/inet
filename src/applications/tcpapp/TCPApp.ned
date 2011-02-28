@@ -15,17 +15,17 @@
 // along with this program; if not, see <http://www.gnu.org/licenses/>.
 //
 
-
 package inet.applications.tcpapp;
 
 //
 // Template for TCP applications. It shows what gates a TCP app
-// needs, to be able to be used in StandardHost etc.
+// needs, to be able to be used in ~StandardHost etc.
 //
 moduleinterface TCPApp
 {
     parameters:
         @display("i=block/app");
+
     gates:
         input tcpIn @labels(TCPCommand/up);
         output tcpOut @labels(TCPCommand/down);

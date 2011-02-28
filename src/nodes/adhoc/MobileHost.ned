@@ -33,11 +33,11 @@ import inet.transport.udp.UDP;
 
 //
 // Models a mobile host with a wireless (802.11b) card in ad-hoc mode.
-// This model contains the new IEEE 802.11 implementation, Ieee80211Nic,
+// This model contains the new IEEE 802.11 implementation ~Ieee80211Nic,
 // and IP, TCP and UDP protocols. The mobility model can be
 // dynamically specified with the mobilityType parameter.
 //
-// @see MFMobileHost, WirelessHost
+// @see ~MFMobileHost, ~WirelessHost
 //
 module MobileHost
 {
@@ -46,8 +46,8 @@ module MobileHost
         @labels(node,wireless-node);
         int numTcpApps = default(0);
         int numUdpApps = default(0);
-        string tcpAppType = default("");
-        string udpAppType = default("");
+        // string tcpAppType = default(""); // Obsolete
+        // string udpAppType = default(""); // Obsolete
         bool IPForward = default(false);
         string routingFile = default("");
         string mobilityType = default("NullMobility");
@@ -70,7 +70,7 @@ module MobileHost
                 routingFile = routingFile;
                 @display("p=60,230");
         }
-        tcpApp[numTcpApps]: <tcpAppType> like TCPApp {
+        tcpApp[numTcpApps]: <> like TCPApp {
             parameters:
                 @display("p=163,67");
         }
@@ -78,7 +78,7 @@ module MobileHost
             parameters:
                 @display("p=163,154");
         }
-        udpApp[numUdpApps]: <udpAppType> like UDPApp {
+        udpApp[numUdpApps]: <> like UDPApp {
             parameters:
                 @display("p=272,67");
         }

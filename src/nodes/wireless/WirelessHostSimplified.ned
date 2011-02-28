@@ -35,13 +35,13 @@ import inet.transport.udp.UDP;
 //
 // Models a host with one wireless (802.11b) card in infrastructure mode,
 // but using a simplified NIC that does not support handovers.
-// This module is basically a StandardHost with an Ieee80211NicSTASimplified
-// added. It should be used in conjunction with WirelessAPSimplified,
-// or any other AP model which contains Ieee80211NicAPSimplified.
+// This module is basically a ~StandardHost with an ~Ieee80211NicSTASimplified
+// added. It should be used in conjunction with ~WirelessAPSimplified,
+// or any other AP model which contains ~Ieee80211NicAPSimplified.
 //
-// @see WirelessAP, WirelessAPSimplified, WirelessAPWithEth, WirelessAPWithEthSimplified
-// @see WirelessHost, WirelessHostSimplified
-// @see MobileHost, MFMobileHost
+// @see ~WirelessAP, ~WirelessAPSimplified, ~WirelessAPWithEth, ~WirelessAPWithEthSimplified
+// @see ~WirelessHost, ~WirelessHostSimplified
+// @see ~MobileHost, ~MFMobileHost
 //
 module WirelessHostSimplified
 {
@@ -51,8 +51,8 @@ module WirelessHostSimplified
         @display("i=device/wifilaptop");
         int numTcpApps = default(0);
         int numUdpApps = default(0);
-        string tcpAppType = default("");
-        string udpAppType = default("");
+        // string tcpAppType = default(""); // Obsolete
+        // string udpAppType = default(""); // Obsolete
         bool IPForward = default(false);
         string routingFile = default("");
         string mobilityType = default("NullMobility");
@@ -76,7 +76,7 @@ module WirelessHostSimplified
                 routingFile = routingFile;
                 @display("p=60,230");
         }
-        tcpApp[numTcpApps]: <tcpAppType> like TCPApp {
+        tcpApp[numTcpApps]: <> like TCPApp {
             parameters:
                 @display("p=163,67");
         }
@@ -84,7 +84,7 @@ module WirelessHostSimplified
             parameters:
                 @display("p=163,154");
         }
-        udpApp[numUdpApps]: <udpAppType> like UDPApp {
+        udpApp[numUdpApps]: <> like UDPApp {
             parameters:
                 @display("p=272,67");
         }

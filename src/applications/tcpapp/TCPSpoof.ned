@@ -23,7 +23,7 @@ package inet.applications.tcpapp;
 // you'll probably have to customize it in C++ according to
 // what you want to send and when you want to send it.
 //
-// Compatible with both IPv4 and IPv6.
+// Compatible with both IPv4 (~IP) and ~IPv6.
 //
 simple TCPSpoof
 {
@@ -36,6 +36,8 @@ simple TCPSpoof
         bool isSYN = default(true); // whether to set SYN bit on packet
         double t @unit("s"); // simulation time to send at
         @display("i=block/square");
+        @statistic[sentPkBytesSignal](title="Sent packet bytes";record=count,sum,vector);
+
     gates:
         output ipv4Out @labels(TCPSegment,IPControlInfo/down);
         output ipv6Out @labels(TCPSegment,IPv6ControlInfo/down);

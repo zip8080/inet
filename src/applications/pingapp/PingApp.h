@@ -60,8 +60,12 @@ class INET_API PingApp : public cSimpleModule
 
     // statistics
     cStdDev delayStat;
-    cOutVector delayVector;
-    cOutVector dropVector;
+    simsignal_t endToEndDelaySignal;
+    simsignal_t dropSignal;
+    simsignal_t sentPacketSignal;
+    simsignal_t outOfOrderArrivalSignal;
+    simsignal_t pingTxSignal;
+    simsignal_t pingRxSignal;
     long dropCount;
     long outOfOrderArrivalCount;
 };

@@ -34,9 +34,9 @@ package inet.applications.pingapp;
 // out-of-sequence arrival. So the number of really lost pings will be
 // "lost" minus "out-of-order" (assuming there's no duplicate or bogus reply).
 //
-// Uses PingPayload as payload for the ICMP(v6) Echo Request/Reply packets.
+// Uses ~PingPayload as payload for the ICMP(v6) Echo Request/Reply packets.
 //
-// @see PingPayload, ICMP, ICMPv6Core
+// @see ~PingPayload, ~ICMP, ~ICMPv6Core
 //
 simple PingApp
 {
@@ -51,11 +51,15 @@ simple PingApp
         double stopTime @unit("s") = default(0s); // send no pings after stopTime, 0 means forever
         bool printPing = default(true); // dump on stdout
         @display("i=block/app");
+        @statistic[endToEndDelay](title="delay";record=histogram,stats,vector);
+        @statistic[drop](title="dropped packets";record=count,vector);
+        @statistic[sentPacket](title="sent packets";record=count,vector);
+        @statistic[outOfOrderArrival](title="Out of order arrival packets";record=count,vector);
+        @statistic[pingTx](title="sent ping seq.no.";record=count,vector);
+        @statistic[pingRx](title="received ping seq.no.";record=count,vector);
     gates:
         input pingIn;
         output pingOut;
         input pingv6In;
         output pingv6Out;
 }
-
-

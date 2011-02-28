@@ -20,9 +20,11 @@
 
 #define WANT_WINSOCK2
 
+#include <platdep/sockets.h>
 #include <stdio.h>
 #include <string.h>
 #include <omnetpp.h>
+#include "opp_utils.h"
 #include "InterfaceTable.h"
 #include "InterfaceTableAccess.h"
 #include "ExtInterface.h"
@@ -85,14 +87,7 @@ InterfaceEntry *ExtInterface::registerInterface()
     InterfaceEntry *e = new InterfaceEntry();
 
     // interface name: our module name without special characters ([])
-    char *interfaceName = new char[strlen(getFullName())+1];
-    char *d=interfaceName;
-    for (const char *s=getFullName(); *s; s++)
-    if (isalnum(*s))
-        *d++ = *s;
-    *d = '\0';
-    e->setName(interfaceName);
-    delete [] interfaceName;
+    e->setName(OPP_Global::stripnonalnum(getFullName()).c_str());
 
     e->setMtu(par("mtu"));
     e->setMulticast(true);
@@ -177,15 +172,15 @@ void ExtInterface::handleMessage(cMessage *msg)
 void ExtInterface::displayBusy()
 {
     getDisplayString().setTagArg("i",1, "yellow");
-    gate("physOut")->getDisplayString().setTagArg("o",0,"yellow");
-    gate("physOut")->getDisplayString().setTagArg("o",1,"3");
+    gate("physOut")->getDisplayString().setTagArg("ls",0,"yellow");
+    gate("physOut")->getDisplayString().setTagArg("ls",1,"3");
 }
 
 void ExtInterface::displayIdle()
 {
     getDisplayString().setTagArg("i",1,"");
-    gate("physOut")->getDisplayString().setTagArg("o",0,"black");
-    gate("physOut")->getDisplayString().setTagArg("o",1,"1");
+    gate("physOut")->getDisplayString().setTagArg("ls",0,"black");
+    gate("physOut")->getDisplayString().setTagArg("ls",1,"1");
 }
 
 void ExtInterface::updateDisplayString()

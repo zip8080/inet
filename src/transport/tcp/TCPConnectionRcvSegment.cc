@@ -1,6 +1,6 @@
 //
 // Copyright (C) 2004 Andras Varga
-// Copyright (C) 2009-2010 Thomas Reschka
+// Copyright (C) 2009-2011 Thomas Reschka
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public License
@@ -125,7 +125,6 @@ TCPEventCode TCPConnection::processSegment1stThru8th(TCPSegment *tcpseg)
         if (state->ts_enabled)
         {
             uint32 tsval = getTSval(tcpseg);
-            // FIXME check TS rounding on all other code
             if (tsval != 0 && seqLess(tsval, state->ts_recent) &&
                     (simTime() - state->time_last_data_sent) > PAWS_IDLE_TIME_THRESH) // PAWS_IDLE_TIME_THRESH = 24 days
             {
@@ -159,7 +158,7 @@ TCPEventCode TCPConnection::processSegment1stThru8th(TCPSegment *tcpseg)
             {
                 tcpEV << "SYN with unacceptable seqNum in " <<  stateName(fsm.getState()) << " state received (SYN duplicat?)\n";
             }
-            else if (state->sack_enabled && seqLess((tcpseg->getSequenceNo()+tcpseg->getPayloadLength()), state->rcv_nxt))
+            else if (tcpseg->getPayloadLength() > 0 && state->sack_enabled && seqLess((tcpseg->getSequenceNo() + tcpseg->getPayloadLength()), state->rcv_nxt))
             {
                 state->start_seqno = tcpseg->getSequenceNo();
                 state->end_seqno = tcpseg->getSequenceNo() + tcpseg->getPayloadLength();
@@ -176,6 +175,12 @@ TCPEventCode TCPConnection::processSegment1stThru8th(TCPSegment *tcpseg)
             // The received segment is not "valid" therefore the ACK will not bear a SACK option, if snd_dsack (D-SACK) is not set.
             sendAck();
         }
+
+        state->rcv_naseg++;
+
+        if (rcvNASegVector)
+            rcvNASegVector->record(state->rcv_naseg);
+
         return TCP_E_IGNORE;
     }
 
@@ -301,9 +306,15 @@ TCPEventCode TCPConnection::processSegment1stThru8th(TCPSegment *tcpseg)
     }
 
     uint32 old_snd_nxt = state->snd_nxt; // later we'll need to see if snd_nxt changed
+    // Note: If one of the last data segments is lost while already in LAST-ACK state (e.g. if using TCPEchoApps)
+    // TCP must be able to process acceptable acknowledgments, however please note RFC 793, page 73:
+    // "LAST-ACK STATE
+    //    The only thing that can arrive in this state is an
+    //    acknowledgment of our FIN.  If our FIN is now acknowledged,
+    //    delete the TCB, enter the CLOSED state, and return."
     if (fsm.getState()==TCP_S_SYN_RCVD || fsm.getState()==TCP_S_ESTABLISHED ||
         fsm.getState()==TCP_S_FIN_WAIT_1 || fsm.getState()==TCP_S_FIN_WAIT_2 ||
-        fsm.getState()==TCP_S_CLOSE_WAIT || fsm.getState()==TCP_S_CLOSING)
+        fsm.getState()==TCP_S_CLOSE_WAIT || fsm.getState()==TCP_S_CLOSING || fsm.getState()==TCP_S_LAST_ACK)
     {
         //
         // ESTABLISHED processing:
@@ -456,8 +467,6 @@ TCPEventCode TCPConnection::processSegment1stThru8th(TCPSegment *tcpseg)
         // transmitted if possible without incurring undue delay.
         //"
 
-        tcpseg->truncateSegment(state->rcv_nxt, state->rcv_nxt + state->rcv_wnd);
-
         if (tcpseg->getPayloadLength()>0)
         {
             // check for full sized segment
@@ -467,10 +476,14 @@ TCPEventCode TCPConnection::processSegment1stThru8th(TCPSegment *tcpseg)
             if (tcpseg->getPayloadLength() == 1)
                 state->ack_now = true;    // TODO how to check if it is really a persist probe?
 
+            tcpseg->truncateSegment(state->rcv_nxt, state->rcv_nxt + state->rcv_wnd);
+
             updateRcvQueueVars();
+
             if (state->freeRcvBuffer >= tcpseg->getPayloadLength()) // enough freeRcvBuffer in rcvQueue for new segment?
             {
                 tcpEV2 << "Processing segment text in a data transfer state\n";
+				
 
                 // insert into receive buffers. If this segment is contiguous with
                 // previously received ones (seqNo==rcv_nxt), rcv_nxt can be increased;
@@ -480,6 +493,17 @@ TCPEventCode TCPConnection::processSegment1stThru8th(TCPSegment *tcpseg)
 
                 uint32 old_usedRcvBuffer = state->usedRcvBuffer;
                 state->rcv_nxt = receiveQueue->insertBytesFromSegment(tcpseg);
+
+                if (seqGreater(state->snd_una, old_snd_una))
+                {
+                    // notify
+                    tcpAlgorithm->receivedDataAck(old_snd_una);
+
+                    // in the receivedDataAck we need the old value
+                    state->dupacks = 0;
+                    if (dupAcksVector)
+                        dupAcksVector->record(state->dupacks);
+                }
 
                 // out-of-order segment?
                 if (old_rcv_nxt==state->rcv_nxt)
@@ -573,17 +597,6 @@ TCPEventCode TCPConnection::processSegment1stThru8th(TCPSegment *tcpseg)
                                 break;
                         }
                         sendIndicationToApp(TCP_I_PEER_CLOSED);
-                    }
-
-                    if (seqGreater(state->snd_una, old_snd_una))
-                    {
-                        // notify
-                        tcpAlgorithm->receivedDataAck(old_snd_una);
-
-                        // in the receivedDataAck we need the old value
-                        state->dupacks = 0;
-                        if (dupAcksVector)
-                            dupAcksVector->record(state->dupacks);
                     }
                 }
             }
@@ -1143,7 +1156,8 @@ bool TCPConnection::processAckInEstabEtc(TCPSegment *tcpseg)
             if (dupAcksVector)
                 dupAcksVector->record(state->dupacks);
 
-            // we need to update send window even if the ACK is a dupACK, because rcv win could have been changed if faulty data receiver is not respecting the "do not shrink window" rule
+            // we need to update send window even if the ACK is a dupACK, because rcv win
+            // could have been changed if faulty data receiver is not respecting the "do not shrink window" rule
             updateWndInfo(tcpseg);
 
             tcpAlgorithm->receivedDuplicateAck();
@@ -1206,8 +1220,10 @@ bool TCPConnection::processAckInEstabEtc(TCPSegment *tcpseg)
 
         updateWndInfo(tcpseg);
 
-        if (tcpseg->getPayloadLength() == 0 && fsm.getState()!=TCP_S_SYN_RCVD) // if segment contains data, wait until data has been forwarded to app before sending ACK, otherwise we would use an old ACKNo
-        {   
+        // if segment contains data, wait until data has been forwarded to app before sending ACK,
+        // otherwise we would use an old ACKNo
+        if (tcpseg->getPayloadLength() == 0 && fsm.getState()!=TCP_S_SYN_RCVD)
+        {
             // notify
             tcpAlgorithm->receivedDataAck(old_snd_una);
 

@@ -16,7 +16,10 @@
 // along with this program; if not, see <http://www.gnu.org/licenses/>.
 //
 
+#include <platdep/sockets.h>
+
 #include "headers/defs.h"
+
 namespace INETFw // load headers into a namespace, to avoid conflicts with platform definitions of the same stuff
 {
 #include "headers/bsdint.h"
@@ -92,7 +95,7 @@ int32 SCTPSerializer::serialize(const SCTPMessage *msg, unsigned char *buf, uint
                     dc->ppi = htonl(dataChunk->getPpid());
                     writtenbytes += SCTP_DATA_CHUNK_LENGTH;
 
-                    SCTPSimpleMessage *smsg = check_and_cast<SCTPSimpleMessage *>(dataChunk->getEncapsulatedMsg());
+                    SCTPSimpleMessage *smsg = check_and_cast<SCTPSimpleMessage *>(dataChunk->getEncapsulatedPacket());
                         // T.D. 09.02.2010: Only copy data when there is something to copy!
                         const uint32 datalen = smsg->getDataLen();
                         if( smsg->getDataArraySize() >= datalen) {

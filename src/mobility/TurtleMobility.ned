@@ -36,7 +36,7 @@ package inet.mobility;
 //     </movement>
 // </nohtml></pre>
 //
-// MassMobility (in which the node is assumed to have a mass, and cannot turn
+// ~MassMobility (in which the node is assumed to have a mass, and cannot turn
 // abruptly):
 //
 // <pre><nohtml>
@@ -106,7 +106,7 @@ package inet.mobility;
 //
 // You can find the DTD with the sources: TurtleMobility.dtd.
 //
-// @see ChannelControl
+// @see ~ChannelControl
 // @author Andras Varga
 //
 simple TurtleMobility like BasicMobility

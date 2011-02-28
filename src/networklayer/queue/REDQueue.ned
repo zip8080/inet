@@ -20,7 +20,7 @@ package inet.networklayer.queue;
 
 //
 // RED (Random Early Detection) queue, to be used in routers' network
-// interfaces. Conforms to the OutputQueue interface.
+// interfaces. Conforms to the ~OutputQueue interface.
 //
 // Implements the original RED algorithm from
 // "Random Early Detection Gateways for Congestion Avoidance" by
@@ -90,6 +90,9 @@ simple REDQueue like OutputQueue
         double maxp = default(0.02);  // maximum value for pb
         double pkrate = default(150);  // arrivals per sec (see comment above)
         @display("i=block/queue");
+        @statistic[earlyDropPkBytes](title="Early dropped packet bytes";record=count,sum,vector);
+        @statistic[avgQueueLength](title="Avg queue length";record=histogram,stats,vector);
+        @statistic[queueLength](title="Queue length";record=histogram,stats,vector;interpolationmode=sample-hold);
     gates:
         input in;
         output out;

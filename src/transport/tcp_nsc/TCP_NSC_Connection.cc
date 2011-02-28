@@ -1,6 +1,6 @@
 //
 // Copyright (C) 2006 Sam Jansen, Andras Varga
-//               2009 Zoltan Bojthe
+// Copyright (C) 2009 Zoltan Bojthe
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -37,12 +37,9 @@
 #include <dlfcn.h>
 #include <netinet/in.h>
 
-// macro for normal ev<< logging (note: deliberately no parens in macro def)
-// FIXME
-//#define tcpEV (((ev.disable_tracing)||(TCP_NSC::testingS)) ? (std::cout) : (ev))
 
-#define tcpEV ev
-//#define tcpEV std::cout
+// macro for normal ev<< logging (note: deliberately no parens in macro def)
+#define tcpEV ((ev.disable_tracing)||(TCP_NSC::testingS)) ? ev : ev
 
 
 struct nsc_iphdr
@@ -94,13 +91,6 @@ cMessage* TCP_NSC_Connection::createEstablishedMsg()
 
     TCPConnectInfo *tcpConnectInfo = new TCPConnectInfo();
 
-/*    struct sockaddr_in peerAddr, sockAddr;
-    size_t peerAddrLen=sizeof(peerAddr),sockAddrLen=sizeof(sockAddr);
-    pNscSocketM->getpeername((sockaddr*)&peerAddr, &peerAddrLen);
-    pNscSocketM->getsockname((sockaddr*)&sockAddr, &sockAddrLen);
-    tcpConnectInfo->setLocalPort(ntohs(sockAddr.sin_port));
-    tcpConnectInfo->setRemotePort(ntohs(peerAddr.sin_port));
-*/
     tcpConnectInfo->setConnId(connIdM);
     tcpConnectInfo->setLocalAddr(inetSockPairM.localM.ipAddrM);
     tcpConnectInfo->setRemoteAddr(inetSockPairM.remoteM.ipAddrM);
@@ -186,11 +176,12 @@ void TCP_NSC_Connection::do_SEND()
         ASSERT(sendQueueM);
 
         char buffer[4096];
-
         int allsent = 0;
+
         while(1)
         {
-            int bytes = sendQueueM->getNscMsg(buffer, sizeof(buffer));
+            int bytes = sendQueueM->getBytesForTcpLayer(buffer, sizeof(buffer));
+
             if(0 == bytes)
                 break;
 
@@ -198,7 +189,7 @@ void TCP_NSC_Connection::do_SEND()
 
             if(sent > 0)
             {
-                sendQueueM->dequeueNscMsg(sent);
+                sendQueueM->dequeueTcpLayerMsg(sent);
                 allsent += sent;
             }
             else
@@ -223,3 +214,4 @@ void TCP_NSC_Connection::abort()
 }
 
 #endif // WITH_TCP_NSC
+

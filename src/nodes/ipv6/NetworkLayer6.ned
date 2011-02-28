@@ -32,7 +32,7 @@ import inet.networklayer.ipv6.IPv6ErrorHandling;
 //
 // Represents an IPv6 network layer (L3).
 //
-// The module has ports to connect to a higher layer (TCP,UDP) and
+// The module has ports to connect to a higher layer (TCP, UDP) and
 // several network interfaces.
 //
 module NetworkLayer6
