@@ -1,5 +1,5 @@
 //
-// Copyright (C) 2005 Andras Varga
+// Copyright (C) 2006 Levente Meszaros
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public License
@@ -14,28 +14,20 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program; if not, see <http://www.gnu.org/licenses/>.
 //
+package inet.linklayer.ethernet;
 
-
-
-package inet.linklayer.ppp;
-
-import inet.base.IHook;
+import inet.linklayer.IWiredNic;
 
 
 //
-// Thruput measurement utility module.
+// Ethernet network interface which supports full-duplex operation only.
+// Complements ~EtherMACFullDuplex and ~EtherEncap with an output queue for QoS and
+// RED support.
 //
-simple ThruputMeter like IHook
+// @see EthernetInterface, EthernetInterfaceNoQueue
+//
+module EthernetInterfaceFullDuplex extends EthernetInterface like IWiredNic
 {
     parameters:
-        @node();
-        double startTime @unit("s") = default(0s);
-        int batchSize = default(50);
-        double maxInterval @unit("s") = default(1s);
-        @display("i=block/timer_vs");
-    gates:
-        input in;
-        output out;
+        macType = "EtherMACFullDuplex";
 }
-
-

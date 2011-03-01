@@ -20,6 +20,7 @@
 package inet.linklayer.ppp;
 
 import inet.networklayer.queue.OutputQueue;
+import inet.linklayer.IWiredNic;
 
 
 //
@@ -28,7 +29,7 @@ import inet.networklayer.queue.OutputQueue;
 //
 // @see ~PPPInterfaceNoQueue
 //
-module PPPInterface
+module PPPInterface like IWiredNic
 {
     parameters:
         string queueType = default("DropTailQueue");

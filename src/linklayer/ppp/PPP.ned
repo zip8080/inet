@@ -19,6 +19,9 @@
 
 package inet.linklayer.ppp;
 
+import inet.linklayer.IWiredNic;
+
+
 //
 // PPP implementation.
 //
@@ -43,14 +46,14 @@ package inet.linklayer.ppp;
 //
 // @see ~PPPInterface, ~OutputQueue, ~PPPFrame
 //
-simple PPP
+simple PPP like IWiredNic
 {
     parameters:
         int txQueueLimit = default(1000);  // only used if queueModule==""; zero means infinite
         string queueModule = default("");  // name of external (QoS,RED,etc) queue module
         int mtu = default(4470);
         @display("i=block/rxtx");
-        @statistic[txState](title="TX State"; record=timeavg,vector;interpolationmode=sample-hold);
+        @statistic[txState](title="TX State"; record=timeavg,vector; interpolationmode=sample-hold);
         @statistic[txPkBytes](title="TX packet bytes"; record=sum,count,vector);
         @statistic[rxPkBytesOk](title="RX packet bytes OK"; record=sum,count,vector);
         @statistic[droppedPkBytesBitError](title="Dropped packet bytes bit error"; record=sum,count,vector);
