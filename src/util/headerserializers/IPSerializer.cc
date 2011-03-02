@@ -168,7 +168,7 @@ void IPSerializer::parse(const unsigned char *buf, unsigned int bufsize, IPDatag
 
           case IP_PROT_TCP:
             encapPacket = new TCPSegment("tcp-from-wire");
-            TCPSerializer().parse(buf + headerLength, encapLength, (TCPSegment *)encapPacket);
+            TCPSerializer().parse(buf + headerLength, encapLength, (TCPSegment *)encapPacket, true);
             break;
 
           default:
