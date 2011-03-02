@@ -1,6 +1,7 @@
 //
 // Copyright (C) 2005 Christian Dankbar, Irene Ruengeler, Michael Tuexen, Andras Varga
 // Copyright (C) 2009 Thomas Reschka
+// Copyright (C) 2010 Zoltan Bojthe
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -78,30 +79,36 @@ int IPSerializer::serialize(const IPDatagram *dgram, unsigned char *buf, unsigne
     packetLength = IP_HEADER_BYTES;
 
     cMessage *encapPacket = dgram->getEncapsulatedPacket();
+
     switch (dgram->getTransportProtocol())
     {
       case IP_PROT_ICMP:
         packetLength += ICMPSerializer().serialize(check_and_cast<ICMPMessage *>(encapPacket),
                                                    buf+IP_HEADER_BYTES, bufsize-IP_HEADER_BYTES);
         break;
+
       case IP_PROT_UDP:
         packetLength += UDPSerializer().serialize(check_and_cast<UDPPacket *>(encapPacket),
                                                    buf+IP_HEADER_BYTES, bufsize-IP_HEADER_BYTES);
         break;
+
       case IP_PROT_SCTP:    //I.R.
         packetLength += SCTPSerializer().serialize(check_and_cast<SCTPMessage *>(encapPacket),
                                                    buf+IP_HEADER_BYTES, bufsize-IP_HEADER_BYTES);
         break;
+
       case IP_PROT_TCP:        //I.R.
         packetLength += TCPSerializer().serialize(check_and_cast<TCPSegment *>(encapPacket),
                                                    buf+IP_HEADER_BYTES, bufsize-IP_HEADER_BYTES,
                                                    dgram->getSrcAddress(), dgram->getDestAddress());
         break;
+
       default:
         throw cRuntimeError(dgram, "IPSerializer: cannot serialize protocol %d", dgram->getTransportProtocol());
     }
 
     ip->ip_len = htons(packetLength);
+
     if(hasCalcChkSum)
     {
         ip->ip_sum = TCPIPchecksum::checksum(buf, IP_HEADER_BYTES);
@@ -131,8 +138,10 @@ void IPSerializer::parse(const unsigned char *buf, unsigned int bufsize, IPDatag
 
     if (headerLength > (unsigned int)IP_HEADER_BYTES)
         EV << "Handling an captured IP packet with options. Dropping the options.\n";
+
     if (totalLength > bufsize)
         EV << "Can not handle IP packet of total length " << totalLength << "(captured only " << bufsize << " bytes).\n";
+
     dest->setByteLength(IP_HEADER_BYTES);
 
     cPacket *encapPacket = NULL;
@@ -146,18 +155,22 @@ void IPSerializer::parse(const unsigned char *buf, unsigned int bufsize, IPDatag
             encapPacket = new ICMPMessage("icmp-from-wire");
             ICMPSerializer().parse(buf + headerLength, encapLength, (ICMPMessage *)encapPacket);
             break;
+
           case IP_PROT_UDP:
             encapPacket = new UDPPacket("udp-from-wire");
             UDPSerializer().parse(buf + headerLength, encapLength, (UDPPacket *)encapPacket);
             break;
+
           case IP_PROT_SCTP:
             encapPacket = new SCTPMessage("sctp-from-wire");
             SCTPSerializer().parse(buf + headerLength, encapLength, (SCTPMessage *)encapPacket);
             break;
+
           case IP_PROT_TCP:
             encapPacket = new TCPSegment("tcp-from-wire");
             TCPSerializer().parse(buf + headerLength, encapLength, (TCPSegment *)encapPacket);
             break;
+
           default:
             throw cRuntimeError("IPSerializer: cannot serialize protocol %d", dest->getTransportProtocol());
         }
@@ -165,24 +178,30 @@ void IPSerializer::parse(const unsigned char *buf, unsigned int bufsize, IPDatag
     else
     {
         const char* packetname = "packet-from-wire";
-/*        switch (dest->getTransportProtocol())
+/*
+        switch (dest->getTransportProtocol())
         {
           case IP_PROT_ICMP:
             packetname = "icmp-from-wire";
             break;
+
           case IP_PROT_UDP:
             packetname = "udp-from-wire";
             break;
+
           case IP_PROT_SCTP:
             packetname = "sctp-from-wire";
             break;
+
           case IP_PROT_TCP:
             packetname = "tcp-from-wire";
             break;
+
           default:
             ;
         }
 */
+
         encapPacket = new cPacket(packetname);
         encapPacket->setByteLength(totalLength - headerLength);
         dest->setName(packetname);
@@ -192,3 +211,4 @@ void IPSerializer::parse(const unsigned char *buf, unsigned int bufsize, IPDatag
     dest->encapsulate(encapPacket);
     dest->setName(encapPacket->getName());
 }
+
