@@ -1,5 +1,5 @@
 //
-// Copyright (C) 2008 Irene Ruengeler
+// Copyright (C) 2005 Andras Varga
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -16,17 +16,17 @@
 //
 
 
-package inet.applications.sctpapp;
+package inet.base.mobility;
 
 //
-// Not an actual module type. It only shows which gates an SCTP app should have
-// to be able to be used in ~StandardHost etc.
+// This is not an actual mobility model, but a prototype for other mobility models.
 //
-moduleinterface SCTPApp
+// @author Andras Varga
+//
+moduleinterface IMobility
 {
-    parameters:
-        @display("i=block/app");
-    gates:
-        input sctpIn @labels(SCTPCommand/up);
-        output sctpOut @labels(SCTPCommand/down);
+    @display("i=block/cogwheel");
 }
+
+
+

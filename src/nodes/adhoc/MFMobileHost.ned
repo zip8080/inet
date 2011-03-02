@@ -15,20 +15,19 @@
 // along with this program; if not, see <http://www.gnu.org/licenses/>.
 //
 
-
 package inet.nodes.adhoc;
 
-import inet.applications.pingapp.PingApp;
-import inet.applications.tcpapp.TCPApp;
-import inet.applications.udpapp.UDPApp;
-import inet.base.NotificationBoard;
-import inet.linklayer.mf80211.Nic80211;
-import inet.mobility.BasicMobility;
-import inet.networklayer.common.InterfaceTable;
-import inet.networklayer.ipv4.RoutingTable;
-import inet.nodes.inet.NetworkLayer;
-import inet.transport.tcp.TCP;
 import inet.transport.udp.UDP;
+import inet.transport.tcp.TCP;
+import inet.nodes.inet.NetworkLayer;
+import inet.networklayer.ipv4.RoutingTable;
+import inet.networklayer.common.InterfaceTable;
+import inet.linklayer.mf80211.Nic80211;
+import inet.base.mobility.IMobility;
+import inet.base.NotificationBoard;
+import inet.applications.udpapp.IUDPApp;
+import inet.applications.tcpapp.ITCPApp;
+import inet.applications.pingapp.PingApp;
 
 
 //
@@ -36,7 +35,7 @@ import inet.transport.udp.UDP;
 // This model contains the Mobility Framework's 802.11 implementation ~Nic80211,
 // and IP, TCP and UDP protocols. The mobility model can be dynamically
 // specified with the mobilityType parameter.
-// 
+//
 //(deprecated - use AdhocHost instead with Nic80211 as the NIC parameter)
 //
 // @see ~MobileHost, ~WirelessHost
@@ -72,7 +71,7 @@ module MFMobileHost
                 routingFile = routingFile;
                 @display("p=60,230");
         }
-        tcpApp[numTcpApps]: <> like TCPApp {
+        tcpApp[numTcpApps]: <> like ITCPApp {
             parameters:
                 @display("p=163,67");
         }
@@ -80,7 +79,7 @@ module MFMobileHost
             parameters:
                 @display("p=163,154");
         }
-        udpApp[numUdpApps]: <> like UDPApp {
+        udpApp[numUdpApps]: <> like IUDPApp {
             parameters:
                 @display("p=272,67");
         }
@@ -104,7 +103,7 @@ module MFMobileHost
             parameters:
                 @display("p=248,349;q=queue");
         }
-        mobility: <mobilityType> like BasicMobility {
+        mobility: <mobilityType> like IMobility {
             parameters:
                 @display("p=149,307");
         }
