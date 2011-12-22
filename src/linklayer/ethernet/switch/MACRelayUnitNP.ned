@@ -48,7 +48,7 @@ simple MACRelayUnitNP like IMACRelayUnit
         int pauseUnits = default(300);  // time to put in PAUSE frames (in units of 512 bit times)
         @display("i=block/switch");
         @statistic[usedBufferBytes](title="Used buffer bytes"; record=max,timeavg,vector);
-        @statistic[processedBytes](title="Processed bytes"; record=count,sum,vector);
+        @statistic[processedBytes](title="Processed bytes"; record=count,sum,vector); //FIXME: use dropped *frames* not bytes!
         @statistic[droppedBytes](title="Dropped bytes"; record=count,sum,vector);
     gates:
         input lowerLayerIn[] @labels(EtherFrame);
