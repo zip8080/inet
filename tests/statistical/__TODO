@@ -1,0 +1,2 @@
+- write tests to ensure that @statistic[endToEndDelay] of various apps etc 
+  really record eed and not round-trip time, and vice versa.
