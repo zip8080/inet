@@ -23,7 +23,6 @@
 #include "SCTPQueue.h"
 
 
-
 /**
  * Abstract base class for SCTP algorithms which encapsulate all behaviour
  * during data transfer state: flavour of congestion control, fast
@@ -79,5 +78,3 @@ class INET_API SCTPAlgorithm : public cPolymorphic
 };
 
 #endif
-
-
