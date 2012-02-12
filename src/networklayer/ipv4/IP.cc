@@ -1,5 +1,7 @@
 //
 // Copyright (C) 2004 Andras Varga
+// Copyright (C) 2007 Irene Ruengeler
+// Copyright (C) 2010-2012 Thomas Dreibholz
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public License
@@ -402,7 +404,22 @@ void IP::reassembleAndDeliver(IPDatagram *datagram)
     else
     {
         int gateindex = mapping.getOutputGateForProtocol(protocol);
-        send(packet, "transportOut", gateindex);
+        if (datagram->hasBitError())
+        {
+            packet->setBitError(true);
+            EV << "bit error in protocol "<< protocol << endl;
+            if (protocol!= IP_PROT_SCTP)
+            {
+                delete packet;
+            }
+            else
+            {
+                send(packet, "transportOut", gateindex);
+            }
+       }
+       else {
+            send(packet, "transportOut", gateindex);
+       }
     }
 }
 

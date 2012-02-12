@@ -10,7 +10,7 @@ cleanall: checkmakefiles
 	rm -f src/Makefile
 
 makefiles:
-	cd src && opp_makemake -f --deep --make-so -o inet -O out $$NSC_VERSION_DEF
+	cd src && opp_makemake -f --deep -lpcap -lssl -lcrypto -DHAVE_PCAP -DUSE_TF -o inet -O out $$NSC_VERSION_DEF
 
 checkmakefiles:
 	@if [ ! -f src/Makefile ]; then \

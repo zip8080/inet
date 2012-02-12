@@ -30,8 +30,6 @@ class SCTPStatusInfo;
 class SCTP;
 
 
-
-
 class  INET_API SCTPSocket
 {
   public:
@@ -48,17 +46,18 @@ class  INET_API SCTPSocket
       public:
         virtual ~CallbackInterface() {}
         virtual void socketDataArrived(int assocId, void *yourPtr, cPacket *msg, bool urgent) = 0;
-    virtual void socketDataNotificationArrived(int assocId, void *yourPtr, cPacket *msg) = 0;
+        virtual void socketDataNotificationArrived(int assocId, void *yourPtr, cPacket *msg) = 0;
         virtual void socketEstablished(int assocId, void *yourPtr, uint64 buffer) {}
         virtual void socketPeerClosed(int assocId, void *yourPtr) {}
         virtual void socketClosed(int assocId, void *yourPtr) {}
         virtual void socketFailure(int assocId, void *yourPtr, int code) {}
         virtual void socketStatusArrived(int assocId, void *yourPtr, SCTPStatusInfo *status){}// {delete status;}
-    virtual void sendRequestArrived() {}
-    virtual void shutdownReceivedArrived(int connId) {}
-    virtual void sendqueueFullArrived(int connId) {}
-    virtual void sendqueueAbatedArrived(int connId, uint64 buffer) {}
-    virtual void addressAddedArrived(int assocId, IPvXAddress localAddr, IPvXAddress remoteAddr) {}
+        virtual void sendRequestArrived() {}
+        virtual void msgAbandonedArrived(int assocId) {}
+        virtual void shutdownReceivedArrived(int connId) {}
+        virtual void sendqueueFullArrived(int connId) {}
+        virtual void sendqueueAbatedArrived(int connId, uint64 buffer) {}
+        virtual void addressAddedArrived(int assocId, IPvXAddress localAddr, IPvXAddress remoteAddr) {}
     };
 
     enum State {NOT_BOUND, CLOSED, LISTENING, CONNECTING, CONNECTED, PEER_CLOSED, LOCALLY_CLOSED, SOCKERROR};
@@ -151,7 +150,8 @@ class  INET_API SCTPSocket
     void setInboundStreams(int streams) {inboundStreams = streams;};
     int getOutboundStreams() {return outboundStreams;};
     int getLastStream() {return lastStream;};
- /**
+    void setStreamPriority(uint32 stream, uint32 priority);
+    /**
      * Bind the socket to a local port number.
      */
     void bind(int localPort);
@@ -160,7 +160,7 @@ class  INET_API SCTPSocket
      * Bind the socket to a local port number and IP address (useful with
      * multi-homing).
      */
-   void bind(IPvXAddress localAddr, int localPort);
+    void bind(IPvXAddress localAddr, int localPort);
 
     void bindx(AddressVector localAddr, int localPort);
 
@@ -179,19 +179,23 @@ class  INET_API SCTPSocket
      * connection will be accepted, and SCTP will refuse subsequent ones.
      * See SCTPOpenCommand documentation (neddoc) for more info.
      */
-     void listen(bool fork=false, uint32 requests=0, uint32 messagesToPush=0);
+    void listen(bool fork=false, bool streamReset=false, uint32 requests=0, uint32 messagesToPush=0);
+
     /**
      * Active OPEN to the given remote socket.
      */
-    void connect(IPvXAddress remoteAddress, int32 remotePort, uint32 numRequests);
+    void connect(IPvXAddress remoteAddress, int32 remotePort, bool streamReset, int32 prMethod, uint32 numRequests);
+    void connect(IPvXAddress remoteAddress, int32 remotePort);
+    void connectx(AddressVector remoteAddresses, int32 remotePort, bool streamReset=false, int32 prMethod=0, uint32 numRequests=0);
 
-     void connectx(AddressVector remoteAddresses, int32 remotePort, uint32 numRequests=0);
     /**
      * Sends data packet.
      */
     void send(cPacket *msg, bool last=true, bool primary=true);
+    void send(cPacket *msg, int prMethod, double prValue, bool last);
+    void send(cPacket *msg, int prMethod, double prValue, bool last, int32 streamId);
 
-      void sendNotification(cPacket *msg);
+    void sendNotification(cPacket *msg);
     void sendRequest(cPacket *msg);
     /**
      * Closes the local end of the connection. With SCTP, a CLOSE operation
@@ -279,5 +283,3 @@ class  INET_API SCTPSocket
 };
 
 #endif
-
-

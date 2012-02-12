@@ -1,5 +1,7 @@
 //
 // Copyright (C) 2004 Andras Varga
+// Copyright (C) 2007 Irene Ruengeler
+// Copyright (C) 2010-2012 Thomas Dreibholz
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public License
@@ -220,19 +222,23 @@ void PPP::handleMessage(cMessage *msg)
         }
 
         // check for bit errors
+        // T.D./I.R.: Deliver damaged message to upper layer, but mark it as damaged.
+        // The damaged payload is needed by SCTP PKTDROP!
+        cPacket *payload;
         if (PK(msg)->hasBitError())
         {
             EV << "Bit error in " << msg << endl;
             numBitErr++;
-            delete msg;
+            payload = decapsulate(check_and_cast<PPPFrame*>(msg));
+            PK(payload)->setBitError(true);
         }
         else
         {
             // pass up payload
-            cPacket *payload = decapsulate(check_and_cast<PPPFrame *>(msg));
+            payload = decapsulate(check_and_cast<PPPFrame *>(msg));
             numRcvdOK++;
-            send(payload,"netwOut");
         }
+        send(payload,"netwOut");
     }
     else // arrived on gate "netwIn"
     {
