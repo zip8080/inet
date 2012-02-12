@@ -1,0 +1,32 @@
+This SCTP example contains a small test setup using a dual-homed
+environment:
+- 5 Clients (#0 to #4) send 10,000 packets to 5 Servers each
+- All clients use SACK Immediately, NR-SACK and Packet Drop Reporting
+   => NR-SACKs will be used to acknowledge DATA chunks
+- Networks have a bit error rate of 10e-6
+   => PKTDROPs will be used to report bit errors
+- Client #0 applies Add-IP Set Primary at t=10s
+   => ASCONF/ASCONF_ACK will be transmitted
+- Client #1 uses PR-SCTP (i.e. unreliable transmission)
+   => FORWARD_TSNs will be generated
+
+See the omnetpp.ini file for how to configure the new SCTP extensions!
+
+
+
+Run the example as follows to print the throughputs of the servers:
+
+./run -u Cmdenv -f omnetpp.ini && \
+grep "throughput" scalars.sca | grep newFeaturesTest.serverMain
+
+(This is performed by the run-test-and-display-results script.)
+
+
+
+The resulting output should look like this:
+...
+scalar newFeaturesTest.serverMain[0].sctpApp[0]         throughput      1916071.146545
+scalar newFeaturesTest.serverMain[1].sctpApp[0]         throughput      1798230.6879317
+scalar newFeaturesTest.serverMain[2].sctpApp[0]         throughput      2014921.5453285
+scalar newFeaturesTest.serverMain[3].sctpApp[0]         throughput      1959880.7736224
+scalar newFeaturesTest.serverMain[4].sctpApp[0]         throughput      1929689.8109524

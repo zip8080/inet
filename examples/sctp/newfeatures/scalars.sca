@@ -1,0 +1,2684 @@
+version 2
+run General-0-20120211-19:57:51-15102
+attr N1 fullPath()
+attr N2 fullPath()
+attr N3 fullPath()
+attr N4 fullPath()
+attr configname General
+attr datetime 20120211-19:57:51
+attr experiment General
+attr inifile omnetpp.ini
+attr iterationvars "$mainClientAppID=ancestorIndex(0), $mainClientID=ancestorIndex(1), $mainServerAppID=ancestorIndex(0), $N1=fullPath(), $N2=fullPath(), $N3=fullPath(), $N4=fullPath()"
+attr iterationvars2 "$mainClientAppID=ancestorIndex(0), $mainClientID=ancestorIndex(1), $mainServerAppID=ancestorIndex(0), $N1=fullPath(), $N2=fullPath(), $N3=fullPath(), $N4=fullPath(), $repetition=0"
+attr mainClientAppID ancestorIndex(0)
+attr mainClientID ancestorIndex(1)
+attr mainServerAppID ancestorIndex(0)
+attr measurement "$mainClientAppID=ancestorIndex(0), $mainClientID=ancestorIndex(1), $mainServerAppID=ancestorIndex(0), $N1=fullPath(), $N2=fullPath(), $N3=fullPath(), $N4=fullPath()"
+attr network newFeaturesTest
+attr processid 15102
+attr repetition 0
+attr replication #0
+attr resultdir results
+attr runnumber 0
+attr seedset 0
+
+scalar newFeaturesTest.clientMain[0].sctpApp[0] 	ums 	1000
+scalar newFeaturesTest.clientMain[1].sctpApp[0] 	ums 	1000
+scalar newFeaturesTest.clientMain[2].sctpApp[0] 	ums 	1000
+scalar newFeaturesTest.clientMain[3].sctpApp[0] 	ums 	1000
+scalar newFeaturesTest.clientMain[4].sctpApp[0] 	ums 	1000
+scalar newFeaturesTest.clientMain[2].sctp 	"Number of Fast Retransmissions 3:131.232.0.24" 	175
+scalar newFeaturesTest.clientMain[2].sctp 	"Number of Timer-Based Retransmissions 3:131.232.0.24" 	40
+scalar newFeaturesTest.clientMain[2].sctp 	"Number of Heartbeats Sent 3:131.232.0.24" 	1
+scalar newFeaturesTest.clientMain[2].sctp 	"Number of Heartbeats Received 3:131.232.0.24" 	2
+scalar newFeaturesTest.clientMain[2].sctp 	"Number of Heartbeat ACKs Sent 3:131.232.0.24" 	2
+scalar newFeaturesTest.clientMain[2].sctp 	"Number of Heartbeat ACKs Received 3:131.232.0.24" 	1
+scalar newFeaturesTest.clientMain[2].sctp 	"Number of Duplicates 3:131.232.0.24" 	0
+scalar newFeaturesTest.clientMain[2].sctp 	"Number of Fast Retransmissions 3:131.233.0.24" 	0
+scalar newFeaturesTest.clientMain[2].sctp 	"Number of Timer-Based Retransmissions 3:131.233.0.24" 	0
+scalar newFeaturesTest.clientMain[2].sctp 	"Number of Heartbeats Sent 3:131.233.0.24" 	1
+scalar newFeaturesTest.clientMain[2].sctp 	"Number of Heartbeats Received 3:131.233.0.24" 	2
+scalar newFeaturesTest.clientMain[2].sctp 	"Number of Heartbeat ACKs Sent 3:131.233.0.24" 	2
+scalar newFeaturesTest.clientMain[2].sctp 	"Number of Heartbeat ACKs Received 3:131.233.0.24" 	1
+scalar newFeaturesTest.clientMain[2].sctp 	"Number of Duplicates 3:131.233.0.24" 	0
+scalar newFeaturesTest.clientMain[2].sctp 	"Minimum Slow Start Threshold 3:131.232.0.24" 	6000
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[2].sctp 	"Average Slow Start Threshold 3:131.232.0.24" 	72026.972550016
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[2].sctp 	"Maximum Slow Start Threshold 3:131.232.0.24" 	5000000
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[2].sctp 	"StdDev of Slow Start Threshold 3:131.232.0.24" 	561472.97735455
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[2].sctp 	"Minimum Congestion Window 3:131.232.0.24" 	1500
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[2].sctp 	"Average Congestion Window 3:131.232.0.24" 	13005.521714577
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[2].sctp 	"Maximum Congestion Window 3:131.232.0.24" 	47380
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[2].sctp 	"StdDev of Congestion Window 3:131.232.0.24" 	5636.5986932728
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[2].sctp 	"Minimum Bandwidth 3:131.232.0.24" 	0.1825
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[2].sctp 	"Average Bandwidth 3:131.232.0.24" 	31.794570247638
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[2].sctp 	"Maximum Bandwidth 3:131.232.0.24" 	112.84210526316
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[2].sctp 	"StdDev of Bandwidth 3:131.232.0.24" 	14.189279633037
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[2].sctp 	"Minimum RTO 3:131.232.0.24" 	1
+attr unit  s
+scalar newFeaturesTest.clientMain[2].sctp 	"Average RTO 3:131.232.0.24" 	1.0078376704508
+attr unit  s
+scalar newFeaturesTest.clientMain[2].sctp 	"Maximum RTO 3:131.232.0.24" 	3
+attr unit  s
+scalar newFeaturesTest.clientMain[2].sctp 	"StdDev of RTO 3:131.232.0.24" 	0.096234591284475
+attr unit  s
+scalar newFeaturesTest.clientMain[2].sctp 	"Minimum RTT 3:131.232.0.24" 	0.02175012
+attr unit  s
+scalar newFeaturesTest.clientMain[2].sctp 	"Average RTT 3:131.232.0.24" 	0.051589309843141
+attr unit  s
+scalar newFeaturesTest.clientMain[2].sctp 	"Maximum RTT 3:131.232.0.24" 	0.245576
+attr unit  s
+scalar newFeaturesTest.clientMain[2].sctp 	"StdDev of RTT 3:131.232.0.24" 	0.014024025266322
+attr unit  s
+scalar newFeaturesTest.clientMain[2].sctp 	"Minimum Queued Sent Bytes 3:131.232.0.24" 	0
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[2].sctp 	"Average Queued Sent Bytes 3:131.232.0.24" 	28386.542431218
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[2].sctp 	"Maximum Queued Sent Bytes 3:131.232.0.24" 	571000
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[2].sctp 	"StdDev of Queued Sent Bytes 3:131.232.0.24" 	61650.318278506
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[2].sctp 	"Utilization Minimum Queued Sent Bytes 3:131.232.0.24" 	-nan
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[2].sctp 	"Utilization Average Queued Sent Bytes 3:131.232.0.24" 	inf
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[2].sctp 	"Utilization Maximum Queued Sent Bytes 3:131.232.0.24" 	inf
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[2].sctp 	"Minimum Outstanding Bytes 3:131.232.0.24" 	0
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[2].sctp 	"Average Outstanding Bytes 3:131.232.0.24" 	13594.357468962
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[2].sctp 	"Maximum Outstanding Bytes 3:131.232.0.24" 	48000
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[2].sctp 	"StdDev of Outstanding Bytes 3:131.232.0.24" 	5708.6882024591
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[2].sctp 	"Utilization Minimum Outstanding Bytes 3:131.232.0.24" 	-nan
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[2].sctp 	"Utilization Average Outstanding Bytes 3:131.232.0.24" 	inf
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[2].sctp 	"Utilization Maximum Outstanding Bytes 3:131.232.0.24" 	inf
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[2].sctp 	"Minimum Number of Gap Acked Chunks in Last SACK 3:131.232.0.24" 	0
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[2].sctp 	"Average Number of Gap Acked Chunks in Last SACK 3:131.232.0.24" 	0.28355533235499
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[2].sctp 	"Maximum Number of Gap Acked Chunks in Last SACK 3:131.232.0.24" 	1
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[2].sctp 	"StdDev of Number of Gap Acked Chunks in Last SACK 3:131.232.0.24" 	0.45092507012189
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[2].sctp 	"Minimum Number of Non-Revokable Gap Acked Chunks in Last SACK 3:131.232.0.24" 	0
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[2].sctp 	"Average Number of Non-Revokable Gap Acked Chunks in Last SACK 3:131.232.0.24" 	0
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[2].sctp 	"Maximum Number of Non-Revokable Gap Acked Chunks in Last SACK 3:131.232.0.24" 	0
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[2].sctp 	"StdDev of Number of Non-Revokable Gap Acked Chunks in Last SACK 3:131.232.0.24" 	0
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[2].sctp 	"Minimum Number of Gap Missed Chunks in Last SACK 3:131.232.0.24" 	0
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[2].sctp 	"Average Number of Gap Missed Chunks in Last SACK 3:131.232.0.24" 	0.47633489252639
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[2].sctp 	"Maximum Number of Gap Missed Chunks in Last SACK 3:131.232.0.24" 	36
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[2].sctp 	"StdDev of Number of Gap Missed Chunks in Last SACK 3:131.232.0.24" 	1.3078152767835
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[2].sctp 	"Minimum Slow Start Threshold 3:131.233.0.24" 	5000000
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[2].sctp 	"Average Slow Start Threshold 3:131.233.0.24" 	5000000
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[2].sctp 	"Maximum Slow Start Threshold 3:131.233.0.24" 	5000000
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[2].sctp 	"StdDev of Slow Start Threshold 3:131.233.0.24" 	0.12085424533107
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[2].sctp 	"Minimum Congestion Window 3:131.233.0.24" 	4380
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[2].sctp 	"Average Congestion Window 3:131.233.0.24" 	4464.1206241614
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[2].sctp 	"Maximum Congestion Window 3:131.233.0.24" 	9380
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[2].sctp 	"StdDev of Congestion Window 3:131.233.0.24" 	446.28136562419
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[2].sctp 	"Minimum Bandwidth 3:131.233.0.24" 	0.1825
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[2].sctp 	"Average Bandwidth 3:131.233.0.24" 	25.700137651944
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[2].sctp 	"Maximum Bandwidth 3:131.233.0.24" 	56.167664670659
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[2].sctp 	"StdDev of Bandwidth 3:131.233.0.24" 	6.7683538513344
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[2].sctp 	"Minimum RTO 3:131.233.0.24" 	1
+attr unit  s
+scalar newFeaturesTest.clientMain[2].sctp 	"Average RTO 3:131.233.0.24" 	1.0010520669355
+attr unit  s
+scalar newFeaturesTest.clientMain[2].sctp 	"Maximum RTO 3:131.233.0.24" 	3
+attr unit  s
+scalar newFeaturesTest.clientMain[2].sctp 	"StdDev of RTO 3:131.233.0.24" 	1.4142135623731
+attr unit  s
+scalar newFeaturesTest.clientMain[2].sctp 	"Minimum RTT 3:131.233.0.24" 	0.02090132
+attr unit  s
+scalar newFeaturesTest.clientMain[2].sctp 	"Average RTT 3:131.233.0.24" 	0.02090132
+attr unit  s
+scalar newFeaturesTest.clientMain[2].sctp 	"Maximum RTT 3:131.233.0.24" 	0.02090132
+attr unit  s
+scalar newFeaturesTest.clientMain[2].sctp 	"StdDev of RTT 3:131.233.0.24" 	-nan
+attr unit  s
+scalar newFeaturesTest.clientMain[2].sctp 	"Minimum Queued Sent Bytes 3:131.233.0.24" 	0
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[2].sctp 	"Average Queued Sent Bytes 3:131.233.0.24" 	36.05141150467
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[2].sctp 	"Maximum Queued Sent Bytes 3:131.233.0.24" 	24000
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[2].sctp 	"StdDev of Queued Sent Bytes 3:131.233.0.24" 	999.69676266851
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[2].sctp 	"Utilization Minimum Queued Sent Bytes 3:131.233.0.24" 	-nan
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[2].sctp 	"Utilization Average Queued Sent Bytes 3:131.233.0.24" 	inf
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[2].sctp 	"Utilization Maximum Queued Sent Bytes 3:131.233.0.24" 	inf
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[2].sctp 	"Minimum Outstanding Bytes 3:131.233.0.24" 	0
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[2].sctp 	"Average Outstanding Bytes 3:131.233.0.24" 	12.039608892291
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[2].sctp 	"Maximum Outstanding Bytes 3:131.233.0.24" 	10000
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[2].sctp 	"StdDev of Outstanding Bytes 3:131.233.0.24" 	331.57698542554
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[2].sctp 	"Utilization Minimum Outstanding Bytes 3:131.233.0.24" 	-nan
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[2].sctp 	"Utilization Average Outstanding Bytes 3:131.233.0.24" 	inf
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[2].sctp 	"Utilization Maximum Outstanding Bytes 3:131.233.0.24" 	inf
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[2].sctp 	"Minimum Number of Gap Acked Chunks in Last SACK 3:131.233.0.24" 	0
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[2].sctp 	"Average Number of Gap Acked Chunks in Last SACK 3:131.233.0.24" 	0.0009975708649284
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[2].sctp 	"Maximum Number of Gap Acked Chunks in Last SACK 3:131.233.0.24" 	1
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[2].sctp 	"StdDev of Number of Gap Acked Chunks in Last SACK 3:131.233.0.24" 	0.031582702923254
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[2].sctp 	"Minimum Number of Non-Revokable Gap Acked Chunks in Last SACK 3:131.233.0.24" 	0
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[2].sctp 	"Average Number of Non-Revokable Gap Acked Chunks in Last SACK 3:131.233.0.24" 	0
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[2].sctp 	"Maximum Number of Non-Revokable Gap Acked Chunks in Last SACK 3:131.233.0.24" 	0
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[2].sctp 	"StdDev of Number of Non-Revokable Gap Acked Chunks in Last SACK 3:131.233.0.24" 	0
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[2].sctp 	"Minimum Number of Gap Missed Chunks in Last SACK 3:131.233.0.24" 	0
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[2].sctp 	"Average Number of Gap Missed Chunks in Last SACK 3:131.233.0.24" 	0.001433185967102
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[2].sctp 	"Maximum Number of Gap Missed Chunks in Last SACK 3:131.233.0.24" 	2
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[2].sctp 	"StdDev of Number of Gap Missed Chunks in Last SACK 3:131.233.0.24" 	0.048004390864642
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[2].sctp 	"Minimum Outstanding Bytes 3:Total" 	0
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[2].sctp 	"Average Outstanding Bytes 3:Total" 	13605.927018043
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[2].sctp 	"Maximum Outstanding Bytes 3:Total" 	48000
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[2].sctp 	"StdDev of Outstanding Bytes 3:Total" 	5691.0290591201
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[2].sctp 	"Minimum Queued Sent Bytes 3:Total" 	0
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[2].sctp 	"Average Queued Sent Bytes 3:Total" 	28421.186295366
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[2].sctp 	"Maximum Queued Sent Bytes 3:Total" 	573000
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[2].sctp 	"StdDev of Queued Sent Bytes 3:Total" 	61875.665215202
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[2].sctp 	"Utilization Minimum Queued Sent Bytes 3:Total" 	-nan
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[2].sctp 	"Utilization Average Queued Sent Bytes 3:Total" 	inf
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[2].sctp 	"Utilization Maximum Queued Sent Bytes 3:Total" 	inf
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[2].sctp 	"Minimum Slow Start Threshold 3:Total" 	5006000
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[2].sctp 	"Average Slow Start Threshold 3:Total" 	5070410.7180965
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[2].sctp 	"Maximum Slow Start Threshold 3:Total" 	10000000
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[2].sctp 	"StdDev of Slow Start Threshold 3:Total" 	553629.28838749
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[2].sctp 	"Minimum Congestion Window 3:Total" 	5880
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[2].sctp 	"Average Congestion Window 3:Total" 	17597.64780104
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[2].sctp 	"Maximum Congestion Window 3:Total" 	51760
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[2].sctp 	"StdDev of Congestion Window 3:Total" 	5587.2482320876
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[2].sctp 	"Minimum Bandwidth 3:Total" 	29.765280759236
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[2].sctp 	"Average Bandwidth 3:Total" 	59.469191039161
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[2].sctp 	"Maximum Bandwidth 3:Total" 	139.06965017334
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[2].sctp 	"StdDev of Bandwidth 3:Total" 	15.110941370856
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[2].sctp 	"Minimum Number of Revokable Gap Blocks in SACK 3" 	0
+attr unit  ""
+scalar newFeaturesTest.clientMain[2].sctp 	"Average Number of Revokable Gap Blocks in SACK 3" 	0.46155786903679
+attr unit  ""
+scalar newFeaturesTest.clientMain[2].sctp 	"Maximum Number of Revokable Gap Blocks in SACK 3" 	9
+attr unit  ""
+scalar newFeaturesTest.clientMain[2].sctp 	"StdDev of Number of Revokable Gap Blocks in SACK 3" 	1.0734839921441
+attr unit  ""
+scalar newFeaturesTest.clientMain[2].sctp 	"Minimum Number of Non-Revokable Gap Blocks in SACK 3" 	0
+attr unit  ""
+scalar newFeaturesTest.clientMain[2].sctp 	"Average Number of Non-Revokable Gap Blocks in SACK 3" 	0
+attr unit  ""
+scalar newFeaturesTest.clientMain[2].sctp 	"Maximum Number of Non-Revokable Gap Blocks in SACK 3" 	0
+attr unit  ""
+scalar newFeaturesTest.clientMain[2].sctp 	"StdDev of Number of Non-Revokable Gap Blocks in SACK 3" 	0
+attr unit  ""
+scalar newFeaturesTest.clientMain[2].sctp 	"Minimum Arwnd in Last SACK 3" 	4451000
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[2].sctp 	"Average Arwnd in Last SACK 3" 	4984356.3357175
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[2].sctp 	"Maximum Arwnd in Last SACK 3" 	5000000
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[2].sctp 	"StdDev of Arwnd in Last SACK 3" 	60540.609428814
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[2].sctp 	"Minimum Peer Rwnd 3" 	4430000
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[2].sctp 	"Average Peer Rwnd 3" 	4972617.5452112
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[2].sctp 	"Maximum Peer Rwnd 3" 	5000000
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[2].sctp 	"StdDev of Peer Rwnd 3" 	61752.111808102
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[2].sctp 	"Number of Fast Retransmissions 13:131.232.0.19" 	0
+scalar newFeaturesTest.serverMain[2].sctp 	"Number of Timer-Based Retransmissions 13:131.232.0.19" 	0
+scalar newFeaturesTest.serverMain[2].sctp 	"Number of Heartbeats Sent 13:131.232.0.19" 	2
+scalar newFeaturesTest.serverMain[2].sctp 	"Number of Heartbeats Received 13:131.232.0.19" 	1
+scalar newFeaturesTest.serverMain[2].sctp 	"Number of Heartbeat ACKs Sent 13:131.232.0.19" 	1
+scalar newFeaturesTest.serverMain[2].sctp 	"Number of Heartbeat ACKs Received 13:131.232.0.19" 	2
+scalar newFeaturesTest.serverMain[2].sctp 	"Number of Duplicates 13:131.232.0.19" 	4
+scalar newFeaturesTest.serverMain[2].sctp 	"Number of Fast Retransmissions 13:131.233.0.19" 	0
+scalar newFeaturesTest.serverMain[2].sctp 	"Number of Timer-Based Retransmissions 13:131.233.0.19" 	0
+scalar newFeaturesTest.serverMain[2].sctp 	"Number of Heartbeats Sent 13:131.233.0.19" 	2
+scalar newFeaturesTest.serverMain[2].sctp 	"Number of Heartbeats Received 13:131.233.0.19" 	1
+scalar newFeaturesTest.serverMain[2].sctp 	"Number of Heartbeat ACKs Sent 13:131.233.0.19" 	1
+scalar newFeaturesTest.serverMain[2].sctp 	"Number of Heartbeat ACKs Received 13:131.233.0.19" 	2
+scalar newFeaturesTest.serverMain[2].sctp 	"Number of Duplicates 13:131.233.0.19" 	27
+scalar newFeaturesTest.serverMain[2].sctp 	"Minimum Slow Start Threshold 13:131.232.0.19" 	5000000
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[2].sctp 	"Average Slow Start Threshold 13:131.232.0.19" 	5000000
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[2].sctp 	"Maximum Slow Start Threshold 13:131.232.0.19" 	5000000
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[2].sctp 	"StdDev of Slow Start Threshold 13:131.232.0.19" 	-nan
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[2].sctp 	"Minimum Congestion Window 13:131.232.0.19" 	4380
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[2].sctp 	"Average Congestion Window 13:131.232.0.19" 	4380
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[2].sctp 	"Maximum Congestion Window 13:131.232.0.19" 	4380
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[2].sctp 	"StdDev of Congestion Window 13:131.232.0.19" 	-nan
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[2].sctp 	"Minimum Bandwidth 13:131.232.0.19" 	0.1825
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[2].sctp 	"Average Bandwidth 13:131.232.0.19" 	0.1825
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[2].sctp 	"Maximum Bandwidth 13:131.232.0.19" 	0.1825
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[2].sctp 	"StdDev of Bandwidth 13:131.232.0.19" 	-nan
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[2].sctp 	"Minimum RTO 13:131.232.0.19" 	1
+attr unit  s
+scalar newFeaturesTest.serverMain[2].sctp 	"Average RTO 13:131.232.0.19" 	1.0014668836046
+attr unit  s
+scalar newFeaturesTest.serverMain[2].sctp 	"Maximum RTO 13:131.232.0.19" 	3
+attr unit  s
+scalar newFeaturesTest.serverMain[2].sctp 	"StdDev of RTO 13:131.232.0.19" 	0.10180709020423
+attr unit  s
+scalar newFeaturesTest.serverMain[2].sctp 	"Minimum RTT 13:131.232.0.19" 	0.02918274
+attr unit  s
+scalar newFeaturesTest.serverMain[2].sctp 	"Average RTT 13:131.232.0.19" 	0.031333231789374
+attr unit  s
+scalar newFeaturesTest.serverMain[2].sctp 	"Maximum RTT 13:131.232.0.19" 	0.04185561
+attr unit  s
+scalar newFeaturesTest.serverMain[2].sctp 	"StdDev of RTT 13:131.232.0.19" 	0.0089610723140955
+attr unit  s
+scalar newFeaturesTest.serverMain[2].sctp 	"Minimum Slow Start Threshold 13:131.233.0.19" 	5000000
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[2].sctp 	"Average Slow Start Threshold 13:131.233.0.19" 	5000000
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[2].sctp 	"Maximum Slow Start Threshold 13:131.233.0.19" 	5000000
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[2].sctp 	"StdDev of Slow Start Threshold 13:131.233.0.19" 	-nan
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[2].sctp 	"Minimum Congestion Window 13:131.233.0.19" 	4380
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[2].sctp 	"Average Congestion Window 13:131.233.0.19" 	4380
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[2].sctp 	"Maximum Congestion Window 13:131.233.0.19" 	4380
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[2].sctp 	"StdDev of Congestion Window 13:131.233.0.19" 	-nan
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[2].sctp 	"Minimum Bandwidth 13:131.233.0.19" 	0.1825
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[2].sctp 	"Average Bandwidth 13:131.233.0.19" 	0.1825
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[2].sctp 	"Maximum Bandwidth 13:131.233.0.19" 	0.1825
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[2].sctp 	"StdDev of Bandwidth 13:131.233.0.19" 	-nan
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[2].sctp 	"Minimum RTO 13:131.233.0.19" 	1
+attr unit  s
+scalar newFeaturesTest.serverMain[2].sctp 	"Average RTO 13:131.233.0.19" 	1.0010501216871
+attr unit  s
+scalar newFeaturesTest.serverMain[2].sctp 	"Maximum RTO 13:131.233.0.19" 	3
+attr unit  s
+scalar newFeaturesTest.serverMain[2].sctp 	"StdDev of RTO 13:131.233.0.19" 	0.086094808916354
+attr unit  s
+scalar newFeaturesTest.serverMain[2].sctp 	"Minimum RTT 13:131.233.0.19" 	0.02089152
+attr unit  s
+scalar newFeaturesTest.serverMain[2].sctp 	"Average RTT 13:131.233.0.19" 	0.02089152
+attr unit  s
+scalar newFeaturesTest.serverMain[2].sctp 	"Maximum RTT 13:131.233.0.19" 	0.02089152
+attr unit  s
+scalar newFeaturesTest.serverMain[2].sctp 	"StdDev of RTT 13:131.233.0.19" 	0
+attr unit  s
+scalar newFeaturesTest.serverMain[2].sctp 	"Minimum Queued Received Bytes 8:Total" 	0
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[2].sctp 	"Average Queued Received Bytes 8:Total" 	14712.999596712
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[2].sctp 	"Maximum Queued Received Bytes 8:Total" 	548000
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[2].sctp 	"StdDev of Queued Received Bytes 8:Total" 	60517.282833894
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[2].sctp 	"Utilization Minimum Queued Received Bytes 8:Total" 	0
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[2].sctp 	"Utilization Average Queued Received Bytes 8:Total" 	0.0029425999193424
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[2].sctp 	"Utilization Maximum Queued Received Bytes 8:Total" 	0.1096
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[2].sctp 	"Minimum Number of Total Gap Blocks Stored 8" 	0
+attr unit  ""
+scalar newFeaturesTest.serverMain[2].sctp 	"Average Number of Total Gap Blocks Stored 8" 	0.46093766618817
+attr unit  ""
+scalar newFeaturesTest.serverMain[2].sctp 	"Maximum Number of Total Gap Blocks Stored 8" 	9
+attr unit  ""
+scalar newFeaturesTest.serverMain[2].sctp 	"StdDev of Number of Total Gap Blocks Stored 8" 	1.072897700618
+attr unit  ""
+scalar newFeaturesTest.serverMain[2].sctp 	"Minimum Number of Revokable Gap Blocks Stored 8" 	0
+attr unit  ""
+scalar newFeaturesTest.serverMain[2].sctp 	"Average Number of Revokable Gap Blocks Stored 8" 	0.46093766618817
+attr unit  ""
+scalar newFeaturesTest.serverMain[2].sctp 	"Maximum Number of Revokable Gap Blocks Stored 8" 	9
+attr unit  ""
+scalar newFeaturesTest.serverMain[2].sctp 	"StdDev of Number of Revokable Gap Blocks Stored 8" 	1.072897700618
+attr unit  ""
+scalar newFeaturesTest.serverMain[2].sctp 	"Minimum Number of Non-Revokable Gap Blocks Stored 8" 	0
+attr unit  ""
+scalar newFeaturesTest.serverMain[2].sctp 	"Average Number of Non-Revokable Gap Blocks Stored 8" 	0
+attr unit  ""
+scalar newFeaturesTest.serverMain[2].sctp 	"Maximum Number of Non-Revokable Gap Blocks Stored 8" 	0
+attr unit  ""
+scalar newFeaturesTest.serverMain[2].sctp 	"StdDev of Number of Non-Revokable Gap Blocks Stored 8" 	0
+attr unit  ""
+scalar newFeaturesTest.serverMain[2].sctp 	"Minimum Number of Duplicate TSNs Stored 8" 	0
+attr unit  ""
+scalar newFeaturesTest.serverMain[2].sctp 	"Average Number of Duplicate TSNs Stored 8" 	0.0066682073837303
+attr unit  ""
+scalar newFeaturesTest.serverMain[2].sctp 	"Maximum Number of Duplicate TSNs Stored 8" 	2
+attr unit  ""
+scalar newFeaturesTest.serverMain[2].sctp 	"StdDev of Number of Duplicate TSNs Stored 8" 	0.10401163227586
+attr unit  ""
+scalar newFeaturesTest.serverMain[2].sctp 	"Minimum Number of Revokable Gap Blocks Sent 8" 	0
+attr unit  ""
+scalar newFeaturesTest.serverMain[2].sctp 	"Average Number of Revokable Gap Blocks Sent 8" 	0.46093766618817
+attr unit  ""
+scalar newFeaturesTest.serverMain[2].sctp 	"Maximum Number of Revokable Gap Blocks Sent 8" 	9
+attr unit  ""
+scalar newFeaturesTest.serverMain[2].sctp 	"StdDev of Number of Revokable Gap Blocks Sent 8" 	1.072897700618
+attr unit  ""
+scalar newFeaturesTest.serverMain[2].sctp 	"Minimum Number of Non-Revokable Gap Blocks Sent 8" 	0
+attr unit  ""
+scalar newFeaturesTest.serverMain[2].sctp 	"Average Number of Non-Revokable Gap Blocks Sent 8" 	0
+attr unit  ""
+scalar newFeaturesTest.serverMain[2].sctp 	"Maximum Number of Non-Revokable Gap Blocks Sent 8" 	0
+attr unit  ""
+scalar newFeaturesTest.serverMain[2].sctp 	"StdDev of Number of Non-Revokable Gap Blocks Sent 8" 	0
+attr unit  ""
+scalar newFeaturesTest.serverMain[2].sctp 	"Minimum Number of Duplicate TSNs Sent 8" 	0
+attr unit  ""
+scalar newFeaturesTest.serverMain[2].sctp 	"Average Number of Duplicate TSNs Sent 8" 	0.0066682073837303
+attr unit  ""
+scalar newFeaturesTest.serverMain[2].sctp 	"Maximum Number of Duplicate TSNs Sent 8" 	2
+attr unit  ""
+scalar newFeaturesTest.serverMain[2].sctp 	"StdDev of Number of Duplicate TSNs Sent 8" 	0.10401163227586
+attr unit  ""
+scalar newFeaturesTest.serverMain[2].sctp 	"Minimum Length of SACK Sent 8" 	20
+attr unit  ""
+scalar newFeaturesTest.serverMain[2].sctp 	"Average Length of SACK Sent 8" 	21.870423494286
+attr unit  ""
+scalar newFeaturesTest.serverMain[2].sctp 	"Maximum Length of SACK Sent 8" 	56
+attr unit  ""
+scalar newFeaturesTest.serverMain[2].sctp 	"StdDev of Length of SACK Sent 8" 	4.3002792847231
+attr unit  ""
+scalar newFeaturesTest.serverMain[2].sctp 	"Minimum Peer Rwnd 8" 	5000000
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[2].sctp 	"Average Peer Rwnd 8" 	5000000
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[2].sctp 	"Maximum Peer Rwnd 8" 	5000000
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[2].sctp 	"StdDev of Peer Rwnd 8" 	-nan
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[3].sctp 	"Number of Fast Retransmissions 4:131.232.0.25" 	136
+scalar newFeaturesTest.clientMain[3].sctp 	"Number of Timer-Based Retransmissions 4:131.232.0.25" 	56
+scalar newFeaturesTest.clientMain[3].sctp 	"Number of Heartbeats Sent 4:131.232.0.25" 	1
+scalar newFeaturesTest.clientMain[3].sctp 	"Number of Heartbeats Received 4:131.232.0.25" 	2
+scalar newFeaturesTest.clientMain[3].sctp 	"Number of Heartbeat ACKs Sent 4:131.232.0.25" 	2
+scalar newFeaturesTest.clientMain[3].sctp 	"Number of Heartbeat ACKs Received 4:131.232.0.25" 	1
+scalar newFeaturesTest.clientMain[3].sctp 	"Number of Duplicates 4:131.232.0.25" 	0
+scalar newFeaturesTest.clientMain[3].sctp 	"Number of Fast Retransmissions 4:131.233.0.25" 	0
+scalar newFeaturesTest.clientMain[3].sctp 	"Number of Timer-Based Retransmissions 4:131.233.0.25" 	0
+scalar newFeaturesTest.clientMain[3].sctp 	"Number of Heartbeats Sent 4:131.233.0.25" 	1
+scalar newFeaturesTest.clientMain[3].sctp 	"Number of Heartbeats Received 4:131.233.0.25" 	2
+scalar newFeaturesTest.clientMain[3].sctp 	"Number of Heartbeat ACKs Sent 4:131.233.0.25" 	2
+scalar newFeaturesTest.clientMain[3].sctp 	"Number of Heartbeat ACKs Received 4:131.233.0.25" 	1
+scalar newFeaturesTest.clientMain[3].sctp 	"Number of Duplicates 4:131.233.0.25" 	0
+scalar newFeaturesTest.clientMain[3].sctp 	"Minimum Slow Start Threshold 4:131.232.0.25" 	6000
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[3].sctp 	"Average Slow Start Threshold 4:131.232.0.25" 	50760.254958357
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[3].sctp 	"Maximum Slow Start Threshold 4:131.232.0.25" 	5000000
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[3].sctp 	"StdDev of Slow Start Threshold 4:131.232.0.25" 	457500.1409626
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[3].sctp 	"Minimum Congestion Window 4:131.232.0.25" 	1500
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[3].sctp 	"Average Congestion Window 4:131.232.0.25" 	13316.271359344
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[3].sctp 	"Maximum Congestion Window 4:131.232.0.25" 	62380
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[3].sctp 	"StdDev of Congestion Window 4:131.232.0.25" 	5956.4021799633
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[3].sctp 	"Minimum Bandwidth 4:131.232.0.25" 	0.1825
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[3].sctp 	"Average Bandwidth 4:131.232.0.25" 	32.779275197317
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[3].sctp 	"Maximum Bandwidth 4:131.232.0.25" 	151.0411622276
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[3].sctp 	"StdDev of Bandwidth 4:131.232.0.25" 	15.443680487682
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[3].sctp 	"Minimum RTO 4:131.232.0.25" 	1
+attr unit  s
+scalar newFeaturesTest.clientMain[3].sctp 	"Average RTO 4:131.232.0.25" 	1.0043879034631
+attr unit  s
+scalar newFeaturesTest.clientMain[3].sctp 	"Maximum RTO 4:131.232.0.25" 	3
+attr unit  s
+scalar newFeaturesTest.clientMain[3].sctp 	"StdDev of RTO 4:131.232.0.25" 	0.077551182427949
+attr unit  s
+scalar newFeaturesTest.clientMain[3].sctp 	"Minimum RTT 4:131.232.0.25" 	0.02954
+attr unit  s
+scalar newFeaturesTest.clientMain[3].sctp 	"Average RTT 4:131.232.0.25" 	0.054303261027706
+attr unit  s
+scalar newFeaturesTest.clientMain[3].sctp 	"Maximum RTT 4:131.232.0.25" 	0.24476
+attr unit  s
+scalar newFeaturesTest.clientMain[3].sctp 	"StdDev of RTT 4:131.232.0.25" 	0.022018281437985
+attr unit  s
+scalar newFeaturesTest.clientMain[3].sctp 	"Minimum Queued Sent Bytes 4:131.232.0.25" 	0
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[3].sctp 	"Average Queued Sent Bytes 4:131.232.0.25" 	19096.853770216
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[3].sctp 	"Maximum Queued Sent Bytes 4:131.232.0.25" 	164000
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[3].sctp 	"StdDev of Queued Sent Bytes 4:131.232.0.25" 	16735.612515195
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[3].sctp 	"Utilization Minimum Queued Sent Bytes 4:131.232.0.25" 	-nan
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[3].sctp 	"Utilization Average Queued Sent Bytes 4:131.232.0.25" 	inf
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[3].sctp 	"Utilization Maximum Queued Sent Bytes 4:131.232.0.25" 	inf
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[3].sctp 	"Minimum Outstanding Bytes 4:131.232.0.25" 	0
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[3].sctp 	"Average Outstanding Bytes 4:131.232.0.25" 	14278.475630089
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[3].sctp 	"Maximum Outstanding Bytes 4:131.232.0.25" 	63000
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[3].sctp 	"StdDev of Outstanding Bytes 4:131.232.0.25" 	7578.4935664378
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[3].sctp 	"Utilization Minimum Outstanding Bytes 4:131.232.0.25" 	-nan
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[3].sctp 	"Utilization Average Outstanding Bytes 4:131.232.0.25" 	inf
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[3].sctp 	"Utilization Maximum Outstanding Bytes 4:131.232.0.25" 	inf
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[3].sctp 	"Minimum Number of Gap Acked Chunks in Last SACK 4:131.232.0.25" 	0
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[3].sctp 	"Average Number of Gap Acked Chunks in Last SACK 4:131.232.0.25" 	0.2564639330896
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[3].sctp 	"Maximum Number of Gap Acked Chunks in Last SACK 4:131.232.0.25" 	1
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[3].sctp 	"StdDev of Number of Gap Acked Chunks in Last SACK 4:131.232.0.25" 	0.43700653436134
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[3].sctp 	"Minimum Number of Non-Revokable Gap Acked Chunks in Last SACK 4:131.232.0.25" 	0
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[3].sctp 	"Average Number of Non-Revokable Gap Acked Chunks in Last SACK 4:131.232.0.25" 	0
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[3].sctp 	"Maximum Number of Non-Revokable Gap Acked Chunks in Last SACK 4:131.232.0.25" 	0
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[3].sctp 	"StdDev of Number of Non-Revokable Gap Acked Chunks in Last SACK 4:131.232.0.25" 	0
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[3].sctp 	"Minimum Number of Gap Missed Chunks in Last SACK 4:131.232.0.25" 	0
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[3].sctp 	"Average Number of Gap Missed Chunks in Last SACK 4:131.232.0.25" 	0.27184332636642
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[3].sctp 	"Maximum Number of Gap Missed Chunks in Last SACK 4:131.232.0.25" 	36
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[3].sctp 	"StdDev of Number of Gap Missed Chunks in Last SACK 4:131.232.0.25" 	0.51247528846986
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[3].sctp 	"Minimum Slow Start Threshold 4:131.233.0.25" 	5000000
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[3].sctp 	"Average Slow Start Threshold 4:131.233.0.25" 	5000000
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[3].sctp 	"Maximum Slow Start Threshold 4:131.233.0.25" 	5000000
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[3].sctp 	"StdDev of Slow Start Threshold 4:131.233.0.25" 	0.091988161601981
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[3].sctp 	"Minimum Congestion Window 4:131.233.0.25" 	4380
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[3].sctp 	"Average Congestion Window 4:131.233.0.25" 	4467.7782508909
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[3].sctp 	"Maximum Congestion Window 4:131.233.0.25" 	26380
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[3].sctp 	"StdDev of Congestion Window 4:131.233.0.25" 	905.29906062443
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[3].sctp 	"Minimum Bandwidth 4:131.233.0.25" 	0.1825
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[3].sctp 	"Average Bandwidth 4:131.233.0.25" 	25.881192857612
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[3].sctp 	"Maximum Bandwidth 4:131.233.0.25" 	157.96407185629
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[3].sctp 	"StdDev of Bandwidth 4:131.233.0.25" 	8.3518755290643
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[3].sctp 	"Minimum RTO 4:131.233.0.25" 	1
+attr unit  s
+scalar newFeaturesTest.clientMain[3].sctp 	"Average RTO 4:131.233.0.25" 	1.0010232453522
+attr unit  s
+scalar newFeaturesTest.clientMain[3].sctp 	"Maximum RTO 4:131.233.0.25" 	3
+attr unit  s
+scalar newFeaturesTest.clientMain[3].sctp 	"StdDev of RTO 4:131.233.0.25" 	1.4142135623731
+attr unit  s
+scalar newFeaturesTest.clientMain[3].sctp 	"Minimum RTT 4:131.233.0.25" 	0.02090132
+attr unit  s
+scalar newFeaturesTest.clientMain[3].sctp 	"Average RTT 4:131.233.0.25" 	0.02090132
+attr unit  s
+scalar newFeaturesTest.clientMain[3].sctp 	"Maximum RTT 4:131.233.0.25" 	0.02090132
+attr unit  s
+scalar newFeaturesTest.clientMain[3].sctp 	"StdDev of RTT 4:131.233.0.25" 	-nan
+attr unit  s
+scalar newFeaturesTest.clientMain[3].sctp 	"Minimum Queued Sent Bytes 4:131.233.0.25" 	0
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[3].sctp 	"Average Queued Sent Bytes 4:131.233.0.25" 	98.543054040893
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[3].sctp 	"Maximum Queued Sent Bytes 4:131.233.0.25" 	48000
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[3].sctp 	"StdDev of Queued Sent Bytes 4:131.233.0.25" 	2719.0096792538
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[3].sctp 	"Utilization Minimum Queued Sent Bytes 4:131.233.0.25" 	-nan
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[3].sctp 	"Utilization Average Queued Sent Bytes 4:131.233.0.25" 	inf
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[3].sctp 	"Utilization Maximum Queued Sent Bytes 4:131.233.0.25" 	inf
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[3].sctp 	"Minimum Outstanding Bytes 4:131.233.0.25" 	0
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[3].sctp 	"Average Outstanding Bytes 4:131.233.0.25" 	38.0024431633
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[3].sctp 	"Maximum Outstanding Bytes 4:131.233.0.25" 	26000
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[3].sctp 	"StdDev of Outstanding Bytes 4:131.233.0.25" 	1046.4291046783
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[3].sctp 	"Utilization Minimum Outstanding Bytes 4:131.233.0.25" 	-nan
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[3].sctp 	"Utilization Average Outstanding Bytes 4:131.233.0.25" 	inf
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[3].sctp 	"Utilization Maximum Outstanding Bytes 4:131.233.0.25" 	inf
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[3].sctp 	"Minimum Number of Gap Acked Chunks in Last SACK 4:131.233.0.25" 	0
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[3].sctp 	"Average Number of Gap Acked Chunks in Last SACK 4:131.233.0.25" 	0.00054760458600986
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[3].sctp 	"Maximum Number of Gap Acked Chunks in Last SACK 4:131.233.0.25" 	1
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[3].sctp 	"StdDev of Number of Gap Acked Chunks in Last SACK 4:131.233.0.25" 	0.023411991441262
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[3].sctp 	"Minimum Number of Non-Revokable Gap Acked Chunks in Last SACK 4:131.233.0.25" 	0
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[3].sctp 	"Average Number of Non-Revokable Gap Acked Chunks in Last SACK 4:131.233.0.25" 	0
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[3].sctp 	"Maximum Number of Non-Revokable Gap Acked Chunks in Last SACK 4:131.233.0.25" 	0
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[3].sctp 	"StdDev of Number of Non-Revokable Gap Acked Chunks in Last SACK 4:131.233.0.25" 	0
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[3].sctp 	"Minimum Number of Gap Missed Chunks in Last SACK 4:131.233.0.25" 	0
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[3].sctp 	"Average Number of Gap Missed Chunks in Last SACK 4:131.233.0.25" 	0.0017635671965838
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[3].sctp 	"Maximum Number of Gap Missed Chunks in Last SACK 4:131.233.0.25" 	20
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[3].sctp 	"StdDev of Number of Gap Missed Chunks in Last SACK 4:131.233.0.25" 	0.14895393829521
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[3].sctp 	"Minimum Outstanding Bytes 4:Total" 	0
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[3].sctp 	"Average Outstanding Bytes 4:Total" 	14315.22677334
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[3].sctp 	"Maximum Outstanding Bytes 4:Total" 	63000
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[3].sctp 	"StdDev of Outstanding Bytes 4:Total" 	7553.2286882353
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[3].sctp 	"Minimum Queued Sent Bytes 4:Total" 	0
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[3].sctp 	"Average Queued Sent Bytes 4:Total" 	19192.152114061
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[3].sctp 	"Maximum Queued Sent Bytes 4:Total" 	166000
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[3].sctp 	"StdDev of Queued Sent Bytes 4:Total" 	16816.92939932
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[3].sctp 	"Utilization Minimum Queued Sent Bytes 4:Total" 	-nan
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[3].sctp 	"Utilization Average Queued Sent Bytes 4:Total" 	inf
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[3].sctp 	"Utilization Maximum Queued Sent Bytes 4:Total" 	inf
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[3].sctp 	"Minimum Slow Start Threshold 4:Total" 	5006000
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[3].sctp 	"Average Slow Start Threshold 4:Total" 	5046718.9078325
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[3].sctp 	"Maximum Slow Start Threshold 4:Total" 	10000000
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[3].sctp 	"StdDev of Slow Start Threshold 4:Total" 	434922.17434544
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[3].sctp 	"Minimum Congestion Window 4:Total" 	5880
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[3].sctp 	"Average Congestion Window 4:Total" 	17911.50811316
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[3].sctp 	"Maximum Congestion Window 4:Total" 	66760
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[3].sctp 	"StdDev of Congestion Window 4:Total" 	5889.5632240708
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[3].sctp 	"Minimum Bandwidth 4:Total" 	29.807497177483
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[3].sctp 	"Average Bandwidth 4:Total" 	59.850515010215
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[3].sctp 	"Maximum Bandwidth 4:Total" 	177.26870713778
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[3].sctp 	"StdDev of Bandwidth 4:Total" 	15.332475816475
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[3].sctp 	"Minimum Number of Revokable Gap Blocks in SACK 4" 	0
+attr unit  ""
+scalar newFeaturesTest.clientMain[3].sctp 	"Average Number of Revokable Gap Blocks in SACK 4" 	0.28670447653065
+attr unit  ""
+scalar newFeaturesTest.clientMain[3].sctp 	"Maximum Number of Revokable Gap Blocks in SACK 4" 	2
+attr unit  ""
+scalar newFeaturesTest.clientMain[3].sctp 	"StdDev of Number of Revokable Gap Blocks in SACK 4" 	0.48081799121471
+attr unit  ""
+scalar newFeaturesTest.clientMain[3].sctp 	"Minimum Number of Non-Revokable Gap Blocks in SACK 4" 	0
+attr unit  ""
+scalar newFeaturesTest.clientMain[3].sctp 	"Average Number of Non-Revokable Gap Blocks in SACK 4" 	0
+attr unit  ""
+scalar newFeaturesTest.clientMain[3].sctp 	"Maximum Number of Non-Revokable Gap Blocks in SACK 4" 	0
+attr unit  ""
+scalar newFeaturesTest.clientMain[3].sctp 	"StdDev of Number of Non-Revokable Gap Blocks in SACK 4" 	0
+attr unit  ""
+scalar newFeaturesTest.clientMain[3].sctp 	"Minimum Arwnd in Last SACK 4" 	4842000
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[3].sctp 	"Average Arwnd in Last SACK 4" 	4994321.585254
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[3].sctp 	"Maximum Arwnd in Last SACK 4" 	5000000
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[3].sctp 	"StdDev of Arwnd in Last SACK 4" 	15424.522769239
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[3].sctp 	"Minimum Peer Rwnd 4" 	4836000
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[3].sctp 	"Average Peer Rwnd 4" 	4981900.8119884
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[3].sctp 	"Maximum Peer Rwnd 4" 	5000000
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[3].sctp 	"StdDev of Peer Rwnd 4" 	16890.199543385
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[3].sctp 	"Number of Fast Retransmissions 14:131.232.0.20" 	0
+scalar newFeaturesTest.serverMain[3].sctp 	"Number of Timer-Based Retransmissions 14:131.232.0.20" 	0
+scalar newFeaturesTest.serverMain[3].sctp 	"Number of Heartbeats Sent 14:131.232.0.20" 	2
+scalar newFeaturesTest.serverMain[3].sctp 	"Number of Heartbeats Received 14:131.232.0.20" 	1
+scalar newFeaturesTest.serverMain[3].sctp 	"Number of Heartbeat ACKs Sent 14:131.232.0.20" 	1
+scalar newFeaturesTest.serverMain[3].sctp 	"Number of Heartbeat ACKs Received 14:131.232.0.20" 	2
+scalar newFeaturesTest.serverMain[3].sctp 	"Number of Duplicates 14:131.232.0.20" 	4
+scalar newFeaturesTest.serverMain[3].sctp 	"Number of Fast Retransmissions 14:131.233.0.20" 	0
+scalar newFeaturesTest.serverMain[3].sctp 	"Number of Timer-Based Retransmissions 14:131.233.0.20" 	0
+scalar newFeaturesTest.serverMain[3].sctp 	"Number of Heartbeats Sent 14:131.233.0.20" 	2
+scalar newFeaturesTest.serverMain[3].sctp 	"Number of Heartbeats Received 14:131.233.0.20" 	1
+scalar newFeaturesTest.serverMain[3].sctp 	"Number of Heartbeat ACKs Sent 14:131.233.0.20" 	1
+scalar newFeaturesTest.serverMain[3].sctp 	"Number of Heartbeat ACKs Received 14:131.233.0.20" 	2
+scalar newFeaturesTest.serverMain[3].sctp 	"Number of Duplicates 14:131.233.0.20" 	3
+scalar newFeaturesTest.serverMain[3].sctp 	"Minimum Slow Start Threshold 14:131.232.0.20" 	5000000
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[3].sctp 	"Average Slow Start Threshold 14:131.232.0.20" 	5000000
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[3].sctp 	"Maximum Slow Start Threshold 14:131.232.0.20" 	5000000
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[3].sctp 	"StdDev of Slow Start Threshold 14:131.232.0.20" 	-nan
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[3].sctp 	"Minimum Congestion Window 14:131.232.0.20" 	4380
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[3].sctp 	"Average Congestion Window 14:131.232.0.20" 	4380
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[3].sctp 	"Maximum Congestion Window 14:131.232.0.20" 	4380
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[3].sctp 	"StdDev of Congestion Window 14:131.232.0.20" 	-nan
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[3].sctp 	"Minimum Bandwidth 14:131.232.0.20" 	0.1825
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[3].sctp 	"Average Bandwidth 14:131.232.0.20" 	0.1825
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[3].sctp 	"Maximum Bandwidth 14:131.232.0.20" 	0.1825
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[3].sctp 	"StdDev of Bandwidth 14:131.232.0.20" 	-nan
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[3].sctp 	"Minimum RTO 14:131.232.0.20" 	1
+attr unit  s
+scalar newFeaturesTest.serverMain[3].sctp 	"Average RTO 14:131.232.0.20" 	1.0016297009798
+attr unit  s
+scalar newFeaturesTest.serverMain[3].sctp 	"Maximum RTO 14:131.232.0.20" 	3
+attr unit  s
+scalar newFeaturesTest.serverMain[3].sctp 	"StdDev of RTO 14:131.232.0.20" 	0.10220389534882
+attr unit  s
+scalar newFeaturesTest.serverMain[3].sctp 	"Minimum RTT 14:131.232.0.20" 	0.03332835
+attr unit  s
+scalar newFeaturesTest.serverMain[3].sctp 	"Average RTT 14:131.232.0.20" 	0.034945490578775
+attr unit  s
+scalar newFeaturesTest.serverMain[3].sctp 	"Maximum RTT 14:131.232.0.20" 	0.04173722
+attr unit  s
+scalar newFeaturesTest.serverMain[3].sctp 	"StdDev of RTT 14:131.232.0.20" 	0.0059459689991162
+attr unit  s
+scalar newFeaturesTest.serverMain[3].sctp 	"Minimum Slow Start Threshold 14:131.233.0.20" 	5000000
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[3].sctp 	"Average Slow Start Threshold 14:131.233.0.20" 	5000000
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[3].sctp 	"Maximum Slow Start Threshold 14:131.233.0.20" 	5000000
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[3].sctp 	"StdDev of Slow Start Threshold 14:131.233.0.20" 	-nan
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[3].sctp 	"Minimum Congestion Window 14:131.233.0.20" 	4380
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[3].sctp 	"Average Congestion Window 14:131.233.0.20" 	4380
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[3].sctp 	"Maximum Congestion Window 14:131.233.0.20" 	4380
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[3].sctp 	"StdDev of Congestion Window 14:131.233.0.20" 	-nan
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[3].sctp 	"Minimum Bandwidth 14:131.233.0.20" 	0.1825
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[3].sctp 	"Average Bandwidth 14:131.233.0.20" 	0.1825
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[3].sctp 	"Maximum Bandwidth 14:131.233.0.20" 	0.1825
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[3].sctp 	"StdDev of Bandwidth 14:131.233.0.20" 	-nan
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[3].sctp 	"Minimum RTO 14:131.233.0.20" 	1
+attr unit  s
+scalar newFeaturesTest.serverMain[3].sctp 	"Average RTO 14:131.233.0.20" 	1.0010215606417
+attr unit  s
+scalar newFeaturesTest.serverMain[3].sctp 	"Maximum RTO 14:131.233.0.20" 	3
+attr unit  s
+scalar newFeaturesTest.serverMain[3].sctp 	"StdDev of RTO 14:131.233.0.20" 	0.08091273620378
+attr unit  s
+scalar newFeaturesTest.serverMain[3].sctp 	"Minimum RTT 14:131.233.0.20" 	0.02089152
+attr unit  s
+scalar newFeaturesTest.serverMain[3].sctp 	"Average RTT 14:131.233.0.20" 	0.02089152
+attr unit  s
+scalar newFeaturesTest.serverMain[3].sctp 	"Maximum RTT 14:131.233.0.20" 	0.02089152
+attr unit  s
+scalar newFeaturesTest.serverMain[3].sctp 	"StdDev of RTT 14:131.233.0.20" 	0
+attr unit  s
+scalar newFeaturesTest.serverMain[3].sctp 	"Minimum Queued Received Bytes 9:Total" 	0
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[3].sctp 	"Average Queued Received Bytes 9:Total" 	4945.0941137691
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[3].sctp 	"Maximum Queued Received Bytes 9:Total" 	158000
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[3].sctp 	"StdDev of Queued Received Bytes 9:Total" 	15197.643845863
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[3].sctp 	"Utilization Minimum Queued Received Bytes 9:Total" 	0
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[3].sctp 	"Utilization Average Queued Received Bytes 9:Total" 	0.00098901882275382
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[3].sctp 	"Utilization Maximum Queued Received Bytes 9:Total" 	0.0316
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[3].sctp 	"Minimum Number of Total Gap Blocks Stored 9" 	0
+attr unit  ""
+scalar newFeaturesTest.serverMain[3].sctp 	"Average Number of Total Gap Blocks Stored 9" 	0.28638550673486
+attr unit  ""
+scalar newFeaturesTest.serverMain[3].sctp 	"Maximum Number of Total Gap Blocks Stored 9" 	2
+attr unit  ""
+scalar newFeaturesTest.serverMain[3].sctp 	"StdDev of Number of Total Gap Blocks Stored 9" 	0.48065194140486
+attr unit  ""
+scalar newFeaturesTest.serverMain[3].sctp 	"Minimum Number of Revokable Gap Blocks Stored 9" 	0
+attr unit  ""
+scalar newFeaturesTest.serverMain[3].sctp 	"Average Number of Revokable Gap Blocks Stored 9" 	0.28638550673486
+attr unit  ""
+scalar newFeaturesTest.serverMain[3].sctp 	"Maximum Number of Revokable Gap Blocks Stored 9" 	2
+attr unit  ""
+scalar newFeaturesTest.serverMain[3].sctp 	"StdDev of Number of Revokable Gap Blocks Stored 9" 	0.48065194140486
+attr unit  ""
+scalar newFeaturesTest.serverMain[3].sctp 	"Minimum Number of Non-Revokable Gap Blocks Stored 9" 	0
+attr unit  ""
+scalar newFeaturesTest.serverMain[3].sctp 	"Average Number of Non-Revokable Gap Blocks Stored 9" 	0
+attr unit  ""
+scalar newFeaturesTest.serverMain[3].sctp 	"Maximum Number of Non-Revokable Gap Blocks Stored 9" 	0
+attr unit  ""
+scalar newFeaturesTest.serverMain[3].sctp 	"StdDev of Number of Non-Revokable Gap Blocks Stored 9" 	0
+attr unit  ""
+scalar newFeaturesTest.serverMain[3].sctp 	"Minimum Number of Duplicate TSNs Stored 9" 	0
+attr unit  ""
+scalar newFeaturesTest.serverMain[3].sctp 	"Average Number of Duplicate TSNs Stored 9" 	0.00028913338184815
+attr unit  ""
+scalar newFeaturesTest.serverMain[3].sctp 	"Maximum Number of Duplicate TSNs Stored 9" 	2
+attr unit  ""
+scalar newFeaturesTest.serverMain[3].sctp 	"StdDev of Number of Duplicate TSNs Stored 9" 	0.019292849560804
+attr unit  ""
+scalar newFeaturesTest.serverMain[3].sctp 	"Minimum Number of Revokable Gap Blocks Sent 9" 	0
+attr unit  ""
+scalar newFeaturesTest.serverMain[3].sctp 	"Average Number of Revokable Gap Blocks Sent 9" 	0.28638550673486
+attr unit  ""
+scalar newFeaturesTest.serverMain[3].sctp 	"Maximum Number of Revokable Gap Blocks Sent 9" 	2
+attr unit  ""
+scalar newFeaturesTest.serverMain[3].sctp 	"StdDev of Number of Revokable Gap Blocks Sent 9" 	0.48065194140486
+attr unit  ""
+scalar newFeaturesTest.serverMain[3].sctp 	"Minimum Number of Non-Revokable Gap Blocks Sent 9" 	0
+attr unit  ""
+scalar newFeaturesTest.serverMain[3].sctp 	"Average Number of Non-Revokable Gap Blocks Sent 9" 	0
+attr unit  ""
+scalar newFeaturesTest.serverMain[3].sctp 	"Maximum Number of Non-Revokable Gap Blocks Sent 9" 	0
+attr unit  ""
+scalar newFeaturesTest.serverMain[3].sctp 	"StdDev of Number of Non-Revokable Gap Blocks Sent 9" 	0
+attr unit  ""
+scalar newFeaturesTest.serverMain[3].sctp 	"Minimum Number of Duplicate TSNs Sent 9" 	0
+attr unit  ""
+scalar newFeaturesTest.serverMain[3].sctp 	"Average Number of Duplicate TSNs Sent 9" 	0.00028913338184815
+attr unit  ""
+scalar newFeaturesTest.serverMain[3].sctp 	"Maximum Number of Duplicate TSNs Sent 9" 	2
+attr unit  ""
+scalar newFeaturesTest.serverMain[3].sctp 	"StdDev of Number of Duplicate TSNs Sent 9" 	0.019292849560804
+attr unit  ""
+scalar newFeaturesTest.serverMain[3].sctp 	"Minimum Length of SACK Sent 9" 	20
+attr unit  ""
+scalar newFeaturesTest.serverMain[3].sctp 	"Average Length of SACK Sent 9" 	21.146698560466
+attr unit  ""
+scalar newFeaturesTest.serverMain[3].sctp 	"Maximum Length of SACK Sent 9" 	28
+attr unit  ""
+scalar newFeaturesTest.serverMain[3].sctp 	"StdDev of Length of SACK Sent 9" 	1.9234662395693
+attr unit  ""
+scalar newFeaturesTest.serverMain[3].sctp 	"Minimum Peer Rwnd 9" 	5000000
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[3].sctp 	"Average Peer Rwnd 9" 	5000000
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[3].sctp 	"Maximum Peer Rwnd 9" 	5000000
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[3].sctp 	"StdDev of Peer Rwnd 9" 	-nan
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[4].sctp 	"Number of Fast Retransmissions 5:131.232.0.26" 	139
+scalar newFeaturesTest.clientMain[4].sctp 	"Number of Timer-Based Retransmissions 5:131.232.0.26" 	82
+scalar newFeaturesTest.clientMain[4].sctp 	"Number of Heartbeats Sent 5:131.232.0.26" 	1
+scalar newFeaturesTest.clientMain[4].sctp 	"Number of Heartbeats Received 5:131.232.0.26" 	2
+scalar newFeaturesTest.clientMain[4].sctp 	"Number of Heartbeat ACKs Sent 5:131.232.0.26" 	2
+scalar newFeaturesTest.clientMain[4].sctp 	"Number of Heartbeat ACKs Received 5:131.232.0.26" 	1
+scalar newFeaturesTest.clientMain[4].sctp 	"Number of Duplicates 5:131.232.0.26" 	0
+scalar newFeaturesTest.clientMain[4].sctp 	"Number of Fast Retransmissions 5:131.233.0.26" 	0
+scalar newFeaturesTest.clientMain[4].sctp 	"Number of Timer-Based Retransmissions 5:131.233.0.26" 	0
+scalar newFeaturesTest.clientMain[4].sctp 	"Number of Heartbeats Sent 5:131.233.0.26" 	1
+scalar newFeaturesTest.clientMain[4].sctp 	"Number of Heartbeats Received 5:131.233.0.26" 	2
+scalar newFeaturesTest.clientMain[4].sctp 	"Number of Heartbeat ACKs Sent 5:131.233.0.26" 	2
+scalar newFeaturesTest.clientMain[4].sctp 	"Number of Heartbeat ACKs Received 5:131.233.0.26" 	1
+scalar newFeaturesTest.clientMain[4].sctp 	"Number of Duplicates 5:131.233.0.26" 	0
+scalar newFeaturesTest.clientMain[4].sctp 	"Minimum Slow Start Threshold 5:131.232.0.26" 	6000
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[4].sctp 	"Average Slow Start Threshold 5:131.232.0.26" 	51879.691795036
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[4].sctp 	"Maximum Slow Start Threshold 5:131.232.0.26" 	5000000
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[4].sctp 	"StdDev of Slow Start Threshold 5:131.232.0.26" 	464817.99936681
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[4].sctp 	"Minimum Congestion Window 5:131.232.0.26" 	1500
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[4].sctp 	"Average Congestion Window 5:131.232.0.26" 	12996.634062855
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[4].sctp 	"Maximum Congestion Window 5:131.232.0.26" 	45880
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[4].sctp 	"StdDev of Congestion Window 5:131.232.0.26" 	5832.2511592215
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[4].sctp 	"Minimum Bandwidth 5:131.232.0.26" 	0.1825
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[4].sctp 	"Average Bandwidth 5:131.232.0.26" 	31.802530181701
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[4].sctp 	"Maximum Bandwidth 5:131.232.0.26" 	119.44289693593
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[4].sctp 	"StdDev of Bandwidth 5:131.232.0.26" 	15.082034611929
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[4].sctp 	"Minimum RTO 5:131.232.0.26" 	1
+attr unit  s
+scalar newFeaturesTest.clientMain[4].sctp 	"Average RTO 5:131.232.0.26" 	1.0131825971033
+attr unit  s
+scalar newFeaturesTest.clientMain[4].sctp 	"Maximum RTO 5:131.232.0.26" 	3
+attr unit  s
+scalar newFeaturesTest.clientMain[4].sctp 	"StdDev of RTO 5:131.232.0.26" 	0.12185114802954
+attr unit  s
+scalar newFeaturesTest.clientMain[4].sctp 	"Minimum RTT 5:131.232.0.26" 	0.0312688
+attr unit  s
+scalar newFeaturesTest.clientMain[4].sctp 	"Average RTT 5:131.232.0.26" 	0.05459314927638
+attr unit  s
+scalar newFeaturesTest.clientMain[4].sctp 	"Maximum RTT 5:131.232.0.26" 	0.253172
+attr unit  s
+scalar newFeaturesTest.clientMain[4].sctp 	"StdDev of RTT 5:131.232.0.26" 	0.022940387317092
+attr unit  s
+scalar newFeaturesTest.clientMain[4].sctp 	"Minimum Queued Sent Bytes 5:131.232.0.26" 	0
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[4].sctp 	"Average Queued Sent Bytes 5:131.232.0.26" 	31222.286674111
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[4].sctp 	"Maximum Queued Sent Bytes 5:131.232.0.26" 	278000
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[4].sctp 	"StdDev of Queued Sent Bytes 5:131.232.0.26" 	42468.102555934
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[4].sctp 	"Utilization Minimum Queued Sent Bytes 5:131.232.0.26" 	-nan
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[4].sctp 	"Utilization Average Queued Sent Bytes 5:131.232.0.26" 	inf
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[4].sctp 	"Utilization Maximum Queued Sent Bytes 5:131.232.0.26" 	inf
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[4].sctp 	"Minimum Outstanding Bytes 5:131.232.0.26" 	0
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[4].sctp 	"Average Outstanding Bytes 5:131.232.0.26" 	13476.122196798
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[4].sctp 	"Maximum Outstanding Bytes 5:131.232.0.26" 	46000
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[4].sctp 	"StdDev of Outstanding Bytes 5:131.232.0.26" 	5916.3495846251
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[4].sctp 	"Utilization Minimum Outstanding Bytes 5:131.232.0.26" 	-nan
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[4].sctp 	"Utilization Average Outstanding Bytes 5:131.232.0.26" 	inf
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[4].sctp 	"Utilization Maximum Outstanding Bytes 5:131.232.0.26" 	inf
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[4].sctp 	"Minimum Number of Gap Acked Chunks in Last SACK 5:131.232.0.26" 	0
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[4].sctp 	"Average Number of Gap Acked Chunks in Last SACK 5:131.232.0.26" 	0.34098791733236
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[4].sctp 	"Maximum Number of Gap Acked Chunks in Last SACK 5:131.232.0.26" 	1
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[4].sctp 	"StdDev of Number of Gap Acked Chunks in Last SACK 5:131.232.0.26" 	0.47438021992038
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[4].sctp 	"Minimum Number of Non-Revokable Gap Acked Chunks in Last SACK 5:131.232.0.26" 	0
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[4].sctp 	"Average Number of Non-Revokable Gap Acked Chunks in Last SACK 5:131.232.0.26" 	0
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[4].sctp 	"Maximum Number of Non-Revokable Gap Acked Chunks in Last SACK 5:131.232.0.26" 	0
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[4].sctp 	"StdDev of Number of Non-Revokable Gap Acked Chunks in Last SACK 5:131.232.0.26" 	0
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[4].sctp 	"Minimum Number of Gap Missed Chunks in Last SACK 5:131.232.0.26" 	0
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[4].sctp 	"Average Number of Gap Missed Chunks in Last SACK 5:131.232.0.26" 	0.40792587240671
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[4].sctp 	"Maximum Number of Gap Missed Chunks in Last SACK 5:131.232.0.26" 	6
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[4].sctp 	"StdDev of Number of Gap Missed Chunks in Last SACK 5:131.232.0.26" 	0.61705641693024
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[4].sctp 	"Minimum Slow Start Threshold 5:131.233.0.26" 	5000000
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[4].sctp 	"Average Slow Start Threshold 5:131.233.0.26" 	5000000
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[4].sctp 	"Maximum Slow Start Threshold 5:131.233.0.26" 	5000000
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[4].sctp 	"StdDev of Slow Start Threshold 5:131.233.0.26" 	0
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[4].sctp 	"Minimum Congestion Window 5:131.233.0.26" 	4380
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[4].sctp 	"Average Congestion Window 5:131.233.0.26" 	4566.4203199647
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[4].sctp 	"Maximum Congestion Window 5:131.233.0.26" 	13880
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[4].sctp 	"StdDev of Congestion Window 5:131.233.0.26" 	592.94123633073
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[4].sctp 	"Minimum Bandwidth 5:131.233.0.26" 	0.1825
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[4].sctp 	"Average Bandwidth 5:131.233.0.26" 	26.475935393397
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[4].sctp 	"Maximum Bandwidth 5:131.233.0.26" 	83.11377245509
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[4].sctp 	"StdDev of Bandwidth 5:131.233.0.26" 	6.3341662089874
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[4].sctp 	"Minimum RTO 5:131.233.0.26" 	1
+attr unit  s
+scalar newFeaturesTest.clientMain[4].sctp 	"Average RTO 5:131.233.0.26" 	1.0010073951147
+attr unit  s
+scalar newFeaturesTest.clientMain[4].sctp 	"Maximum RTO 5:131.233.0.26" 	3
+attr unit  s
+scalar newFeaturesTest.clientMain[4].sctp 	"StdDev of RTO 5:131.233.0.26" 	1.4142135623732
+attr unit  s
+scalar newFeaturesTest.clientMain[4].sctp 	"Minimum RTT 5:131.233.0.26" 	0.02090132
+attr unit  s
+scalar newFeaturesTest.clientMain[4].sctp 	"Average RTT 5:131.233.0.26" 	0.02090132
+attr unit  s
+scalar newFeaturesTest.clientMain[4].sctp 	"Maximum RTT 5:131.233.0.26" 	0.02090132
+attr unit  s
+scalar newFeaturesTest.clientMain[4].sctp 	"StdDev of RTT 5:131.233.0.26" 	-nan
+attr unit  s
+scalar newFeaturesTest.clientMain[4].sctp 	"Minimum Queued Sent Bytes 5:131.233.0.26" 	0
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[4].sctp 	"Average Queued Sent Bytes 5:131.233.0.26" 	69.372168300352
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[4].sctp 	"Maximum Queued Sent Bytes 5:131.233.0.26" 	23000
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[4].sctp 	"StdDev of Queued Sent Bytes 5:131.233.0.26" 	1055.3483136394
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[4].sctp 	"Utilization Minimum Queued Sent Bytes 5:131.233.0.26" 	-nan
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[4].sctp 	"Utilization Average Queued Sent Bytes 5:131.233.0.26" 	inf
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[4].sctp 	"Utilization Maximum Queued Sent Bytes 5:131.233.0.26" 	inf
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[4].sctp 	"Minimum Outstanding Bytes 5:131.233.0.26" 	0
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[4].sctp 	"Average Outstanding Bytes 5:131.233.0.26" 	36.055261425851
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[4].sctp 	"Maximum Outstanding Bytes 5:131.233.0.26" 	13000
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[4].sctp 	"StdDev of Outstanding Bytes 5:131.233.0.26" 	511.87152546935
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[4].sctp 	"Utilization Minimum Outstanding Bytes 5:131.233.0.26" 	-nan
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[4].sctp 	"Utilization Average Outstanding Bytes 5:131.233.0.26" 	inf
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[4].sctp 	"Utilization Maximum Outstanding Bytes 5:131.233.0.26" 	inf
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[4].sctp 	"Minimum Number of Gap Acked Chunks in Last SACK 5:131.233.0.26" 	0
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[4].sctp 	"Average Number of Gap Acked Chunks in Last SACK 5:131.233.0.26" 	0.00089085702497103
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[4].sctp 	"Maximum Number of Gap Acked Chunks in Last SACK 5:131.233.0.26" 	1
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[4].sctp 	"StdDev of Number of Gap Acked Chunks in Last SACK 5:131.233.0.26" 	0.029855260122827
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[4].sctp 	"Minimum Number of Non-Revokable Gap Acked Chunks in Last SACK 5:131.233.0.26" 	0
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[4].sctp 	"Average Number of Non-Revokable Gap Acked Chunks in Last SACK 5:131.233.0.26" 	0
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[4].sctp 	"Maximum Number of Non-Revokable Gap Acked Chunks in Last SACK 5:131.233.0.26" 	0
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[4].sctp 	"StdDev of Number of Non-Revokable Gap Acked Chunks in Last SACK 5:131.233.0.26" 	0
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[4].sctp 	"Minimum Number of Gap Missed Chunks in Last SACK 5:131.233.0.26" 	0
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[4].sctp 	"Average Number of Gap Missed Chunks in Last SACK 5:131.233.0.26" 	0.0011556812270093
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[4].sctp 	"Maximum Number of Gap Missed Chunks in Last SACK 5:131.233.0.26" 	11
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[4].sctp 	"StdDev of Number of Gap Missed Chunks in Last SACK 5:131.233.0.26" 	0.054789992532411
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[4].sctp 	"Minimum Outstanding Bytes 5:Total" 	0
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[4].sctp 	"Average Outstanding Bytes 5:Total" 	13510.994870106
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[4].sctp 	"Maximum Outstanding Bytes 5:Total" 	46000
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[4].sctp 	"StdDev of Outstanding Bytes 5:Total" 	5866.0224140953
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[4].sctp 	"Minimum Queued Sent Bytes 5:Total" 	0
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[4].sctp 	"Average Queued Sent Bytes 5:Total" 	31289.383482347
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[4].sctp 	"Maximum Queued Sent Bytes 5:Total" 	280000
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[4].sctp 	"StdDev of Queued Sent Bytes 5:Total" 	42591.672795862
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[4].sctp 	"Utilization Minimum Queued Sent Bytes 5:Total" 	-nan
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[4].sctp 	"Utilization Average Queued Sent Bytes 5:Total" 	inf
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[4].sctp 	"Utilization Maximum Queued Sent Bytes 5:Total" 	inf
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[4].sctp 	"Minimum Slow Start Threshold 5:Total" 	5006000
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[4].sctp 	"Average Slow Start Threshold 5:Total" 	5047417.9958599
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[4].sctp 	"Maximum Slow Start Threshold 5:Total" 	10000000
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[4].sctp 	"StdDev of Slow Start Threshold 5:Total" 	439552.42415548
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[4].sctp 	"Minimum Congestion Window 5:Total" 	5880
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[4].sctp 	"Average Congestion Window 5:Total" 	17657.530430567
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[4].sctp 	"Maximum Congestion Window 5:Total" 	50260
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[4].sctp 	"StdDev of Congestion Window 5:Total" 	5693.4948904914
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[4].sctp 	"Minimum Bandwidth 5:Total" 	29.782047279848
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[4].sctp 	"Average Bandwidth 5:Total" 	59.450925162839
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[4].sctp 	"Maximum Bandwidth 5:Total" 	145.67044184611
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[4].sctp 	"StdDev of Bandwidth 5:Total" 	14.551681321529
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[4].sctp 	"Minimum Number of Revokable Gap Blocks in SACK 5" 	0
+attr unit  ""
+scalar newFeaturesTest.clientMain[4].sctp 	"Average Number of Revokable Gap Blocks in SACK 5" 	0.41791450920511
+attr unit  ""
+scalar newFeaturesTest.clientMain[4].sctp 	"Maximum Number of Revokable Gap Blocks in SACK 5" 	3
+attr unit  ""
+scalar newFeaturesTest.clientMain[4].sctp 	"StdDev of Number of Revokable Gap Blocks in SACK 5" 	0.61694329869137
+attr unit  ""
+scalar newFeaturesTest.clientMain[4].sctp 	"Minimum Number of Non-Revokable Gap Blocks in SACK 5" 	0
+attr unit  ""
+scalar newFeaturesTest.clientMain[4].sctp 	"Average Number of Non-Revokable Gap Blocks in SACK 5" 	0
+attr unit  ""
+scalar newFeaturesTest.clientMain[4].sctp 	"Maximum Number of Non-Revokable Gap Blocks in SACK 5" 	0
+attr unit  ""
+scalar newFeaturesTest.clientMain[4].sctp 	"StdDev of Number of Non-Revokable Gap Blocks in SACK 5" 	0
+attr unit  ""
+scalar newFeaturesTest.clientMain[4].sctp 	"Minimum Arwnd in Last SACK 5" 	4724000
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[4].sctp 	"Average Arwnd in Last SACK 5" 	4981478.100114
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[4].sctp 	"Maximum Arwnd in Last SACK 5" 	5000000
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[4].sctp 	"StdDev of Arwnd in Last SACK 5" 	42848.425796181
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[4].sctp 	"Minimum Peer Rwnd 5" 	4720000
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[4].sctp 	"Average Peer Rwnd 5" 	4969822.9283001
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[4].sctp 	"Maximum Peer Rwnd 5" 	5000000
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[4].sctp 	"StdDev of Peer Rwnd 5" 	42529.037429731
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[4].sctp 	"Number of Fast Retransmissions 15:131.232.0.21" 	0
+scalar newFeaturesTest.serverMain[4].sctp 	"Number of Timer-Based Retransmissions 15:131.232.0.21" 	0
+scalar newFeaturesTest.serverMain[4].sctp 	"Number of Heartbeats Sent 15:131.232.0.21" 	2
+scalar newFeaturesTest.serverMain[4].sctp 	"Number of Heartbeats Received 15:131.232.0.21" 	1
+scalar newFeaturesTest.serverMain[4].sctp 	"Number of Heartbeat ACKs Sent 15:131.232.0.21" 	1
+scalar newFeaturesTest.serverMain[4].sctp 	"Number of Heartbeat ACKs Received 15:131.232.0.21" 	2
+scalar newFeaturesTest.serverMain[4].sctp 	"Number of Duplicates 15:131.232.0.21" 	14
+scalar newFeaturesTest.serverMain[4].sctp 	"Number of Fast Retransmissions 15:131.233.0.21" 	0
+scalar newFeaturesTest.serverMain[4].sctp 	"Number of Timer-Based Retransmissions 15:131.233.0.21" 	0
+scalar newFeaturesTest.serverMain[4].sctp 	"Number of Heartbeats Sent 15:131.233.0.21" 	2
+scalar newFeaturesTest.serverMain[4].sctp 	"Number of Heartbeats Received 15:131.233.0.21" 	1
+scalar newFeaturesTest.serverMain[4].sctp 	"Number of Heartbeat ACKs Sent 15:131.233.0.21" 	1
+scalar newFeaturesTest.serverMain[4].sctp 	"Number of Heartbeat ACKs Received 15:131.233.0.21" 	2
+scalar newFeaturesTest.serverMain[4].sctp 	"Number of Duplicates 15:131.233.0.21" 	39
+scalar newFeaturesTest.serverMain[4].sctp 	"Minimum Slow Start Threshold 15:131.232.0.21" 	5000000
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[4].sctp 	"Average Slow Start Threshold 15:131.232.0.21" 	5000000
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[4].sctp 	"Maximum Slow Start Threshold 15:131.232.0.21" 	5000000
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[4].sctp 	"StdDev of Slow Start Threshold 15:131.232.0.21" 	-nan
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[4].sctp 	"Minimum Congestion Window 15:131.232.0.21" 	4380
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[4].sctp 	"Average Congestion Window 15:131.232.0.21" 	4380
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[4].sctp 	"Maximum Congestion Window 15:131.232.0.21" 	4380
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[4].sctp 	"StdDev of Congestion Window 15:131.232.0.21" 	-nan
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[4].sctp 	"Minimum Bandwidth 15:131.232.0.21" 	0.1825
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[4].sctp 	"Average Bandwidth 15:131.232.0.21" 	0.1825
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[4].sctp 	"Maximum Bandwidth 15:131.232.0.21" 	0.1825
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[4].sctp 	"StdDev of Bandwidth 15:131.232.0.21" 	-nan
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[4].sctp 	"Minimum RTO 15:131.232.0.21" 	1
+attr unit  s
+scalar newFeaturesTest.serverMain[4].sctp 	"Average RTO 15:131.232.0.21" 	1.0018052479743
+attr unit  s
+scalar newFeaturesTest.serverMain[4].sctp 	"Maximum RTO 15:131.232.0.21" 	3
+attr unit  s
+scalar newFeaturesTest.serverMain[4].sctp 	"StdDev of RTO 15:131.232.0.21" 	0.10513220664065
+attr unit  s
+scalar newFeaturesTest.serverMain[4].sctp 	"Minimum RTT 15:131.232.0.21" 	0.03747396
+attr unit  s
+scalar newFeaturesTest.serverMain[4].sctp 	"Average RTT 15:131.232.0.21" 	0.038320843587436
+attr unit  s
+scalar newFeaturesTest.serverMain[4].sctp 	"Maximum RTT 15:131.232.0.21" 	0.04161883
+attr unit  s
+scalar newFeaturesTest.serverMain[4].sctp 	"StdDev of RTT 15:131.232.0.21" 	0.0029308656841365
+attr unit  s
+scalar newFeaturesTest.serverMain[4].sctp 	"Minimum Slow Start Threshold 15:131.233.0.21" 	5000000
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[4].sctp 	"Average Slow Start Threshold 15:131.233.0.21" 	5000000
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[4].sctp 	"Maximum Slow Start Threshold 15:131.233.0.21" 	5000000
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[4].sctp 	"StdDev of Slow Start Threshold 15:131.233.0.21" 	-nan
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[4].sctp 	"Minimum Congestion Window 15:131.233.0.21" 	4380
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[4].sctp 	"Average Congestion Window 15:131.233.0.21" 	4380
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[4].sctp 	"Maximum Congestion Window 15:131.233.0.21" 	4380
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[4].sctp 	"StdDev of Congestion Window 15:131.233.0.21" 	-nan
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[4].sctp 	"Minimum Bandwidth 15:131.233.0.21" 	0.1825
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[4].sctp 	"Average Bandwidth 15:131.233.0.21" 	0.1825
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[4].sctp 	"Maximum Bandwidth 15:131.233.0.21" 	0.1825
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[4].sctp 	"StdDev of Bandwidth 15:131.233.0.21" 	-nan
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[4].sctp 	"Minimum RTO 15:131.233.0.21" 	1
+attr unit  s
+scalar newFeaturesTest.serverMain[4].sctp 	"Average RTO 15:131.233.0.21" 	1.0010064154992
+attr unit  s
+scalar newFeaturesTest.serverMain[4].sctp 	"Maximum RTO 15:131.233.0.21" 	3
+attr unit  s
+scalar newFeaturesTest.serverMain[4].sctp 	"StdDev of RTO 15:131.233.0.21" 	0.078518610608633
+attr unit  s
+scalar newFeaturesTest.serverMain[4].sctp 	"Minimum RTT 15:131.233.0.21" 	0.02089152
+attr unit  s
+scalar newFeaturesTest.serverMain[4].sctp 	"Average RTT 15:131.233.0.21" 	0.02089152
+attr unit  s
+scalar newFeaturesTest.serverMain[4].sctp 	"Maximum RTT 15:131.233.0.21" 	0.02089152
+attr unit  s
+scalar newFeaturesTest.serverMain[4].sctp 	"StdDev of RTT 15:131.233.0.21" 	0
+attr unit  s
+scalar newFeaturesTest.serverMain[4].sctp 	"Minimum Queued Received Bytes 10:Total" 	0
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[4].sctp 	"Average Queued Received Bytes 10:Total" 	17928.404031535
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[4].sctp 	"Maximum Queued Received Bytes 10:Total" 	276000
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[4].sctp 	"StdDev of Queued Received Bytes 10:Total" 	42917.159242724
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[4].sctp 	"Utilization Minimum Queued Received Bytes 10:Total" 	0
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[4].sctp 	"Utilization Average Queued Received Bytes 10:Total" 	0.0035856808063069
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[4].sctp 	"Utilization Maximum Queued Received Bytes 10:Total" 	0.0552
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[4].sctp 	"Minimum Number of Total Gap Blocks Stored 10" 	0
+attr unit  ""
+scalar newFeaturesTest.serverMain[4].sctp 	"Average Number of Total Gap Blocks Stored 10" 	0.41771971589464
+attr unit  ""
+scalar newFeaturesTest.serverMain[4].sctp 	"Maximum Number of Total Gap Blocks Stored 10" 	3
+attr unit  ""
+scalar newFeaturesTest.serverMain[4].sctp 	"StdDev of Number of Total Gap Blocks Stored 10" 	0.61686959049498
+attr unit  ""
+scalar newFeaturesTest.serverMain[4].sctp 	"Minimum Number of Revokable Gap Blocks Stored 10" 	0
+attr unit  ""
+scalar newFeaturesTest.serverMain[4].sctp 	"Average Number of Revokable Gap Blocks Stored 10" 	0.41771971589464
+attr unit  ""
+scalar newFeaturesTest.serverMain[4].sctp 	"Maximum Number of Revokable Gap Blocks Stored 10" 	3
+attr unit  ""
+scalar newFeaturesTest.serverMain[4].sctp 	"StdDev of Number of Revokable Gap Blocks Stored 10" 	0.61686959049498
+attr unit  ""
+scalar newFeaturesTest.serverMain[4].sctp 	"Minimum Number of Non-Revokable Gap Blocks Stored 10" 	0
+attr unit  ""
+scalar newFeaturesTest.serverMain[4].sctp 	"Average Number of Non-Revokable Gap Blocks Stored 10" 	0
+attr unit  ""
+scalar newFeaturesTest.serverMain[4].sctp 	"Maximum Number of Non-Revokable Gap Blocks Stored 10" 	0
+attr unit  ""
+scalar newFeaturesTest.serverMain[4].sctp 	"StdDev of Number of Non-Revokable Gap Blocks Stored 10" 	0
+attr unit  ""
+scalar newFeaturesTest.serverMain[4].sctp 	"Minimum Number of Duplicate TSNs Stored 10" 	0
+attr unit  ""
+scalar newFeaturesTest.serverMain[4].sctp 	"Average Number of Duplicate TSNs Stored 10" 	0.0093138612373721
+attr unit  ""
+scalar newFeaturesTest.serverMain[4].sctp 	"Maximum Number of Duplicate TSNs Stored 10" 	2
+attr unit  ""
+scalar newFeaturesTest.serverMain[4].sctp 	"StdDev of Number of Duplicate TSNs Stored 10" 	0.11629070583458
+attr unit  ""
+scalar newFeaturesTest.serverMain[4].sctp 	"Minimum Number of Revokable Gap Blocks Sent 10" 	0
+attr unit  ""
+scalar newFeaturesTest.serverMain[4].sctp 	"Average Number of Revokable Gap Blocks Sent 10" 	0.41771971589464
+attr unit  ""
+scalar newFeaturesTest.serverMain[4].sctp 	"Maximum Number of Revokable Gap Blocks Sent 10" 	3
+attr unit  ""
+scalar newFeaturesTest.serverMain[4].sctp 	"StdDev of Number of Revokable Gap Blocks Sent 10" 	0.61686959049498
+attr unit  ""
+scalar newFeaturesTest.serverMain[4].sctp 	"Minimum Number of Non-Revokable Gap Blocks Sent 10" 	0
+attr unit  ""
+scalar newFeaturesTest.serverMain[4].sctp 	"Average Number of Non-Revokable Gap Blocks Sent 10" 	0
+attr unit  ""
+scalar newFeaturesTest.serverMain[4].sctp 	"Maximum Number of Non-Revokable Gap Blocks Sent 10" 	0
+attr unit  ""
+scalar newFeaturesTest.serverMain[4].sctp 	"StdDev of Number of Non-Revokable Gap Blocks Sent 10" 	0
+attr unit  ""
+scalar newFeaturesTest.serverMain[4].sctp 	"Minimum Number of Duplicate TSNs Sent 10" 	0
+attr unit  ""
+scalar newFeaturesTest.serverMain[4].sctp 	"Average Number of Duplicate TSNs Sent 10" 	0.0093138612373721
+attr unit  ""
+scalar newFeaturesTest.serverMain[4].sctp 	"Maximum Number of Duplicate TSNs Sent 10" 	2
+attr unit  ""
+scalar newFeaturesTest.serverMain[4].sctp 	"StdDev of Number of Duplicate TSNs Sent 10" 	0.11629070583458
+attr unit  ""
+scalar newFeaturesTest.serverMain[4].sctp 	"Minimum Length of SACK Sent 10" 	20
+attr unit  ""
+scalar newFeaturesTest.serverMain[4].sctp 	"Average Length of SACK Sent 10" 	21.708134308527
+attr unit  ""
+scalar newFeaturesTest.serverMain[4].sctp 	"Maximum Length of SACK Sent 10" 	32
+attr unit  ""
+scalar newFeaturesTest.serverMain[4].sctp 	"StdDev of Length of SACK Sent 10" 	2.4859905968354
+attr unit  ""
+scalar newFeaturesTest.serverMain[4].sctp 	"Minimum Peer Rwnd 10" 	5000000
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[4].sctp 	"Average Peer Rwnd 10" 	5000000
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[4].sctp 	"Maximum Peer Rwnd 10" 	5000000
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[4].sctp 	"StdDev of Peer Rwnd 10" 	-nan
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[0].sctp 	"Number of Fast Retransmissions 1:131.232.0.22" 	140
+scalar newFeaturesTest.clientMain[0].sctp 	"Number of Timer-Based Retransmissions 1:131.232.0.22" 	55
+scalar newFeaturesTest.clientMain[0].sctp 	"Number of Heartbeats Sent 1:131.232.0.22" 	1
+scalar newFeaturesTest.clientMain[0].sctp 	"Number of Heartbeats Received 1:131.232.0.22" 	2
+scalar newFeaturesTest.clientMain[0].sctp 	"Number of Heartbeat ACKs Sent 1:131.232.0.22" 	2
+scalar newFeaturesTest.clientMain[0].sctp 	"Number of Heartbeat ACKs Received 1:131.232.0.22" 	1
+scalar newFeaturesTest.clientMain[0].sctp 	"Number of Duplicates 1:131.232.0.22" 	0
+scalar newFeaturesTest.clientMain[0].sctp 	"Number of Fast Retransmissions 1:131.233.0.22" 	0
+scalar newFeaturesTest.clientMain[0].sctp 	"Number of Timer-Based Retransmissions 1:131.233.0.22" 	0
+scalar newFeaturesTest.clientMain[0].sctp 	"Number of Heartbeats Sent 1:131.233.0.22" 	1
+scalar newFeaturesTest.clientMain[0].sctp 	"Number of Heartbeats Received 1:131.233.0.22" 	2
+scalar newFeaturesTest.clientMain[0].sctp 	"Number of Heartbeat ACKs Sent 1:131.233.0.22" 	2
+scalar newFeaturesTest.clientMain[0].sctp 	"Number of Heartbeat ACKs Received 1:131.233.0.22" 	1
+scalar newFeaturesTest.clientMain[0].sctp 	"Number of Duplicates 1:131.233.0.22" 	0
+scalar newFeaturesTest.clientMain[0].sctp 	"Minimum Slow Start Threshold 1:131.232.0.22" 	6000
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[0].sctp 	"Average Slow Start Threshold 1:131.232.0.22" 	56622.068532839
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[0].sctp 	"Maximum Slow Start Threshold 1:131.232.0.22" 	5000000
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[0].sctp 	"StdDev of Slow Start Threshold 1:131.232.0.22" 	488218.67833129
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[0].sctp 	"Minimum Congestion Window 1:131.232.0.22" 	1500
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[0].sctp 	"Average Congestion Window 1:131.232.0.22" 	13126.831154333
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[0].sctp 	"Maximum Congestion Window 1:131.232.0.22" 	83380
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[0].sctp 	"StdDev of Congestion Window 1:131.232.0.22" 	7934.5722284946
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[0].sctp 	"Minimum Bandwidth 1:131.232.0.22" 	0.1825
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[0].sctp 	"Average Bandwidth 1:131.232.0.22" 	32.953021491784
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[0].sctp 	"Maximum Bandwidth 1:131.232.0.22" 	260.98245614035
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[0].sctp 	"StdDev of Bandwidth 1:131.232.0.22" 	23.921542744465
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[0].sctp 	"Minimum RTO 1:131.232.0.22" 	1
+attr unit  s
+scalar newFeaturesTest.clientMain[0].sctp 	"Average RTO 1:131.232.0.22" 	1.0056185543189
+attr unit  s
+scalar newFeaturesTest.clientMain[0].sctp 	"Maximum RTO 1:131.232.0.22" 	3
+attr unit  s
+scalar newFeaturesTest.clientMain[0].sctp 	"StdDev of RTO 1:131.232.0.22" 	0.08124913009973
+attr unit  s
+scalar newFeaturesTest.clientMain[0].sctp 	"Minimum RTT 1:131.232.0.22" 	0.02090132
+attr unit  s
+scalar newFeaturesTest.clientMain[0].sctp 	"Average RTT 1:131.232.0.22" 	0.054978521817821
+attr unit  s
+scalar newFeaturesTest.clientMain[0].sctp 	"Maximum RTT 1:131.232.0.22" 	0.23798
+attr unit  s
+scalar newFeaturesTest.clientMain[0].sctp 	"StdDev of RTT 1:131.232.0.22" 	0.025762424597798
+attr unit  s
+scalar newFeaturesTest.clientMain[0].sctp 	"Minimum Queued Sent Bytes 1:131.232.0.22" 	0
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[0].sctp 	"Average Queued Sent Bytes 1:131.232.0.22" 	20678.814116964
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[0].sctp 	"Maximum Queued Sent Bytes 1:131.232.0.22" 	154000
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[0].sctp 	"StdDev of Queued Sent Bytes 1:131.232.0.22" 	20407.696646268
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[0].sctp 	"Utilization Minimum Queued Sent Bytes 1:131.232.0.22" 	-nan
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[0].sctp 	"Utilization Average Queued Sent Bytes 1:131.232.0.22" 	inf
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[0].sctp 	"Utilization Maximum Queued Sent Bytes 1:131.232.0.22" 	inf
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[0].sctp 	"Minimum Outstanding Bytes 1:131.232.0.22" 	0
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[0].sctp 	"Average Outstanding Bytes 1:131.232.0.22" 	13740.541679998
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[0].sctp 	"Maximum Outstanding Bytes 1:131.232.0.22" 	84000
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[0].sctp 	"StdDev of Outstanding Bytes 1:131.232.0.22" 	8076.0467035327
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[0].sctp 	"Utilization Minimum Outstanding Bytes 1:131.232.0.22" 	-nan
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[0].sctp 	"Utilization Average Outstanding Bytes 1:131.232.0.22" 	inf
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[0].sctp 	"Utilization Maximum Outstanding Bytes 1:131.232.0.22" 	inf
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[0].sctp 	"Minimum Number of Gap Acked Chunks in Last SACK 1:131.232.0.22" 	0
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[0].sctp 	"Average Number of Gap Acked Chunks in Last SACK 1:131.232.0.22" 	0.28968261187452
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[0].sctp 	"Maximum Number of Gap Acked Chunks in Last SACK 1:131.232.0.22" 	1
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[0].sctp 	"StdDev of Number of Gap Acked Chunks in Last SACK 1:131.232.0.22" 	0.45393447697801
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[0].sctp 	"Minimum Number of Non-Revokable Gap Acked Chunks in Last SACK 1:131.232.0.22" 	0
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[0].sctp 	"Average Number of Non-Revokable Gap Acked Chunks in Last SACK 1:131.232.0.22" 	0
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[0].sctp 	"Maximum Number of Non-Revokable Gap Acked Chunks in Last SACK 1:131.232.0.22" 	0
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[0].sctp 	"StdDev of Number of Non-Revokable Gap Acked Chunks in Last SACK 1:131.232.0.22" 	0
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[0].sctp 	"Minimum Number of Gap Missed Chunks in Last SACK 1:131.232.0.22" 	0
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[0].sctp 	"Average Number of Gap Missed Chunks in Last SACK 1:131.232.0.22" 	0.45140315785031
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[0].sctp 	"Maximum Number of Gap Missed Chunks in Last SACK 1:131.232.0.22" 	27
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[0].sctp 	"StdDev of Number of Gap Missed Chunks in Last SACK 1:131.232.0.22" 	1.1563925812757
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[0].sctp 	"Minimum Slow Start Threshold 1:131.233.0.22" 	5000000
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[0].sctp 	"Average Slow Start Threshold 1:131.233.0.22" 	5000000
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[0].sctp 	"Maximum Slow Start Threshold 1:131.233.0.22" 	5000000
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[0].sctp 	"StdDev of Slow Start Threshold 1:131.233.0.22" 	0
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[0].sctp 	"Minimum Congestion Window 1:131.233.0.22" 	4380
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[0].sctp 	"Average Congestion Window 1:131.233.0.22" 	4471.0729944736
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[0].sctp 	"Maximum Congestion Window 1:131.233.0.22" 	23380
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[0].sctp 	"StdDev of Congestion Window 1:131.233.0.22" 	761.53696503964
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[0].sctp 	"Minimum Bandwidth 1:131.233.0.22" 	0.1825
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[0].sctp 	"Average Bandwidth 1:131.233.0.22" 	25.883651770137
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[0].sctp 	"Maximum Bandwidth 1:131.233.0.22" 	140
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[0].sctp 	"StdDev of Bandwidth 1:131.233.0.22" 	7.8942813611583
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[0].sctp 	"Minimum RTO 1:131.233.0.22" 	1
+attr unit  s
+scalar newFeaturesTest.clientMain[0].sctp 	"Average RTO 1:131.233.0.22" 	1.001000689082
+attr unit  s
+scalar newFeaturesTest.clientMain[0].sctp 	"Maximum RTO 1:131.233.0.22" 	3
+attr unit  s
+scalar newFeaturesTest.clientMain[0].sctp 	"StdDev of RTO 1:131.233.0.22" 	1.4142135623731
+attr unit  s
+scalar newFeaturesTest.clientMain[0].sctp 	"Minimum RTT 1:131.233.0.22" 	0.02090132
+attr unit  s
+scalar newFeaturesTest.clientMain[0].sctp 	"Average RTT 1:131.233.0.22" 	0.02090132
+attr unit  s
+scalar newFeaturesTest.clientMain[0].sctp 	"Maximum RTT 1:131.233.0.22" 	0.02090132
+attr unit  s
+scalar newFeaturesTest.clientMain[0].sctp 	"StdDev of RTT 1:131.233.0.22" 	-nan
+attr unit  s
+scalar newFeaturesTest.clientMain[0].sctp 	"Minimum Queued Sent Bytes 1:131.233.0.22" 	0
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[0].sctp 	"Average Queued Sent Bytes 1:131.233.0.22" 	82.331200742199
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[0].sctp 	"Maximum Queued Sent Bytes 1:131.233.0.22" 	42000
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[0].sctp 	"StdDev of Queued Sent Bytes 1:131.233.0.22" 	2251.8182335969
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[0].sctp 	"Utilization Minimum Queued Sent Bytes 1:131.233.0.22" 	-nan
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[0].sctp 	"Utilization Average Queued Sent Bytes 1:131.233.0.22" 	inf
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[0].sctp 	"Utilization Maximum Queued Sent Bytes 1:131.233.0.22" 	inf
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[0].sctp 	"Minimum Outstanding Bytes 1:131.233.0.22" 	0
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[0].sctp 	"Average Outstanding Bytes 1:131.233.0.22" 	33.596056336905
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[0].sctp 	"Maximum Outstanding Bytes 1:131.233.0.22" 	23000
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[0].sctp 	"StdDev of Outstanding Bytes 1:131.233.0.22" 	890.21223168799
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[0].sctp 	"Utilization Minimum Outstanding Bytes 1:131.233.0.22" 	-nan
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[0].sctp 	"Utilization Average Outstanding Bytes 1:131.233.0.22" 	inf
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[0].sctp 	"Utilization Maximum Outstanding Bytes 1:131.233.0.22" 	inf
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[0].sctp 	"Minimum Number of Gap Acked Chunks in Last SACK 1:131.233.0.22" 	0
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[0].sctp 	"Average Number of Gap Acked Chunks in Last SACK 1:131.233.0.22" 	0.00010988096709578
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[0].sctp 	"Maximum Number of Gap Acked Chunks in Last SACK 1:131.233.0.22" 	1
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[0].sctp 	"StdDev of Number of Gap Acked Chunks in Last SACK 1:131.233.0.22" 	0.010489217899049
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[0].sctp 	"Minimum Number of Non-Revokable Gap Acked Chunks in Last SACK 1:131.233.0.22" 	0
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[0].sctp 	"Average Number of Non-Revokable Gap Acked Chunks in Last SACK 1:131.233.0.22" 	0
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[0].sctp 	"Maximum Number of Non-Revokable Gap Acked Chunks in Last SACK 1:131.233.0.22" 	0
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[0].sctp 	"StdDev of Number of Non-Revokable Gap Acked Chunks in Last SACK 1:131.233.0.22" 	0
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[0].sctp 	"Minimum Number of Gap Missed Chunks in Last SACK 1:131.233.0.22" 	0
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[0].sctp 	"Average Number of Gap Missed Chunks in Last SACK 1:131.233.0.22" 	0.0010690442147269
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[0].sctp 	"Maximum Number of Gap Missed Chunks in Last SACK 1:131.233.0.22" 	11
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[0].sctp 	"StdDev of Number of Gap Missed Chunks in Last SACK 1:131.233.0.22" 	0.1023333871003
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[0].sctp 	"Minimum Outstanding Bytes 1:Total" 	0
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[0].sctp 	"Average Outstanding Bytes 1:Total" 	13773.010040167
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[0].sctp 	"Maximum Outstanding Bytes 1:Total" 	84000
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[0].sctp 	"StdDev of Outstanding Bytes 1:Total" 	8053.3789947058
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[0].sctp 	"Minimum Queued Sent Bytes 1:Total" 	0
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[0].sctp 	"Average Queued Sent Bytes 1:Total" 	20758.381761811
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[0].sctp 	"Maximum Queued Sent Bytes 1:Total" 	156000
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[0].sctp 	"StdDev of Queued Sent Bytes 1:Total" 	20524.864750524
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[0].sctp 	"Utilization Minimum Queued Sent Bytes 1:Total" 	-nan
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[0].sctp 	"Utilization Average Queued Sent Bytes 1:Total" 	inf
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[0].sctp 	"Utilization Maximum Queued Sent Bytes 1:Total" 	inf
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[0].sctp 	"Minimum Slow Start Threshold 1:Total" 	5006000
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[0].sctp 	"Average Slow Start Threshold 1:Total" 	5054164.7849309
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[0].sctp 	"Maximum Slow Start Threshold 1:Total" 	10000000
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[0].sctp 	"StdDev of Slow Start Threshold 1:Total" 	475168.92191158
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[0].sctp 	"Minimum Congestion Window 1:Total" 	5880
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[0].sctp 	"Average Congestion Window 1:Total" 	17740.577779576
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[0].sctp 	"Maximum Congestion Window 1:Total" 	87760
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[0].sctp 	"StdDev of Congestion Window 1:Total" 	7885.2276839126
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[0].sctp 	"Minimum Bandwidth 1:Total" 	30.015423698058
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[0].sctp 	"Average Bandwidth 1:Total" 	59.539784935633
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[0].sctp 	"Maximum Bandwidth 1:Total" 	287.21000105053
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[0].sctp 	"StdDev of Bandwidth 1:Total" 	22.384439738425
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[0].sctp 	"Minimum Number of Revokable Gap Blocks in SACK 1" 	0
+attr unit  ""
+scalar newFeaturesTest.clientMain[0].sctp 	"Average Number of Revokable Gap Blocks in SACK 1" 	0.46529119132293
+attr unit  ""
+scalar newFeaturesTest.clientMain[0].sctp 	"Maximum Number of Revokable Gap Blocks in SACK 1" 	7
+attr unit  ""
+scalar newFeaturesTest.clientMain[0].sctp 	"StdDev of Number of Revokable Gap Blocks in SACK 1" 	1.1324215340655
+attr unit  ""
+scalar newFeaturesTest.clientMain[0].sctp 	"Minimum Number of Non-Revokable Gap Blocks in SACK 1" 	0
+attr unit  ""
+scalar newFeaturesTest.clientMain[0].sctp 	"Average Number of Non-Revokable Gap Blocks in SACK 1" 	0
+attr unit  ""
+scalar newFeaturesTest.clientMain[0].sctp 	"Maximum Number of Non-Revokable Gap Blocks in SACK 1" 	0
+attr unit  ""
+scalar newFeaturesTest.clientMain[0].sctp 	"StdDev of Number of Non-Revokable Gap Blocks in SACK 1" 	0
+attr unit  ""
+scalar newFeaturesTest.clientMain[0].sctp 	"Minimum Arwnd in Last SACK 1" 	4853000
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[0].sctp 	"Average Arwnd in Last SACK 1" 	4992208.8951863
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[0].sctp 	"Maximum Arwnd in Last SACK 1" 	5000000
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[0].sctp 	"StdDev of Arwnd in Last SACK 1" 	18308.806072263
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[0].sctp 	"Minimum Peer Rwnd 1" 	4847000
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[0].sctp 	"Average Peer Rwnd 1" 	4980310.5492201
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[0].sctp 	"Maximum Peer Rwnd 1" 	5000000
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[0].sctp 	"StdDev of Peer Rwnd 1" 	20466.531854425
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[0].sctp 	"Number of Fast Retransmissions 11:131.232.0.17" 	0
+scalar newFeaturesTest.serverMain[0].sctp 	"Number of Timer-Based Retransmissions 11:131.232.0.17" 	0
+scalar newFeaturesTest.serverMain[0].sctp 	"Number of Heartbeats Sent 11:131.232.0.17" 	2
+scalar newFeaturesTest.serverMain[0].sctp 	"Number of Heartbeats Received 11:131.232.0.17" 	1
+scalar newFeaturesTest.serverMain[0].sctp 	"Number of Heartbeat ACKs Sent 11:131.232.0.17" 	1
+scalar newFeaturesTest.serverMain[0].sctp 	"Number of Heartbeat ACKs Received 11:131.232.0.17" 	2
+scalar newFeaturesTest.serverMain[0].sctp 	"Number of Duplicates 11:131.232.0.17" 	4
+scalar newFeaturesTest.serverMain[0].sctp 	"Number of Fast Retransmissions 11:131.233.0.17" 	0
+scalar newFeaturesTest.serverMain[0].sctp 	"Number of Timer-Based Retransmissions 11:131.233.0.17" 	0
+scalar newFeaturesTest.serverMain[0].sctp 	"Number of Heartbeats Sent 11:131.233.0.17" 	2
+scalar newFeaturesTest.serverMain[0].sctp 	"Number of Heartbeats Received 11:131.233.0.17" 	1
+scalar newFeaturesTest.serverMain[0].sctp 	"Number of Heartbeat ACKs Sent 11:131.233.0.17" 	1
+scalar newFeaturesTest.serverMain[0].sctp 	"Number of Heartbeat ACKs Received 11:131.233.0.17" 	2
+scalar newFeaturesTest.serverMain[0].sctp 	"Number of Duplicates 11:131.233.0.17" 	7
+scalar newFeaturesTest.serverMain[0].sctp 	"Minimum Slow Start Threshold 11:131.232.0.17" 	5000000
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[0].sctp 	"Average Slow Start Threshold 11:131.232.0.17" 	5000000
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[0].sctp 	"Maximum Slow Start Threshold 11:131.232.0.17" 	5000000
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[0].sctp 	"StdDev of Slow Start Threshold 11:131.232.0.17" 	-nan
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[0].sctp 	"Minimum Congestion Window 11:131.232.0.17" 	4380
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[0].sctp 	"Average Congestion Window 11:131.232.0.17" 	4380
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[0].sctp 	"Maximum Congestion Window 11:131.232.0.17" 	4380
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[0].sctp 	"StdDev of Congestion Window 11:131.232.0.17" 	-nan
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[0].sctp 	"Minimum Bandwidth 11:131.232.0.17" 	0.1825
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[0].sctp 	"Average Bandwidth 11:131.232.0.17" 	0.1825
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[0].sctp 	"Maximum Bandwidth 11:131.232.0.17" 	0.1825
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[0].sctp 	"StdDev of Bandwidth 11:131.232.0.17" 	-nan
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[0].sctp 	"Minimum RTO 11:131.232.0.17" 	1
+attr unit  s
+scalar newFeaturesTest.serverMain[0].sctp 	"Average RTO 11:131.232.0.17" 	1.0009997193402
+attr unit  s
+scalar newFeaturesTest.serverMain[0].sctp 	"Maximum RTO 11:131.232.0.17" 	3
+attr unit  s
+scalar newFeaturesTest.serverMain[0].sctp 	"StdDev of RTO 11:131.232.0.17" 	0.077594478711011
+attr unit  s
+scalar newFeaturesTest.serverMain[0].sctp 	"Minimum RTT 11:131.232.0.17" 	0.02089152
+attr unit  s
+scalar newFeaturesTest.serverMain[0].sctp 	"Average RTT 11:131.232.0.17" 	0.025333635234615
+attr unit  s
+scalar newFeaturesTest.serverMain[0].sctp 	"Maximum RTT 11:131.232.0.17" 	0.04209239
+attr unit  s
+scalar newFeaturesTest.serverMain[0].sctp 	"StdDev of RTT 11:131.232.0.17" 	0.014991278944054
+attr unit  s
+scalar newFeaturesTest.serverMain[0].sctp 	"Minimum Slow Start Threshold 11:131.233.0.17" 	5000000
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[0].sctp 	"Average Slow Start Threshold 11:131.233.0.17" 	5000000
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[0].sctp 	"Maximum Slow Start Threshold 11:131.233.0.17" 	5000000
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[0].sctp 	"StdDev of Slow Start Threshold 11:131.233.0.17" 	-nan
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[0].sctp 	"Minimum Congestion Window 11:131.233.0.17" 	4380
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[0].sctp 	"Average Congestion Window 11:131.233.0.17" 	4380
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[0].sctp 	"Maximum Congestion Window 11:131.233.0.17" 	4380
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[0].sctp 	"StdDev of Congestion Window 11:131.233.0.17" 	-nan
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[0].sctp 	"Minimum Bandwidth 11:131.233.0.17" 	0.1825
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[0].sctp 	"Average Bandwidth 11:131.233.0.17" 	0.1825
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[0].sctp 	"Maximum Bandwidth 11:131.233.0.17" 	0.1825
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[0].sctp 	"StdDev of Bandwidth 11:131.233.0.17" 	-nan
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[0].sctp 	"Minimum RTO 11:131.233.0.17" 	1
+attr unit  s
+scalar newFeaturesTest.serverMain[0].sctp 	"Average RTO 11:131.233.0.17" 	1.0009997193402
+attr unit  s
+scalar newFeaturesTest.serverMain[0].sctp 	"Maximum RTO 11:131.233.0.17" 	3
+attr unit  s
+scalar newFeaturesTest.serverMain[0].sctp 	"StdDev of RTO 11:131.233.0.17" 	0.077525772187287
+attr unit  s
+scalar newFeaturesTest.serverMain[0].sctp 	"Minimum RTT 11:131.233.0.17" 	0.02089152
+attr unit  s
+scalar newFeaturesTest.serverMain[0].sctp 	"Average RTT 11:131.233.0.17" 	0.02089152
+attr unit  s
+scalar newFeaturesTest.serverMain[0].sctp 	"Maximum RTT 11:131.233.0.17" 	0.02089152
+attr unit  s
+scalar newFeaturesTest.serverMain[0].sctp 	"StdDev of RTT 11:131.233.0.17" 	4.3786208111439e-10
+attr unit  s
+scalar newFeaturesTest.serverMain[0].sctp 	"Minimum Queued Received Bytes 6:Total" 	0
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[0].sctp 	"Average Queued Received Bytes 6:Total" 	6747.7604366586
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[0].sctp 	"Maximum Queued Received Bytes 6:Total" 	147000
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[0].sctp 	"StdDev of Queued Received Bytes 6:Total" 	18149.412405393
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[0].sctp 	"Utilization Minimum Queued Received Bytes 6:Total" 	0
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[0].sctp 	"Utilization Average Queued Received Bytes 6:Total" 	0.0013495520873317
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[0].sctp 	"Utilization Maximum Queued Received Bytes 6:Total" 	0.0294
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[0].sctp 	"Minimum Number of Total Gap Blocks Stored 6" 	0
+attr unit  ""
+scalar newFeaturesTest.serverMain[0].sctp 	"Average Number of Total Gap Blocks Stored 6" 	0.46507472236967
+attr unit  ""
+scalar newFeaturesTest.serverMain[0].sctp 	"Maximum Number of Total Gap Blocks Stored 6" 	7
+attr unit  ""
+scalar newFeaturesTest.serverMain[0].sctp 	"StdDev of Number of Total Gap Blocks Stored 6" 	1.1321906601825
+attr unit  ""
+scalar newFeaturesTest.serverMain[0].sctp 	"Minimum Number of Revokable Gap Blocks Stored 6" 	0
+attr unit  ""
+scalar newFeaturesTest.serverMain[0].sctp 	"Average Number of Revokable Gap Blocks Stored 6" 	0.46507472236967
+attr unit  ""
+scalar newFeaturesTest.serverMain[0].sctp 	"Maximum Number of Revokable Gap Blocks Stored 6" 	7
+attr unit  ""
+scalar newFeaturesTest.serverMain[0].sctp 	"StdDev of Number of Revokable Gap Blocks Stored 6" 	1.1321906601825
+attr unit  ""
+scalar newFeaturesTest.serverMain[0].sctp 	"Minimum Number of Non-Revokable Gap Blocks Stored 6" 	0
+attr unit  ""
+scalar newFeaturesTest.serverMain[0].sctp 	"Average Number of Non-Revokable Gap Blocks Stored 6" 	0
+attr unit  ""
+scalar newFeaturesTest.serverMain[0].sctp 	"Maximum Number of Non-Revokable Gap Blocks Stored 6" 	0
+attr unit  ""
+scalar newFeaturesTest.serverMain[0].sctp 	"StdDev of Number of Non-Revokable Gap Blocks Stored 6" 	0
+attr unit  ""
+scalar newFeaturesTest.serverMain[0].sctp 	"Minimum Number of Duplicate TSNs Stored 6" 	0
+attr unit  ""
+scalar newFeaturesTest.serverMain[0].sctp 	"Average Number of Duplicate TSNs Stored 6" 	0.0027099932698374
+attr unit  ""
+scalar newFeaturesTest.serverMain[0].sctp 	"Maximum Number of Duplicate TSNs Stored 6" 	2
+attr unit  ""
+scalar newFeaturesTest.serverMain[0].sctp 	"StdDev of Number of Duplicate TSNs Stored 6" 	0.063754689846375
+attr unit  ""
+scalar newFeaturesTest.serverMain[0].sctp 	"Minimum Number of Revokable Gap Blocks Sent 6" 	0
+attr unit  ""
+scalar newFeaturesTest.serverMain[0].sctp 	"Average Number of Revokable Gap Blocks Sent 6" 	0.46507472236967
+attr unit  ""
+scalar newFeaturesTest.serverMain[0].sctp 	"Maximum Number of Revokable Gap Blocks Sent 6" 	7
+attr unit  ""
+scalar newFeaturesTest.serverMain[0].sctp 	"StdDev of Number of Revokable Gap Blocks Sent 6" 	1.1321906601825
+attr unit  ""
+scalar newFeaturesTest.serverMain[0].sctp 	"Minimum Number of Non-Revokable Gap Blocks Sent 6" 	0
+attr unit  ""
+scalar newFeaturesTest.serverMain[0].sctp 	"Average Number of Non-Revokable Gap Blocks Sent 6" 	0
+attr unit  ""
+scalar newFeaturesTest.serverMain[0].sctp 	"Maximum Number of Non-Revokable Gap Blocks Sent 6" 	0
+attr unit  ""
+scalar newFeaturesTest.serverMain[0].sctp 	"StdDev of Number of Non-Revokable Gap Blocks Sent 6" 	0
+attr unit  ""
+scalar newFeaturesTest.serverMain[0].sctp 	"Minimum Number of Duplicate TSNs Sent 6" 	0
+attr unit  ""
+scalar newFeaturesTest.serverMain[0].sctp 	"Average Number of Duplicate TSNs Sent 6" 	0.0027099932698374
+attr unit  ""
+scalar newFeaturesTest.serverMain[0].sctp 	"Maximum Number of Duplicate TSNs Sent 6" 	2
+attr unit  ""
+scalar newFeaturesTest.serverMain[0].sctp 	"StdDev of Number of Duplicate TSNs Sent 6" 	0.063754689846375
+attr unit  ""
+scalar newFeaturesTest.serverMain[0].sctp 	"Minimum Length of SACK Sent 6" 	20
+attr unit  ""
+scalar newFeaturesTest.serverMain[0].sctp 	"Average Length of SACK Sent 6" 	21.871138862557
+attr unit  ""
+scalar newFeaturesTest.serverMain[0].sctp 	"Maximum Length of SACK Sent 6" 	48
+attr unit  ""
+scalar newFeaturesTest.serverMain[0].sctp 	"StdDev of Length of SACK Sent 6" 	4.5314829411335
+attr unit  ""
+scalar newFeaturesTest.serverMain[0].sctp 	"Minimum Peer Rwnd 6" 	5000000
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[0].sctp 	"Average Peer Rwnd 6" 	5000000
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[0].sctp 	"Maximum Peer Rwnd 6" 	5000000
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[0].sctp 	"StdDev of Peer Rwnd 6" 	-nan
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[1].sctp 	"Number of Fast Retransmissions 2:131.232.0.23" 	162
+scalar newFeaturesTest.clientMain[1].sctp 	"Number of Timer-Based Retransmissions 2:131.232.0.23" 	7
+scalar newFeaturesTest.clientMain[1].sctp 	"Number of Heartbeats Sent 2:131.232.0.23" 	1
+scalar newFeaturesTest.clientMain[1].sctp 	"Number of Heartbeats Received 2:131.232.0.23" 	2
+scalar newFeaturesTest.clientMain[1].sctp 	"Number of Heartbeat ACKs Sent 2:131.232.0.23" 	2
+scalar newFeaturesTest.clientMain[1].sctp 	"Number of Heartbeat ACKs Received 2:131.232.0.23" 	1
+scalar newFeaturesTest.clientMain[1].sctp 	"Number of Duplicates 2:131.232.0.23" 	0
+scalar newFeaturesTest.clientMain[1].sctp 	"Number of Fast Retransmissions 2:131.233.0.23" 	0
+scalar newFeaturesTest.clientMain[1].sctp 	"Number of Timer-Based Retransmissions 2:131.233.0.23" 	0
+scalar newFeaturesTest.clientMain[1].sctp 	"Number of Heartbeats Sent 2:131.233.0.23" 	2
+scalar newFeaturesTest.clientMain[1].sctp 	"Number of Heartbeats Received 2:131.233.0.23" 	2
+scalar newFeaturesTest.clientMain[1].sctp 	"Number of Heartbeat ACKs Sent 2:131.233.0.23" 	2
+scalar newFeaturesTest.clientMain[1].sctp 	"Number of Heartbeat ACKs Received 2:131.233.0.23" 	2
+scalar newFeaturesTest.clientMain[1].sctp 	"Number of Duplicates 2:131.233.0.23" 	0
+scalar newFeaturesTest.clientMain[1].sctp 	"Minimum Slow Start Threshold 2:131.232.0.23" 	6000
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[1].sctp 	"Average Slow Start Threshold 2:131.232.0.23" 	60795.251851199
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[1].sctp 	"Maximum Slow Start Threshold 2:131.232.0.23" 	5000000
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[1].sctp 	"StdDev of Slow Start Threshold 2:131.232.0.23" 	512351.69360523
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[1].sctp 	"Minimum Congestion Window 2:131.232.0.23" 	1500
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[1].sctp 	"Average Congestion Window 2:131.232.0.23" 	12620.808754646
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[1].sctp 	"Maximum Congestion Window 2:131.232.0.23" 	78880
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[1].sctp 	"StdDev of Congestion Window 2:131.232.0.23" 	8289.9323258045
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[1].sctp 	"Minimum Bandwidth 2:131.232.0.23" 	0.1825
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[1].sctp 	"Average Bandwidth 2:131.232.0.23" 	32.728306757907
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[1].sctp 	"Maximum Bandwidth 2:131.232.0.23" 	224.03614457831
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[1].sctp 	"StdDev of Bandwidth 2:131.232.0.23" 	27.371161113646
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[1].sctp 	"Minimum RTO 2:131.232.0.23" 	1
+attr unit  s
+scalar newFeaturesTest.clientMain[1].sctp 	"Average RTO 2:131.232.0.23" 	1.0085139414399
+attr unit  s
+scalar newFeaturesTest.clientMain[1].sctp 	"Maximum RTO 2:131.232.0.23" 	3
+attr unit  s
+scalar newFeaturesTest.clientMain[1].sctp 	"StdDev of RTO 2:131.232.0.23" 	0.098282200041813
+attr unit  s
+scalar newFeaturesTest.clientMain[1].sctp 	"Minimum RTT 2:131.232.0.23" 	0.02172684
+attr unit  s
+scalar newFeaturesTest.clientMain[1].sctp 	"Average RTT 2:131.232.0.23" 	0.05179808270496
+attr unit  s
+scalar newFeaturesTest.clientMain[1].sctp 	"Maximum RTT 2:131.232.0.23" 	0.239668
+attr unit  s
+scalar newFeaturesTest.clientMain[1].sctp 	"StdDev of RTT 2:131.232.0.23" 	0.017472939576248
+attr unit  s
+scalar newFeaturesTest.clientMain[1].sctp 	"Minimum Queued Sent Bytes 2:131.232.0.23" 	0
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[1].sctp 	"Average Queued Sent Bytes 2:131.232.0.23" 	17007.672730261
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[1].sctp 	"Maximum Queued Sent Bytes 2:131.232.0.23" 	123000
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[1].sctp 	"StdDev of Queued Sent Bytes 2:131.232.0.23" 	10457.432405184
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[1].sctp 	"Utilization Minimum Queued Sent Bytes 2:131.232.0.23" 	-nan
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[1].sctp 	"Utilization Average Queued Sent Bytes 2:131.232.0.23" 	inf
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[1].sctp 	"Utilization Maximum Queued Sent Bytes 2:131.232.0.23" 	inf
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[1].sctp 	"Minimum Outstanding Bytes 2:131.232.0.23" 	0
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[1].sctp 	"Average Outstanding Bytes 2:131.232.0.23" 	11975.116417546
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[1].sctp 	"Maximum Outstanding Bytes 2:131.232.0.23" 	79000
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[1].sctp 	"StdDev of Outstanding Bytes 2:131.232.0.23" 	9565.1720193211
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[1].sctp 	"Utilization Minimum Outstanding Bytes 2:131.232.0.23" 	-nan
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[1].sctp 	"Utilization Average Outstanding Bytes 2:131.232.0.23" 	inf
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[1].sctp 	"Utilization Maximum Outstanding Bytes 2:131.232.0.23" 	inf
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[1].sctp 	"Minimum Number of Gap Acked Chunks in Last SACK 2:131.232.0.23" 	0
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[1].sctp 	"Average Number of Gap Acked Chunks in Last SACK 2:131.232.0.23" 	0.31463520009524
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[1].sctp 	"Maximum Number of Gap Acked Chunks in Last SACK 2:131.232.0.23" 	1
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[1].sctp 	"StdDev of Number of Gap Acked Chunks in Last SACK 2:131.232.0.23" 	0.46535728511913
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[1].sctp 	"Minimum Number of Non-Revokable Gap Acked Chunks in Last SACK 2:131.232.0.23" 	0
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[1].sctp 	"Average Number of Non-Revokable Gap Acked Chunks in Last SACK 2:131.232.0.23" 	0
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[1].sctp 	"Maximum Number of Non-Revokable Gap Acked Chunks in Last SACK 2:131.232.0.23" 	0
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[1].sctp 	"StdDev of Number of Non-Revokable Gap Acked Chunks in Last SACK 2:131.232.0.23" 	0
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[1].sctp 	"Minimum Number of Gap Missed Chunks in Last SACK 2:131.232.0.23" 	0
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[1].sctp 	"Average Number of Gap Missed Chunks in Last SACK 2:131.232.0.23" 	0.39528116223543
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[1].sctp 	"Maximum Number of Gap Missed Chunks in Last SACK 2:131.232.0.23" 	31
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[1].sctp 	"StdDev of Number of Gap Missed Chunks in Last SACK 2:131.232.0.23" 	0.92019393929767
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[1].sctp 	"Minimum Slow Start Threshold 2:131.233.0.23" 	5000000
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[1].sctp 	"Average Slow Start Threshold 2:131.233.0.23" 	5000000
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[1].sctp 	"Maximum Slow Start Threshold 2:131.233.0.23" 	5000000
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[1].sctp 	"StdDev of Slow Start Threshold 2:131.233.0.23" 	-nan
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[1].sctp 	"Minimum Congestion Window 2:131.233.0.23" 	4380
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[1].sctp 	"Average Congestion Window 2:131.233.0.23" 	4380
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[1].sctp 	"Maximum Congestion Window 2:131.233.0.23" 	4380
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[1].sctp 	"StdDev of Congestion Window 2:131.233.0.23" 	-nan
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[1].sctp 	"Minimum Bandwidth 2:131.233.0.23" 	0.1825
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[1].sctp 	"Average Bandwidth 2:131.233.0.23" 	0.1825
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[1].sctp 	"Maximum Bandwidth 2:131.233.0.23" 	0.1825
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[1].sctp 	"StdDev of Bandwidth 2:131.233.0.23" 	-nan
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[1].sctp 	"Minimum RTO 2:131.233.0.23" 	1
+attr unit  s
+scalar newFeaturesTest.clientMain[1].sctp 	"Average RTO 2:131.233.0.23" 	1.0009746419606
+attr unit  s
+scalar newFeaturesTest.clientMain[1].sctp 	"Maximum RTO 2:131.233.0.23" 	3
+attr unit  s
+scalar newFeaturesTest.clientMain[1].sctp 	"StdDev of RTO 2:131.233.0.23" 	0.074075986815575
+attr unit  s
+scalar newFeaturesTest.clientMain[1].sctp 	"Minimum RTT 2:131.233.0.23" 	0.02090132
+attr unit  s
+scalar newFeaturesTest.clientMain[1].sctp 	"Average RTT 2:131.233.0.23" 	0.02090132
+attr unit  s
+scalar newFeaturesTest.clientMain[1].sctp 	"Maximum RTT 2:131.233.0.23" 	0.02090132
+attr unit  s
+scalar newFeaturesTest.clientMain[1].sctp 	"StdDev of RTT 2:131.233.0.23" 	4.1284672227843e-10
+attr unit  s
+scalar newFeaturesTest.clientMain[1].sctp 	"Minimum Number of Gap Acked Chunks in Last SACK 2:131.233.0.23" 	0
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[1].sctp 	"Average Number of Gap Acked Chunks in Last SACK 2:131.233.0.23" 	0
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[1].sctp 	"Maximum Number of Gap Acked Chunks in Last SACK 2:131.233.0.23" 	0
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[1].sctp 	"StdDev of Number of Gap Acked Chunks in Last SACK 2:131.233.0.23" 	0
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[1].sctp 	"Minimum Number of Non-Revokable Gap Acked Chunks in Last SACK 2:131.233.0.23" 	0
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[1].sctp 	"Average Number of Non-Revokable Gap Acked Chunks in Last SACK 2:131.233.0.23" 	0
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[1].sctp 	"Maximum Number of Non-Revokable Gap Acked Chunks in Last SACK 2:131.233.0.23" 	0
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[1].sctp 	"StdDev of Number of Non-Revokable Gap Acked Chunks in Last SACK 2:131.233.0.23" 	0
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[1].sctp 	"Minimum Number of Gap Missed Chunks in Last SACK 2:131.233.0.23" 	0
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[1].sctp 	"Average Number of Gap Missed Chunks in Last SACK 2:131.233.0.23" 	0
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[1].sctp 	"Maximum Number of Gap Missed Chunks in Last SACK 2:131.233.0.23" 	0
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[1].sctp 	"StdDev of Number of Gap Missed Chunks in Last SACK 2:131.233.0.23" 	0
+attr unit  Chunks
+scalar newFeaturesTest.clientMain[1].sctp 	"Minimum Outstanding Bytes 2:Total" 	0
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[1].sctp 	"Average Outstanding Bytes 2:Total" 	11975.116417546
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[1].sctp 	"Maximum Outstanding Bytes 2:Total" 	79000
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[1].sctp 	"StdDev of Outstanding Bytes 2:Total" 	9565.1720193211
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[1].sctp 	"Minimum Queued Sent Bytes 2:Total" 	0
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[1].sctp 	"Average Queued Sent Bytes 2:Total" 	17007.672730261
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[1].sctp 	"Maximum Queued Sent Bytes 2:Total" 	123000
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[1].sctp 	"StdDev of Queued Sent Bytes 2:Total" 	10457.432405184
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[1].sctp 	"Utilization Minimum Queued Sent Bytes 2:Total" 	-nan
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[1].sctp 	"Utilization Average Queued Sent Bytes 2:Total" 	inf
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[1].sctp 	"Utilization Maximum Queued Sent Bytes 2:Total" 	inf
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[1].sctp 	"Minimum Slow Start Threshold 2:Total" 	5006000
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[1].sctp 	"Average Slow Start Threshold 2:Total" 	5057945.4515476
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[1].sctp 	"Maximum Slow Start Threshold 2:Total" 	10000000
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[1].sctp 	"StdDev of Slow Start Threshold 2:Total" 	498090.69000179
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[1].sctp 	"Minimum Congestion Window 2:Total" 	7380
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[1].sctp 	"Average Congestion Window 2:Total" 	17211.96388123
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[1].sctp 	"Maximum Congestion Window 2:Total" 	83260
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[1].sctp 	"StdDev of Congestion Window 2:Total" 	8158.1605834933
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[1].sctp 	"Minimum Bandwidth 2:Total" 	33.030265998615
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[1].sctp 	"Average Bandwidth 2:Total" 	59.458739733743
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[1].sctp 	"Maximum Bandwidth 2:Total" 	250.26368948849
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[1].sctp 	"StdDev of Bandwidth 2:Total" 	26.950667670161
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[1].sctp 	"Minimum Number of Revokable Gap Blocks in SACK 2" 	0
+attr unit  ""
+scalar newFeaturesTest.clientMain[1].sctp 	"Average Number of Revokable Gap Blocks in SACK 2" 	0.41687031995196
+attr unit  ""
+scalar newFeaturesTest.clientMain[1].sctp 	"Maximum Number of Revokable Gap Blocks in SACK 2" 	14
+attr unit  ""
+scalar newFeaturesTest.clientMain[1].sctp 	"StdDev of Number of Revokable Gap Blocks in SACK 2" 	0.68050290139284
+attr unit  ""
+scalar newFeaturesTest.clientMain[1].sctp 	"Minimum Number of Non-Revokable Gap Blocks in SACK 2" 	0
+attr unit  ""
+scalar newFeaturesTest.clientMain[1].sctp 	"Average Number of Non-Revokable Gap Blocks in SACK 2" 	0
+attr unit  ""
+scalar newFeaturesTest.clientMain[1].sctp 	"Maximum Number of Non-Revokable Gap Blocks in SACK 2" 	0
+attr unit  ""
+scalar newFeaturesTest.clientMain[1].sctp 	"StdDev of Number of Non-Revokable Gap Blocks in SACK 2" 	0
+attr unit  ""
+scalar newFeaturesTest.clientMain[1].sctp 	"Minimum Arwnd in Last SACK 2" 	4775000
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[1].sctp 	"Average Arwnd in Last SACK 2" 	4851474.563891
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[1].sctp 	"Maximum Arwnd in Last SACK 2" 	4999000
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[1].sctp 	"StdDev of Arwnd in Last SACK 2" 	56291.87458995
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[1].sctp 	"Minimum Peer Rwnd 2" 	4759000
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[1].sctp 	"Average Peer Rwnd 2" 	4841299.0899993
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[1].sctp 	"Maximum Peer Rwnd 2" 	5000000
+attr unit  Bytes
+scalar newFeaturesTest.clientMain[1].sctp 	"StdDev of Peer Rwnd 2" 	53946.969297024
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[1].sctp 	"Number of Fast Retransmissions 12:131.232.0.18" 	0
+scalar newFeaturesTest.serverMain[1].sctp 	"Number of Timer-Based Retransmissions 12:131.232.0.18" 	0
+scalar newFeaturesTest.serverMain[1].sctp 	"Number of Heartbeats Sent 12:131.232.0.18" 	2
+scalar newFeaturesTest.serverMain[1].sctp 	"Number of Heartbeats Received 12:131.232.0.18" 	1
+scalar newFeaturesTest.serverMain[1].sctp 	"Number of Heartbeat ACKs Sent 12:131.232.0.18" 	1
+scalar newFeaturesTest.serverMain[1].sctp 	"Number of Heartbeat ACKs Received 12:131.232.0.18" 	2
+scalar newFeaturesTest.serverMain[1].sctp 	"Number of Duplicates 12:131.232.0.18" 	0
+scalar newFeaturesTest.serverMain[1].sctp 	"Number of Fast Retransmissions 12:131.233.0.18" 	0
+scalar newFeaturesTest.serverMain[1].sctp 	"Number of Timer-Based Retransmissions 12:131.233.0.18" 	0
+scalar newFeaturesTest.serverMain[1].sctp 	"Number of Heartbeats Sent 12:131.233.0.18" 	2
+scalar newFeaturesTest.serverMain[1].sctp 	"Number of Heartbeats Received 12:131.233.0.18" 	2
+scalar newFeaturesTest.serverMain[1].sctp 	"Number of Heartbeat ACKs Sent 12:131.233.0.18" 	2
+scalar newFeaturesTest.serverMain[1].sctp 	"Number of Heartbeat ACKs Received 12:131.233.0.18" 	2
+scalar newFeaturesTest.serverMain[1].sctp 	"Number of Duplicates 12:131.233.0.18" 	0
+scalar newFeaturesTest.serverMain[1].sctp 	"Minimum Slow Start Threshold 12:131.232.0.18" 	5000000
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[1].sctp 	"Average Slow Start Threshold 12:131.232.0.18" 	5000000
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[1].sctp 	"Maximum Slow Start Threshold 12:131.232.0.18" 	5000000
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[1].sctp 	"StdDev of Slow Start Threshold 12:131.232.0.18" 	-nan
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[1].sctp 	"Minimum Congestion Window 12:131.232.0.18" 	4380
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[1].sctp 	"Average Congestion Window 12:131.232.0.18" 	4380
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[1].sctp 	"Maximum Congestion Window 12:131.232.0.18" 	4380
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[1].sctp 	"StdDev of Congestion Window 12:131.232.0.18" 	-nan
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[1].sctp 	"Minimum Bandwidth 12:131.232.0.18" 	0.1825
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[1].sctp 	"Average Bandwidth 12:131.232.0.18" 	0.1825
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[1].sctp 	"Maximum Bandwidth 12:131.232.0.18" 	0.1825
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[1].sctp 	"StdDev of Bandwidth 12:131.232.0.18" 	-nan
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[1].sctp 	"Minimum RTO 12:131.232.0.18" 	1
+attr unit  s
+scalar newFeaturesTest.serverMain[1].sctp 	"Average RTO 12:131.232.0.18" 	1.0011669283737
+attr unit  s
+scalar newFeaturesTest.serverMain[1].sctp 	"Maximum RTO 12:131.232.0.18" 	3
+attr unit  s
+scalar newFeaturesTest.serverMain[1].sctp 	"StdDev of RTO 12:131.232.0.18" 	0.081047961115276
+attr unit  s
+scalar newFeaturesTest.serverMain[1].sctp 	"Minimum RTT 12:131.232.0.18" 	0.02503713
+attr unit  s
+scalar newFeaturesTest.serverMain[1].sctp 	"Average RTT 12:131.232.0.18" 	0.028934736478578
+attr unit  s
+scalar newFeaturesTest.serverMain[1].sctp 	"Maximum RTT 12:131.232.0.18" 	0.041974
+attr unit  s
+scalar newFeaturesTest.serverMain[1].sctp 	"StdDev of RTT 12:131.232.0.18" 	0.011976175629075
+attr unit  s
+scalar newFeaturesTest.serverMain[1].sctp 	"Minimum Slow Start Threshold 12:131.233.0.18" 	5000000
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[1].sctp 	"Average Slow Start Threshold 12:131.233.0.18" 	5000000
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[1].sctp 	"Maximum Slow Start Threshold 12:131.233.0.18" 	5000000
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[1].sctp 	"StdDev of Slow Start Threshold 12:131.233.0.18" 	-nan
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[1].sctp 	"Minimum Congestion Window 12:131.233.0.18" 	4380
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[1].sctp 	"Average Congestion Window 12:131.233.0.18" 	4380
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[1].sctp 	"Maximum Congestion Window 12:131.233.0.18" 	4380
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[1].sctp 	"StdDev of Congestion Window 12:131.233.0.18" 	-nan
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[1].sctp 	"Minimum Bandwidth 12:131.233.0.18" 	0.1825
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[1].sctp 	"Average Bandwidth 12:131.233.0.18" 	0.1825
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[1].sctp 	"Maximum Bandwidth 12:131.233.0.18" 	0.1825
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[1].sctp 	"StdDev of Bandwidth 12:131.233.0.18" 	-nan
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[1].sctp 	"Minimum RTO 12:131.233.0.18" 	1
+attr unit  s
+scalar newFeaturesTest.serverMain[1].sctp 	"Average RTO 12:131.233.0.18" 	1.000973710144
+attr unit  s
+scalar newFeaturesTest.serverMain[1].sctp 	"Maximum RTO 12:131.233.0.18" 	3
+attr unit  s
+scalar newFeaturesTest.serverMain[1].sctp 	"StdDev of RTO 12:131.233.0.18" 	0.073998498285534
+attr unit  s
+scalar newFeaturesTest.serverMain[1].sctp 	"Minimum RTT 12:131.233.0.18" 	0.02089152
+attr unit  s
+scalar newFeaturesTest.serverMain[1].sctp 	"Average RTT 12:131.233.0.18" 	0.02089152
+attr unit  s
+scalar newFeaturesTest.serverMain[1].sctp 	"Maximum RTT 12:131.233.0.18" 	0.02089152
+attr unit  s
+scalar newFeaturesTest.serverMain[1].sctp 	"StdDev of RTT 12:131.233.0.18" 	0
+attr unit  s
+scalar newFeaturesTest.serverMain[1].sctp 	"Minimum Queued Received Bytes 7:Total" 	1000
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[1].sctp 	"Average Queued Received Bytes 7:Total" 	148367.13643525
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[1].sctp 	"Maximum Queued Received Bytes 7:Total" 	225000
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[1].sctp 	"StdDev of Queued Received Bytes 7:Total" 	56210.422894065
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[1].sctp 	"Utilization Minimum Queued Received Bytes 7:Total" 	0.0002
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[1].sctp 	"Utilization Average Queued Received Bytes 7:Total" 	0.029673427287051
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[1].sctp 	"Utilization Maximum Queued Received Bytes 7:Total" 	0.045
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[1].sctp 	"Minimum Number of Total Gap Blocks Stored 7" 	0
+attr unit  ""
+scalar newFeaturesTest.serverMain[1].sctp 	"Average Number of Total Gap Blocks Stored 7" 	0.41668687869662
+attr unit  ""
+scalar newFeaturesTest.serverMain[1].sctp 	"Maximum Number of Total Gap Blocks Stored 7" 	14
+attr unit  ""
+scalar newFeaturesTest.serverMain[1].sctp 	"StdDev of Number of Total Gap Blocks Stored 7" 	0.68045577913002
+attr unit  ""
+scalar newFeaturesTest.serverMain[1].sctp 	"Minimum Number of Revokable Gap Blocks Stored 7" 	0
+attr unit  ""
+scalar newFeaturesTest.serverMain[1].sctp 	"Average Number of Revokable Gap Blocks Stored 7" 	0.41668687869662
+attr unit  ""
+scalar newFeaturesTest.serverMain[1].sctp 	"Maximum Number of Revokable Gap Blocks Stored 7" 	14
+attr unit  ""
+scalar newFeaturesTest.serverMain[1].sctp 	"StdDev of Number of Revokable Gap Blocks Stored 7" 	0.68045577913002
+attr unit  ""
+scalar newFeaturesTest.serverMain[1].sctp 	"Minimum Number of Non-Revokable Gap Blocks Stored 7" 	0
+attr unit  ""
+scalar newFeaturesTest.serverMain[1].sctp 	"Average Number of Non-Revokable Gap Blocks Stored 7" 	0
+attr unit  ""
+scalar newFeaturesTest.serverMain[1].sctp 	"Maximum Number of Non-Revokable Gap Blocks Stored 7" 	0
+attr unit  ""
+scalar newFeaturesTest.serverMain[1].sctp 	"StdDev of Number of Non-Revokable Gap Blocks Stored 7" 	0
+attr unit  ""
+scalar newFeaturesTest.serverMain[1].sctp 	"Minimum Number of Duplicate TSNs Stored 7" 	0
+attr unit  ""
+scalar newFeaturesTest.serverMain[1].sctp 	"Average Number of Duplicate TSNs Stored 7" 	0
+attr unit  ""
+scalar newFeaturesTest.serverMain[1].sctp 	"Maximum Number of Duplicate TSNs Stored 7" 	0
+attr unit  ""
+scalar newFeaturesTest.serverMain[1].sctp 	"StdDev of Number of Duplicate TSNs Stored 7" 	0
+attr unit  ""
+scalar newFeaturesTest.serverMain[1].sctp 	"Minimum Number of Revokable Gap Blocks Sent 7" 	0
+attr unit  ""
+scalar newFeaturesTest.serverMain[1].sctp 	"Average Number of Revokable Gap Blocks Sent 7" 	0.41668687869662
+attr unit  ""
+scalar newFeaturesTest.serverMain[1].sctp 	"Maximum Number of Revokable Gap Blocks Sent 7" 	14
+attr unit  ""
+scalar newFeaturesTest.serverMain[1].sctp 	"StdDev of Number of Revokable Gap Blocks Sent 7" 	0.68045577913002
+attr unit  ""
+scalar newFeaturesTest.serverMain[1].sctp 	"Minimum Number of Non-Revokable Gap Blocks Sent 7" 	0
+attr unit  ""
+scalar newFeaturesTest.serverMain[1].sctp 	"Average Number of Non-Revokable Gap Blocks Sent 7" 	0
+attr unit  ""
+scalar newFeaturesTest.serverMain[1].sctp 	"Maximum Number of Non-Revokable Gap Blocks Sent 7" 	0
+attr unit  ""
+scalar newFeaturesTest.serverMain[1].sctp 	"StdDev of Number of Non-Revokable Gap Blocks Sent 7" 	0
+attr unit  ""
+scalar newFeaturesTest.serverMain[1].sctp 	"Minimum Number of Duplicate TSNs Sent 7" 	0
+attr unit  ""
+scalar newFeaturesTest.serverMain[1].sctp 	"Average Number of Duplicate TSNs Sent 7" 	0
+attr unit  ""
+scalar newFeaturesTest.serverMain[1].sctp 	"Maximum Number of Duplicate TSNs Sent 7" 	0
+attr unit  ""
+scalar newFeaturesTest.serverMain[1].sctp 	"StdDev of Number of Duplicate TSNs Sent 7" 	0
+attr unit  ""
+scalar newFeaturesTest.serverMain[1].sctp 	"Minimum Length of SACK Sent 7" 	20
+attr unit  ""
+scalar newFeaturesTest.serverMain[1].sctp 	"Average Length of SACK Sent 7" 	21.666747514786
+attr unit  ""
+scalar newFeaturesTest.serverMain[1].sctp 	"Maximum Length of SACK Sent 7" 	76
+attr unit  ""
+scalar newFeaturesTest.serverMain[1].sctp 	"StdDev of Length of SACK Sent 7" 	2.7218231165213
+attr unit  ""
+scalar newFeaturesTest.serverMain[1].sctp 	"Minimum Peer Rwnd 7" 	5000000
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[1].sctp 	"Average Peer Rwnd 7" 	5000000
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[1].sctp 	"Maximum Peer Rwnd 7" 	5000000
+attr unit  Bytes
+scalar newFeaturesTest.serverMain[1].sctp 	"StdDev of Peer Rwnd 7" 	-nan
+attr unit  Bytes
+scalar newFeaturesTest.westernBorderRouter[0].pingApp 	"Pings sent" 	0
+scalar newFeaturesTest.westernBorderRouter[0].networkLayer.arp 	"ARP requests sent" 	0
+scalar newFeaturesTest.westernBorderRouter[0].networkLayer.arp 	"ARP replies sent" 	0
+scalar newFeaturesTest.westernBorderRouter[0].networkLayer.arp 	"ARP resolutions" 	0
+scalar newFeaturesTest.westernBorderRouter[0].networkLayer.arp 	"failed ARP resolutions" 	0
+scalar newFeaturesTest.westernBorderRouter[0].ppp[0].queue 	"packets received by queue" 	50799
+scalar newFeaturesTest.westernBorderRouter[0].ppp[0].queue 	"packets dropped by queue" 	0
+scalar newFeaturesTest.westernBorderRouter[0].ppp[1].queue 	"packets received by queue" 	6100
+scalar newFeaturesTest.westernBorderRouter[0].ppp[1].queue 	"packets dropped by queue" 	0
+scalar newFeaturesTest.westernBorderRouter[0].ppp[2].queue 	"packets received by queue" 	5924
+scalar newFeaturesTest.westernBorderRouter[0].ppp[2].queue 	"packets dropped by queue" 	0
+scalar newFeaturesTest.westernBorderRouter[0].ppp[3].queue 	"packets received by queue" 	6341
+scalar newFeaturesTest.westernBorderRouter[0].ppp[3].queue 	"packets dropped by queue" 	0
+scalar newFeaturesTest.westernBorderRouter[0].ppp[4].queue 	"packets received by queue" 	6071
+scalar newFeaturesTest.westernBorderRouter[0].ppp[4].queue 	"packets dropped by queue" 	0
+scalar newFeaturesTest.westernBorderRouter[0].ppp[5].queue 	"packets received by queue" 	6406
+scalar newFeaturesTest.westernBorderRouter[0].ppp[5].queue 	"packets dropped by queue" 	0
+scalar newFeaturesTest.westernBorderRouter[1].pingApp 	"Pings sent" 	0
+scalar newFeaturesTest.westernBorderRouter[1].networkLayer.arp 	"ARP requests sent" 	0
+scalar newFeaturesTest.westernBorderRouter[1].networkLayer.arp 	"ARP replies sent" 	0
+scalar newFeaturesTest.westernBorderRouter[1].networkLayer.arp 	"ARP resolutions" 	0
+scalar newFeaturesTest.westernBorderRouter[1].networkLayer.arp 	"failed ARP resolutions" 	0
+scalar newFeaturesTest.westernBorderRouter[1].ppp[0].queue 	"packets received by queue" 	249
+scalar newFeaturesTest.westernBorderRouter[1].ppp[0].queue 	"packets dropped by queue" 	0
+scalar newFeaturesTest.westernBorderRouter[1].ppp[1].queue 	"packets received by queue" 	52
+scalar newFeaturesTest.westernBorderRouter[1].ppp[1].queue 	"packets dropped by queue" 	0
+scalar newFeaturesTest.westernBorderRouter[1].ppp[2].queue 	"packets received by queue" 	4
+scalar newFeaturesTest.westernBorderRouter[1].ppp[2].queue 	"packets dropped by queue" 	0
+scalar newFeaturesTest.westernBorderRouter[1].ppp[3].queue 	"packets received by queue" 	25
+scalar newFeaturesTest.westernBorderRouter[1].ppp[3].queue 	"packets dropped by queue" 	0
+scalar newFeaturesTest.westernBorderRouter[1].ppp[4].queue 	"packets received by queue" 	54
+scalar newFeaturesTest.westernBorderRouter[1].ppp[4].queue 	"packets dropped by queue" 	0
+scalar newFeaturesTest.westernBorderRouter[1].ppp[5].queue 	"packets received by queue" 	56
+scalar newFeaturesTest.westernBorderRouter[1].ppp[5].queue 	"packets dropped by queue" 	0
+scalar newFeaturesTest.westernCoreRouter[0].pingApp 	"Pings sent" 	0
+scalar newFeaturesTest.westernCoreRouter[0].networkLayer.arp 	"ARP requests sent" 	0
+scalar newFeaturesTest.westernCoreRouter[0].networkLayer.arp 	"ARP replies sent" 	0
+scalar newFeaturesTest.westernCoreRouter[0].networkLayer.arp 	"ARP resolutions" 	0
+scalar newFeaturesTest.westernCoreRouter[0].networkLayer.arp 	"failed ARP resolutions" 	0
+scalar newFeaturesTest.westernCoreRouter[0].ppp[0].queue 	"packets received by queue" 	50799
+scalar newFeaturesTest.westernCoreRouter[0].ppp[0].queue 	"packets dropped by queue" 	892
+scalar newFeaturesTest.westernCoreRouter[0].ppp[0].queue 	"packets dropped early by RED" 	722
+scalar newFeaturesTest.westernCoreRouter[0].ppp[1].queue 	"packets received by queue" 	30842
+scalar newFeaturesTest.westernCoreRouter[0].ppp[1].queue 	"packets dropped by queue" 	0
+scalar newFeaturesTest.westernCoreRouter[1].pingApp 	"Pings sent" 	0
+scalar newFeaturesTest.westernCoreRouter[1].networkLayer.arp 	"ARP requests sent" 	0
+scalar newFeaturesTest.westernCoreRouter[1].networkLayer.arp 	"ARP replies sent" 	0
+scalar newFeaturesTest.westernCoreRouter[1].networkLayer.arp 	"ARP resolutions" 	0
+scalar newFeaturesTest.westernCoreRouter[1].networkLayer.arp 	"failed ARP resolutions" 	0
+scalar newFeaturesTest.westernCoreRouter[1].ppp[0].queue 	"packets received by queue" 	249
+scalar newFeaturesTest.westernCoreRouter[1].ppp[0].queue 	"packets dropped by queue" 	0
+scalar newFeaturesTest.westernCoreRouter[1].ppp[0].queue 	"packets dropped early by RED" 	0
+scalar newFeaturesTest.westernCoreRouter[1].ppp[1].queue 	"packets received by queue" 	191
+scalar newFeaturesTest.westernCoreRouter[1].ppp[1].queue 	"packets dropped by queue" 	0
+scalar newFeaturesTest.easternCoreRouter[0].pingApp 	"Pings sent" 	0
+scalar newFeaturesTest.easternCoreRouter[0].networkLayer.arp 	"ARP requests sent" 	0
+scalar newFeaturesTest.easternCoreRouter[0].networkLayer.arp 	"ARP replies sent" 	0
+scalar newFeaturesTest.easternCoreRouter[0].networkLayer.arp 	"ARP resolutions" 	0
+scalar newFeaturesTest.easternCoreRouter[0].networkLayer.arp 	"failed ARP resolutions" 	0
+scalar newFeaturesTest.easternCoreRouter[0].ppp[0].queue 	"packets received by queue" 	30842
+scalar newFeaturesTest.easternCoreRouter[0].ppp[0].queue 	"packets dropped by queue" 	0
+scalar newFeaturesTest.easternCoreRouter[0].ppp[0].queue 	"packets dropped early by RED" 	0
+scalar newFeaturesTest.easternCoreRouter[0].ppp[1].queue 	"packets received by queue" 	49905
+scalar newFeaturesTest.easternCoreRouter[0].ppp[1].queue 	"packets dropped by queue" 	0
+scalar newFeaturesTest.easternCoreRouter[1].pingApp 	"Pings sent" 	0
+scalar newFeaturesTest.easternCoreRouter[1].networkLayer.arp 	"ARP requests sent" 	0
+scalar newFeaturesTest.easternCoreRouter[1].networkLayer.arp 	"ARP replies sent" 	0
+scalar newFeaturesTest.easternCoreRouter[1].networkLayer.arp 	"ARP resolutions" 	0
+scalar newFeaturesTest.easternCoreRouter[1].networkLayer.arp 	"failed ARP resolutions" 	0
+scalar newFeaturesTest.easternCoreRouter[1].ppp[0].queue 	"packets received by queue" 	191
+scalar newFeaturesTest.easternCoreRouter[1].ppp[0].queue 	"packets dropped by queue" 	0
+scalar newFeaturesTest.easternCoreRouter[1].ppp[0].queue 	"packets dropped early by RED" 	0
+scalar newFeaturesTest.easternCoreRouter[1].ppp[1].queue 	"packets received by queue" 	249
+scalar newFeaturesTest.easternCoreRouter[1].ppp[1].queue 	"packets dropped by queue" 	0
+scalar newFeaturesTest.easternBorderRouter[0].pingApp 	"Pings sent" 	0
+scalar newFeaturesTest.easternBorderRouter[0].networkLayer.arp 	"ARP requests sent" 	0
+scalar newFeaturesTest.easternBorderRouter[0].networkLayer.arp 	"ARP replies sent" 	0
+scalar newFeaturesTest.easternBorderRouter[0].networkLayer.arp 	"ARP resolutions" 	0
+scalar newFeaturesTest.easternBorderRouter[0].networkLayer.arp 	"failed ARP resolutions" 	0
+scalar newFeaturesTest.easternBorderRouter[0].ppp[0].queue 	"packets received by queue" 	30840
+scalar newFeaturesTest.easternBorderRouter[0].ppp[0].queue 	"packets dropped by queue" 	0
+scalar newFeaturesTest.easternBorderRouter[0].ppp[1].queue 	"packets received by queue" 	9970
+scalar newFeaturesTest.easternBorderRouter[0].ppp[1].queue 	"packets dropped by queue" 	0
+scalar newFeaturesTest.easternBorderRouter[0].ppp[2].queue 	"packets received by queue" 	9981
+scalar newFeaturesTest.easternBorderRouter[0].ppp[2].queue 	"packets dropped by queue" 	0
+scalar newFeaturesTest.easternBorderRouter[0].ppp[3].queue 	"packets received by queue" 	10003
+scalar newFeaturesTest.easternBorderRouter[0].ppp[3].queue 	"packets dropped by queue" 	0
+scalar newFeaturesTest.easternBorderRouter[0].ppp[4].queue 	"packets received by queue" 	9966
+scalar newFeaturesTest.easternBorderRouter[0].ppp[4].queue 	"packets dropped by queue" 	0
+scalar newFeaturesTest.easternBorderRouter[0].ppp[5].queue 	"packets received by queue" 	9985
+scalar newFeaturesTest.easternBorderRouter[0].ppp[5].queue 	"packets dropped by queue" 	0
+scalar newFeaturesTest.easternBorderRouter[1].pingApp 	"Pings sent" 	0
+scalar newFeaturesTest.easternBorderRouter[1].networkLayer.arp 	"ARP requests sent" 	0
+scalar newFeaturesTest.easternBorderRouter[1].networkLayer.arp 	"ARP replies sent" 	0
+scalar newFeaturesTest.easternBorderRouter[1].networkLayer.arp 	"ARP resolutions" 	0
+scalar newFeaturesTest.easternBorderRouter[1].networkLayer.arp 	"failed ARP resolutions" 	0
+scalar newFeaturesTest.easternBorderRouter[1].ppp[0].queue 	"packets received by queue" 	191
+scalar newFeaturesTest.easternBorderRouter[1].ppp[0].queue 	"packets dropped by queue" 	0
+scalar newFeaturesTest.easternBorderRouter[1].ppp[1].queue 	"packets received by queue" 	58
+scalar newFeaturesTest.easternBorderRouter[1].ppp[1].queue 	"packets dropped by queue" 	0
+scalar newFeaturesTest.easternBorderRouter[1].ppp[2].queue 	"packets received by queue" 	4
+scalar newFeaturesTest.easternBorderRouter[1].ppp[2].queue 	"packets dropped by queue" 	0
+scalar newFeaturesTest.easternBorderRouter[1].ppp[3].queue 	"packets received by queue" 	43
+scalar newFeaturesTest.easternBorderRouter[1].ppp[3].queue 	"packets dropped by queue" 	0
+scalar newFeaturesTest.easternBorderRouter[1].ppp[4].queue 	"packets received by queue" 	59
+scalar newFeaturesTest.easternBorderRouter[1].ppp[4].queue 	"packets dropped by queue" 	0
+scalar newFeaturesTest.easternBorderRouter[1].ppp[5].queue 	"packets received by queue" 	85
+scalar newFeaturesTest.easternBorderRouter[1].ppp[5].queue 	"packets dropped by queue" 	0
+scalar newFeaturesTest.clientMain[0].sctp 	"Association Lifetime" 	41.77385439
+scalar newFeaturesTest.clientMain[0].sctp 	"Acked Bytes" 	10000000
+scalar newFeaturesTest.clientMain[0].sctp 	"Throughput [bit/s]" 	1915073.463251
+scalar newFeaturesTest.clientMain[0].sctp 	"Transmitted Bytes" 	10201000
+scalar newFeaturesTest.clientMain[0].sctp 	"Packets Received" 	6152
+scalar newFeaturesTest.clientMain[0].sctp 	"Packets Dropped" 	0
+scalar newFeaturesTest.clientMain[0].sctp 	"Fast RTX" 	140
+scalar newFeaturesTest.clientMain[0].sctp 	"Timer-Based RTX" 	55
+scalar newFeaturesTest.clientMain[0].sctp 	"Sum of R Gap Ranges" 	40606
+scalar newFeaturesTest.clientMain[0].sctp 	"Sum of NR Gap Ranges" 	0
+scalar newFeaturesTest.clientMain[0].sctp 	"Duplicate Acks" 	11
+scalar newFeaturesTest.clientMain[0].sctp 	"Overfull SACKs" 	0
+scalar newFeaturesTest.clientMain[0].sctp 	"Drops Because New TSN Greater Than Highest TSN" 	0
+scalar newFeaturesTest.clientMain[0].sctp 	"Drops Because No Room In Buffer" 	0
+scalar newFeaturesTest.clientMain[0].sctp 	"Chunks Reneged" 	0
+scalar newFeaturesTest.clientMain[0].sctp 	sackPeriod 	0.2
+scalar newFeaturesTest.clientMain[0].sctp 	"Number of PacketDrop Reports" 	0
+scalar newFeaturesTest.clientMain[0].sctp 	RTXMethod 	0
+scalar newFeaturesTest.clientMain[0].sctp 	"Real Time Consumed" 	22.76257
+scalar newFeaturesTest.clientMain[0].pingApp 	"Pings sent" 	0
+scalar newFeaturesTest.clientMain[0].networkLayer.arp 	"ARP requests sent" 	0
+scalar newFeaturesTest.clientMain[0].networkLayer.arp 	"ARP replies sent" 	0
+scalar newFeaturesTest.clientMain[0].networkLayer.arp 	"ARP resolutions" 	0
+scalar newFeaturesTest.clientMain[0].networkLayer.arp 	"failed ARP resolutions" 	0
+scalar newFeaturesTest.clientMain[0].ppp[0].queue 	"packets received by queue" 	10154
+scalar newFeaturesTest.clientMain[0].ppp[0].queue 	"packets dropped by queue" 	0
+scalar newFeaturesTest.clientMain[0].ppp[1].queue 	"packets received by queue" 	58
+scalar newFeaturesTest.clientMain[0].ppp[1].queue 	"packets dropped by queue" 	0
+scalar newFeaturesTest.clientMain[1].sctp 	"Association Lifetime" 	42.89025272
+scalar newFeaturesTest.clientMain[1].sctp 	"Acked Bytes" 	10000000
+scalar newFeaturesTest.clientMain[1].sctp 	"Throughput [bit/s]" 	1865225.6614635
+scalar newFeaturesTest.clientMain[1].sctp 	"Transmitted Bytes" 	10000000
+scalar newFeaturesTest.clientMain[1].sctp 	"Packets Received" 	5927
+scalar newFeaturesTest.clientMain[1].sctp 	"Packets Dropped" 	0
+scalar newFeaturesTest.clientMain[1].sctp 	"Fast RTX" 	162
+scalar newFeaturesTest.clientMain[1].sctp 	"Timer-Based RTX" 	7
+scalar newFeaturesTest.clientMain[1].sctp 	"Sum of R Gap Ranges" 	27752
+scalar newFeaturesTest.clientMain[1].sctp 	"Sum of NR Gap Ranges" 	0
+scalar newFeaturesTest.clientMain[1].sctp 	"Duplicate Acks" 	0
+scalar newFeaturesTest.clientMain[1].sctp 	"Overfull SACKs" 	0
+scalar newFeaturesTest.clientMain[1].sctp 	"Drops Because New TSN Greater Than Highest TSN" 	0
+scalar newFeaturesTest.clientMain[1].sctp 	"Drops Because No Room In Buffer" 	0
+scalar newFeaturesTest.clientMain[1].sctp 	"Chunks Reneged" 	0
+scalar newFeaturesTest.clientMain[1].sctp 	sackPeriod 	0.2
+scalar newFeaturesTest.clientMain[1].sctp 	"Number of PacketDrop Reports" 	0
+scalar newFeaturesTest.clientMain[1].sctp 	RTXMethod 	0
+scalar newFeaturesTest.clientMain[1].sctp 	"Real Time Consumed" 	22.762742
+scalar newFeaturesTest.clientMain[1].pingApp 	"Pings sent" 	0
+scalar newFeaturesTest.clientMain[1].networkLayer.arp 	"ARP requests sent" 	0
+scalar newFeaturesTest.clientMain[1].networkLayer.arp 	"ARP replies sent" 	0
+scalar newFeaturesTest.clientMain[1].networkLayer.arp 	"ARP resolutions" 	0
+scalar newFeaturesTest.clientMain[1].networkLayer.arp 	"failed ARP resolutions" 	0
+scalar newFeaturesTest.clientMain[1].ppp[0].queue 	"packets received by queue" 	10155
+scalar newFeaturesTest.clientMain[1].ppp[0].queue 	"packets dropped by queue" 	0
+scalar newFeaturesTest.clientMain[1].ppp[1].queue 	"packets received by queue" 	4
+scalar newFeaturesTest.clientMain[1].ppp[1].queue 	"packets dropped by queue" 	0
+scalar newFeaturesTest.clientMain[2].sctp 	"Association Lifetime" 	39.73382167
+scalar newFeaturesTest.clientMain[2].sctp 	"Acked Bytes" 	10000000
+scalar newFeaturesTest.clientMain[2].sctp 	"Throughput [bit/s]" 	2013398.0734202
+scalar newFeaturesTest.clientMain[2].sctp 	"Transmitted Bytes" 	10220000
+scalar newFeaturesTest.clientMain[2].sctp 	"Packets Received" 	6366
+scalar newFeaturesTest.clientMain[2].sctp 	"Packets Dropped" 	0
+scalar newFeaturesTest.clientMain[2].sctp 	"Fast RTX" 	175
+scalar newFeaturesTest.clientMain[2].sctp 	"Timer-Based RTX" 	40
+scalar newFeaturesTest.clientMain[2].sctp 	"Sum of R Gap Ranges" 	208277
+scalar newFeaturesTest.clientMain[2].sctp 	"Sum of NR Gap Ranges" 	0
+scalar newFeaturesTest.clientMain[2].sctp 	"Duplicate Acks" 	31
+scalar newFeaturesTest.clientMain[2].sctp 	"Overfull SACKs" 	0
+scalar newFeaturesTest.clientMain[2].sctp 	"Drops Because New TSN Greater Than Highest TSN" 	0
+scalar newFeaturesTest.clientMain[2].sctp 	"Drops Because No Room In Buffer" 	0
+scalar newFeaturesTest.clientMain[2].sctp 	"Chunks Reneged" 	0
+scalar newFeaturesTest.clientMain[2].sctp 	sackPeriod 	0.2
+scalar newFeaturesTest.clientMain[2].sctp 	"Number of PacketDrop Reports" 	0
+scalar newFeaturesTest.clientMain[2].sctp 	RTXMethod 	0
+scalar newFeaturesTest.clientMain[2].sctp 	"Real Time Consumed" 	22.762919
+scalar newFeaturesTest.clientMain[2].pingApp 	"Pings sent" 	0
+scalar newFeaturesTest.clientMain[2].networkLayer.arp 	"ARP requests sent" 	0
+scalar newFeaturesTest.clientMain[2].networkLayer.arp 	"ARP replies sent" 	0
+scalar newFeaturesTest.clientMain[2].networkLayer.arp 	"ARP resolutions" 	0
+scalar newFeaturesTest.clientMain[2].networkLayer.arp 	"failed ARP resolutions" 	0
+scalar newFeaturesTest.clientMain[2].ppp[0].queue 	"packets received by queue" 	10187
+scalar newFeaturesTest.clientMain[2].ppp[0].queue 	"packets dropped by queue" 	0
+scalar newFeaturesTest.clientMain[2].ppp[1].queue 	"packets received by queue" 	43
+scalar newFeaturesTest.clientMain[2].ppp[1].queue 	"packets dropped by queue" 	0
+scalar newFeaturesTest.clientMain[3].sctp 	"Association Lifetime" 	40.85299768
+scalar newFeaturesTest.clientMain[3].sctp 	"Acked Bytes" 	10000000
+scalar newFeaturesTest.clientMain[3].sctp 	"Throughput [bit/s]" 	1958240.6320985
+scalar newFeaturesTest.clientMain[3].sctp 	"Transmitted Bytes" 	10200000
+scalar newFeaturesTest.clientMain[3].sctp 	"Packets Received" 	6124
+scalar newFeaturesTest.clientMain[3].sctp 	"Packets Dropped" 	0
+scalar newFeaturesTest.clientMain[3].sctp 	"Fast RTX" 	136
+scalar newFeaturesTest.clientMain[3].sctp 	"Timer-Based RTX" 	56
+scalar newFeaturesTest.clientMain[3].sctp 	"Sum of R Gap Ranges" 	35922
+scalar newFeaturesTest.clientMain[3].sctp 	"Sum of NR Gap Ranges" 	0
+scalar newFeaturesTest.clientMain[3].sctp 	"Duplicate Acks" 	7
+scalar newFeaturesTest.clientMain[3].sctp 	"Overfull SACKs" 	0
+scalar newFeaturesTest.clientMain[3].sctp 	"Drops Because New TSN Greater Than Highest TSN" 	0
+scalar newFeaturesTest.clientMain[3].sctp 	"Drops Because No Room In Buffer" 	0
+scalar newFeaturesTest.clientMain[3].sctp 	"Chunks Reneged" 	0
+scalar newFeaturesTest.clientMain[3].sctp 	sackPeriod 	0.2
+scalar newFeaturesTest.clientMain[3].sctp 	"Number of PacketDrop Reports" 	0
+scalar newFeaturesTest.clientMain[3].sctp 	RTXMethod 	0
+scalar newFeaturesTest.clientMain[3].sctp 	"Real Time Consumed" 	22.763063
+scalar newFeaturesTest.clientMain[3].pingApp 	"Pings sent" 	0
+scalar newFeaturesTest.clientMain[3].networkLayer.arp 	"ARP requests sent" 	0
+scalar newFeaturesTest.clientMain[3].networkLayer.arp 	"ARP replies sent" 	0
+scalar newFeaturesTest.clientMain[3].networkLayer.arp 	"ARP resolutions" 	0
+scalar newFeaturesTest.clientMain[3].networkLayer.arp 	"failed ARP resolutions" 	0
+scalar newFeaturesTest.clientMain[3].ppp[0].queue 	"packets received by queue" 	10151
+scalar newFeaturesTest.clientMain[3].ppp[0].queue 	"packets dropped by queue" 	0
+scalar newFeaturesTest.clientMain[3].ppp[1].queue 	"packets received by queue" 	59
+scalar newFeaturesTest.clientMain[3].ppp[1].queue 	"packets dropped by queue" 	0
+scalar newFeaturesTest.clientMain[4].sctp 	"Association Lifetime" 	41.49577399
+scalar newFeaturesTest.clientMain[4].sctp 	"Acked Bytes" 	10000000
+scalar newFeaturesTest.clientMain[4].sctp 	"Throughput [bit/s]" 	1927907.1651797
+scalar newFeaturesTest.clientMain[4].sctp 	"Transmitted Bytes" 	10227000
+scalar newFeaturesTest.clientMain[4].sctp 	"Packets Received" 	6461
+scalar newFeaturesTest.clientMain[4].sctp 	"Packets Dropped" 	0
+scalar newFeaturesTest.clientMain[4].sctp 	"Fast RTX" 	139
+scalar newFeaturesTest.clientMain[4].sctp 	"Timer-Based RTX" 	82
+scalar newFeaturesTest.clientMain[4].sctp 	"Sum of R Gap Ranges" 	138420
+scalar newFeaturesTest.clientMain[4].sctp 	"Sum of NR Gap Ranges" 	0
+scalar newFeaturesTest.clientMain[4].sctp 	"Duplicate Acks" 	53
+scalar newFeaturesTest.clientMain[4].sctp 	"Overfull SACKs" 	0
+scalar newFeaturesTest.clientMain[4].sctp 	"Drops Because New TSN Greater Than Highest TSN" 	0
+scalar newFeaturesTest.clientMain[4].sctp 	"Drops Because No Room In Buffer" 	0
+scalar newFeaturesTest.clientMain[4].sctp 	"Chunks Reneged" 	0
+scalar newFeaturesTest.clientMain[4].sctp 	sackPeriod 	0.2
+scalar newFeaturesTest.clientMain[4].sctp 	"Number of PacketDrop Reports" 	0
+scalar newFeaturesTest.clientMain[4].sctp 	RTXMethod 	0
+scalar newFeaturesTest.clientMain[4].sctp 	"Real Time Consumed" 	22.763247
+scalar newFeaturesTest.clientMain[4].pingApp 	"Pings sent" 	0
+scalar newFeaturesTest.clientMain[4].networkLayer.arp 	"ARP requests sent" 	0
+scalar newFeaturesTest.clientMain[4].networkLayer.arp 	"ARP replies sent" 	0
+scalar newFeaturesTest.clientMain[4].networkLayer.arp 	"ARP resolutions" 	0
+scalar newFeaturesTest.clientMain[4].networkLayer.arp 	"failed ARP resolutions" 	0
+scalar newFeaturesTest.clientMain[4].ppp[0].queue 	"packets received by queue" 	10152
+scalar newFeaturesTest.clientMain[4].ppp[0].queue 	"packets dropped by queue" 	0
+scalar newFeaturesTest.clientMain[4].ppp[1].queue 	"packets received by queue" 	85
+scalar newFeaturesTest.clientMain[4].ppp[1].queue 	"packets dropped by queue" 	0
+scalar newFeaturesTest.serverMain[0].sctpApp[0] 	"bytes rcvd" 	10000000
+scalar newFeaturesTest.serverMain[0].sctpApp[0] 	throughput 	1916071.146545
+scalar newFeaturesTest.serverMain[0].sctp 	"Association Lifetime" 	41.79477011
+scalar newFeaturesTest.serverMain[0].sctp 	"Acked Bytes" 	0
+scalar newFeaturesTest.serverMain[0].sctp 	"Throughput [bit/s]" 	0
+scalar newFeaturesTest.serverMain[0].sctp 	"Transmitted Bytes" 	0
+scalar newFeaturesTest.serverMain[0].sctp 	"Packets Received" 	10028
+scalar newFeaturesTest.serverMain[0].sctp 	"Packets Dropped" 	0
+scalar newFeaturesTest.serverMain[0].sctp 	"Fast RTX" 	0
+scalar newFeaturesTest.serverMain[0].sctp 	"Timer-Based RTX" 	0
+scalar newFeaturesTest.serverMain[0].sctp 	"Sum of R Gap Ranges" 	0
+scalar newFeaturesTest.serverMain[0].sctp 	"Sum of NR Gap Ranges" 	0
+scalar newFeaturesTest.serverMain[0].sctp 	"Duplicate Acks" 	0
+scalar newFeaturesTest.serverMain[0].sctp 	"Overfull SACKs" 	0
+scalar newFeaturesTest.serverMain[0].sctp 	"Drops Because New TSN Greater Than Highest TSN" 	0
+scalar newFeaturesTest.serverMain[0].sctp 	"Drops Because No Room In Buffer" 	0
+scalar newFeaturesTest.serverMain[0].sctp 	"Chunks Reneged" 	0
+scalar newFeaturesTest.serverMain[0].sctp 	sackPeriod 	0.2
+scalar newFeaturesTest.serverMain[0].sctp 	"Number of PacketDrop Reports" 	6
+scalar newFeaturesTest.serverMain[0].sctp 	"Average End to End Delay" 	0.01247826
+scalar newFeaturesTest.serverMain[0].sctp 	RTXMethod 	0
+scalar newFeaturesTest.serverMain[0].sctp 	"Real Time Consumed" 	22.763667
+scalar newFeaturesTest.serverMain[0].pingApp 	"Pings sent" 	0
+scalar newFeaturesTest.serverMain[0].networkLayer.arp 	"ARP requests sent" 	0
+scalar newFeaturesTest.serverMain[0].networkLayer.arp 	"ARP replies sent" 	0
+scalar newFeaturesTest.serverMain[0].networkLayer.arp 	"ARP resolutions" 	0
+scalar newFeaturesTest.serverMain[0].networkLayer.arp 	"failed ARP resolutions" 	0
+scalar newFeaturesTest.serverMain[0].ppp[0].queue 	"packets received by queue" 	6100
+scalar newFeaturesTest.serverMain[0].ppp[0].queue 	"packets dropped by queue" 	0
+scalar newFeaturesTest.serverMain[0].ppp[1].queue 	"packets received by queue" 	52
+scalar newFeaturesTest.serverMain[0].ppp[1].queue 	"packets dropped by queue" 	0
+scalar newFeaturesTest.serverMain[1].sctpApp[0] 	"bytes rcvd" 	9635000
+scalar newFeaturesTest.serverMain[1].sctpApp[0] 	throughput 	1798230.6879317
+scalar newFeaturesTest.serverMain[1].sctp 	"Association Lifetime" 	42.91116844
+scalar newFeaturesTest.serverMain[1].sctp 	"Acked Bytes" 	0
+scalar newFeaturesTest.serverMain[1].sctp 	"Throughput [bit/s]" 	0
+scalar newFeaturesTest.serverMain[1].sctp 	"Transmitted Bytes" 	0
+scalar newFeaturesTest.serverMain[1].sctp 	"Packets Received" 	9985
+scalar newFeaturesTest.serverMain[1].sctp 	"Packets Dropped" 	0
+scalar newFeaturesTest.serverMain[1].sctp 	"Fast RTX" 	0
+scalar newFeaturesTest.serverMain[1].sctp 	"Timer-Based RTX" 	0
+scalar newFeaturesTest.serverMain[1].sctp 	"Sum of R Gap Ranges" 	0
+scalar newFeaturesTest.serverMain[1].sctp 	"Sum of NR Gap Ranges" 	0
+scalar newFeaturesTest.serverMain[1].sctp 	"Duplicate Acks" 	0
+scalar newFeaturesTest.serverMain[1].sctp 	"Overfull SACKs" 	0
+scalar newFeaturesTest.serverMain[1].sctp 	"Drops Because New TSN Greater Than Highest TSN" 	0
+scalar newFeaturesTest.serverMain[1].sctp 	"Drops Because No Room In Buffer" 	0
+scalar newFeaturesTest.serverMain[1].sctp 	"Chunks Reneged" 	0
+scalar newFeaturesTest.serverMain[1].sctp 	sackPeriod 	0.2
+scalar newFeaturesTest.serverMain[1].sctp 	"Number of PacketDrop Reports" 	9
+scalar newFeaturesTest.serverMain[1].sctp 	"Average End to End Delay" 	0.01619506
+scalar newFeaturesTest.serverMain[1].sctp 	RTXMethod 	0
+scalar newFeaturesTest.serverMain[1].sctp 	"Real Time Consumed" 	22.764081
+scalar newFeaturesTest.serverMain[1].pingApp 	"Pings sent" 	0
+scalar newFeaturesTest.serverMain[1].networkLayer.arp 	"ARP requests sent" 	0
+scalar newFeaturesTest.serverMain[1].networkLayer.arp 	"ARP replies sent" 	0
+scalar newFeaturesTest.serverMain[1].networkLayer.arp 	"ARP resolutions" 	0
+scalar newFeaturesTest.serverMain[1].networkLayer.arp 	"failed ARP resolutions" 	0
+scalar newFeaturesTest.serverMain[1].ppp[0].queue 	"packets received by queue" 	5923
+scalar newFeaturesTest.serverMain[1].ppp[0].queue 	"packets dropped by queue" 	0
+scalar newFeaturesTest.serverMain[1].ppp[1].queue 	"packets received by queue" 	4
+scalar newFeaturesTest.serverMain[1].ppp[1].queue 	"packets dropped by queue" 	0
+scalar newFeaturesTest.serverMain[2].sctpApp[0] 	"bytes rcvd" 	10000000
+scalar newFeaturesTest.serverMain[2].sctpApp[0] 	throughput 	2014921.5453285
+scalar newFeaturesTest.serverMain[2].sctp 	"Association Lifetime" 	39.78876021
+scalar newFeaturesTest.serverMain[2].sctp 	"Acked Bytes" 	0
+scalar newFeaturesTest.serverMain[2].sctp 	"Throughput [bit/s]" 	0
+scalar newFeaturesTest.serverMain[2].sctp 	"Transmitted Bytes" 	0
+scalar newFeaturesTest.serverMain[2].sctp 	"Packets Received" 	10046
+scalar newFeaturesTest.serverMain[2].sctp 	"Packets Dropped" 	0
+scalar newFeaturesTest.serverMain[2].sctp 	"Fast RTX" 	0
+scalar newFeaturesTest.serverMain[2].sctp 	"Timer-Based RTX" 	0
+scalar newFeaturesTest.serverMain[2].sctp 	"Sum of R Gap Ranges" 	0
+scalar newFeaturesTest.serverMain[2].sctp 	"Sum of NR Gap Ranges" 	0
+scalar newFeaturesTest.serverMain[2].sctp 	"Duplicate Acks" 	0
+scalar newFeaturesTest.serverMain[2].sctp 	"Overfull SACKs" 	0
+scalar newFeaturesTest.serverMain[2].sctp 	"Drops Because New TSN Greater Than Highest TSN" 	0
+scalar newFeaturesTest.serverMain[2].sctp 	"Drops Because No Room In Buffer" 	0
+scalar newFeaturesTest.serverMain[2].sctp 	"Chunks Reneged" 	0
+scalar newFeaturesTest.serverMain[2].sctp 	sackPeriod 	0.2
+scalar newFeaturesTest.serverMain[2].sctp 	"Number of PacketDrop Reports" 	5
+scalar newFeaturesTest.serverMain[2].sctp 	"Average End to End Delay" 	0.01991187
+scalar newFeaturesTest.serverMain[2].sctp 	RTXMethod 	0
+scalar newFeaturesTest.serverMain[2].sctp 	"Real Time Consumed" 	22.764473
+scalar newFeaturesTest.serverMain[2].pingApp 	"Pings sent" 	0
+scalar newFeaturesTest.serverMain[2].networkLayer.arp 	"ARP requests sent" 	0
+scalar newFeaturesTest.serverMain[2].networkLayer.arp 	"ARP replies sent" 	0
+scalar newFeaturesTest.serverMain[2].networkLayer.arp 	"ARP resolutions" 	0
+scalar newFeaturesTest.serverMain[2].networkLayer.arp 	"failed ARP resolutions" 	0
+scalar newFeaturesTest.serverMain[2].ppp[0].queue 	"packets received by queue" 	6341
+scalar newFeaturesTest.serverMain[2].ppp[0].queue 	"packets dropped by queue" 	0
+scalar newFeaturesTest.serverMain[2].ppp[1].queue 	"packets received by queue" 	25
+scalar newFeaturesTest.serverMain[2].ppp[1].queue 	"packets dropped by queue" 	0
+scalar newFeaturesTest.serverMain[3].sctpApp[0] 	"bytes rcvd" 	10000000
+scalar newFeaturesTest.serverMain[3].sctpApp[0] 	throughput 	1959880.7736224
+scalar newFeaturesTest.serverMain[3].sctp 	"Association Lifetime" 	40.90118422
+scalar newFeaturesTest.serverMain[3].sctp 	"Acked Bytes" 	0
+scalar newFeaturesTest.serverMain[3].sctp 	"Throughput [bit/s]" 	0
+scalar newFeaturesTest.serverMain[3].sctp 	"Transmitted Bytes" 	0
+scalar newFeaturesTest.serverMain[3].sctp 	"Packets Received" 	10025
+scalar newFeaturesTest.serverMain[3].sctp 	"Packets Dropped" 	0
+scalar newFeaturesTest.serverMain[3].sctp 	"Fast RTX" 	0
+scalar newFeaturesTest.serverMain[3].sctp 	"Timer-Based RTX" 	0
+scalar newFeaturesTest.serverMain[3].sctp 	"Sum of R Gap Ranges" 	0
+scalar newFeaturesTest.serverMain[3].sctp 	"Sum of NR Gap Ranges" 	0
+scalar newFeaturesTest.serverMain[3].sctp 	"Duplicate Acks" 	0
+scalar newFeaturesTest.serverMain[3].sctp 	"Overfull SACKs" 	0
+scalar newFeaturesTest.serverMain[3].sctp 	"Drops Because New TSN Greater Than Highest TSN" 	0
+scalar newFeaturesTest.serverMain[3].sctp 	"Drops Because No Room In Buffer" 	0
+scalar newFeaturesTest.serverMain[3].sctp 	"Chunks Reneged" 	0
+scalar newFeaturesTest.serverMain[3].sctp 	sackPeriod 	0.2
+scalar newFeaturesTest.serverMain[3].sctp 	"Number of PacketDrop Reports" 	8
+scalar newFeaturesTest.serverMain[3].sctp 	"Average End to End Delay" 	0.02362867
+scalar newFeaturesTest.serverMain[3].sctp 	RTXMethod 	0
+scalar newFeaturesTest.serverMain[3].sctp 	"Real Time Consumed" 	22.764876
+scalar newFeaturesTest.serverMain[3].pingApp 	"Pings sent" 	0
+scalar newFeaturesTest.serverMain[3].networkLayer.arp 	"ARP requests sent" 	0
+scalar newFeaturesTest.serverMain[3].networkLayer.arp 	"ARP replies sent" 	0
+scalar newFeaturesTest.serverMain[3].networkLayer.arp 	"ARP resolutions" 	0
+scalar newFeaturesTest.serverMain[3].networkLayer.arp 	"failed ARP resolutions" 	0
+scalar newFeaturesTest.serverMain[3].ppp[0].queue 	"packets received by queue" 	6070
+scalar newFeaturesTest.serverMain[3].ppp[0].queue 	"packets dropped by queue" 	0
+scalar newFeaturesTest.serverMain[3].ppp[1].queue 	"packets received by queue" 	54
+scalar newFeaturesTest.serverMain[3].ppp[1].queue 	"packets dropped by queue" 	0
+scalar newFeaturesTest.serverMain[4].sctpApp[0] 	"bytes rcvd" 	10000000
+scalar newFeaturesTest.serverMain[4].sctpApp[0] 	throughput 	1929689.8109524
+scalar newFeaturesTest.serverMain[4].sctp 	"Association Lifetime" 	41.51668971
+scalar newFeaturesTest.serverMain[4].sctp 	"Acked Bytes" 	0
+scalar newFeaturesTest.serverMain[4].sctp 	"Throughput [bit/s]" 	0
+scalar newFeaturesTest.serverMain[4].sctp 	"Transmitted Bytes" 	0
+scalar newFeaturesTest.serverMain[4].sctp 	"Packets Received" 	10069
+scalar newFeaturesTest.serverMain[4].sctp 	"Packets Dropped" 	0
+scalar newFeaturesTest.serverMain[4].sctp 	"Fast RTX" 	0
+scalar newFeaturesTest.serverMain[4].sctp 	"Timer-Based RTX" 	0
+scalar newFeaturesTest.serverMain[4].sctp 	"Sum of R Gap Ranges" 	0
+scalar newFeaturesTest.serverMain[4].sctp 	"Sum of NR Gap Ranges" 	0
+scalar newFeaturesTest.serverMain[4].sctp 	"Duplicate Acks" 	0
+scalar newFeaturesTest.serverMain[4].sctp 	"Overfull SACKs" 	0
+scalar newFeaturesTest.serverMain[4].sctp 	"Drops Because New TSN Greater Than Highest TSN" 	0
+scalar newFeaturesTest.serverMain[4].sctp 	"Drops Because No Room In Buffer" 	0
+scalar newFeaturesTest.serverMain[4].sctp 	"Chunks Reneged" 	0
+scalar newFeaturesTest.serverMain[4].sctp 	sackPeriod 	0.2
+scalar newFeaturesTest.serverMain[4].sctp 	"Number of PacketDrop Reports" 	6
+scalar newFeaturesTest.serverMain[4].sctp 	"Average End to End Delay" 	0.02734548
+scalar newFeaturesTest.serverMain[4].sctp 	RTXMethod 	0
+scalar newFeaturesTest.serverMain[4].sctp 	"Real Time Consumed" 	22.765228
+scalar newFeaturesTest.serverMain[4].pingApp 	"Pings sent" 	0
+scalar newFeaturesTest.serverMain[4].networkLayer.arp 	"ARP requests sent" 	0
+scalar newFeaturesTest.serverMain[4].networkLayer.arp 	"ARP replies sent" 	0
+scalar newFeaturesTest.serverMain[4].networkLayer.arp 	"ARP resolutions" 	0
+scalar newFeaturesTest.serverMain[4].networkLayer.arp 	"failed ARP resolutions" 	0
+scalar newFeaturesTest.serverMain[4].ppp[0].queue 	"packets received by queue" 	6406
+scalar newFeaturesTest.serverMain[4].ppp[0].queue 	"packets dropped by queue" 	0
+scalar newFeaturesTest.serverMain[4].ppp[1].queue 	"packets received by queue" 	56
+scalar newFeaturesTest.serverMain[4].ppp[1].queue 	"packets dropped by queue" 	0

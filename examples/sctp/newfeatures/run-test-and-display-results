@@ -1,0 +1,4 @@
+#!/bin/sh
+
+./run -u Cmdenv -f omnetpp.ini && \
+grep "throughput" scalars.sca | grep newFeaturesTest.serverMain
