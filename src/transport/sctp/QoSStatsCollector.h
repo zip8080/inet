@@ -45,8 +45,8 @@ class QoSStats : public cOutVector
     }
 
     inline double getRate() const {
-        const QoSStatsEntryType::iterator first = QoSStatsSet.begin();
-        QoSStatsEntryType::iterator       last = QoSStatsSet.end();
+        QoSStatsEntryType::const_iterator first = QoSStatsSet.begin();
+        QoSStatsEntryType::const_iterator last = QoSStatsSet.end();
         if (first != last) {
             last--;   // There must be at least one element ...
             if (first != last) {   // There are at least two elements ...
@@ -56,8 +56,8 @@ class QoSStats : public cOutVector
         return (0.0);
     }
     inline double getMean() const {
-        const QoSStatsEntryType::iterator first = QoSStatsSet.begin();
-        QoSStatsEntryType::iterator       last = QoSStatsSet.end();
+        QoSStatsEntryType::const_iterator first = QoSStatsSet.begin();
+        QoSStatsEntryType::const_iterator last = QoSStatsSet.end();
         if (first != last) {
            last--;   // There must be at least one element ...
            if (first != last) {   // There are at least two elements ...

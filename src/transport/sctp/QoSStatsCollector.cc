@@ -73,7 +73,7 @@ void QoSStats::dump(std::ostream& os) const
 {
     unsigned long long valueSum = 0;
     os << Name << " (ValueSum=" << ValueSum << "):" << endl;
-    for (QoSStatsEntryType::iterator iterator = QoSStatsSet.begin();
+    for (QoSStatsEntryType::const_iterator iterator = QoSStatsSet.begin();
             iterator != QoSStatsSet.end(); iterator++) {
         const QoSStatsEntry* statEntry = *iterator;
         valueSum += statEntry->Value;
@@ -187,7 +187,7 @@ void QoSStatsCollector::recordAcknowledgement(const uint32     tsn,
         }
         if (TxToAckStats) {
             const unsigned int txToAckTime =
-                    (unsigned int)rint(1000000.0 * (acknowledgementTime - transmissionTime).dbl());
+                    (unsigned int)floor(1000000.0 * (acknowledgementTime - transmissionTime).dbl() + 0.5);
             TxToAckStats->add(acknowledgementTime, txToAckTime);
         }
     }

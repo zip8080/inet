@@ -19,7 +19,13 @@
 #ifndef OPPSIM_NETINET_SCTP_H_
 #define OPPSIM_NETINET_SCTP_H_
 
-#include <stdint.h>
+#include "headers/defs.h"
+
+#ifdef _MSC_VER
+#define __PACKED__
+#else
+#define __PACKED__  __attribute__((packed))
+#endif
 
 #define I_BIT         0x08
 #define UNORDERED_BIT 0x04
@@ -107,14 +113,14 @@ struct common_header {
     uint16_t destination_port;
     uint32_t verification_tag;
     uint32_t checksum;
-} __attribute__((packed));
+} __PACKED__;
 
 
 struct chunk {
     uint8_t  type;
     uint8_t  flags;
     uint16_t length;
-} __attribute__((packed));
+} __PACKED__;
 
 
 struct data_chunk {
@@ -126,7 +132,7 @@ struct data_chunk {
     uint16_t ssn;
     uint32_t ppi;
     uint8_t user_data[0];
-} __attribute__((packed));
+} __PACKED__;
 
 
 struct init_chunk {
@@ -139,7 +145,7 @@ struct init_chunk {
     uint16_t mis;
     uint32_t initial_tsn;
     uint8_t parameter[0];
-} __attribute__((packed));
+} __PACKED__;
 
 
 struct init_ack_chunk {
@@ -152,7 +158,7 @@ struct init_ack_chunk {
     uint16_t mis;
     uint32_t initial_tsn;
     uint8_t  parameter[0];
-} __attribute__((packed));
+} __PACKED__;
 
 
 struct sack_chunk {
@@ -164,7 +170,7 @@ struct sack_chunk {
     uint16_t nr_of_gaps;
     uint16_t nr_of_dups;
     uint8_t tsns[0];
-} __attribute__((packed));
+} __PACKED__;
 
 
 struct nr_sack_chunk {
@@ -178,7 +184,7 @@ struct nr_sack_chunk {
     uint16_t reserved;
     uint16_t nr_of_dups;
     uint8_t tsns[0];
-} __attribute__((packed));
+} __PACKED__;
 
 
 struct heartbeat_chunk {
@@ -186,7 +192,7 @@ struct heartbeat_chunk {
     uint8_t  flags;
     uint16_t length;
     uint8_t  heartbeat_info[0];
-} __attribute__((packed));
+} __PACKED__;
 
 
 struct heartbeat_ack_chunk {
@@ -194,7 +200,7 @@ struct heartbeat_ack_chunk {
     uint8_t  flags;
     uint16_t length;
     uint8_t  heartbeat_info[0];
-} __attribute__((packed));
+} __PACKED__;
 
 
 struct abort_chunk {
@@ -202,7 +208,7 @@ struct abort_chunk {
     uint8_t  flags;
     uint16_t length;
     uint8_t  error_causes[0];
-} __attribute__((packed));
+} __PACKED__;
 
 
 struct shutdown_chunk {
@@ -210,21 +216,21 @@ struct shutdown_chunk {
     uint8_t  flags;
     uint16_t length;
     uint32_t cumulative_tsn_ack;
-} __attribute__((packed));
+} __PACKED__;
 
 
 struct shutdown_ack_chunk {
     uint8_t  type;
     uint8_t  flags;
     uint16_t length;
-} __attribute__((packed));
+} __PACKED__;
 
 
 struct shutdown_complete_chunk {
     uint8_t  type;
     uint8_t  flags;
     uint16_t length;
-} __attribute__((packed));
+} __PACKED__;
 
 
 struct cookie_echo_chunk {
@@ -232,14 +238,14 @@ struct cookie_echo_chunk {
     uint8_t  flags;
     uint16_t length;
     uint8_t state_cookie[0];
-} __attribute__((packed));
+} __PACKED__;
 
 
 struct cookie_ack_chunk {
     uint8_t  type;
     uint8_t  flags;
     uint16_t length;
-} __attribute__((packed));
+} __PACKED__;
 
 
 struct ecn_chunk {
@@ -247,7 +253,7 @@ struct ecn_chunk {
     uint8_t  flags;
     uint16_t length;
     uint32_t lowest_tsn;
-} __attribute__((packed));
+} __PACKED__;
 
 
 struct error_chunk {
@@ -255,7 +261,7 @@ struct error_chunk {
     uint8_t  flags;
     uint16_t length;
     uint8_t  error_causes[0];
-} __attribute__((packed));
+} __PACKED__;
 
 
 struct forward_tsn_chunk {
@@ -264,7 +270,7 @@ struct forward_tsn_chunk {
     uint16_t length;
     uint32_t cum_tsn;
     uint8_t  stream_info[0];
-} __attribute__((packed));
+} __PACKED__;
 
 
 struct asconf_chunk {
@@ -273,7 +279,7 @@ struct asconf_chunk {
     uint16_t length;
     uint32_t serial;
     uint8_t parameters[0];
-} __attribute__((packed));
+} __PACKED__;
 
 
 struct asconf_ack_chunk {
@@ -282,7 +288,7 @@ struct asconf_ack_chunk {
     uint16_t length;
     uint32_t serial;
     uint8_t parameters[0];
-} __attribute__((packed));
+} __PACKED__;
 
 
 struct auth_chunk {
@@ -292,7 +298,7 @@ struct auth_chunk {
     uint16_t shared_key;
     uint16_t hmac_identifier;
     uint8_t  hmac[0];
-} __attribute__((packed));
+} __PACKED__;
 
 
 struct stream_reset_chunk {
@@ -300,7 +306,7 @@ struct stream_reset_chunk {
     uint8_t flags;
     uint16_t length;
     uint8_t parameters[0];
-} __attribute__((packed));
+} __PACKED__;
 
 
 struct pktdrop_chunk {
@@ -312,7 +318,7 @@ struct pktdrop_chunk {
     uint16_t trunc_length;
     uint16_t reserved;
     uint8_t  dropped_data[0];
-} __attribute__((packed));
+} __PACKED__;
 
 
 // variable length parameters in INIT chunk:
@@ -325,14 +331,14 @@ struct init_ipv4_address_parameter {
     uint16_t type;
     uint16_t length;
     uint32_t address;
-} __attribute__((packed));
+} __PACKED__;
 
 
 struct init_ipv6_address_parameter {
     uint16_t type;
     uint16_t length;
     uint32_t address[4];
-} __attribute__((packed));
+} __PACKED__;
 
 
 struct init_cookie_parameter {
@@ -343,7 +349,7 @@ struct init_cookie_parameter {
     uint32_t peerTag;
     uint8_t localTieTag[32];
     uint8_t peerTieTag[32];
-} __attribute__((packed));
+} __PACKED__;
 
 
 struct cookie_parameter {
@@ -352,7 +358,7 @@ struct cookie_parameter {
     uint32_t peerTag;
     uint8_t localTieTag[32];
     uint8_t peerTieTag[32];
-} __attribute__((packed));
+} __PACKED__;
 
 
 struct add_ip_parameter {
@@ -360,48 +366,48 @@ struct add_ip_parameter {
     uint16_t length;
     uint32_t correlation_id;
     uint8_t parameters[0];
-} __attribute__((packed));
+} __PACKED__;
 
 
 struct hmac_algo {
     uint16_t type;
     uint16_t length;
     uint16_t ident[0];
-} __attribute__((packed));
+} __PACKED__;
 
 
 struct supported_extensions_parameter {
     uint16_t type;
     uint16_t length;
     uint8_t chunk_type[0];
-} __attribute__((packed));
+} __PACKED__;
 
 
 struct forward_tsn_supported_parameter {
     uint16_t type;
     uint16_t length;
-} __attribute__((packed));
+} __PACKED__;
 
 
 struct supported_address_types_parameter {
     uint16_t type;
     uint16_t length;
     uint16_t address_type;
-} __attribute__((packed));
+} __PACKED__;
 
 
 struct random_parameter {
     uint16_t type;
     uint16_t length;
     uint8_t random[];
-} __attribute__((packed));
+} __PACKED__;
 
 
 struct tlv {
     uint16_t type;
     uint16_t length;
     uint8_t value[0];
-} __attribute__((packed));
+} __PACKED__;
 
 
 // Heartbeat info TLV:
@@ -415,7 +421,7 @@ struct heartbeat_info {
             uint32_t time;
         } addr_and_time;
     } heartbeat_info_union;
-} __attribute__((packed));
+} __PACKED__;
 
 
 #define HBI_INFO(hbi) ((hbi)->heartbeat_info_union.info)
@@ -426,27 +432,27 @@ struct error_cause {
     uint16_t cause_code;
     uint16_t length;
     uint8_t info[0];
-} __attribute__((packed));
+} __PACKED__;
 
 
 // SACK GAP:
 struct sack_gap {
     uint16_t start;
     uint16_t stop;
-} __attribute__((packed));
+} __PACKED__;
 
 
 // SACK DUP TSN:
 struct sack_duptsn {
     uint32_t tsn;
-} __attribute__((packed));
+} __PACKED__;
 
 
 // Forward_TSN streams
 struct forward_tsn_streams {
     uint16_t sid;
     uint16_t ssn;
-} __attribute__((packed));
+} __PACKED__;
 
 
 // Parameters for Stream Reset
@@ -457,7 +463,7 @@ struct outgoing_reset_request_parameter {
     uint32_t srResSn; // Stream Reset Response Sequence Number
     uint32_t lastTsn; // Senders last assigned TSN
     uint16_t streamNumbers[0];
-} __attribute__((packed));
+} __PACKED__;
 
 
 struct incoming_reset_request_parameter {
@@ -465,14 +471,14 @@ struct incoming_reset_request_parameter {
     uint16_t length;
     uint32_t srReqSn; // Stream Reset Request Sequence Number
     uint16_t streamNumbers[0];
-} __attribute__((packed));
+} __PACKED__;
 
 
 struct ssn_tsn_reset_request_parameter {
     uint16_t type;
     uint16_t length;
     uint32_t srReqSn; // Stream Reset Request Sequence Number
-} __attribute__((packed));
+} __PACKED__;
 
 
 struct stream_reset_response_parameter {
@@ -482,12 +488,12 @@ struct stream_reset_response_parameter {
     uint32_t result;
     uint32_t sendersNextTsn;
     uint32_t receiversNextTsn;
-} __attribute__((packed));
+} __PACKED__;
 
 
 struct data_vector {
     uint8_t data[0];
-} __attribute__((packed));
+} __PACKED__;
 
 
 #endif
