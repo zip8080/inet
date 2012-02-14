@@ -1,40 +1,43 @@
 //
-// Copyright (C) 2008 Irene Ruengeler
+// Copyright 2004 Andras Varga
 //
-// This program is free software; you can redistribute it and/or
-// modify it under the terms of the GNU General Public License
-// as published by the Free Software Foundation; either version 2
-// of the License, or (at your option) any later version.
-//
-// This program is distributed in the hope that it will be useful,
+// This library is free software, you can redistribute it and/or modify
+// it under  the terms of the GNU Lesser General Public License
+// as published by the Free Software Foundation;
+// either version 2 of the License, or any later version.
+// The library is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program; if not, see <http://www.gnu.org/licenses/>.
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+// See the GNU Lesser General Public License for more details.
 //
 
-#ifndef __SCTPPEER_H_
-#define __SCTPPEER_H_
-
+#ifndef __SCTPNATPEER_H_
+#define __SCTPNATPEER_H_
 #include <omnetpp.h>
 #include "SCTPAssociation.h"
 #include "SCTPSocket.h"
 
 
-class INET_API SCTPPeer : public cSimpleModule, public SCTPSocket::CallbackInterface
+/**
+ * Accepts any number of incoming connections, and sends back whatever
+ * arrives on them.
+ */
+
+class INET_API SCTPNatPeer : public cSimpleModule, public SCTPSocket::CallbackInterface
 {
   protected:
+    //SCTPAssociation* assoc;
     int32 notifications;
     int32 serverAssocId;
     int32 clientAssocId;
+    //SCTPSocket *serverSocket;
     SCTPSocket clientSocket;
     double delay;
     double echoFactor;
     bool schedule;
     bool shutdownReceived;
-    long bytesSent;
+    //long bytesRcvd;
+    int64 bytesSent;
     int32 packetsSent;
     int32 packetsRcvd;
     int32 numSessions;
@@ -44,18 +47,23 @@ class INET_API SCTPPeer : public cSimpleModule, public SCTPSocket::CallbackInter
     cMessage *timeoutMsg;
     int32 outboundStreams;
     cMessage *timeMsg;
-    cMessage *connectTimer;
     int32 bytesRcvd;
     int32 echoedBytesSent;
     int32 lastStream;
     bool sendAllowed;
-    int32 numPacketsToReceive;
     int32 chunksAbandoned;
-    typedef std::map<int32,long> RcvdPacketsPerAssoc;
+    int32 numPacketsToReceive;
+    bool rendezvous;
+    IPvXAddress peerAddress;
+    int32 peerPort;
+    AddressVector peerAddressList;
+    AddressVector localAddressList;
+    //cOutVector* rcvdBytes;
+    typedef std::map<int32,int64> RcvdPacketsPerAssoc;
     RcvdPacketsPerAssoc rcvdPacketsPerAssoc;
-    typedef std::map<int32,long> SentPacketsPerAssoc;
+    typedef std::map<int32,int64> SentPacketsPerAssoc;
     SentPacketsPerAssoc sentPacketsPerAssoc;
-    typedef std::map<int32,long> RcvdBytesPerAssoc;
+    typedef std::map<int32,int64> RcvdBytesPerAssoc;
     RcvdBytesPerAssoc rcvdBytesPerAssoc;
     typedef std::map<int32,cOutVector*> BytesPerAssoc;
     BytesPerAssoc bytesPerAssoc;
@@ -67,19 +75,24 @@ class INET_API SCTPPeer : public cSimpleModule, public SCTPSocket::CallbackInter
     void sendRequest(bool last = true);
     int32 ssn;
   public:
+    //Module_Class_Members(SCTPNatPeer, cSimpleModule, 0);
     struct pathStatus {
-       bool active;
-       bool primaryPath;
-       IPAddress  pid;
+        bool active;
+        bool primaryPath;
+        IPAddress  pid;
     };
     typedef std::map<IPvXAddress,pathStatus> SCTPPathStatus;
     SCTPPathStatus sctpPathStatus;
+    //virtual void socketStatusArrived(int32 assocId, void *yourPtr, SCTPStatusInfo *status);
     void initialize();
     void handleMessage(cMessage *msg);
     void finish();
     void handleTimer(cMessage *msg);
+    /*void setAssociation(SCTPAssociation *_assoc) {
+    assoc = _assoc;};*/
     void generateAndSend(SCTPConnectInfo *connectInfo);
-    void connect();
+    void connect(IPvXAddress connectAddress, int32 connectPort);
+    void connectx(AddressVector connectAddressList, int32 connectPort);
 
     /** Does nothing but update statistics/status. Redefine to perform or schedule first sending. */
     void socketEstablished(int32 connId, void *yourPtr);
@@ -104,16 +117,19 @@ class INET_API SCTPPeer : public cSimpleModule, public SCTPSocket::CallbackInter
     void socketStatusArrived(int32 connId, void *yourPtr, SCTPStatusInfo *status);
     //@}
     void msgAbandonedArrived(int32 assocId);
-    void sendStreamResetNotification();
+    //void setAssociation(SCTPAssociation *_assoc) {assoc = _assoc;};
+
     void setPrimaryPath();
+    void sendStreamResetNotification();
     void sendRequestArrived();
     void sendQueueRequest();
     void shutdownReceivedArrived(int32 connId);
     void sendqueueFullArrived(int32 connId);
-
+    void addressAddedArrived(int32 assocId, IPvXAddress localAddr, IPvXAddress remoteAddr);
     void setStatusString(const char *s);
-    void addressAddedArrived(int32 assocId, IPvXAddress remoteAddr);
 };
 
 #endif
+
+
 
