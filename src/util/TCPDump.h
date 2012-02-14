@@ -68,34 +68,34 @@ static hdr_ethernet_t HDR_ETHERNET = {
  */
 class TCPDumper
 {
-   public:
-      TCPDumper(std::ostream& o);
-      ~TCPDumper();
+  public:
+    TCPDumper(std::ostream& o);
+    ~TCPDumper();
 
-      inline void setVerbosity(const int32 verbosityLevel) {
-         verbosity = verbosityLevel;
-      }
+    inline void setVerbosity(const int32 verbosityLevel) {
+       verbosity = verbosityLevel;
+    }
 
-      // dumps arbitary text
-      void dump(const char *label, const char *msg);
+    // dumps arbitary text
+    void dump(const char *label, const char *msg);
 
-      void ipDump(const char *label, IPDatagram *dgram, const char *comment=NULL);
-      void dumpIPv6(bool l2r, const char *label, IPv6Datagram_Base *dgram, const char *comment=NULL);//FIXME: Temporary hack
+    void ipDump(const char *label, IPDatagram *dgram, const char *comment=NULL);
+    void dumpIPv6(bool l2r, const char *label, IPv6Datagram_Base *dgram, const char *comment=NULL);//FIXME: Temporary hack
 
-      void udpDump(bool l2r, const char *label, IPDatagram *dgram, const char *comment);
-      void tcpDump(bool l2r, const char *label, IPDatagram *dgram, const char *comment=NULL);
-      void tcpDump(bool l2r, const char *label, TCPSegment *tcpseg, const std::string& srcAddr, const std::string& destAddr, const char *comment=NULL);
-      void sctpDump(const char *label, SCTPMessage *sctpmsg, const std::string& srcAddr, const std::string& destAddr, const char *comment=NULL);
+    void udpDump(bool l2r, const char *label, IPDatagram *dgram, const char *comment);
+    void tcpDump(bool l2r, const char *label, IPDatagram *dgram, const char *comment=NULL);
+    void tcpDump(bool l2r, const char *label, TCPSegment *tcpseg, const std::string& srcAddr, const std::string& destAddr, const char *comment=NULL);
+    void sctpDump(const char *label, SCTPMessage *sctpmsg, const std::string& srcAddr, const std::string& destAddr, const char *comment=NULL);
 
-   public:
-      FILE* dumpfile;
+  public:
+    FILE* dumpfile;
 
-   protected:
-      int32         seq;
-      std::ostream* outp;
+  protected:
+    int32 seq;
+    std::ostream* outp;
 
-   private:
-      int verbosity;
+  private:
+    int verbosity;
 };
 
 
@@ -104,44 +104,44 @@ class TCPDumper
  */
 class INET_API TCPDump : public cSimpleModule
 {
-   protected:
-      unsigned char* ringBuffer[RBUFFER_SIZE];
-      TCPDumper tcpdump;
-      unsigned int snaplen;
-      unsigned long first, last, space;
-      pthread_mutex_t recordMutex;
-      pthread_cond_t read;
-      pthread_t tid;
-      volatile bool m_stoprequested;
-      volatile bool m_running;
-      void writeToBuffer(struct pcaprec_hdr* data1, uint32* data2,
-            unsigned char* data3, int length);
-      void readFromBuffer();
+  protected:
+    unsigned char* ringBuffer[RBUFFER_SIZE];
+    TCPDumper tcpdump;
+    unsigned int snaplen;
+    unsigned long first, last, space;
+    pthread_mutex_t recordMutex;
+    pthread_cond_t read;
+    pthread_t tid;
+    volatile bool m_stoprequested;
+    volatile bool m_running;
+    void writeToBuffer(struct pcaprec_hdr* data1, uint32* data2,
+          unsigned char* data3, int length);
+    void readFromBuffer();
 
-      static void* handleThread(void *obj)
-      {
-         //All we do here is call the do_work() function
-         reinterpret_cast<TCPDump *>(obj)->readFromBuffer();
-         return NULL;
-      }
+    static void* handleThread(void *obj)
+    {
+       //All we do here is call the do_work() function
+       reinterpret_cast<TCPDump *>(obj)->readFromBuffer();
+       return NULL;
+    }
 
-   public:
+  public:
+    TCPDump();
+    ~TCPDump();
 
-      TCPDump();
-      ~TCPDump();
-      //TCPDump(const char *name, cModule *parent);
-      virtual void handleMessage(cMessage *msg);
-      virtual void initialize();
-      virtual void finish();
+    virtual void handleMessage(cMessage *msg);
+    virtual void initialize();
+    virtual void finish();
 
-      simtime_t countStart;
-      simtime_t countStop;
-      bool counting;
-      uint64 tcpCount;
-      uint64 sctpCount;
-      cMessage* countStartTimer;
-      cMessage* countStopTimer;
-      bool threadEnabled;
+    simtime_t countStart;
+    simtime_t countStop;
+    bool counting;
+    uint64 tcpCount;
+    uint64 sctpCount;
+    cMessage* countStartTimer;
+    cMessage* countStopTimer;
+    bool threadEnabled;
 };
 
 #endif
+

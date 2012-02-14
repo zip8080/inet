@@ -8,7 +8,7 @@
 //
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.   See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
@@ -45,74 +45,75 @@ struct SCTPDataVariables;
 
 class ChunkMap
 {
-   public:
-   ChunkMap(const unsigned int initialSize, const unsigned int maxSize);
-   ~ChunkMap();
+  public:
+    ChunkMap(const unsigned int initialSize, const unsigned int maxSize);
+    ~ChunkMap();
 
-   void dump();
-   void cumAck(const uint32 cumAckTSN);
+    void dump();
+    void cumAck(const uint32 cumAckTSN);
 
-   inline void ack(const uint32 tsn)   { ackOrUnack(tsn, true);  }
-   inline void unack(const uint32 tsn) { ackOrUnack(tsn, false); }
+    inline void ack(const uint32 tsn)   { ackOrUnack(tsn, true);  }
+    inline void unack(const uint32 tsn) { ackOrUnack(tsn, false); }
 
-   inline SCTPDataVariables* getChunk(const uint32 tsn) const {
-      const unsigned int relTSN = (tsn - MapBaseTSN);
-      assert(tsn >= MapBaseTSN);
-      assert(relTSN < TSNEntries);
-      return(TSNArray[relTSN]);
-   }
+    inline SCTPDataVariables* getChunk(const uint32 tsn) const {
+        const unsigned int relTSN = (tsn - MapBaseTSN);
+        assert(tsn >= MapBaseTSN);
+        assert(relTSN < TSNEntries);
+        return (TSNArray[relTSN]);
+    }
 
-   inline void setChunk(const uint32 tsn, SCTPDataVariables* chunk) {
-      const unsigned int relTSN = (tsn - MapBaseTSN);
-      assert(tsn >= MapBaseTSN);
-      if(relTSN >= TSNEntries) {
-         grow(tsn);
-      }
-      assert(relTSN < TSNEntries);
-      TSNArray[relTSN] = chunk;
-   }
+    inline void setChunk(const uint32 tsn, SCTPDataVariables* chunk) {
+        const unsigned int relTSN = (tsn - MapBaseTSN);
+        assert(tsn >= MapBaseTSN);
+        if (relTSN >= TSNEntries) {
+            grow(tsn);
+        }
+        assert(relTSN < TSNEntries);
+        TSNArray[relTSN] = chunk;
+    }
 
-   inline void ackOrUnack(const uint32 tsn, const bool ack) {
-      const unsigned int relTSN = (tsn - MapBaseTSN);
-      const unsigned int entry  = GET_ENTRY(relTSN);
-      const unsigned int bit    = GET_BIT(relTSN);
-      assert(tsn >= MapBaseTSN);
-      if(entry >= MapEntries) {
-         grow(tsn - MapBaseTSN);
-         assert(entry < MapEntries);
-      }
-      if(ack) {
-         MapArray[entry] |= ((MAP_ENTRY_TYPE)1 << bit);
-      }
-      else {
-         MapArray[entry] &= ~((MAP_ENTRY_TYPE)1 << bit);
-      }
-   }
+    inline void ackOrUnack(const uint32 tsn, const bool ack) {
+        const unsigned int relTSN = (tsn - MapBaseTSN);
+        const unsigned int entry = GET_ENTRY(relTSN);
+        const unsigned int bit = GET_BIT(relTSN);
+        assert(tsn >= MapBaseTSN);
+        if (entry >= MapEntries) {
+             grow(tsn - MapBaseTSN);
+             assert(entry < MapEntries);
+        }
+        if (ack) {
+            MapArray[entry] |= ((MAP_ENTRY_TYPE)1 << bit);
+        }
+        else {
+            MapArray[entry] &= ~((MAP_ENTRY_TYPE)1 << bit);
+        }
+    }
 
-   inline bool isAcked(const uint32 tsn) const {
-      const unsigned int relTSN = (tsn - MapBaseTSN);
-      const unsigned int entry  = GET_ENTRY(relTSN);
-      const unsigned int bit    = GET_BIT(relTSN);
-      assert(tsn >= MapBaseTSN);
-      assert(entry < MapEntries);
-      return(MapArray[entry] & ((MAP_ENTRY_TYPE)1 << bit));
-   }
+    inline bool isAcked(const uint32 tsn) const {
+        const unsigned int relTSN = (tsn - MapBaseTSN);
+        const unsigned int entry = GET_ENTRY(relTSN);
+        const unsigned int bit = GET_BIT(relTSN);
+        assert(tsn >= MapBaseTSN);
+        assert(entry < MapEntries);
+        return (MapArray[entry] & ((MAP_ENTRY_TYPE)1 << bit));
+    }
 
 
-   // ====== Private data ===================================================
-   private:
-   void grow(const uint32 highestTSN);
-   void shift(const uint32 tsnDifference);
+    // ====== Private data ===================================================
+  private:
+    void grow(const uint32 highestTSN);
+    void shift(const uint32 tsnDifference);
 
-   unsigned int        MapEntries;
-   uint32              MapBaseTSN;
-   MAP_ENTRY_TYPE*     MapArray;
+    unsigned int        MapEntries;
+    uint32              MapBaseTSN;
+    MAP_ENTRY_TYPE*     MapArray;
 
-   unsigned int        TSNEntries;
-   SCTPDataVariables** TSNArray;
+    unsigned int        TSNEntries;
+    SCTPDataVariables** TSNArray;
 
-   unsigned int        MaxEntries;
-   unsigned int        CumAckShiftThreshold;
+    unsigned int        MaxEntries;
+    unsigned int        CumAckShiftThreshold;
 };
 
 #endif
+

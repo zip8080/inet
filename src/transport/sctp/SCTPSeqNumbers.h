@@ -9,7 +9,7 @@
 //
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.   See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
@@ -24,34 +24,34 @@
 
 
 /**
-* Compare TSNs
-*/
-inline bool tsnLt (const uint32 tsn1, const uint32 tsn2) {
-   return ((int32)(tsn1-tsn2) < 0);
+ * Compare TSNs
+ */
+inline bool tsnLt(const uint32 tsn1, const uint32 tsn2) {
+    return ((int32)(tsn1-tsn2) < 0);
 }
 
-inline bool tsnLe (const uint32 tsn1, const uint32 tsn2) {
-   return ((int32)(tsn1-tsn2) <= 0);
+inline bool tsnLe(const uint32 tsn1, const uint32 tsn2) {
+    return ((int32)(tsn1-tsn2) <= 0);
 }
 
-inline bool tsnGe (const uint32 tsn1, const uint32 tsn2) {
-   return ((int32)(tsn1-tsn2) >= 0);
+inline bool tsnGe(const uint32 tsn1, const uint32 tsn2) {
+    return ((int32)(tsn1-tsn2) >= 0);
 }
 
-inline bool tsnGt (const uint32 tsn1, const uint32 tsn2) {
-   return ((int32)(tsn1-tsn2) > 0);
+inline bool tsnGt(const uint32 tsn1, const uint32 tsn2) {
+    return ((int32)(tsn1-tsn2) > 0);
 }
 
-inline bool tsnBetween (const uint32 tsn1, const uint32 midtsn, const uint32 tsn2) {
-   return ((tsn2-tsn1) >= (midtsn-tsn1));
+inline bool tsnBetween(const uint32 tsn1, const uint32 midtsn, const uint32 tsn2) {
+    return ((tsn2-tsn1) >= (midtsn-tsn1));
 }
 
 
 /**
-* Compare SSNs
-*/
-inline bool ssnGt (const uint16 ssn1, const uint16 ssn2) {
-   return ((int16)(ssn1-ssn2) > 0);
+ * Compare SSNs
+ */
+inline bool ssnGt(const uint16 ssn1, const uint16 ssn2) {
+    return ((int16)(ssn1-ssn2) > 0);
 }
 
 #endif

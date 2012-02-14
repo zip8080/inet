@@ -8,7 +8,7 @@
 //
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.   See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
@@ -25,37 +25,37 @@
 class TimeStatsCollector : public cWeightedStdDev,
                            public cOutVector
 {
-   public:
-   TimeStatsCollector(cModule* module = NULL, const char* name = NULL, const char* unit = NULL);
-   ~TimeStatsCollector();
+  public:
+    TimeStatsCollector(cModule* module = NULL, const char* name = NULL, const char* unit = NULL);
+    ~TimeStatsCollector();
 
-   virtual void initialize(cModule* module = NULL, const char* name = NULL, const char* unit = NULL);
-   virtual void dumpScalars();
-   void setUtilizationMaximum(const double maximum);
+    virtual void initialize(cModule* module = NULL, const char* name = NULL, const char* unit = NULL);
+    virtual void dumpScalars();
+    void setUtilizationMaximum(const double maximum);
 
-   inline void update() {
-      if(HasBeenInitialized) {
-         const simtime_t timeDifference = simTime() - LastUpdate;
-         if (timeDifference > 0)
-         	collect2(Value, timeDifference);
-      }
-      LastUpdate = simTime();
-   }
+    inline void update() {
+       if (HasBeenInitialized) {
+          const simtime_t timeDifference = simTime() - LastUpdate;
+          if (timeDifference > 0)
+             collect2(Value, timeDifference);
+       }
+       LastUpdate = simTime();
+    }
 
-   virtual bool record(const double value);
-   bool recordWithLimit(const double value, const double limit);
+    virtual bool record(const double value);
+    bool recordWithLimit(const double value, const double limit);
 
-   // ====== Private data ===================================================
-   private:
-   simtime_t   LastUpdate;
-   double      Value;
-   bool        HasBeenInitialized;
-   bool        HasBeenDumped;
-   bool        DumpUtilization;
-   std::string Name;
-   std::string Unit;
-   cModule*    Parent;
-   double      UtilizationMaximum;
+    // ====== Private data ===================================================
+  private:
+    simtime_t   LastUpdate;
+    double      Value;
+    bool        HasBeenInitialized;
+    bool        HasBeenDumped;
+    bool        DumpUtilization;
+    std::string Name;
+    std::string Unit;
+    cModule*    Parent;
+    double      UtilizationMaximum;
 };
 
 #endif

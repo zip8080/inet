@@ -9,7 +9,7 @@
 //
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
@@ -62,31 +62,30 @@ class SIM_API SCTPDataMsgQueue : public cQueue
 
 class INET_API SCTPSendStream : public cPolymorphic
 {
-   protected:
-      uint16            streamId;
-      uint16            nextStreamSeqNum;
-      SCTPDataMsgQueue* streamQ;
-      SCTPDataMsgQueue* uStreamQ;
-      int32             ssn;
+  protected:
+    uint16            streamId;
+    uint16            nextStreamSeqNum;
+    SCTPDataMsgQueue* streamQ;
+    SCTPDataMsgQueue* uStreamQ;
+    int32             ssn;
 
-   public:
-      SCTPSendStream(const uint16 id);
-      ~SCTPSendStream();
+  public:
+    SCTPSendStream(const uint16 id);
+    ~SCTPSendStream();
 
-      inline SCTPDataMsgQueue* getStreamQ() const          { return streamQ; };
-      inline SCTPDataMsgQueue* getUnorderedStreamQ() const { return uStreamQ; };
-      inline uint32 getNextStreamSeqNum() const            { return nextStreamSeqNum; };
-      inline void setNextStreamSeqNum(const uint16 num)    { nextStreamSeqNum = num; };
-      inline uint16 getStreamId() const                    { return streamId; };
-      inline void setStreamId(const uint16 id)             { streamId = id; };
+    inline SCTPDataMsgQueue* getStreamQ() const          { return streamQ; };
+    inline SCTPDataMsgQueue* getUnorderedStreamQ() const { return uStreamQ; };
+    inline uint32 getNextStreamSeqNum() const            { return nextStreamSeqNum; };
+    inline void setNextStreamSeqNum(const uint16 num)    { nextStreamSeqNum = num; };
+    inline uint16 getStreamId() const                    { return streamId; };
+    inline void setStreamId(const uint16 id)             { streamId = id; };
 
-      inline unsigned int getQueuedMsgs() const {
-         return(streamQ->getLength() + uStreamQ->getLength());
-      }
-      inline unsigned long long getQueuedBytes() const {
-         return(streamQ->getByteLength() + uStreamQ->getByteLength());
-      }
-
+    inline unsigned int getQueuedMsgs() const {
+       return (streamQ->getLength() + uStreamQ->getLength());
+    }
+    inline unsigned long long getQueuedBytes() const {
+       return (streamQ->getByteLength() + uStreamQ->getByteLength());
+    }
 };
 
 #endif

@@ -9,7 +9,7 @@
 //
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
@@ -36,14 +36,14 @@ SCTPMessage& SCTPMessage::operator=(const SCTPMessage& other)
 
 SCTPMessage::~SCTPMessage()
 {
-   SCTPChunk* chunk;
-   if (this->getChunksArraySize()>0)
-   for (uint32 i=0; i < this->getChunksArraySize(); i++)
-   {
-      chunk = (SCTPChunk*)this->getChunks(i);
-      drop(chunk);
-      delete chunk;
-   }
+    SCTPChunk* chunk;
+    if (this->getChunksArraySize()>0)
+        for (uint32 i=0; i < this->getChunksArraySize(); i++)
+        {
+            chunk = (SCTPChunk*)this->getChunks(i);
+            drop(chunk);
+            delete chunk;
+        }
 }
 
 void SCTPMessage::setChunksArraySize(const uint32 size)
@@ -71,58 +71,58 @@ void SCTPMessage::setChunks(const uint32 k, const cPacketPtr& chunks_var)
 
 void SCTPMessage::addChunk(cPacket* msg)
 {
-   char str[256];
-   take(msg);
-   if (this->chunkList.size()<9)
-   {
-      strcpy(str, this->getName());
-      snprintf(str, sizeof(str), "%s %s",this->getName(), msg->getName());
-      this->setName(str);
-   }
-   this->setBitLength(this->getBitLength()+ADD_PADDING(msg->getBitLength()/8)*8);
-   chunkList.push_back(msg);
+    char str[256];
+    take(msg);
+    if (this->chunkList.size()<9)
+    {
+        strcpy(str, this->getName());
+        snprintf(str, sizeof(str), "%s %s", this->getName(), msg->getName());
+        this->setName(str);
+    }
+    this->setBitLength(this->getBitLength()+ADD_PADDING(msg->getBitLength()/8)*8);
+    chunkList.push_back(msg);
 }
 
 cPacket *SCTPMessage::removeChunk()
 {
-   if (chunkList.empty())
-      return NULL;
+    if (chunkList.empty())
+        return NULL;
 
-   cPacket *msg = chunkList.front();
-   chunkList.pop_front();
-   drop(msg);
-   this->setBitLength(this->getBitLength()-ADD_PADDING(msg->getBitLength()/8)*8);
-   return msg;
+    cPacket *msg = chunkList.front();
+    chunkList.pop_front();
+    drop(msg);
+    this->setBitLength(this->getBitLength()-ADD_PADDING(msg->getBitLength()/8)*8);
+    return msg;
 }
 
 cPacket *SCTPMessage::removeLastChunk()
 {
-   if (chunkList.empty())
-      return NULL;
+    if (chunkList.empty())
+        return NULL;
 
-   cPacket *msg = chunkList.back();
-   chunkList.pop_back();
-   drop(msg);
-   this->setBitLength(this->getBitLength()-ADD_PADDING(msg->getBitLength()/8)*8);
-   return msg;
+    cPacket *msg = chunkList.back();
+    chunkList.pop_back();
+    drop(msg);
+    this->setBitLength(this->getBitLength()-ADD_PADDING(msg->getBitLength()/8)*8);
+    return msg;
 }
 
 cPacket *SCTPMessage::peekFirstChunk()
 {
-   if (chunkList.empty())
-      return NULL;
+    if (chunkList.empty())
+        return NULL;
 
-   cPacket *msg = chunkList.front();
-   return msg;
+    cPacket *msg = chunkList.front();
+    return msg;
 }
 
 cPacket *SCTPMessage::peekLastChunk()
 {
-   if (chunkList.empty())
-      return NULL;
+    if (chunkList.empty())
+        return NULL;
 
-   cPacket *msg = chunkList.back();
-   return msg;
+    cPacket *msg = chunkList.back();
+    return msg;
 }
 
 
@@ -164,26 +164,26 @@ void SCTPStreamResetChunk::setParameters(const uint32 k, const cPacketPtr& chunk
 
 void SCTPStreamResetChunk::addParameter(cPacket* msg)
 {
-   take(msg);
-   if (this->parameterList.size()<2)
-   {
-      this->setBitLength(this->getBitLength()+ADD_PADDING(msg->getBitLength()));
-      parameterList.push_back(msg);
-   }
-   else
-      throw cRuntimeError("Not more than two parameters allowed!");
+    take(msg);
+    if (this->parameterList.size()<2)
+    {
+        this->setBitLength(this->getBitLength()+ADD_PADDING(msg->getBitLength()));
+        parameterList.push_back(msg);
+    }
+    else
+        throw cRuntimeError("Not more than two parameters allowed!");
 }
 
 cPacket *SCTPStreamResetChunk::removeParameter()
 {
-   if (parameterList.empty())
-      return NULL;
+    if (parameterList.empty())
+        return NULL;
 
-   cPacket *msg = parameterList.front();
-   parameterList.pop_front();
-   drop(msg);
-   this->setBitLength(this->getBitLength()-ADD_PADDING(msg->getBitLength()/8)*8);
-   return msg;
+    cPacket *msg = parameterList.front();
+    parameterList.pop_front();
+    drop(msg);
+    this->setBitLength(this->getBitLength()-ADD_PADDING(msg->getBitLength()/8)*8);
+    return msg;
 }
 
 
@@ -225,26 +225,26 @@ void SCTPAsconfChunk::setAsconfParams(const uint32 k, const cPacketPtr& chunks_v
 
 void SCTPAsconfChunk::addAsconfParam(cPacket* msg)
 {
-   take(msg);
-   //if (this->parameterList.size()<2)
-   //{
-      this->setBitLength(this->getBitLength()+ADD_PADDING(msg->getBitLength()));
-      parameterList.push_back(msg);
-   /*}
+    take(msg);
+    //if (this->parameterList.size()<2)
+    //{
+    this->setBitLength(this->getBitLength()+ADD_PADDING(msg->getBitLength()));
+    parameterList.push_back(msg);
+    /*}
    else
       throw cRuntimeError("Not more than two parameters allowed!");*/
 }
 
 cPacket *SCTPAsconfChunk::removeAsconfParam()
 {
-   if (parameterList.empty())
-      return NULL;
+    if (parameterList.empty())
+        return NULL;
 
-   cPacket *msg = parameterList.front();
-   parameterList.pop_front();
-   drop(msg);
-   this->setBitLength(this->getBitLength()-ADD_PADDING(msg->getBitLength()/8)*8);
-   return msg;
+    cPacket *msg = parameterList.front();
+    parameterList.pop_front();
+    drop(msg);
+    this->setBitLength(this->getBitLength()-ADD_PADDING(msg->getBitLength()/8)*8);
+    return msg;
 }
 
 
@@ -286,26 +286,26 @@ void SCTPAsconfAckChunk::setAsconfResponse(const uint32 k, const cPacketPtr& chu
 
 void SCTPAsconfAckChunk::addAsconfResponse(cPacket* msg)
 {
-   take(msg);
-   /*if (this->parameterList.size()<2)
+    take(msg);
+    /*if (this->parameterList.size()<2)
    {*/
-      this->setBitLength(this->getBitLength()+ADD_PADDING(msg->getBitLength()));
-      parameterList.push_back(msg);
-   /*}
+    this->setBitLength(this->getBitLength()+ADD_PADDING(msg->getBitLength()));
+    parameterList.push_back(msg);
+    /*}
    else
       throw cRuntimeError("Not more than two parameters allowed!");*/
 }
 
 cPacket *SCTPAsconfAckChunk::removeAsconfResponse()
 {
-   if (parameterList.empty())
-      return NULL;
+    if (parameterList.empty())
+        return NULL;
 
-   cPacket *msg = parameterList.front();
-   parameterList.pop_front();
-   drop(msg);
-   this->setBitLength(this->getBitLength()-ADD_PADDING(msg->getBitLength()/8)*8);
-   return msg;
+    cPacket *msg = parameterList.front();
+    parameterList.pop_front();
+    drop(msg);
+    this->setBitLength(this->getBitLength()-ADD_PADDING(msg->getBitLength()/8)*8);
+    return msg;
 }
 
 
@@ -355,12 +355,12 @@ void SCTPErrorChunk::addParameters(cPacket* msg)
 
 cPacket *SCTPErrorChunk::removeParameter()
 {
-   if (parameterList.empty())
-      return NULL;
+    if (parameterList.empty())
+        return NULL;
 
-   cPacket *msg = parameterList.front();
-   parameterList.pop_front();
-   drop(msg);
-   this->setBitLength(this->getBitLength()-ADD_PADDING(msg->getBitLength()/8)*8);
-   return msg;
+    cPacket *msg = parameterList.front();
+    parameterList.pop_front();
+    drop(msg);
+    this->setBitLength(this->getBitLength()-ADD_PADDING(msg->getBitLength()/8)*8);
+    return msg;
 }

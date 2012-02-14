@@ -9,7 +9,7 @@
 //
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
@@ -48,8 +48,8 @@ class SCTPAssociation;
  */
 class INET_API SCTPQueue : public cPolymorphic
 {
-   public:
-   /**
+  public:
+    /**
      * Constructor.
      */
     SCTPQueue();
@@ -59,37 +59,37 @@ class INET_API SCTPQueue : public cPolymorphic
      */
     ~SCTPQueue();
 
-   bool checkAndInsertChunk(const uint32 key, SCTPDataVariables* chunk);
-   /* returns true if new data is inserted and false if data was present */
+    /* returns true if new data is inserted and false if data was present */
+    bool checkAndInsertChunk(const uint32 key, SCTPDataVariables* chunk);
 
-   SCTPDataVariables* getAndExtractChunk(const uint32 tsn);
-   SCTPDataVariables* extractMessage();
+    SCTPDataVariables* getAndExtractChunk(const uint32 tsn);
+    SCTPDataVariables* extractMessage();
 
-   void printQueue() const;
+    void printQueue() const;
 
-   uint32 getQueueSize() const;
+    uint32 getQueueSize() const;
 
-   SCTPDataVariables* getFirstChunk() const;
+    SCTPDataVariables* getFirstChunk() const;
 
-   cMessage* getMsg(const uint32 key) const;
+    cMessage* getMsg(const uint32 key) const;
 
-   SCTPDataVariables* getChunk(const uint32 key) const;
+    SCTPDataVariables* getChunk(const uint32 key) const;
 
-   SCTPDataVariables* getChunkFast(const uint32 tsn, bool& firstTime);
+    SCTPDataVariables* getChunkFast(const uint32 tsn, bool& firstTime);
 
-   void removeMsg(const uint32 key);
+    void removeMsg(const uint32 key);
 
-   bool deleteMsg(const uint32 tsn);
+    bool deleteMsg(const uint32 tsn);
 
-   int32 getNumBytes() const;
+    int32 getNumBytes() const;
 
-   SCTPDataVariables* dequeueChunkBySSN(const uint16 ssn);
+    SCTPDataVariables* dequeueChunkBySSN(const uint16 ssn);
 
-   uint32 getSizeOfFirstChunk(const IPvXAddress& remoteAddress);
+    uint32 getSizeOfFirstChunk(const IPvXAddress& remoteAddress);
 
-   void findEarliestOutstandingTSNsForPath(const IPvXAddress& remoteAddress,
-                                           uint32&            earliestOutstandingTSN,
-                                           uint32&            rtxEarliestOutstandingTSN) const;
+    void findEarliestOutstandingTSNsForPath(const IPvXAddress& remoteAddress,
+                                            uint32&            earliestOutstandingTSN,
+                                            uint32&            rtxEarliestOutstandingTSN) const;
 
   public:
     typedef std::map<uint32, SCTPDataVariables*> PayloadQueue;
@@ -103,3 +103,5 @@ class INET_API SCTPQueue : public cPolymorphic
 };
 
 #endif
+
+

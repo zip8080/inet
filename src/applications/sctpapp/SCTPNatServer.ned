@@ -20,25 +20,25 @@ package inet.applications.sctpapp;
 
 simple SCTPNatServer like SCTPApp
 {
-   parameters:
-      string address = default(""); // may be left empty ("")
-      int port = default(0); // port number to listen on
-      int numPacketsToSendPerClient = default(0);  // number of requests sent per session
-      int numPacketsToReceivePerClient = default(1);
-      double echoDelay @unit(s) = default(0s);
-      int echoFactor = default(0);
-      double delayFirstRead @unit(s) = default(0s);
-      int requestLength = default(1452); // length of a request (bytes)
-      double thinkTime @unit(s) = default(0s); // time gap between requests
-      double waitToClose @unit(s) = default(0s); //time to wait between last message sent and abort
-      int outboundStreams = default(1);
-      bool ordered = default(true);
-      int prMethod = default(0);  //0=NONE, 1=PR_TTL, 2=PR_RTX, 3=PR_PRIO, 4=PR_STRRST
-      bool streamReset = default(false);
-      double prValue = default(0); //for PR-SCTP
-      int queueSize = default(0);
-      string streamPriorities = default("");
-   gates:
-      input sctpIn;
-      output sctpOut;
+    parameters:
+        string address = default(""); // may be left empty ("")
+        int port = default(0); // port number to listen on
+        int numPacketsToSendPerClient = default(0);  // number of requests sent per session
+        int numPacketsToReceivePerClient = default(1);
+        double echoDelay @unit(s) = default(0s);
+        int echoFactor = default(0);
+        double delayFirstRead @unit(s) = default(0s);
+        int requestLength = default(1452); // length of a request (bytes)
+        double thinkTime @unit(s) = default(0s); // time gap between requests
+        double waitToClose @unit(s) = default(0s); //time to wait between last message sent and abort
+        int outboundStreams = default(1);
+        bool ordered = default(true);
+        int prMethod = default(0);  //0=NONE, 1=PR_TTL, 2=PR_RTX, 3=PR_PRIO, 4=PR_STRRST
+        bool streamReset = default(false);
+        double prValue = default(0); //for PR-SCTP
+        int queueSize = default(0);
+        string streamPriorities = default("");
+    gates:
+        input sctpIn;
+        output sctpOut;
 }

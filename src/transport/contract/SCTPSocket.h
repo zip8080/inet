@@ -62,24 +62,23 @@ class  INET_API SCTPSocket
 
     enum State {NOT_BOUND, CLOSED, LISTENING, CONNECTING, CONNECTED, PEER_CLOSED, LOCALLY_CLOSED, SOCKERROR};
 
-    protected:
-        int assocId;
-        int sockId;
-        int sockstate;
-        bool oneToOne;
+  protected:
+    int assocId;
+    int sockId;
+    int sockstate;
+    bool oneToOne;
 
-        IPvXAddress localAddr;
-        AddressVector localAddresses;
+    IPvXAddress localAddr;
+    AddressVector localAddresses;
 
-        int localPrt;
-        IPvXAddress remoteAddr;
-        AddressVector remoteAddresses;
-        int remotePrt;
-        int fsmStatus;
-        int inboundStreams;
-        int outboundStreams;
-        int lastStream;
-
+    int localPrt;
+    IPvXAddress remoteAddr;
+    AddressVector remoteAddresses;
+    int remotePrt;
+    int fsmStatus;
+    int inboundStreams;
+    int outboundStreams;
+    int lastStream;
 
     CallbackInterface *cb;
     void *yourPtr;
@@ -93,7 +92,7 @@ class  INET_API SCTPSocket
      * Constructor. The connectionId() method returns a valid Id right after
      * constructor call.
      */
-   // SCTPSocket();
+    // SCTPSocket();
     SCTPSocket(bool type = true);
 
     /**
@@ -129,11 +128,11 @@ class  INET_API SCTPSocket
 
     /** @name Getter functions */
     //@{
-  //  IPvXAddress localAddress() {return localAddr;}
-  AddressVector getLocalAddresses()  {return localAddresses;}
+    //  IPvXAddress localAddress() {return localAddr;}
+    AddressVector getLocalAddresses()  {return localAddresses;}
     int getLocalPort() {return localPrt;}
-  //  IPvXAddress remoteAddress() {return remoteAddr;}
-  AddressVector getRemoteAddresses()  {return remoteAddresses;}
+    //  IPvXAddress remoteAddress() {return remoteAddr;}
+    AddressVector getRemoteAddresses()  {return remoteAddresses;}
     int getRemotePort() {return remotePrt;}
     IPvXAddress getRemoteAddr() {return remoteAddr;}
     //@}
@@ -151,6 +150,7 @@ class  INET_API SCTPSocket
     int getOutboundStreams() {return outboundStreams;};
     int getLastStream() {return lastStream;};
     void setStreamPriority(uint32 stream, uint32 priority);
+
     /**
      * Bind the socket to a local port number.
      */
@@ -197,6 +197,7 @@ class  INET_API SCTPSocket
 
     void sendNotification(cPacket *msg);
     void sendRequest(cPacket *msg);
+
     /**
      * Closes the local end of the connection. With SCTP, a CLOSE operation
      * means "I have no more data to send", and thus results in a one-way
@@ -209,7 +210,9 @@ class  INET_API SCTPSocket
      * Aborts the association.
      */
     void abort();
+
     void shutdown();
+
     /**
      * Causes SCTP to reply with a fresh SCTPStatusInfo, attached to a dummy
      * message as controlInfo(). The reply message can be recognized by its
@@ -277,7 +280,6 @@ class  INET_API SCTPSocket
      */
     void processMessage(cPacket *msg);
     //@}
-
 
     void setState(int state) {sockstate = state; };
 };

@@ -38,39 +38,39 @@ package inet.applications.sctpapp;
 
 simple SCTPNatPeer like SCTPApp
 {
-   parameters:
-      string address = default(""); // may be left empty ("")
-      int port = default(0); // port number to listen on
-      string connectAddress;  // server address (may be symbolic)
-      int connectPort; // port number to connect to
-      double startTime @unit(s) = default(1s); // time first session begins
-      int numRequestsPerSession = default(1);  // number of requests sent per session
-      int numPacketsToReceive = default(0);
-      int requestLength = default(1452); // length of a request (bytes)
-      double thinkTime @unit(s) = default(0s); // time gap between requests
-      double waitToClose @unit(s) = default(0s); //time to wait between last message sent and abort
-      //double reconnectInterval @unit(s) = default(0);  // if connection breaks, waits this much before trying to reconnect
-      int outboundStreams = default(1);
-      int echoFactor = default(0);
-      bool ordered = default(true);
-      int queueSize = default(0);
-      int prMethod = default(0);  //0=NONE, 1=PR_TTL, 2=PR_RTX, 3=PR_PRIO, 4=PR_STRRST
-      bool streamReset = default(false);
-      double streamRequestTime @unit(s) = default(0s);
-      int streamResetType = default(5);  //NO_RESET=5, RESET_OUTGOING=6, RESET_INCOMING=7, RESET_BOTH=8, SSN_TSN=9
-      bool streamAnswer = default(false);
-      double prValue = default(0); //for PR-SCTP
-      //double stopTime @unit(s) = default(0s);
-      double echoDelay @unit(s) = default(0s);
-      double delayFirstRead @unit(s) = default(0s);
-      int numPacketsToSendPerClient = default(0);  // number of requests sent per session
-      int numPacketsToReceivePerClient = default(1);
-      int ownName;
-      int peerName;
-      bool rendezvous = default(false);
-      bool multi= default(false);
-      string streamPriorities = default("");
-   gates:
-      input sctpIn;
-      output sctpOut;
+    parameters:
+        string address = default(""); // may be left empty ("")
+        int port = default(0); // port number to listen on
+        string connectAddress;  // server address (may be symbolic)
+        int connectPort; // port number to connect to
+        double startTime @unit(s) = default(1s); // time first session begins
+        int numRequestsPerSession = default(1);  // number of requests sent per session
+        int numPacketsToReceive = default(0);
+        int requestLength = default(1452); // length of a request (bytes)
+        double thinkTime @unit(s) = default(0s); // time gap between requests
+        double waitToClose @unit(s) = default(0s); //time to wait between last message sent and abort
+        //double reconnectInterval @unit(s) = default(0);  // if connection breaks, waits this much before trying to reconnect
+        int outboundStreams = default(1);
+        int echoFactor = default(0);
+        bool ordered = default(true);
+        int queueSize = default(0);
+        int prMethod = default(0);  //0=NONE, 1=PR_TTL, 2=PR_RTX, 3=PR_PRIO, 4=PR_STRRST
+        bool streamReset = default(false);
+        double streamRequestTime @unit(s) = default(0s);
+        int streamResetType = default(5);  //NO_RESET=5, RESET_OUTGOING=6, RESET_INCOMING=7, RESET_BOTH=8, SSN_TSN=9
+        bool streamAnswer = default(false);
+        double prValue = default(0); //for PR-SCTP
+        //double stopTime @unit(s) = default(0s);
+        double echoDelay @unit(s) = default(0s);
+        double delayFirstRead @unit(s) = default(0s);
+        int numPacketsToSendPerClient = default(0);  // number of requests sent per session
+        int numPacketsToReceivePerClient = default(1);
+        int ownName;
+        int peerName;
+        bool rendezvous = default(false);
+        bool multi= default(false);
+        string streamPriorities = default("");
+    gates:
+        input sctpIn;
+        output sctpOut;
 }

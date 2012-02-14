@@ -25,68 +25,68 @@
  */
 
 typedef struct natInfo {
-			bool multi;
-			uint32 peer1;
-			IPvXAddress peer1Address1;
-			IPvXAddress peer1Address2;
-			uint32 peer1Assoc;
-			uint32 peer1Port;
-			int32 peer1Gate;
-			uint32 peer2;
-			IPvXAddress peer2Address1;
-			IPvXAddress peer2Address2;
-			uint32 peer2Assoc;
-			uint32 peer2Port;
-			int32 peer2Gate;
-		} NatInfo;
+    bool multi;
+    uint32 peer1;
+    IPvXAddress peer1Address1;
+    IPvXAddress peer1Address2;
+    uint32 peer1Assoc;
+    uint32 peer1Port;
+    int32 peer1Gate;
+    uint32 peer2;
+    IPvXAddress peer2Address1;
+    IPvXAddress peer2Address2;
+    uint32 peer2Assoc;
+    uint32 peer2Port;
+    int32 peer2Gate;
+} NatInfo;
 typedef std::vector<NatInfo*> NatVector;
 
 class INET_API SCTPNatServer : public cSimpleModule
 {
-	protected:
-		//SCTPAssociation* assoc;
-		int32 notifications;
-		uint32 assocId;
-		SCTPSocket *socket;
-		double delay;
-		double echoFactor;
-		bool schedule;
-		bool shutdownReceived;
-		//long bytesRcvd;
-		int64 bytesSent;
-		int32 packetsSent;
-		int32 packetsRcvd;
-		int32 numSessions;
-		int32 numRequestsToSend; // requests to send in this session
-		bool ordered;
-		int32 queueSize;
-		cMessage *timeoutMsg;
-		int32 outboundStreams;
-		int32 lastStream;
-		//cOutVector* rcvdBytes;
-		
-		static NatVector natVector;
+  protected:
+    //SCTPAssociation* assoc;
+    int32 notifications;
+    uint32 assocId;
+    SCTPSocket *socket;
+    double delay;
+    double echoFactor;
+    bool schedule;
+    bool shutdownReceived;
+    //long bytesRcvd;
+    int64 bytesSent;
+    int32 packetsSent;
+    int32 packetsRcvd;
+    int32 numSessions;
+    int32 numRequestsToSend; // requests to send in this session
+    bool ordered;
+    int32 queueSize;
+    cMessage *timeoutMsg;
+    int32 outboundStreams;
+    int32 lastStream;
+    //cOutVector* rcvdBytes;
 
-		void sendOrSchedule(cPacket *msg);
-		int32 ssn;
-	public:
-		//SCTPNatServer();
-		//Module_Class_Members(SCTPNatServer, cSimpleModule, 0);
-		struct pathStatus {
-			bool active;
-			bool primaryPath;
-			IPAddress  pid;
-		};
-		
-		//virtual void socketStatusArrived(int32 assocId, void *yourPtr, SCTPStatusInfo *status);
-		void initialize();
-		void handleMessage(cMessage *msg);
-		void finish();
-		void handleTimer(cMessage *msg);
-		/*void setAssociation(SCTPAssociation *_assoc) { 
-		assoc = _assoc;};*/
-		void generateAndSend(SCTPConnectInfo *connectInfo);
-		void sendInfo(NatInfo* info);
+    static NatVector natVector;
+
+    void sendOrSchedule(cPacket *msg);
+    int32 ssn;
+  public:
+    //SCTPNatServer();
+    //Module_Class_Members(SCTPNatServer, cSimpleModule, 0);
+    struct pathStatus {
+        bool active;
+        bool primaryPath;
+        IPAddress  pid;
+    };
+
+    //virtual void socketStatusArrived(int32 assocId, void *yourPtr, SCTPStatusInfo *status);
+    void initialize();
+    void handleMessage(cMessage *msg);
+    void finish();
+    void handleTimer(cMessage *msg);
+    /*void setAssociation(SCTPAssociation *_assoc) {
+    assoc = _assoc;};*/
+    void generateAndSend(SCTPConnectInfo *connectInfo);
+    void sendInfo(NatInfo* info);
 };
 
 #endif

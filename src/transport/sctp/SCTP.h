@@ -9,7 +9,7 @@
 //
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
@@ -66,7 +66,7 @@ class SCTPMessage;
  * SCTPAssociation manages the association, with the help of other objects.
  * SCTPAssociation itself implements the basic SCTP "machinery": takes care
  * of the state machine, stores the state variables (TCB), sends/receives
- *  etc.
+ * etc.
  *
  * SCTPAssociation internally relies on 3 objects. The first two are subclassed
  * from SCTPSendQueue and SCTPReceiveQueue. They manage the actual data stream,
@@ -90,215 +90,215 @@ class SCTPMessage;
  */
 class INET_API SCTP : public cSimpleModule
 {
-   public:
-      struct AppAssocKey
-      {
-         int32 appGateIndex;
-         int32 assocId;
+  public:
+    struct AppAssocKey
+    {
+        int32 appGateIndex;
+        int32 assocId;
 
-         inline bool operator<(const AppAssocKey& b) const
-         {
+        inline bool operator<(const AppAssocKey& b) const
+        {
             if (appGateIndex!=b.appGateIndex) {
                return appGateIndex<b.appGateIndex;
             }
             else {
                return assocId<b.assocId;
             }
-         }
-      };
+        }
+    };
 
-      struct SockPair
-      {
-         IPvXAddress localAddr;
-         IPvXAddress remoteAddr;
-         uint16      localPort;
-         uint16      remotePort;
+    struct SockPair
+    {
+        IPvXAddress localAddr;
+        IPvXAddress remoteAddr;
+        uint16 localPort;
+        uint16 remotePort;
 
-         inline bool operator<(const SockPair& b) const
-         {
+        inline bool operator<(const SockPair& b) const
+        {
             if (remoteAddr!=b.remoteAddr)
-               return remoteAddr<b.remoteAddr;
+                return remoteAddr<b.remoteAddr;
             else if (localAddr!=b.localAddr)
-               return localAddr<b.localAddr;
+                return localAddr<b.localAddr;
             else if (remotePort!=b.remotePort)
-               return remotePort<b.remotePort;
+                return remotePort<b.remotePort;
             else
-               return localPort<b.localPort;
-         }
-      };
+                return localPort<b.localPort;
+        }
+    };
 
-      struct VTagPair
-      {
-         uint32 peerVTag;
-         uint32 localVTag;
-         uint16 localPort;
-         uint16 remotePort;
+    struct VTagPair
+    {
+        uint32 peerVTag;
+        uint32 localVTag;
+        uint16 localPort;
+        uint16 remotePort;
 
-         /*inline bool operator<(const VTagPair& b) const
-         {
-            if (peerVTag!=b.peerVTag)
-               return peerVTag<b.peerVTag;
-            else if (remotePort!=b.remotePort)
-               return remotePort<b.remotePort;
-            else
-               return localPort<b.localPort;
-         }*/
-      };
-      typedef struct
-      {
-         int32     assocId;
-         simtime_t start;
-         simtime_t stop;
-         uint64    rcvdBytes;
-         uint64    sentBytes;
-         uint64    transmittedBytes;
-         uint64    ackedBytes;
-         uint32    numFastRtx;
-         uint32    numDups;
-         uint32    numT3Rtx;
-         uint32    numPathFailures;
-         uint32    numForwardTsn;
-         uint32    numOverfullSACKs;
-         uint64    sumRGapRanges;                              // T.D. 25.01.2011: Total sum of RGap ranges (Last RGapStop - CumAck)
-         uint64    sumNRGapRanges;                             // T.D. 25.01.2011: Total sum of NRGap ranges (Last NRGapStop - CumAck)
-         uint32    numDropsBecauseNewTSNGreaterThanHighestTSN;
-         uint32    numDropsBecauseNoRoomInBuffer;
-         uint32    numChunksReneged;
-         double    throughput;
-         simtime_t lifeTime;
-         simtime_t fairStart;
-         simtime_t fairStop;
-         uint64    fairAckedBytes;
-         double    fairThroughput;
-         simtime_t fairLifeTime;
-         uint64    numEndToEndMessages;
-         SimTime   cumEndToEndDelay;
-         uint64    startEndToEndDelay;
-         uint64    stopEndToEndDelay;
-      } AssocStat;
+        /*inline bool operator<(const VTagPair& b) const
+        {
+           if (peerVTag!=b.peerVTag)
+              return peerVTag<b.peerVTag;
+           else if (remotePort!=b.remotePort)
+              return remotePort<b.remotePort;
+           else
+              return localPort<b.localPort;
+        }*/
+    };
+    typedef struct
+    {
+        int32     assocId;
+        simtime_t start;
+        simtime_t stop;
+        uint64    rcvdBytes;
+        uint64    sentBytes;
+        uint64    transmittedBytes;
+        uint64    ackedBytes;
+        uint32    numFastRtx;
+        uint32    numDups;
+        uint32    numT3Rtx;
+        uint32    numPathFailures;
+        uint32    numForwardTsn;
+        uint32    numOverfullSACKs;
+        uint64    sumRGapRanges;                              // T.D. 25.01.2011: Total sum of RGap ranges (Last RGapStop - CumAck)
+        uint64    sumNRGapRanges;                             // T.D. 25.01.2011: Total sum of NRGap ranges (Last NRGapStop - CumAck)
+        uint32    numDropsBecauseNewTSNGreaterThanHighestTSN;
+        uint32    numDropsBecauseNoRoomInBuffer;
+        uint32    numChunksReneged;
+        double    throughput;
+        simtime_t lifeTime;
+        simtime_t fairStart;
+        simtime_t fairStop;
+        uint64    fairAckedBytes;
+        double    fairThroughput;
+        simtime_t fairLifeTime;
+        uint64    numEndToEndMessages;
+        SimTime   cumEndToEndDelay;
+        uint64    startEndToEndDelay;
+        uint64    stopEndToEndDelay;
+    } AssocStat;
 
-      typedef std::map<int32,AssocStat>              AssocStatMap;
-      typedef std::map<int32, VTagPair>              SctpVTagMap;
-      typedef std::map<AppAssocKey,SCTPAssociation*> SctpAppAssocMap;
-      typedef std::map<SockPair,SCTPAssociation*>    SctpAssocMap;
+    typedef std::map<int32,AssocStat>              AssocStatMap;
+    typedef std::map<int32, VTagPair>              SctpVTagMap;
+    typedef std::map<AppAssocKey,SCTPAssociation*> SctpAppAssocMap;
+    typedef std::map<SockPair,SCTPAssociation*>    SctpAssocMap;
 
-      AssocStatMap                                   assocStatMap;
-      SctpVTagMap                                    sctpVTagMap;
-      SctpAppAssocMap                                sctpAppAssocMap;
-      SctpAssocMap                                   sctpAssocMap;
-      std::list<SCTPAssociation*>                    assocList;
+    AssocStatMap                                   assocStatMap;
+    SctpVTagMap                                    sctpVTagMap;
+    SctpAppAssocMap                                sctpAppAssocMap;
+    SctpAssocMap                                   sctpAssocMap;
+    std::list<SCTPAssociation*>                    assocList;
 
-   protected:
-      int32        sizeAssocMap;
-      uint16       nextEphemeralPort;
-      static int32 nextAssocId;
+  protected:
+    int32        sizeAssocMap;
+    uint16       nextEphemeralPort;
+    static int32 nextAssocId;
 
-      SCTPAssociation* findAssocForMessage(const IPvXAddress& srcAddr,
-                                           const IPvXAddress& destAddr,
-                                           const uint32       srcPort,
-                                           const uint32       destPort,
-                                           const bool         findListen);
-      SCTPAssociation* findAssocForApp(const int32 appGateIndex,
-                                       const int32 assocId);
-      void sendAbortFromMain(SCTPMessage*       sctpmsg,
-                             const IPvXAddress& srcAddr,
-                             const IPvXAddress& destAddr);
-      void sendShutdownCompleteFromMain(SCTPMessage* sctpmsg,
-                                        const IPvXAddress& srcAddr,
-                                        const IPvXAddress& destAddr);
-      void updateDisplayString();
+    SCTPAssociation* findAssocForMessage(const IPvXAddress& srcAddr,
+                                         const IPvXAddress& destAddr,
+                                         const uint32       srcPort,
+                                         const uint32       destPort,
+                                         const bool         findListen);
+    SCTPAssociation* findAssocForApp(const int32 appGateIndex,
+                                     const int32 assocId);
+    void sendAbortFromMain(SCTPMessage*       sctpmsg,
+                           const IPvXAddress& srcAddr,
+                           const IPvXAddress& destAddr);
+    void sendShutdownCompleteFromMain(SCTPMessage* sctpmsg,
+                                      const IPvXAddress& srcAddr,
+                                      const IPvXAddress& destAddr);
+    void updateDisplayString();
 
-   public:
-      static bool testing;     // switches between sctpEV and testingEV
-      static bool checkQueues; // perform intensive checks for queue lengths for debugging
-      static bool logverbose;  // if !testing, turns on more verbose logging
-      void printInfoAssocMap();
-      void printVTagMap();
-      void removeAssociation(SCTPAssociation* assoc);
+  public:
+    static bool testing;     // switches between sctpEV and testingEV
+    static bool checkQueues; // perform intensive checks for queue lengths for debugging
+    static bool logverbose;  // if !testing, turns on more verbose logging
+    void printInfoAssocMap();
+    void printVTagMap();
+    void removeAssociation(SCTPAssociation* assoc);
 
-      simtime_t testTimeout;
-      uint32    numGapReports;
-      uint32    numPacketsReceived;
-      uint32    numPacketsDropped;
-      bool      auth;
-      bool      addIP;
-      bool      pktdrop;
-      bool      sackNow;
-      uint64    numPktDropReports;
+    simtime_t testTimeout;
+    uint32    numGapReports;
+    uint32    numPacketsReceived;
+    uint32    numPacketsDropped;
+    bool      auth;
+    bool      addIP;
+    bool      pktdrop;
+    bool      sackNow;
+    uint64    numPktDropReports;
 
-   public:
-      virtual ~SCTP();
-      virtual void initialize();
-      virtual void handleMessage(cMessage *msg);
-      virtual void finish();
+  public:
+    virtual ~SCTP();
+    virtual void initialize();
+    virtual void handleMessage(cMessage *msg);
+    virtual void finish();
 
-      inline AssocStat* getAssocStat(const uint32 assocId) {
-         SCTP::AssocStatMap::iterator found = assocStatMap.find(assocId);
-         if(found != assocStatMap.end()) {
-           return(&found->second);
-         }
-         return(NULL);
-      }
+    inline AssocStat* getAssocStat(const uint32 assocId) {
+        SCTP::AssocStatMap::iterator found = assocStatMap.find(assocId);
+        if (found != assocStatMap.end()) {
+            return (&found->second);
+        }
+        return (NULL);
+    }
 
-      /**
-      * To be called from SCTPAssociation when socket pair  changes
-      */
-      void updateSockPair(SCTPAssociation*   assoc,
-                          const IPvXAddress& localAddr,
-                          const IPvXAddress& remoteAddr,
-                          const int32        localPort,
-                          const int32        remotePort);
-      void addLocalAddress(SCTPAssociation*   assoc,
-                           const IPvXAddress& address);
-      void addLocalAddressToAllRemoteAddresses(SCTPAssociation*                assoc,
-                                               const IPvXAddress&              address,
-                                               const std::vector<IPvXAddress>& remAddresses);
-      void addRemoteAddress(SCTPAssociation*   assoc,
-                            const IPvXAddress& localAddress,
-                            const IPvXAddress& remoteAddress);
-      void removeLocalAddressFromAllRemoteAddresses(SCTPAssociation*                assoc,
-                                                    const IPvXAddress&              address,
-                                                    const std::vector<IPvXAddress>& remAddresses);
-      void removeRemoteAddressFromAllAssociations(SCTPAssociation*                assoc,
+    /**
+     * To be called from SCTPAssociation when socket pair  changes
+     */
+    void updateSockPair(SCTPAssociation*   assoc,
+                        const IPvXAddress& localAddr,
+                        const IPvXAddress& remoteAddr,
+                        const int32        localPort,
+                        const int32        remotePort);
+    void addLocalAddress(SCTPAssociation*   assoc,
+                         const IPvXAddress& address);
+    void addLocalAddressToAllRemoteAddresses(SCTPAssociation*                assoc,
+                                             const IPvXAddress&              address,
+                                             const std::vector<IPvXAddress>& remAddresses);
+    void addRemoteAddress(SCTPAssociation*   assoc,
+                          const IPvXAddress& localAddress,
+                          const IPvXAddress& remoteAddress);
+    void removeLocalAddressFromAllRemoteAddresses(SCTPAssociation*                assoc,
                                                   const IPvXAddress&              address,
-                                                  const std::vector<IPvXAddress>& locAddresses);
+                                                  const std::vector<IPvXAddress>& remAddresses);
+    void removeRemoteAddressFromAllAssociations(SCTPAssociation*                assoc,
+                                                const IPvXAddress&              address,
+                                                const std::vector<IPvXAddress>& locAddresses);
 
-      /**
-      * Update assocs socket pair, and register newAssoc (which'll keep LISTENing).
-      * Also, assoc will get a new assocId (and newAssoc will live on with its old assocId).
-      */
-      void addForkedAssociation(SCTPAssociation*   assoc,
-                                SCTPAssociation*   newAssoc,
-                                const IPvXAddress& localAddr,
-                                const IPvXAddress& remoteAddr,
-                                const int32        localPort,
-                                const int32        remotePort);
+    /**
+     * Update assocs socket pair, and register newAssoc (which'll keep LISTENing).
+     * Also, assoc will get a new assocId (and newAssoc will live on with its old assocId).
+     */
+    void addForkedAssociation(SCTPAssociation*   assoc,
+                              SCTPAssociation*   newAssoc,
+                              const IPvXAddress& localAddr,
+                              const IPvXAddress& remoteAddr,
+                              const int32        localPort,
+                              const int32        remotePort);
 
-      /**
-      * To be called from SCTPAssociation: reserves an ephemeral port for the association.
-      */
-      uint16 getEphemeralPort();
+    /**
+     * To be called from SCTPAssociation: reserves an ephemeral port for the association.
+     */
+    uint16 getEphemeralPort();
 
-      /**
-      * Generates a new integer, to be used as assocId. (assocId is part of the key
-      * which associates associations with their apps).
-      */
-      inline static int32 getNewAssocId() { return ++nextAssocId; }
+    /**
+     * Generates a new integer, to be used as assocId. (assocId is part of the key
+     * which associates associations with their apps).
+     */
+    inline static int32 getNewAssocId() { return ++nextAssocId; }
 
-      SCTPAssociation* getAssoc(const int32 assocId);
-      SCTPAssociation* findAssocWithVTag(const uint32 peerVTag,
-                                         const uint32 remotePort,
-                                         const uint32 localPort);
-      inline SctpVTagMap getVTagMap() { return sctpVTagMap; }
+    SCTPAssociation* getAssoc(const int32 assocId);
+    SCTPAssociation* findAssocWithVTag(const uint32 peerVTag,
+                                       const uint32 remotePort,
+                                       const uint32 localPort);
+    inline SctpVTagMap getVTagMap() { return sctpVTagMap; }
 
-      void bindPortForUDP();
+    void bindPortForUDP();
 
-      static uint32      chunkToInt(const char* type);
-      static const char* intToChunk(const uint32 type);
+    static uint32      chunkToInt(const char* type);
+    static const char* intToChunk(const uint32 type);
 
 #ifdef HAVE_GETTIMEOFDAY
-      static unsigned long long getMicroTime();
-      unsigned long long StartupTime;
+    static unsigned long long getMicroTime();
+    unsigned long long StartupTime;
 #endif
 };
 

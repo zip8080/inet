@@ -15,22 +15,23 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program; if not, see <http://www.gnu.org/licenses/>.
 //
+
 package inet.util;
 
 //
 // Provides tcpdump-like functionality
 //
 simple TCPDump {
-   parameters:
-      double countStart @unit(s) = default(0s);
-      double countStop @unit(s) = default(0s);
-      string dumpFile = default("");
-      bool threadEnable = default(false);
-      int snaplen = default(65535);
-      int verbosity = default(0);
-   gates:
-      input ifIn[];
-      input in2[];
-      output ifOut[];
-      output out2[];
+    parameters:
+        double countStart @unit(s) = default(0s);
+        double countStop @unit(s) = default(0s);
+        string dumpFile = default("");
+        bool threadEnable = default(false);
+        int snaplen = default(65535);
+        int verbosity = default(0);
+    gates:
+        input ifIn[];
+        input in2[];
+        output ifOut[];
+        output out2[];
 }

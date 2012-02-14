@@ -102,205 +102,217 @@ static uint32_t crc_c[256] =
 };
 
 
-
 struct common_header {
-   uint16_t source_port;
-   uint16_t destination_port;
-   uint32_t verification_tag;
-   uint32_t checksum;
+    uint16_t source_port;
+    uint16_t destination_port;
+    uint32_t verification_tag;
+    uint32_t checksum;
 } __attribute__((packed));
+
 
 struct chunk {
-   uint8_t  type;
-   uint8_t  flags;
-   uint16_t length;
+    uint8_t  type;
+    uint8_t  flags;
+    uint16_t length;
 } __attribute__((packed));
+
 
 struct data_chunk {
-   uint8_t type;
-   uint8_t flags;
-   uint16_t length;
-   uint32_t tsn;
-   uint16_t sid;
-   uint16_t ssn;
-   uint32_t ppi;
-   uint8_t user_data[0];
+    uint8_t type;
+    uint8_t flags;
+    uint16_t length;
+    uint32_t tsn;
+    uint16_t sid;
+    uint16_t ssn;
+    uint32_t ppi;
+    uint8_t user_data[0];
 } __attribute__((packed));
+
 
 struct init_chunk {
-   uint8_t type;
-   uint8_t flags;
-   uint16_t length;
-   uint32_t initiate_tag;
-   uint32_t a_rwnd;
-   uint16_t mos;
-   uint16_t mis;
-   uint32_t initial_tsn;
-   uint8_t parameter[0];
+    uint8_t type;
+    uint8_t flags;
+    uint16_t length;
+    uint32_t initiate_tag;
+    uint32_t a_rwnd;
+    uint16_t mos;
+    uint16_t mis;
+    uint32_t initial_tsn;
+    uint8_t parameter[0];
 } __attribute__((packed));
+
 
 struct init_ack_chunk {
-   uint8_t  type;
-   uint8_t  flags;
-   uint16_t length;
-   uint32_t initiate_tag;
-   uint32_t a_rwnd;
-   uint16_t mos;
-   uint16_t mis;
-   uint32_t initial_tsn;
-   uint8_t  parameter[0];
+    uint8_t  type;
+    uint8_t  flags;
+    uint16_t length;
+    uint32_t initiate_tag;
+    uint32_t a_rwnd;
+    uint16_t mos;
+    uint16_t mis;
+    uint32_t initial_tsn;
+    uint8_t  parameter[0];
 } __attribute__((packed));
+
 
 struct sack_chunk {
-   uint8_t  type;
-   uint8_t  flags;
-   uint16_t length;
-   uint32_t cum_tsn_ack;
-   uint32_t a_rwnd;
-   uint16_t nr_of_gaps;
-   uint16_t nr_of_dups;
-   uint8_t tsns[0];
+    uint8_t  type;
+    uint8_t  flags;
+    uint16_t length;
+    uint32_t cum_tsn_ack;
+    uint32_t a_rwnd;
+    uint16_t nr_of_gaps;
+    uint16_t nr_of_dups;
+    uint8_t tsns[0];
 } __attribute__((packed));
+
 
 struct nr_sack_chunk {
-   uint8_t  type;
-   uint8_t  flags;
-   uint16_t length;
-   uint32_t cum_tsn_ack;
-   uint32_t a_rwnd;
-   uint16_t nr_of_gaps;
-   uint16_t nr_of_nr_gaps;
-   uint16_t reserved;
-   uint16_t nr_of_dups;
-   uint8_t tsns[0];
+    uint8_t  type;
+    uint8_t  flags;
+    uint16_t length;
+    uint32_t cum_tsn_ack;
+    uint32_t a_rwnd;
+    uint16_t nr_of_gaps;
+    uint16_t nr_of_nr_gaps;
+    uint16_t reserved;
+    uint16_t nr_of_dups;
+    uint8_t tsns[0];
 } __attribute__((packed));
+
 
 struct heartbeat_chunk {
-   uint8_t  type;
-   uint8_t  flags;
-   uint16_t length;
-   uint8_t  heartbeat_info[0];
+    uint8_t  type;
+    uint8_t  flags;
+    uint16_t length;
+    uint8_t  heartbeat_info[0];
 } __attribute__((packed));
+
 
 struct heartbeat_ack_chunk {
-   uint8_t  type;
-   uint8_t  flags;
-   uint16_t length;
-   uint8_t  heartbeat_info[0];
+    uint8_t  type;
+    uint8_t  flags;
+    uint16_t length;
+    uint8_t  heartbeat_info[0];
 } __attribute__((packed));
+
 
 struct abort_chunk {
-   uint8_t  type;
-   uint8_t  flags;
-   uint16_t length;
-   uint8_t  error_causes[0];
+    uint8_t  type;
+    uint8_t  flags;
+    uint16_t length;
+    uint8_t  error_causes[0];
 } __attribute__((packed));
+
 
 struct shutdown_chunk {
-   uint8_t  type;
-   uint8_t  flags;
-   uint16_t length;
-   uint32_t cumulative_tsn_ack;
+    uint8_t  type;
+    uint8_t  flags;
+    uint16_t length;
+    uint32_t cumulative_tsn_ack;
 } __attribute__((packed));
+
 
 struct shutdown_ack_chunk {
-   uint8_t  type;
-   uint8_t  flags;
-   uint16_t length;
+    uint8_t  type;
+    uint8_t  flags;
+    uint16_t length;
 } __attribute__((packed));
+
 
 struct shutdown_complete_chunk {
-   uint8_t  type;
-   uint8_t  flags;
-   uint16_t length;
+    uint8_t  type;
+    uint8_t  flags;
+    uint16_t length;
 } __attribute__((packed));
+
 
 struct cookie_echo_chunk {
-   uint8_t  type;
-   uint8_t  flags;
-   uint16_t length;
-   uint8_t state_cookie[0];
+    uint8_t  type;
+    uint8_t  flags;
+    uint16_t length;
+    uint8_t state_cookie[0];
 } __attribute__((packed));
 
+
 struct cookie_ack_chunk {
-   uint8_t  type;
-   uint8_t  flags;
-   uint16_t length;
+    uint8_t  type;
+    uint8_t  flags;
+    uint16_t length;
 } __attribute__((packed));
 
 
 struct ecn_chunk {
-   uint8_t  type;
-   uint8_t  flags;
-   uint16_t length;
-   uint32_t lowest_tsn;
+    uint8_t  type;
+    uint8_t  flags;
+    uint16_t length;
+    uint32_t lowest_tsn;
 } __attribute__((packed));
 
 
 struct error_chunk {
-   uint8_t  type;
-   uint8_t  flags;
-   uint16_t length;
-   uint8_t  error_causes[0];
+    uint8_t  type;
+    uint8_t  flags;
+    uint16_t length;
+    uint8_t  error_causes[0];
 } __attribute__((packed));
 
 
 struct forward_tsn_chunk {
-   uint8_t  type;
-   uint8_t  flags;
-   uint16_t length;
-   uint32_t cum_tsn;
-   uint8_t  stream_info[0];
+    uint8_t  type;
+    uint8_t  flags;
+    uint16_t length;
+    uint32_t cum_tsn;
+    uint8_t  stream_info[0];
 } __attribute__((packed));
 
 
 struct asconf_chunk {
-   uint8_t  type;
-   uint8_t  flags;
-   uint16_t length;
-   uint32_t serial;
-   uint8_t parameters[0];
+    uint8_t  type;
+    uint8_t  flags;
+    uint16_t length;
+    uint32_t serial;
+    uint8_t parameters[0];
 } __attribute__((packed));
 
 
 struct asconf_ack_chunk {
-   uint8_t  type;
-   uint8_t  flags;
-   uint16_t length;
-   uint32_t serial;
-   uint8_t parameters[0];
+    uint8_t  type;
+    uint8_t  flags;
+    uint16_t length;
+    uint32_t serial;
+    uint8_t parameters[0];
 } __attribute__((packed));
 
 
 struct auth_chunk {
-   uint8_t  type;
-   uint8_t  flags;
-   uint16_t length;
-   uint16_t shared_key;
-   uint16_t hmac_identifier;
-   uint8_t  hmac[0];
+    uint8_t  type;
+    uint8_t  flags;
+    uint16_t length;
+    uint16_t shared_key;
+    uint16_t hmac_identifier;
+    uint8_t  hmac[0];
 } __attribute__((packed));
 
 
 struct stream_reset_chunk {
-   uint8_t type;
-   uint8_t flags;
-   uint16_t length;
-   uint8_t parameters[0];
+    uint8_t type;
+    uint8_t flags;
+    uint16_t length;
+    uint8_t parameters[0];
 } __attribute__((packed));
 
 
 struct pktdrop_chunk {
-   uint8_t  type;
-   uint8_t  flags;
-   uint16_t length;
-   uint32_t max_rwnd;
-   uint32_t queued_data;
-   uint16_t trunc_length;
-   uint16_t reserved;
-   uint8_t  dropped_data[0];
+    uint8_t  type;
+    uint8_t  flags;
+    uint16_t length;
+    uint32_t max_rwnd;
+    uint32_t queued_data;
+    uint16_t trunc_length;
+    uint16_t reserved;
+    uint8_t  dropped_data[0];
 } __attribute__((packed));
-
 
 
 // variable length parameters in INIT chunk:
@@ -310,101 +322,99 @@ struct pktdrop_chunk {
 #define INIT_SUPPORTED_ADDRESS 12
 
 struct init_ipv4_address_parameter {
-   uint16_t type;
-   uint16_t length;
-   uint32_t address;
+    uint16_t type;
+    uint16_t length;
+    uint32_t address;
 } __attribute__((packed));
 
 
 struct init_ipv6_address_parameter {
-   uint16_t type;
-   uint16_t length;
-   uint32_t address[4];
+    uint16_t type;
+    uint16_t length;
+    uint32_t address[4];
 } __attribute__((packed));
 
 
 struct init_cookie_parameter {
-   uint16_t type;
-   uint16_t length;
-   uint32_t creationTime;
-   uint32_t localTag;
-   uint32_t peerTag;
-   uint8_t localTieTag[32];
-   uint8_t peerTieTag[32];
+    uint16_t type;
+    uint16_t length;
+    uint32_t creationTime;
+    uint32_t localTag;
+    uint32_t peerTag;
+    uint8_t localTieTag[32];
+    uint8_t peerTieTag[32];
 } __attribute__((packed));
 
 
 struct cookie_parameter {
-   uint32_t creationTime;
-   uint32_t localTag;
-   uint32_t peerTag;
-   uint8_t localTieTag[32];
-   uint8_t peerTieTag[32];
+    uint32_t creationTime;
+    uint32_t localTag;
+    uint32_t peerTag;
+    uint8_t localTieTag[32];
+    uint8_t peerTieTag[32];
 } __attribute__((packed));
 
 
 struct add_ip_parameter {
-   uint16_t type;
-   uint16_t length;
-   uint32_t correlation_id;
-   uint8_t parameters[0];
+    uint16_t type;
+    uint16_t length;
+    uint32_t correlation_id;
+    uint8_t parameters[0];
 } __attribute__((packed));
 
 
 struct hmac_algo {
-   uint16_t type;
-   uint16_t length;
-   uint16_t ident[0];
+    uint16_t type;
+    uint16_t length;
+    uint16_t ident[0];
 } __attribute__((packed));
 
 
 struct supported_extensions_parameter {
-   uint16_t type;
-   uint16_t length;
-   uint8_t chunk_type[0];
+    uint16_t type;
+    uint16_t length;
+    uint8_t chunk_type[0];
 } __attribute__((packed));
 
 
 struct forward_tsn_supported_parameter {
-   uint16_t type;
-   uint16_t length;
+    uint16_t type;
+    uint16_t length;
 } __attribute__((packed));
 
 
 struct supported_address_types_parameter {
-   uint16_t type;
-   uint16_t length;
-   uint16_t address_type;
+    uint16_t type;
+    uint16_t length;
+    uint16_t address_type;
 } __attribute__((packed));
 
 
 struct random_parameter {
-   uint16_t type;
-   uint16_t length;
-   uint8_t random[];
+    uint16_t type;
+    uint16_t length;
+    uint8_t random[];
 } __attribute__((packed));
-
 
 
 struct tlv {
-   uint16_t type;
-   uint16_t length;
-   uint8_t value[0];
+    uint16_t type;
+    uint16_t length;
+    uint8_t value[0];
 } __attribute__((packed));
-
 
 
 // Heartbeat info TLV:
 struct heartbeat_info {
-   uint16_t type;
-   uint16_t length;
-   union {
-     uint8_t info[];
-     struct {
-       uint32_t addr;
-       uint32_t time;
-     } addr_and_time;
-   } heartbeat_info_union;
+    uint16_t type;
+    uint16_t length;
+    union {
+        uint8_t info[];
+        struct {
+            uint32_t addr;
+            uint32_t time;
+        } addr_and_time;
+    } heartbeat_info_union;
 } __attribute__((packed));
 
 
@@ -413,70 +423,70 @@ struct heartbeat_info {
 #define HBI_TIME(hbi) ((hbi)->heartbeat_info_union.addr_and_time.time)
 
 struct error_cause {
-   uint16_t cause_code;
-   uint16_t length;
-   uint8_t info[0];
+    uint16_t cause_code;
+    uint16_t length;
+    uint8_t info[0];
 } __attribute__((packed));
 
 
 // SACK GAP:
 struct sack_gap {
-   uint16_t start;
-   uint16_t stop;
+    uint16_t start;
+    uint16_t stop;
 } __attribute__((packed));
 
 
 // SACK DUP TSN:
 struct sack_duptsn {
-   uint32_t tsn;
+    uint32_t tsn;
 } __attribute__((packed));
 
 
 // Forward_TSN streams
 struct forward_tsn_streams {
-   uint16_t sid;
-   uint16_t ssn;
+    uint16_t sid;
+    uint16_t ssn;
 } __attribute__((packed));
 
 
 // Parameters for Stream Reset
 struct outgoing_reset_request_parameter {
-   uint16_t type;
-   uint16_t length;
-   uint32_t srReqSn; //Stream Reset Request Sequence Number
-   uint32_t srResSn; //Stream Reset Response Sequence Number
-   uint32_t lastTsn; //Senders last assigned TSN
-   uint16_t streamNumbers[0];
+    uint16_t type;
+    uint16_t length;
+    uint32_t srReqSn; // Stream Reset Request Sequence Number
+    uint32_t srResSn; // Stream Reset Response Sequence Number
+    uint32_t lastTsn; // Senders last assigned TSN
+    uint16_t streamNumbers[0];
 } __attribute__((packed));
 
 
 struct incoming_reset_request_parameter {
-   uint16_t type;
-   uint16_t length;
-   uint32_t srReqSn; //Stream Reset Request Sequence Number
-   uint16_t streamNumbers[0];
+    uint16_t type;
+    uint16_t length;
+    uint32_t srReqSn; // Stream Reset Request Sequence Number
+    uint16_t streamNumbers[0];
 } __attribute__((packed));
 
 
 struct ssn_tsn_reset_request_parameter {
-   uint16_t type;
-   uint16_t length;
-   uint32_t srReqSn; //Stream Reset Request Sequence Number
+    uint16_t type;
+    uint16_t length;
+    uint32_t srReqSn; // Stream Reset Request Sequence Number
 } __attribute__((packed));
 
 
 struct stream_reset_response_parameter {
-   uint16_t type;
-   uint16_t length;
-   uint32_t srResSn; //Stream Reset Response Sequence Number
-   uint32_t result;
-   uint32_t sendersNextTsn;
-   uint32_t receiversNextTsn;
+    uint16_t type;
+    uint16_t length;
+    uint32_t srResSn; // Stream Reset Response Sequence Number
+    uint32_t result;
+    uint32_t sendersNextTsn;
+    uint32_t receiversNextTsn;
 } __attribute__((packed));
 
 
 struct data_vector {
-   uint8_t data[0];
+    uint8_t data[0];
 } __attribute__((packed));
 
 

@@ -9,7 +9,7 @@
 //
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
@@ -22,150 +22,150 @@
 
 SCTPReceiveStream::SCTPReceiveStream()
 {
-   streamId             = 0;
-   expectedStreamSeqNum = 0;
-   deliveryQ            = new SCTPQueue();
-   orderedQ             = new SCTPQueue();
-   unorderedQ           = new SCTPQueue();
+    streamId = 0;
+    expectedStreamSeqNum = 0;
+    deliveryQ = new SCTPQueue();
+    orderedQ = new SCTPQueue();
+    unorderedQ = new SCTPQueue();
 }
 
 SCTPReceiveStream::~SCTPReceiveStream()
 {
-   delete deliveryQ;
-   delete orderedQ;
-   delete unorderedQ;
-   deliveryQ  = NULL;
-   orderedQ   = NULL;
-   unorderedQ = NULL;
+    delete deliveryQ;
+    delete orderedQ;
+    delete unorderedQ;
+    deliveryQ = NULL;
+    orderedQ = NULL;
+    unorderedQ = NULL;
 }
 
 
 uint32 SCTPReceiveStream::reassemble(SCTPQueue* queue, const uint32 tsn)
 {
-   uint32 beginTSN = tsn;
-   uint32 endTSN   = 0;
+    uint32 beginTSN = tsn;
+    uint32 endTSN = 0;
 
-   sctpEV3 << "Trying to reassemble message..." << endl;
+    sctpEV3 << "Trying to reassemble message..." << endl;
 
-   /* test if we have all fragments down to the first */
-   while (queue->getChunk(beginTSN) && !(queue->getChunk(beginTSN))->bbit) {
-      beginTSN--;
-   }
+    /* test if we have all fragments down to the first */
+    while (queue->getChunk(beginTSN) && !(queue->getChunk(beginTSN))->bbit) {
+        beginTSN--;
+    }
 
-   if (queue->getChunk(beginTSN)) {
-      endTSN = beginTSN;
+    if (queue->getChunk(beginTSN)) {
+        endTSN = beginTSN;
 
-      /* test if we have all fragments up to the end */
-      while (queue->getChunk(endTSN) && !(queue->getChunk(endTSN))->ebit) {
-         endTSN++;
-      }
+        /* test if we have all fragments up to the end */
+        while (queue->getChunk(endTSN) && !(queue->getChunk(endTSN))->ebit) {
+            endTSN++;
+        }
 
-      if (queue->getChunk(endTSN)) {
-         sctpEV3 << "All fragments found, now reassembling..." << endl;
+        if (queue->getChunk(endTSN)) {
+            sctpEV3 << "All fragments found, now reassembling..." << endl;
 
-         SCTPDataVariables* firstVar    = queue->getChunk(beginTSN);
-         SCTPSimpleMessage* firstSimple = check_and_cast<SCTPSimpleMessage*>(firstVar->userData);
+            SCTPDataVariables* firstVar = queue->getChunk(beginTSN);
+            SCTPSimpleMessage* firstSimple = check_and_cast<SCTPSimpleMessage*>(firstVar->userData);
 
-         sctpEV3 << "First fragment has " << firstVar->len / 8 << " bytes." << endl;
+            sctpEV3 << "First fragment has " << firstVar->len / 8 << " bytes." << endl;
 
-         assert(firstVar->fragments == 1);
-         while (++beginTSN <= endTSN) {
-            SCTPDataVariables* processVar    = queue->getAndExtractChunk(beginTSN);
-            SCTPSimpleMessage* processSimple = check_and_cast<SCTPSimpleMessage*>(processVar->userData);
+            assert(firstVar->fragments == 1);
+            while (++beginTSN <= endTSN) {
+                SCTPDataVariables* processVar = queue->getAndExtractChunk(beginTSN);
+                SCTPSimpleMessage* processSimple = check_and_cast<SCTPSimpleMessage*>(processVar->userData);
 
-            sctpEV3 << "Adding fragment with " << processVar->len / 8 << " bytes." << endl;
+                sctpEV3 << "Adding fragment with " << processVar->len / 8 << " bytes." << endl;
 
-            if( (firstSimple->getDataArraySize() > 0) &&
-                (processSimple->getDataArraySize() > 0) ) {
-               firstSimple->setDataArraySize(firstSimple->getDataArraySize() + processSimple->getDataArraySize());
-               firstSimple->setDataLen(firstSimple->getDataLen() + processSimple->getDataLen());
-               firstSimple->setByteLength(firstSimple->getByteLength() + processSimple->getByteLength());
-               for (uint32 i = 0; i < (processVar->len / 8); i++) {   // Copy the data
-                  firstSimple->setData(i + (firstVar->len / 8), processSimple->getData(i));
-               }
+                if ( (firstSimple->getDataArraySize() > 0) &&
+                        (processSimple->getDataArraySize() > 0) ) {
+                    firstSimple->setDataArraySize(firstSimple->getDataArraySize() + processSimple->getDataArraySize());
+                    firstSimple->setDataLen(firstSimple->getDataLen() + processSimple->getDataLen());
+                    firstSimple->setByteLength(firstSimple->getByteLength() + processSimple->getByteLength());
+                    for (uint32 i = 0; i < (processVar->len / 8); i++) {   // Copy the data
+                        firstSimple->setData(i + (firstVar->len / 8), processSimple->getData(i));
+                    }
+                }
+
+                firstVar->len += processVar->len;
+                firstVar->fragments++;
+
+                delete processVar->userData;
+                delete processVar;
             }
 
-            firstVar->len += processVar->len;
-            firstVar->fragments++;
+            firstVar->ebit = 1;
 
-            delete processVar->userData;
-            delete processVar;
-         }
-
-         firstVar->ebit = 1;
-
-         sctpEV3 << "Reassembly done; "
-                 << " length="    << firstVar->len
-                 << " fragments=" << firstVar->fragments
-                 << " TSNs={ "     << firstVar->tsn << " ... " <<  firstVar->tsn + firstVar->fragments - 1 << " }"
-                 << endl;
-         return firstVar->tsn;
-      }
-   }
-   return tsn;
+            sctpEV3 << "Reassembly done; "
+                    << " length=" << firstVar->len
+                    << " fragments=" << firstVar->fragments
+                    << " TSNs={ " << firstVar->tsn << " ... " << firstVar->tsn + firstVar->fragments - 1 << " }"
+                    << endl;
+            return firstVar->tsn;
+        }
+    }
+    return tsn;
 }
 
 
 uint32 SCTPReceiveStream::enqueueNewDataChunk(SCTPDataVariables* dchunk)
 {
-   uint32 delivery = 0;
-   // Variants:
-   // 0: orderedQ=false && deliveryQ=false;
-   // 1: orderedQ=true  && deliveryQ=false;
-   // 2: orderedQ=true  && deliveryQ=true;
-   // 3: fragment
+    uint32 delivery = 0;
+    // Variants:
+    // 0: orderedQ=false && deliveryQ=false;
+    // 1: orderedQ=true  && deliveryQ=false;
+    // 2: orderedQ=true  && deliveryQ=true;
+    // 3: fragment
 
-   // ====== Unordered delivery =============================================
-   if (!dchunk->ordered) {
-      if (dchunk->bbit && dchunk->ebit) {
-         /* put message into deliveryQ */
-         if (deliveryQ->checkAndInsertChunk(dchunk->tsn, dchunk)) {
-            delivery = 2;
-         }
-      } else {
-         unorderedQ->checkAndInsertChunk(dchunk->tsn, dchunk);
-         delivery = 3;
-
-         // Try to reassemble chunks
-         const uint32 reassembled = reassemble(unorderedQ, dchunk->tsn);
-
-         if ((unorderedQ->getChunk(reassembled))->bbit && (unorderedQ->getChunk(reassembled))->bbit) {
-            // Put message into deliveryQ
-            if (deliveryQ->checkAndInsertChunk(reassembled, unorderedQ->getAndExtractChunk(reassembled))) {
-               delivery = 2;
+    // ====== Unordered delivery =============================================
+    if (!dchunk->ordered) {
+        if (dchunk->bbit && dchunk->ebit) {
+            /* put message into deliveryQ */
+            if (deliveryQ->checkAndInsertChunk(dchunk->tsn, dchunk)) {
+                delivery = 2;
             }
-         }
-      }
-   }
+        } else {
+            unorderedQ->checkAndInsertChunk(dchunk->tsn, dchunk);
+            delivery = 3;
 
-   // ====== Ordered delivery ===============================================
-   else if (dchunk->ordered) {
-      // Put message into orderedQ
-      if (orderedQ->checkAndInsertChunk(dchunk->tsn, dchunk)) {
-         delivery = 1;
-      }
+            // Try to reassemble chunks
+            const uint32 reassembled = reassemble(unorderedQ, dchunk->tsn);
 
-      if (!dchunk->bbit || !dchunk->ebit) {
-         delivery = 3;
-         // Try to reassemble chunks
-         reassemble(orderedQ, dchunk->tsn);
-      }
-
-      if (orderedQ->getQueueSize() > 0) {
-         // Try to dequeue first chunk from orderedQ
-         SCTPDataVariables* chunk = orderedQ->dequeueChunkBySSN(expectedStreamSeqNum);
-         if (chunk) {
-            // Success -> put message into deliveryQ
-            if (deliveryQ->checkAndInsertChunk(chunk->tsn, chunk)) {
-               ++expectedStreamSeqNum;
-               if (expectedStreamSeqNum > 65535) {
-                  expectedStreamSeqNum = 0;
-               }
-               delivery = 2;
+            if ((unorderedQ->getChunk(reassembled))->bbit && (unorderedQ->getChunk(reassembled))->bbit) {
+                // Put message into deliveryQ
+                if (deliveryQ->checkAndInsertChunk(reassembled, unorderedQ->getAndExtractChunk(reassembled))) {
+                    delivery = 2;
+                }
             }
-         }
-      }
-   }
+        }
+    }
 
-   return delivery;
+    // ====== Ordered delivery ===============================================
+    else if (dchunk->ordered) {
+        // Put message into orderedQ
+        if (orderedQ->checkAndInsertChunk(dchunk->tsn, dchunk)) {
+            delivery = 1;
+        }
+
+        if (!dchunk->bbit || !dchunk->ebit) {
+            delivery = 3;
+            // Try to reassemble chunks
+            reassemble(orderedQ, dchunk->tsn);
+        }
+
+        if (orderedQ->getQueueSize() > 0) {
+            // Try to dequeue first chunk from orderedQ
+            SCTPDataVariables* chunk = orderedQ->dequeueChunkBySSN(expectedStreamSeqNum);
+            if (chunk) {
+                // Success -> put message into deliveryQ
+                if (deliveryQ->checkAndInsertChunk(chunk->tsn, chunk)) {
+                    ++expectedStreamSeqNum;
+                    if (expectedStreamSeqNum > 65535) {
+                        expectedStreamSeqNum = 0;
+                    }
+                    delivery = 2;
+                }
+            }
+        }
+    }
+
+    return delivery;
 }
