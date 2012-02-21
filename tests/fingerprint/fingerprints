@@ -49,8 +49,8 @@ class FingerprintTestCaseGenerator():
         class StoreFingerprintCallback:
             def __init__(self, simulation):
                 self.simulation = simulation
-            def __call__(self, fingerprint):
-                self.simulation['computedFingerprint'] = fingerprint
+            def __call__(self, fingerprints):
+                self.simulation['computedFingerprints'] = fingerprints
 
         testcases = []
         for simulation in simulations:
@@ -95,8 +95,8 @@ class FingerprintTestCaseGenerator():
         containsComputedFingerprint = False
         for simulation in simulations:
             fingerprint = simulation['fingerprint']
-            if 'computedFingerprint' in simulation:
-                fingerprint = '/'.join(simulation['computedFingerprint'])
+            if 'computedFingerprints' in simulation:
+                fingerprint = '/'.join(simulation['computedFingerprints'])
                 containsComputedFingerprint = True
             line = self.escape(simulation['wd']).ljust(wdlen) + ", " + self.escape(simulation['args']).ljust(argslen) + ", " + self.escape(simulation['simtimelimit']).ljust(timelen) + ", " + self.escape(fingerprint)
             txt += line + "\n"
@@ -110,7 +110,7 @@ class SimulationResult:
         self.exitcode = exitcode
         self.errorMsg = errorMsg
         self.isFingerprintOK = isFingerprintOK
-        self.computedFingerprint = set()
+        self.computedFingerprints = set()
         self.simulatedTime = simulatedTime
         self.numEvents = numEvents
         self.elapsedTime = elapsedTime
@@ -146,12 +146,12 @@ class SimulationTestCase(unittest.TestCase):
                 if m:
                     if result.isFingerprintOK == None:  # first fingerprint line
                         result.isFingerprintOK = True
-                    result.computedFingerprint.add(m.group(1))
+                    result.computedFingerprints.add(m.group(1))
                 else:
                     m = re.search("(computed|calculated): ([-a-zA-Z0-9]+)", err)
                     if m:
                         result.isFingerprintOK = False
-                        result.computedFingerprint.add(m.group(2))
+                        result.computedFingerprints.add(m.group(2))
                     else:
                         raise Exception("Cannot parse fingerprint-related error message: " + err)
             else:
@@ -164,7 +164,7 @@ class SimulationTestCase(unittest.TestCase):
                     result.simulatedTime = float(m.group(2))
 
         if result.isFingerprintOK == True:
-            result.computedFingerprint = None
+            result.computedFingerprints = None
         result.errormsg = errorMsg.strip()
         return result
 
@@ -208,8 +208,8 @@ class FingerprintTestCase(SimulationTestCase):
         elif result.isFingerprintOK is None:
             raise Exception("other")
         elif result.isFingerprintOK == False:
-            self.storeFingerprintCallback(result.computedFingerprint)
-            assert False, "fingerprint mismatch; actual " + '/'.join(result.computedFingerprint)
+            self.storeFingerprintCallback(result.computedFingerprints)
+            assert False, "fingerprint mismatch; actual " + '/'.join(result.computedFingerprints)
         else:
             pass
 
