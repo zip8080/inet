@@ -826,10 +826,12 @@ void ManetRoutingBase::omnet_chg_rte(const Uint128 &dst, const Uint128 &gtwy, co
 
     bool found = false;
     IPv4Route *oldentry = NULL;
+    IPv4Route::RouteSource routeSource = usetManetLabelRouting ? IPv4Route::MANET : IPv4Route::MANET2;
     for (int i=inet_rt->getNumRoutes(); i>0; --i)
     {
         IPv4Route *e = inet_rt->getRoute(i-1);
-        if (desAddress == e->getDestination())
+        if (desAddress == e->getDestination()
+                && e->getSource() == routeSource)
         {
             if (del_entry && !found)
             {
@@ -854,7 +856,8 @@ void ManetRoutingBase::omnet_chg_rte(const Uint128 &dst, const Uint128 &gtwy, co
             for (int i=inet_rt->getNumRoutes(); i>0; --i)
             {
                 IPv4Route *e = inet_rt->getRoute(i-1);
-                if (list[i] == e->getDestination())
+                if (list[i] == e->getDestination()
+                        && e->getSource() == routeSource)
                 {
                     if (!inet_rt->deleteRoute(e))
                         opp_error("Aodv omnet_chg_rte can't delete route entry");
@@ -876,7 +879,6 @@ void ManetRoutingBase::omnet_chg_rte(const Uint128 &dst, const Uint128 &gtwy, co
         netmask = IPv4Address::ALLONES_ADDRESS;
 
     InterfaceEntry *ie = getInterfaceWlanByAddress(iface);
-    IPv4Route::RouteSource routeSource = usetManetLabelRouting ? IPv4Route::MANET : IPv4Route::MANET2;
 
     if (found)
     {
@@ -981,10 +983,12 @@ void ManetRoutingBase::omnet_chg_rte(const Uint128 &dst, const Uint128 &gtwy, co
         return;
     bool found = false;
     IPv4Route *oldentry = NULL;
+    IPv4Route::RouteSource routeSource = usetManetLabelRouting ? IPv4Route::MANET : IPv4Route::MANET2;
     for (int i=inet_rt->getNumRoutes(); i>0; --i)
     {
         IPv4Route *e = inet_rt->getRoute(i-1);
-        if (desAddress == e->getDestination())
+        if (desAddress == e->getDestination()
+                && e->getSource() == routeSource)
         {
             if (del_entry && !found)
             {
@@ -1009,7 +1013,8 @@ void ManetRoutingBase::omnet_chg_rte(const Uint128 &dst, const Uint128 &gtwy, co
             for (int i = inet_rt->getNumRoutes(); i > 0; --i)
             {
                 IPv4Route *e = inet_rt->getRoute(i - 1);
-                if (list[i] == e->getDestination())
+                if (list[i] == e->getDestination()
+                        && e->getSource() == routeSource)
                 {
                     if (!inet_rt->deleteRoute(e))
                         opp_error("Aodv omnet_chg_rte can't delete route entry");
@@ -1029,7 +1034,6 @@ void ManetRoutingBase::omnet_chg_rte(const Uint128 &dst, const Uint128 &gtwy, co
         netmask = IPv4Address::ALLONES_ADDRESS;
 
     InterfaceEntry *ie = getInterfaceEntry(index);
-    IPv4Route::RouteSource routeSource = usetManetLabelRouting ? IPv4Route::MANET : IPv4Route::MANET2;
 
     if (found)
     {
@@ -1142,10 +1146,12 @@ void ManetRoutingBase::omnet_clean_rte()
     if (mac_layer_)
         return;
     // clean the route table wlan interface entry
+    IPv4Route::RouteSource routeSource = usetManetLabelRouting ? IPv4Route::MANET : IPv4Route::MANET2;
     for (int i=inet_rt->getNumRoutes()-1; i>=0; i--)
     {
         entry = inet_rt->getRoute(i);
-        if (strstr(entry->getInterface()->getName(), "wlan")!=NULL)
+        if (strstr(entry->getInterface()->getName(), "wlan")!=NULL
+                && entry->getSource() == routeSource)
         {
             inet_rt->deleteRoute(entry);
         }
@@ -1540,10 +1546,12 @@ bool ManetRoutingBase::setRoute(const Uint128 & destination, const Uint128 &next
 
     //TODO the entries with ALLONES netmasks stored at the begin of inet route entry vector,
     // let optimise next search!
+    IPv4Route::RouteSource routeSource = usetManetLabelRouting ? IPv4Route::MANET : IPv4Route::MANET2;
     for (int i=inet_rt->getNumRoutes(); i>0; --i)
     {
         IPv4Route *e = inet_rt->getRoute(i-1);
-        if (desAddress == e->getDestination())     // FIXME netmask checking?
+        if (desAddress == e->getDestination()
+                && e->getSource() == routeSource)     // FIXME netmask checking?
         {
             if (del_entry && !found)    // FIXME The 'found' never set to true when 'del_entry' is true
             {
@@ -1568,7 +1576,8 @@ bool ManetRoutingBase::setRoute(const Uint128 & destination, const Uint128 &next
             for (int i = inet_rt->getNumRoutes(); i > 0; --i)
             {
                 IPv4Route *e = inet_rt->getRoute(i - 1);
-                if (list[i] == e->getDestination())
+                if (list[i] == e->getDestination()
+                        && e->getSource() == routeSource)
                 {
                     if (!inet_rt->deleteRoute(e))
                         opp_error("Aodv omnet_chg_rte can't delete route entry");
@@ -1616,7 +1625,6 @@ bool ManetRoutingBase::setRoute(const Uint128 & destination, const Uint128 &next
 
     /// Source of route, MANUAL by reading a file,
     /// routing protocol name otherwise
-    IPv4Route::RouteSource routeSource = usetManetLabelRouting ? IPv4Route::MANET : IPv4Route::MANET2;
     entry->setSource(routeSource);
 
     inet_rt->addRoute(entry);
