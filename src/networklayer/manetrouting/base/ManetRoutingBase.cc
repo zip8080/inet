@@ -1065,7 +1065,7 @@ void ManetRoutingBase::omnet_chg_rte(const Uint128 &dst, const Uint128 &gtwy, co
     else
         entry->setSource(IPv4Route::MANET2);
 
-        inet_rt->addRoute(entry);
+    inet_rt->addRoute(entry);
 
 #ifdef WITH_80211MESH
     if (locator && locator->isApIp(desAddress))
