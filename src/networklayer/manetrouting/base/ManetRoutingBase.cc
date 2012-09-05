@@ -1064,10 +1064,7 @@ void ManetRoutingBase::omnet_chg_rte(const Uint128 &dst, const Uint128 &gtwy, co
     /// Source of route, MANUAL by reading a file,
     /// routing protocol name otherwise
 
-    if (usetManetLabelRouting)
-        entry->setSource(IPv4Route::MANET);
-    else
-        entry->setSource(IPv4Route::MANET2);
+    entry->setSource(routeSource);
 
     inet_rt->addRoute(entry);
 
