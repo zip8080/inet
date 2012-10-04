@@ -31,7 +31,7 @@
 
 OLSR_ETX_state::OLSR_ETX_state()
 {
-    parameter = &(dynamic_cast<OLSR_ETX*>(getOwner())->parameter_);
+    parameter = &(check_and_cast<OLSR_ETX*>(getOwner())->parameter_);
 }
 
 OLSR_ETX_link_tuple*  OLSR_ETX_state::find_best_sym_link_tuple(const nsaddr_t &main_addr, double now)
@@ -48,7 +48,7 @@ OLSR_ETX_link_tuple*  OLSR_ETX_state::find_best_sym_link_tuple(const nsaddr_t &m
             if (tupleAux == NULL)
                 continue;
             OLSR_ETX_link_tuple* tuple =
-                dynamic_cast<OLSR_ETX_link_tuple*> (tupleAux);
+                check_and_cast<OLSR_ETX_link_tuple*> (tupleAux);
             if (best == NULL)
                 best = tuple;
             else
