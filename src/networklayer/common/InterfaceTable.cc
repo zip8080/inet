@@ -159,6 +159,11 @@ InterfaceEntry *InterfaceTable::getInterfaceById(int id)
     return (id<0 || id>=(int)idToInterface.size()) ? NULL : idToInterface[id];
 }
 
+int InterfaceTable::getBiggestInterfaceId()
+{
+    return INTERFACEIDS_START + idToInterface.size() - 1;
+}
+
 void InterfaceTable::addInterface(InterfaceEntry *entry)
 {
     if (!nb)
