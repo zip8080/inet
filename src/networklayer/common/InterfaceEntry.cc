@@ -27,6 +27,8 @@
 
 #include "IInterfaceTable.h"
 
+#include "GenericNetworkProtocolInterfaceData.h"
+
 #ifdef WITH_IPv4
 #include "IPv4InterfaceData.h"
 #endif
@@ -65,6 +67,7 @@ InterfaceEntry::InterfaceEntry(cModule* ifmod)
 
     ipv4data = NULL;
     ipv6data = NULL;
+    genericNetworkProtocolData = NULL;
     protocol3data = NULL;
     protocol4data = NULL;
     estimateCostProcessArray.clear();
@@ -142,6 +145,13 @@ void InterfaceEntry::changed(int category)
 {
     if (ownerp)
         ownerp->interfaceChanged(this, category);
+}
+
+void InterfaceEntry::setGenericNetworkProtocolData(GenericNetworkProtocolInterfaceData *p)
+{
+    genericNetworkProtocolData = p;
+    p->ownerp = this;
+    configChanged();
 }
 
 void InterfaceEntry::setIPv4Data(IPv4InterfaceData *p)

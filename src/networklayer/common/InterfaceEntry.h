@@ -32,6 +32,7 @@
 class InterfaceEntry;
 class IInterfaceTable;
 class InterfaceProtocolData;
+class GenericNetworkProtocolInterfaceData;
 class IPv4InterfaceData;
 class IPv6InterfaceData;
 
@@ -100,6 +101,7 @@ class INET_API InterfaceEntry : public cNamedObject
 
     IPv4InterfaceData *ipv4data;   ///< IPv4-specific interface info (IPv4 address, etc)
     IPv6InterfaceData *ipv6data;   ///< IPv6-specific interface info (IPv6 addresses, etc)
+    GenericNetworkProtocolInterfaceData *genericNetworkProtocolData; ///< GenericNetworkProtocol-specific interface info (Address, etc)
     InterfaceProtocolData *protocol3data; ///< extension point: data for a 3rd network-layer protocol
     InterfaceProtocolData *protocol4data; ///< extension point: data for a 4th network-layer protocol
     std::vector<MacEstimateCostProcess *> estimateCostProcessArray;
@@ -181,6 +183,7 @@ class INET_API InterfaceEntry : public cNamedObject
     //@{
     IPv4InterfaceData *ipv4Data() const {return ipv4data;}
     IPv6InterfaceData *ipv6Data() const  {return ipv6data;}
+    GenericNetworkProtocolInterfaceData *getGenericNetworkProtocolData() const {return genericNetworkProtocolData;}
     InterfaceProtocolData *getProtocol3Data() const {return protocol3data;}  //TODO eliminate
     InterfaceProtocolData *getProtocol4Data() const {return protocol4data;} //TODO eliminate
     //@}
@@ -189,6 +192,7 @@ class INET_API InterfaceEntry : public cNamedObject
     //@{
     virtual void setIPv4Data(IPv4InterfaceData *p);
     virtual void setIPv6Data(IPv6InterfaceData *p);
+    virtual void setGenericNetworkProtocolData(GenericNetworkProtocolInterfaceData *p);
     virtual void setProtocol3Data(InterfaceProtocolData *p)  {protocol3data = p; configChanged();}
     virtual void setProtocol4Data(InterfaceProtocolData *p)  {protocol4data = p; configChanged();}
     //@}
