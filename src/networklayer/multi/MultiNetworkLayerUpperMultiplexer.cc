@@ -39,11 +39,11 @@ void MultiNetworkLayerUpperMultiplexer::handleMessage(cMessage * message) {
         }
     }
     else if (!strcmp(arrivalGateName, "transportLowerIn"))
-        send(message, "transportUpperOut", arrivalGate->getIndex() % gateSize("transportUpperOut"));
+        send(message, "transportUpperOut", arrivalGate->getIndex() / getProtocolCount());
     else if (!strcmp(arrivalGateName, "pingUpperIn"))
         send(message, "pingLowerOut", getProtocolCount() * arrivalGate->getIndex() + getProtocolIndex(message));
     else if (!strcmp(arrivalGateName, "pingLowerIn"))
-        send(message, "pingUpperOut", arrivalGate->getIndex() % gateSize("pingUpperOut"));
+        send(message, "pingUpperOut", arrivalGate->getIndex() / getProtocolCount());
     else
         throw cRuntimeError("Unknown arrival gate");
 }
