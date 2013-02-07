@@ -76,7 +76,6 @@ class INET_API Address
         IAddressPolicy * getAddressPolicy() const;
         bool tryParse(const char *addr);
 
-        int getPrefixLength() const { return 32; } //FIXME not good, remove!!!!!! IT DOES NOT DO WHAT YOU EXPECT
         bool isUnspecified() const;
         bool isUnicast() const;
         bool isMulticast() const;

@@ -593,7 +593,7 @@ RREQ * xDYMO::createRREQ(const Address & target, int retryCount)
     //       incur additional enlargement.
     // 5. RREQ_Gen adds the TargNode.Addr to the RREQ.
     targetNode.setAddress(target);
-    targetNode.setPrefixLength(target.getPrefixLength());
+    targetNode.setPrefixLength(addressPolicy->getMaxPrefixLength());
     // 6. If a previous value of the TargNode's SeqNum is known RREQ_Gen SHOULD
     //    include TargNode.SeqNum in all but the last RREQ attempt.
     std::map<Address, DYMOSequenceNumber>::iterator st = targetAddressToSequenceNumber.find(target);
@@ -606,7 +606,7 @@ RREQ * xDYMO::createRREQ(const Address & target, int retryCount)
     // 7. RREQ_Gen adds OrigNode.Addr, its prefix, and the RREQ_Gen.SeqNum (OwnSeqNum) to the RREQ.
     const Address & originator = getSelfAddress();
     originatorNode.setAddress(originator);
-    originatorNode.setPrefixLength(originator.getPrefixLength());
+    originatorNode.setPrefixLength(addressPolicy->getMaxPrefixLength());
     originatorNode.setHasSequenceNumber(true);
     originatorNode.setSequenceNumber(sequenceNumber);
     // 8. If OrigNode.Metric is included it is set to the cost of the route
@@ -811,7 +811,7 @@ RERR * xDYMO::createRERR(std::vector<Address> & unreachableAddresses)
         const Address & unreachableAddress = unreachableAddresses[i];
         AddressBlock * addressBlock = new AddressBlock();
         addressBlock->setAddress(unreachableAddress);
-        addressBlock->setPrefixLength(unreachableAddress.getPrefixLength());
+        addressBlock->setPrefixLength(addressPolicy->getMaxPrefixLength());
         int size = rerr->getUnreachableNodeArraySize();
         rerr->setUnreachableNodeArraySize(size + 1);
         rerr->setUnreachableNode(size, *addressBlock);
@@ -1285,7 +1285,7 @@ void xDYMO::addSelfNode(RteMsg * rteMsg)
     addressBlock->setHasMetricType(true);
     addressBlock->setMetricType(HOP_COUNT);
     addressBlock->setAddress(address);
-    addressBlock->setPrefixLength(address.getPrefixLength());
+    addressBlock->setPrefixLength(addressPolicy->getMaxPrefixLength());
     addNode(rteMsg, *addressBlock);
 }
 

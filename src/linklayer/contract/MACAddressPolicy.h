@@ -33,6 +33,7 @@ class INET_API MACAddressPolicy : public IAddressPolicy
         MACAddressPolicy() { }
         virtual ~MACAddressPolicy() { }
 
+        virtual int getMaxPrefixLength() const { return 0; }
         virtual Address getLinkLocalManetRoutersMulticastAddress() const { return MACAddress(-109); } // TODO: constant
         virtual Address getLinkLocalRIPRoutersMulticastAddress() const { return MACAddress(-9); } // TODO: constant
         virtual INetworkProtocolControlInfo * createNetworkProtocolControlInfo() const { return new GenericNetworkProtocolControlInfo(); }

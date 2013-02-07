@@ -33,6 +33,7 @@ class INET_API ModulePathAddressPolicy : public IAddressPolicy
         ModulePathAddressPolicy() { }
         virtual ~ModulePathAddressPolicy() { }
 
+        virtual int getMaxPrefixLength() const { return 0; }
         virtual Address getLinkLocalManetRoutersMulticastAddress() const { return ModulePathAddress(-109); } // TODO: constant
         virtual Address getLinkLocalRIPRoutersMulticastAddress() const { return ModulePathAddress(-9); } // TODO: constant
         virtual INetworkProtocolControlInfo * createNetworkProtocolControlInfo() const { return new GenericNetworkProtocolControlInfo(); }
