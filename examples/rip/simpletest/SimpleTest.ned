@@ -3,7 +3,6 @@ package inet.examples.rip.simpletest;
 
 import inet.linklayer.ethernet.EtherHub;
 import inet.networklayer.autorouting.ipv4.IPv4NetworkConfigurator;
-import inet.networklayer.ipv4.RoutingTableRecorder;
 import inet.nodes.inet.StandardHost;
 import inet.nodes.rip.RIPRouter;
 import inet.util.ThruputMeteringChannel;
@@ -21,9 +20,6 @@ network SimpleTest
             thruputDisplayFormat = "#N";
         }
     submodules:
-        rtr: RoutingTableRecorder {
-            @display("p=159,43");
-        }
         H1: StandardHost {
             parameters:
                 @display("p=56,92;i=device/laptop");
