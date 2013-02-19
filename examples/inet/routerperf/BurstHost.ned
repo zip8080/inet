@@ -38,7 +38,6 @@ module BurstHost
         @display("i=device/pc3");
         string trafGenType;
         bool IPForward = default(false);
-        string routingFile = default("");
     gates:
         inout pppg[] @labels(PPPFrame-conn);
     submodules:

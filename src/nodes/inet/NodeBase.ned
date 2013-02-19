@@ -51,7 +51,6 @@ module NodeBase
         string mobilityType = default(numRadios > 0 ? "StationaryMobility" : "");
         string networkLayerType = default("IPv4NetworkLayer");
         string routingTableType = default("IPv4RoutingTable");
-        string routingFile = default("");
         bool IPForward = default(true);
         bool forwardMulticast = default(false);
     gates:
