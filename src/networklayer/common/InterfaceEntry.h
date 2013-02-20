@@ -22,6 +22,7 @@
 
 #include "INETDefs.h"
 
+#include "Address.h"
 #include "MACAddress.h"
 #include "InterfaceToken.h"
 #include "NotifierConsts.h"
@@ -187,6 +188,8 @@ class INET_API InterfaceEntry : public cNamedObject
     InterfaceProtocolData *getProtocol3Data() const {return protocol3data;}  //TODO eliminate
     InterfaceProtocolData *getProtocol4Data() const {return protocol4data;} //TODO eliminate
     //@}
+
+    virtual void joinMulticastGroup(const Address & address) const;
 
     /** @name Installing protocol-specific interface data */
     //@{
