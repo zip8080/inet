@@ -16,9 +16,7 @@
 //
 
 #include "ModulePathAddress.h"
-
 #include "InterfaceTableAccess.h"
-
 
 bool ModulePathAddress::tryParse(const char *addr)
 {
