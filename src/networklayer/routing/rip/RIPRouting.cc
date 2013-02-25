@@ -82,8 +82,8 @@ RIPRouting::~RIPRouting()
 {
     for (RouteVector::iterator it = ripRoutes.begin(); it != ripRoutes.end(); ++it)
         delete *it;
-    delete updateTimer;
-    delete triggeredUpdateTimer;
+    cancelAndDelete(updateTimer);
+    cancelAndDelete(triggeredUpdateTimer);
 }
 
 void RIPRouting::initialize(int stage)
