@@ -20,7 +20,6 @@
 
 #include "IAddressType.h"
 #include "InterfaceTableAccess.h"
-#include "IPv4InterfaceData.h" // XXX temporarily
 #include "NotificationBoard.h"
 #include "NotifierConsts.h"
 #include "UDP.h"
@@ -32,17 +31,6 @@
 Define_Module(RIPRouting);
 
 #define RIP_EV EV << "RIP at " << getHostName() << " "
-
-// XXX temporarily
-inline Address netmask(const Address &addrType, int prefixLength)
-{
-    return IPv4Address::makeNetmask(prefixLength); // XXX IPv4 only
-}
-
-inline int prefixLength(const Address &netmask)
-{
-    return netmask.getType() == Address::IPv4 ? netmask.toIPv4().getNetmaskLength() : 32; // XXX IPv4 only
-}
 
 std::ostream& operator<<(std::ostream& os, const RIPRoute& e)
 {
@@ -368,7 +356,7 @@ void RIPRouting::processRequest(RIPPacket *packet)
                 // TODO ?
                 break;
             case RIP_AF_INET:
-                RIPRoute *ripRoute = findRoute(entry.address, entry.subnetMask);
+                RIPRoute *ripRoute = findRoute(entry.address, entry.prefixLength);
                 entry.metric = ripRoute ? ripRoute->metric : RIP_INFINITE_METRIC;
                 // entry.nextHop, entry.routeTag?
                 break;
@@ -422,7 +410,7 @@ void RIPRouting::sendRoutes(const Address &address, int port, const RIPInterface
         RIPEntry &entry = packet->getEntry(k++);
         entry.addressFamilyId = RIP_AF_INET;
         entry.address = route->getDestinationAsGeneric();
-        entry.subnetMask = netmask(entry.address, route->getPrefixLength());
+        entry.prefixLength = route->getPrefixLength();
         entry.nextHop = allRipRoutersGroup.getAddressPolicy()->getUnspecifiedAddress(); //route->getNextHop() if local ?
         entry.routeTag = ripRoute->tag;
         entry.metric = metric;
@@ -487,7 +475,7 @@ void RIPRouting::processResponse(RIPPacket *packet)
         Address from = ctrlInfo->getSrcAddr();
         Address nextHop = entry.nextHop.isUnspecified() ? from : entry.nextHop;
 
-        RIPRoute *ripRoute = findRoute(entry.address, entry.subnetMask);
+        RIPRoute *ripRoute = findRoute(entry.address, entry.prefixLength);
         if (ripRoute)
         {
             if (ripRoute->from == from)
@@ -498,7 +486,7 @@ void RIPRouting::processResponse(RIPPacket *packet)
         else
         {
             if (metric != RIP_INFINITE_METRIC)
-                addRoute(entry.address, entry.subnetMask, incomingIe->ie, nextHop, metric, from);
+                addRoute(entry.address, entry.prefixLength, incomingIe->ie, nextHop, metric, from);
         }
     }
 
@@ -555,13 +543,12 @@ bool RIPRouting::isValidResponse(RIPPacket *packet)
     return true;
 }
 
-RIPRoute *RIPRouting::findRoute(const Address &destination, const Address &subnetMask)
+RIPRoute *RIPRouting::findRoute(const Address &destination, int prefixLength)
 {
-    int prefixLen = prefixLength(subnetMask);
     for (RouteVector::iterator it = ripRoutes.begin(); it != ripRoutes.end(); ++it)
     {
         IRoute *route = (*it)->route;
-        if (route && route->getDestinationAsGeneric() == destination && route->getPrefixLength() == prefixLen)
+        if (route && route->getDestinationAsGeneric() == destination && route->getPrefixLength() == prefixLength)
             return *it;
     }
     return NULL;
@@ -581,12 +568,12 @@ RIPRoute *RIPRouting::findRoute(const Address &destination, const Address &subne
  * - Set the route change flag
  * - Signal the output process to trigger an update
  */
-void RIPRouting::addRoute(const Address &dest, const Address &subnetMask, InterfaceEntry *ie, const Address &nextHop, int metric, const Address &from)
+void RIPRouting::addRoute(const Address &dest, int prefixLength, InterfaceEntry *ie, const Address &nextHop, int metric, const Address &from)
 {
     IRoute *route = rt->createRoute();
     route->setSource(this);
     route->setDestination(dest);
-    route->setPrefixLength(prefixLength(subnetMask));
+    route->setPrefixLength(prefixLength);
     route->setInterface(ie);
     route->setNextHop(nextHop);
     route->setMetric(metric);
