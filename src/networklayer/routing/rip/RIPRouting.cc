@@ -140,14 +140,14 @@ void RIPRouting::initialize(int stage)
         configureInterfaces(par("ripConfig").xmlValue());
     }
     else if (stage == 4) { // interfaces and static routes are already initialized
-        allRipRoutersGroup = rt->getRouterIdAsGeneric().getAddressType()->getLinkLocalRIPRoutersMulticastAddress();
+        addressType = rt->getRouterIdAsGeneric().getAddressType();
         configureInitialRoutes();
 
         // configure socket
         socket.setMulticastLoop(false);
         socket.bind(RIP_UDP_PORT);
         for (InterfaceVector::iterator it = ripInterfaces.begin(); it != ripInterfaces.end(); ++it)
-            socket.joinMulticastGroup(allRipRoutersGroup, it->ie->getInterfaceId());
+            socket.joinMulticastGroup(addressType->getLinkLocalRIPRoutersMulticastAddress(), it->ie->getInterfaceId());
 
         // subscribe to notifications
         NotificationBoard *nb = NotificationBoardAccess().get();
@@ -288,7 +288,7 @@ void RIPRouting::sendInitialRequests()
         RIPEntry &entry = packet->getEntry(0);
         entry.addressFamilyId = RIP_AF_NONE;
         entry.metric = RIP_INFINITE_METRIC;
-        sendPacket(packet, allRipRoutersGroup, RIP_UDP_PORT, it->ie);
+        sendPacket(packet, addressType->getLinkLocalRIPRoutersMulticastAddress(), RIP_UDP_PORT, it->ie);
     }
 }
 
@@ -328,7 +328,7 @@ void RIPRouting::processRegularUpdate()
 {
     RIP_EV << "sending updates on all interfaces\n";
     for (InterfaceVector::iterator it = ripInterfaces.begin(); it != ripInterfaces.end(); ++it)
-        sendRoutes(allRipRoutersGroup, RIP_UDP_PORT, *it, false);
+        sendRoutes(addressPolicy->getLinkLocalRIPRoutersMulticastAddress(), RIP_UDP_PORT, *it, false);
 
     // XXX clear route changed flags?
 }
@@ -337,7 +337,7 @@ void RIPRouting::processTriggeredUpdate()
 {
     RIP_EV << "sending triggered updates on all interfaces.\n";
     for (InterfaceVector::iterator it = ripInterfaces.begin(); it != ripInterfaces.end(); ++it)
-        sendRoutes(allRipRoutersGroup, RIP_UDP_PORT, *it, true);
+        sendRoutes(addressType->getLinkLocalRIPRoutersMulticastAddress(), RIP_UDP_PORT, *it, true);
 
     // clear changed flags
     for (RouteVector::iterator it = ripRoutes.begin(); it != ripRoutes.end(); ++it)
@@ -436,7 +436,7 @@ void RIPRouting::sendRoutes(const Address &address, int port, const RIPInterface
         entry.addressFamilyId = RIP_AF_INET;
         entry.address = route->getDestinationAsGeneric();
         entry.prefixLength = route->getPrefixLength();
-        entry.nextHop = allRipRoutersGroup.getAddressPolicy()->getUnspecifiedAddress(); //route->getNextHop() if local ?
+        entry.nextHop = addressType->getUnspecifiedAddress(); //route->getNextHop() if local ?
         entry.routeTag = ripRoute->tag;
         entry.metric = metric;
 

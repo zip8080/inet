@@ -100,12 +100,12 @@ class INET_API RIPRouting : public cSimpleModule, protected INotifiable
     cModule *host;
     IInterfaceTable *ift;
     IRoutingTable *rt;
+    IAddressType *addressType;
     InterfaceVector ripInterfaces;
     RouteVector ripRoutes;
     UDPSocket socket;               // bound to RIP_UDP_PORT
     cMessage *updateTimer;          // for sending unsolicited Response messages in every ~30 seconds.
     cMessage *triggeredUpdateTimer; // scheduled when there are pending changes
-    Address allRipRoutersGroup;     // multicast address, e.g. 224.0.0.9 or FF02::9
     // parameters
     simtime_t updateInterval;
     simtime_t routeExpiryTime;
