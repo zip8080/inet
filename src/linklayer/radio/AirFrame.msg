@@ -71,3 +71,10 @@ packet AirFrame
 //   double bandwidth;
 //   ModulationType modulationType;
 //}
+
+packet XAirFrame extends AirFrame
+{
+    double transmitRange;   // transmit range [meter]
+    double transmitAsNoiseRange;   // transmit as noise range [meter], transmitAsNoiseRange >= transmitRange
+}
+
