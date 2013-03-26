@@ -34,7 +34,7 @@ void StaticGridMobility::initialize(int stage)
 {
     MobilityBase::initialize(stage);
     EV << "initializing StaticGridMobility stage " << stage << endl;
-    if (stage == 0)
+    if (stage == STAGE_LOCAL_BEGIN)
     {
         numHosts = par("numHosts");
         marginX = par("marginX");
