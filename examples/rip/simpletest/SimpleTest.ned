@@ -3,6 +3,7 @@ package inet.examples.rip.simpletest;
 
 import inet.linklayer.ethernet.EtherHub;
 import inet.networklayer.autorouting.ipv4.IPv4NetworkConfigurator;
+import inet.networklayer.autorouting.ipv6.FlatNetworkConfigurator6;
 import inet.nodes.inet.StandardHost;
 import inet.nodes.rip.RIPRouter;
 import inet.util.ThruputMeteringChannel;
@@ -66,7 +67,10 @@ network SimpleTest
                             "</config>");
                 addStaticRoutes = false;
                 addDefaultRoutes = false;
-                @display("p=75,43");
+                @display("p=75,31");
+        }
+        configurator6: FlatNetworkConfigurator6 {
+            @display("p=184,31;is=s");
         }
     connections:
         H1.ethg[0] <--> C <--> N1.ethg[0];
