@@ -214,7 +214,7 @@ void DYMOUM::initialize(int stage)
         costStatic = par("costStatic").longValue();
         costMobile = par("costMobile").longValue();
         useHover = par("useHover");
-        ev << "Dymo active" << "\n";
+        EV << "Dymo active" << "\n";
 
     }
 }
@@ -1280,7 +1280,7 @@ void DYMOUM::packetFailed(IPv4Datagram *dgram)
         scheduleNextEvent();
         return;
     }
-    ev << "LINK FAILURE for dest=" << dgram->getDestAddress();
+    EV << "LINK FAILURE for dest=" << dgram->getDestAddress();
     rt = rtable_find(dest_addr);
     if (rt)
     {

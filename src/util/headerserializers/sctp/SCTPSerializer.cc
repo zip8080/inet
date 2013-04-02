@@ -570,7 +570,7 @@ sctpEV3<<"chunk->length="<<ntohs(chunk->length)<<"\n";
         {
             case DATA:
             {
-                ev<<"Data received\n";
+                EV <<"Data received\n";
                 const struct data_chunk *dc = (struct data_chunk*) (chunks + chunkPtr);
                 sctpEV3<<"cLen="<<cLen<<"\n";
                 if (cLen == 0)
@@ -604,7 +604,7 @@ sctpEV3<<"chunk->length="<<ntohs(chunk->length)<<"\n";
             }
             case INIT:
             {
-                ev<<"parse INIT\n";
+                EV <<"parse INIT\n";
                 const struct init_chunk *init_chunk = (struct init_chunk*) (chunks + chunkPtr); // (recvBuffer + size_ip + size_common_header);
                 chunklen = SCTP_INIT_CHUNK_LENGTH;
                 SCTPInitChunk *chunk = new SCTPInitChunk("INIT");
@@ -794,7 +794,7 @@ sctpEV3<<"chunk->length="<<ntohs(chunk->length)<<"\n";
             }
             case SACK:
             {
-                ev<<"SCTPMessage: SACK received\n";
+                EV <<"SCTPMessage: SACK received\n";
                 const struct sack_chunk *sac = (struct sack_chunk*) (chunks + chunkPtr);
                 SCTPSackChunk *chunk = new SCTPSackChunk("SACK");
                 chunk->setChunkType(chunkType);
@@ -866,7 +866,7 @@ sctpEV3<<"chunk->length="<<ntohs(chunk->length)<<"\n";
             }
             case HEARTBEAT_ACK:
             {
-                ev<<"SCTPMessage: Heartbeat_Ack received\n";
+                EV <<"SCTPMessage: Heartbeat_Ack received\n";
                 const struct heartbeat_ack_chunk *hbac = (struct heartbeat_ack_chunk*) (chunks + chunkPtr);
                 SCTPHeartbeatAckChunk *chunk = new SCTPHeartbeatAckChunk("HEARTBEAT_ACK");
                 chunk->setChunkType(chunkType);
@@ -900,7 +900,7 @@ sctpEV3<<"chunk->length="<<ntohs(chunk->length)<<"\n";
             }
             case ABORT:
             {
-                ev<<"SCTPMessage: Abort received\n";
+                EV <<"SCTPMessage: Abort received\n";
                 const struct abort_chunk *ac = (struct abort_chunk*) (chunks + chunkPtr);
                 cLen = ntohs(ac->length);
                 SCTPAbortChunk *chunk = new SCTPAbortChunk("ABORT");
@@ -944,7 +944,7 @@ sctpEV3<<"chunk->length="<<ntohs(chunk->length)<<"\n";
             }
             case COOKIE_ACK:
             {
-                ev<<"SCTPMessage: Cookie_Ack received\n";
+                EV <<"SCTPMessage: Cookie_Ack received\n";
                 SCTPCookieAckChunk *chunk = new SCTPCookieAckChunk("COOKIE_ACK");
                 chunk->setChunkType(chunkType);
                 chunk->setBitLength(cLen*8);
@@ -953,7 +953,7 @@ sctpEV3<<"chunk->length="<<ntohs(chunk->length)<<"\n";
             }
             case SHUTDOWN:
             {
-                ev<<"SCTPMessage: Shutdown received\n";
+                EV <<"SCTPMessage: Shutdown received\n";
                 const struct shutdown_chunk *sc = (struct shutdown_chunk*) (chunks + chunkPtr);
                 SCTPShutdownChunk *chunk = new SCTPShutdownChunk("SHUTDOWN");
                 chunk->setChunkType(chunkType);
@@ -965,7 +965,7 @@ sctpEV3<<"chunk->length="<<ntohs(chunk->length)<<"\n";
             }
             case SHUTDOWN_ACK:
             {
-                ev<<"SCTPMessage: ShutdownAck received\n";
+                EV <<"SCTPMessage: ShutdownAck received\n";
                 SCTPShutdownAckChunk *chunk = new SCTPShutdownAckChunk("SHUTDOWN_ACK");
                 chunk->setChunkType(chunkType);
                 chunk->setBitLength(cLen*8);
@@ -974,7 +974,7 @@ sctpEV3<<"chunk->length="<<ntohs(chunk->length)<<"\n";
             }
             case SHUTDOWN_COMPLETE:
             {
-                ev<<"SCTPMessage: ShutdownComplete received\n";
+                EV <<"SCTPMessage: ShutdownComplete received\n";
                 const struct shutdown_complete_chunk *scc = (struct shutdown_complete_chunk*) (chunks + chunkPtr);
                 SCTPShutdownCompleteChunk *chunk = new SCTPShutdownCompleteChunk("SHUTDOWN_COMPLETE");
                 chunk->setChunkType(chunkType);

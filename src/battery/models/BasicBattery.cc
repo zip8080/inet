@@ -55,7 +55,7 @@ void BasicBattery::receiveChangeNotification(
     int aCategory,
     const cObject* aDetails)
 {
-    ev << "this text should not appear. error in BasicBattery.cc" << endl;
+    EV << "this text should not appear. error in BasicBattery.cc" << endl;
 }
 
 

@@ -159,7 +159,7 @@ void cSocketRTScheduler::setInterfaceModule(cModule *mod, const char *dev, const
     datalinks.push_back(datalink);
     headerLengths.push_back(headerLength);
 
-    EV << "Opened pcap device " << dev << " with filter " << filter << " and datalink " << datalink << ".\n";
+    EV << "Opened pcap device " << dEV << " with filter " << filter << " and datalink " << datalink << ".\n";
 #else
     throw cRuntimeError("cSocketRTScheduler::setInterfaceModule(): code was compiled without pcap support");
 #endif

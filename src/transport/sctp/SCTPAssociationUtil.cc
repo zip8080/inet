@@ -1500,7 +1500,7 @@ bool SCTPAssociation::advanceCtsna()
 {
     int32 listLength, counter;
 
-    ev<<"Entering advanceCtsna(ctsna now =="<< state->cTsnAck<<"\n";;
+    EV <<"Entering advanceCtsna(ctsna now =="<< state->cTsnAck<<"\n";;
 
     listLength = state->numGaps;
 
@@ -1527,13 +1527,13 @@ bool SCTPAssociation::advanceCtsna()
         }
         else
         {
-            ev<<"Entering advanceCtsna(when leaving: ctsna=="<<state->cTsnAck<<"\n";
+            EV <<"Entering advanceCtsna(when leaving: ctsna=="<<state->cTsnAck<<"\n";
             return false;
         }
 
     }    /* end while */
 
-    ev<<"Entering advanceCtsna(when leaving: ctsna=="<< state->cTsnAck<<"\n";
+    EV <<"Entering advanceCtsna(when leaving: ctsna=="<< state->cTsnAck<<"\n";
     return true;
 }
 
