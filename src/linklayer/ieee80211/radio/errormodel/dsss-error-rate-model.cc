@@ -70,7 +70,7 @@ DsssErrorRateModel::GetDsssDqpskCck5_5SuccessRate(double sinr, uint32_t nbits)
   double sep = SymbolErrorProb16Cck(4.0*EbN0/2.0);
   return pow(1.0-sep, nbits/4.0);
 #else
-  EV << "Running a 802.11b CCK Matlab model less accurate than GSL model" << endl;
+  EV_S << "Running a 802.11b CCK Matlab model less accurate than GSL model" << endl;
   // The matlab model
   double ber;
   if (sinr > WLAN_SIR_PERFECT)
@@ -102,7 +102,7 @@ DsssErrorRateModel::GetDsssDqpskCck11SuccessRate(double sinr, uint32_t nbits)
   double sep = SymbolErrorProb256Cck(8.0*EbN0/2.0);
   return pow(1.0-sep, nbits/8.0);
 #else
-  EV << "Running a 802.11b CCK Matlab model less accurate than GSL model" << endl;
+  EV_S << "Running a 802.11b CCK Matlab model less accurate than GSL model" << endl;
   // The matlab model
   double ber;
   if (sinr > WLAN_SIR_PERFECT)

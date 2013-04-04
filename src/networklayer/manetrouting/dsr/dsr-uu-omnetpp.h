@@ -444,7 +444,7 @@ static inline int omnet_vprintk(const char *fmt, va_list args)
     printed_len = vsnprintf(printk_buf + prefix_len,
                             sizeof(printk_buf) - prefix_len, fmt, args);
 #endif
-    ev << printk_buf;
+    EV_S << printk_buf;
     return printed_len;
 }
 

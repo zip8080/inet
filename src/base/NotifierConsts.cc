@@ -70,9 +70,9 @@ const char *notificationCategoryName(int category)
 
 void printNotificationBanner(int category, const cObject *details)
 {
-    EV << "** Notification at T=" << simTime()
-       << " to " << simulation.getContextModule()->getFullPath() << ": "
-       << notificationCategoryName(category) << " "
-       << (details ? details->info() : "") << "\n";
+    EV_S << "** Notification at T=" << simTime()
+         << " to " << simulation.getContextModule()->getFullPath() << ": "
+         << notificationCategoryName(category) << " "
+         << (details ? details->info() : "") << "\n";
 }
 
