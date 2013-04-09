@@ -37,8 +37,6 @@ void HttpController::initialize(int stage)
     EV_DEBUG << "Initializing stage " << stage << endl;
     if (stage==0)
     {
-        ll = par("logLevel");
-
         EV_INFO << "Initializing HTTP controller. First stage" << endl;
 
         cXMLElement *rootelement = par("config").xmlValue();
@@ -85,14 +83,14 @@ void HttpController::initialize(int stage)
 
 void HttpController::finish()
 {
-    EV_SUMMARY << "Invoking finish on the controller. Total lookups " << totalLookups << endl;
+    EV_INFO << "Invoking finish on the controller. Total lookups " << totalLookups << endl;
 
     WebServerEntry *en;
     std::map<std::string,WebServerEntry*>::const_iterator iter;
     for (iter = webSiteList.begin(); iter != webSiteList.end(); ++iter)
     {
         en = (*iter).second;
-        EV_SUMMARY << "Server " << (*iter).first << ": Access count " << en->accessCount << endl;
+        EV_INFO << "Server " << (*iter).first << ": Access count " << en->accessCount << endl;
     }
 
     // Clean up the server references
@@ -203,7 +201,7 @@ cModule* HttpController::getAnyServerModule()
 
     if (webSiteList.size() == 0)
     {
-        EV_WARNING << "No modules registered. Cannot select a random module" << endl;
+        EV_WARN << "No modules registered. Cannot select a random module" << endl;
         return NULL;
     }
 
@@ -254,7 +252,7 @@ int HttpController::getAnyServerInfo(char* wwwName, char* module, int &port)
 
     if (webSiteList.size() == 0)
     {
-        EV_WARNING << "No modules registered. Cannot select a random module" << endl;
+        EV_WARN << "No modules registered. Cannot select a random module" << endl;
         return -1;
     }
 

@@ -60,8 +60,8 @@ void HttpServer::finish()
 {
     HttpServerBase::finish();
 
-    EV_SUMMARY << "Sockets opened: " << socketsOpened << endl;
-    EV_SUMMARY << "Broken connections: " << numBroken << endl;
+    EV_INFO << "Sockets opened: " << socketsOpened << endl;
+    EV_INFO << "Broken connections: " << numBroken << endl;
 
     recordScalar("sock.opened", socketsOpened);
     recordScalar("sock.broken", numBroken);
@@ -157,7 +157,7 @@ void HttpServer::socketClosed(int connId, void *yourPtr)
 
 void HttpServer::socketFailure(int connId, void *yourPtr, int code)
 {
-    EV_WARNING << "connection broken. Connection id " << connId << endl;
+    EV_WARN << "connection broken. Connection id " << connId << endl;
     numBroken++;
 
     EV_INFO << "connection closed. Connection id " << connId << endl;
@@ -170,9 +170,9 @@ void HttpServer::socketFailure(int connId, void *yourPtr, int code)
     TCPSocket *socket = (TCPSocket*)yourPtr;
 
     if (code==TCP_I_CONNECTION_RESET)
-        EV_WARNING << "Connection reset!\n";
+        EV_WARN << "Connection reset!\n";
     else if (code==TCP_I_CONNECTION_REFUSED)
-        EV_WARNING << "Connection refused!\n";
+        EV_WARN << "Connection refused!\n";
 
     // Cleanup
     sockCollection.removeSocket(socket);
