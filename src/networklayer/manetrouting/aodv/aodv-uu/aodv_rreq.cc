@@ -267,9 +267,8 @@ void NS_CLASS rreq_process(RREQ * rreq, int rreqlen, struct in_addr ip_src,
 #ifdef OMNETPP
 
     totalRreqRec++;
-    if (!ev.isDisabled())
-        ev.printf("ip_src=%s rreq_orig=%s rreq_dest=%s",ip_to_str(ip_src),
-                  ip_to_str(rreq_orig), ip_to_str(rreq_dest));
+    EV_INFO_P("ip_src=%s rreq_orig=%s rreq_dest=%s",ip_to_str(ip_src),
+            ip_to_str(rreq_orig), ip_to_str(rreq_dest));
 #endif
 
     if (rreqlen < (int) RREQ_SIZE)

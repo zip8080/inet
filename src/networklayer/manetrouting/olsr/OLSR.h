@@ -74,7 +74,7 @@
 #define CURRENT_TIME_T  SIMTIME_DBL(simTime())
 #endif
 
-#define debug  ev.printf
+#define debug  EV_INFO_P
 
 
 
