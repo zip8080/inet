@@ -36,7 +36,7 @@ inline bool isNotEmpty(const char *s) {return s && s[0];}
 
 static void printTimeSpentUsingDuration(const char *name, long duration)
 {
-    EV_INFO << "Time spent in GenericNetworkConfigurator::" << name << ": " << ((double)duration / CLOCKS_PER_SEC) << "s" << endl;
+    EV_INFO_S << "Time spent in GenericNetworkConfigurator::" << name << ": " << ((double)duration / CLOCKS_PER_SEC) << "s" << endl;
 }
 
 static void printElapsedTime(const char *name, long startTime)

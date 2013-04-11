@@ -30,14 +30,6 @@
 
 namespace inet { class PatternMatcher; }
 
-// compile time macros to disable or enable logging
-#define EV_ENABLED EV_S
-#define EV_DISABLED true?EV_S:EV_S
-
-// compile time log levels
-#define EV_DEBUG EV_DISABLED
-#define EV_INFO EV_ENABLED
-
 /**
  * This module configures generic routing tables for a network.
  *
