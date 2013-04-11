@@ -23,7 +23,7 @@ std::string IPv6Route::info() const
     std::stringstream out;
     out << getDestPrefix() << "/" << getPrefixLength() << " --> ";
     out << "if=" << getInterfaceId() << " next hop:" << getNextHop(); // FIXME try printing interface name
-    out << " " << routeSrcName(getSrc());
+    out << " " << IRoute::sourceTypeName(getSourceType());
     if (getExpiryTime()>0)
         out << " exp:" << getExpiryTime();
     return out.str();
@@ -32,16 +32,4 @@ std::string IPv6Route::info() const
 std::string IPv6Route::detailedInfo() const
 {
     return std::string();
-}
-
-const char *IPv6Route::routeSrcName(RouteSrc src)
-{
-    switch (src)
-    {
-        case FROM_RA:         return "FROM_RA";
-        case OWN_ADV_PREFIX:  return "OWN_ADV_PREFIX";
-        case STATIC:          return "STATIC";
-        case ROUTING_PROT:    return "ROUTING_PROT";
-        default:              return "???";
-    }
 }

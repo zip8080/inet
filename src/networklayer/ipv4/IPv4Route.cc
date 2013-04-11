@@ -42,20 +42,7 @@ std::string IPv4Route::info() const
     out << "metric:" << metric << " ";
     out << "if:"; if (!interfacePtr) out << "*  "; else out << interfacePtr->getName() << "(" << interfacePtr->ipv4Data()->getIPAddress() << ")  ";
     out << (gateway.isUnspecified() ? "DIRECT" : "REMOTE");
-
-
-    switch (sourceType)
-    {
-        case MANUAL:       out << " MANUAL"; break;
-        case IFACENETMASK: out << " IFACENETMASK"; break;
-        case RIP:          out << " RIP"; break;
-        case OSPF:         out << " OSPF"; break;
-        case BGP:          out << " BGP"; break;
-        case ZEBRA:        out << " ZEBRA"; break;
-        case MANET:        out << " MANET"; break;
-        default:           out << " ???"; break;
-    }
-
+    out << " " << IRoute::sourceTypeName(sourceType);
     return out.str();
 }
 
@@ -111,13 +98,7 @@ std::string IPv4MulticastRoute::info() const
         out << children[i]->getInterface()->getName();
     }
 
-    switch (sourceType)
-    {
-        case MANUAL:       out << " MANUAL"; break;
-        case DVMRP:        out << " DVRMP"; break;
-        case PIM_SM:       out << " PIM-SM"; break;
-        default:           out << " ???"; break;
-    }
+    out << " " << IMulticastRoute::sourceTypeName(sourceType);
 
     return out.str();
 }
