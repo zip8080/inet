@@ -29,7 +29,6 @@
 
 IPv4Route::~IPv4Route()
 {
-    delete adapter;
 }
 
 std::string IPv4Route::info() const
@@ -75,7 +74,6 @@ IRoutingTable *IPv4Route::getRoutingTableAsGeneric() const
 
 IPv4MulticastRoute::~IPv4MulticastRoute()
 {
-    delete adapter;
     for (ChildInterfaceVector::iterator it = children.begin(); it != children.end(); ++it)
         delete *it;
     children.clear();
