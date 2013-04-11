@@ -17,12 +17,14 @@
 //
 
 #include "IPv6Route.h"
+#include "IPv6RoutingTable.h"
 
 std::string IPv6Route::info() const
 {
     std::stringstream out;
     out << getDestPrefix() << "/" << getPrefixLength() << " --> ";
-    out << "if=" << getInterfaceId() << " next hop:" << getNextHop(); // FIXME try printing interface name
+    out << "if:" <<  (_interfacePtr ? _interfacePtr->getName() : "*  ");
+    out << " next hop:" << getNextHop();
     out << " " << IRoute::sourceTypeName(getSourceType());
     if (getExpiryTime()>0)
         out << " exp:" << getExpiryTime();
@@ -32,4 +34,9 @@ std::string IPv6Route::info() const
 std::string IPv6Route::detailedInfo() const
 {
     return std::string();
+}
+
+IRoutingTable *IPv6Route::getRoutingTableAsGeneric() const
+{
+    return getRoutingTable();
 }
