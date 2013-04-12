@@ -76,7 +76,7 @@ void MoBANCoordinator::initialize(int stage) {
     }
 }
 
-void MoBANCoordinator::initializePosition() {
+void MoBANCoordinator::setInitialPosition() {
     lastPosition = selectDestination();
 }
 

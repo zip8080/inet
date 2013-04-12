@@ -42,7 +42,7 @@ void StaticGridMobility::initialize(int stage)
     }
 }
 
-void StaticGridMobility::initializePosition()
+void StaticGridMobility::setInitialPosition()
 {
     int index = visualRepresentation->getIndex();
     int size = (int)ceil(sqrt((double)numHosts));
