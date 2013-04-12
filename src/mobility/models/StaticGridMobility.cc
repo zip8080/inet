@@ -33,7 +33,7 @@ StaticGridMobility::StaticGridMobility()
 void StaticGridMobility::initialize(int stage)
 {
     MobilityBase::initialize(stage);
-    EV << "initializing StaticGridMobility stage " << stage << endl;
+    EV_TRACE << "initializing StaticGridMobility stage " << stage << endl;
     if (stage == STAGE_LOCAL_BEGIN)
     {
         numHosts = par("numHosts");
