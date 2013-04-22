@@ -205,6 +205,21 @@ void IPv6RoutingTable::receiveChangeNotification(int category, const cObject *de
     }
 }
 
+void IPv6RoutingTable::routeChanged(IPv6Route *entry, int fieldCode)
+{
+    if (fieldCode==IPv6Route::F_DESTINATION || fieldCode==IPv6Route::F_PREFIX_LENGTH || fieldCode==IPv6Route::F_METRIC) // our data structures depend on these fields
+    {
+        entry = internalRemoveRoute(entry);
+        ASSERT(entry != NULL);  // failure means inconsistency: route was not found in this routing table
+        internalAddRoute(entry);
+
+        // invalidateCache();
+        updateDisplayString();
+    }
+    nb->fireChangeNotification(NF_ROUTE_CHANGED, entry); // TODO include fieldCode in the notification
+}
+
+
 void IPv6RoutingTable::configureInterfaceForIPv6(InterfaceEntry *ie)
 {
     IPv6InterfaceData *ipv6IfData = new IPv6InterfaceData();
@@ -672,14 +687,7 @@ bool IPv6RoutingTable::routeLessThan(const IPv6Route *a, const IPv6Route *b)
 
 void IPv6RoutingTable::addRoute(IPv6Route *route)
 {
-    ASSERT(route->getRoutingTable() == NULL);
-
-    routeList.push_back(route);
-    route->setRoutingTable(this);
-
-    // we keep entries sorted by prefix length in routeList, so that we can
-    // stop at the first match when doing the longest prefix matching
-    std::sort(routeList.begin(), routeList.end(), routeLessThan);
+    internalAddRoute(route);
 
     updateDisplayString();
 
@@ -688,19 +696,40 @@ void IPv6RoutingTable::addRoute(IPv6Route *route)
 
 IPv6Route *IPv6RoutingTable::removeRoute(IPv6Route *route)
 {
-    RouteList::iterator it = std::find(routeList.begin(), routeList.end(), route);
-    if (it == routeList.end())
-        return NULL;
+    route = internalRemoveRoute(route);
+    if (route)
+    {
+        updateDisplayString();
+        // TODO purge cache?
 
-    routeList.erase(it);
-    updateDisplayString();
-    // TODO purge cache?
-
-    ASSERT(route->getRoutingTable() == this);
-    nb->fireChangeNotification(NF_ROUTE_DELETED, route); // rather: going to be deleted
-    route->setRoutingTable(NULL);
-
+        nb->fireChangeNotification(NF_ROUTE_DELETED, route); // rather: going to be deleted
+    }
     return route;
+}
+
+void IPv6RoutingTable::internalAddRoute(IPv6Route *route)
+{
+    ASSERT(route->getRoutingTable() == NULL);
+
+    routeList.push_back(route);
+    route->setRoutingTable(this);
+
+    // we keep entries sorted by prefix length in routeList, so that we can
+    // stop at the first match when doing the longest prefix matching
+    std::sort(routeList.begin(), routeList.end(), routeLessThan);
+}
+
+IPv6Route *IPv6RoutingTable::internalRemoveRoute(IPv6Route *route)
+{
+    RouteList::iterator i = std::find(routeList.begin(), routeList.end(), route);
+    if (i!=routeList.end())
+    {
+        ASSERT(route->getRoutingTable() == this);
+        routeList.erase(i);
+        route->setRoutingTable(NULL);
+        return route;
+    }
+    return NULL;
 }
 
 IPv6RoutingTable::RouteList::iterator IPv6RoutingTable::internalDeleteRoute(RouteList::iterator it)

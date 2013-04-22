@@ -46,9 +46,6 @@ class INET_API IPv4Route : public cObject, public IRoute
     cObject *source;   ///< Object identifying the source
     cObject *protocolData; ///< Routing Protocol specific data
 
-  public:
-    enum {F_DESTINATION, F_NETMASK, F_GATEWAY, F_IFACE, F_TYPE, F_SOURCE, F_METRIC, F_LAST}; // field codes for changed()
-
   private:
     // copying not supported: following are private and also left undefined
     IPv4Route(const IPv4Route& obj);
@@ -75,10 +72,10 @@ class INET_API IPv4Route : public cObject, public IRoute
     virtual bool isValid() const { return true; }
 
     virtual void setDestination(IPv4Address _dest)  { if (dest != _dest) {dest = _dest; changed(F_DESTINATION);} }
-    virtual void setNetmask(IPv4Address _netmask)  { if (netmask != _netmask) {netmask = _netmask; changed(F_NETMASK);} }
-    virtual void setGateway(IPv4Address _gateway)  { if (gateway != _gateway) {gateway = _gateway; changed(F_GATEWAY);} }
+    virtual void setNetmask(IPv4Address _netmask)  { if (netmask != _netmask) {netmask = _netmask; changed(F_PREFIX_LENGTH);} }
+    virtual void setGateway(IPv4Address _gateway)  { if (gateway != _gateway) {gateway = _gateway; changed(F_NEXTHOP);} }
     virtual void setInterface(InterfaceEntry *_interfacePtr)  { if (interfacePtr != _interfacePtr) {interfacePtr = _interfacePtr; changed(F_IFACE);} }
-    virtual void setSourceType(SourceType _source)  { if (sourceType != _source) {sourceType = _source; changed(F_SOURCE);} }
+    virtual void setSourceType(SourceType _source)  { if (sourceType != _source) {sourceType = _source; changed(F_TYPE);} }
     virtual void setMetric(int _metric)  { if (metric != _metric) {metric = _metric; changed(F_METRIC);} }
 
     /** Destination address prefix to match */
@@ -102,7 +99,7 @@ class INET_API IPv4Route : public cObject, public IRoute
     /** "Cost" to reach the destination */
     int getMetric() const {return metric;}
 
-    void setSource(cObject *_source) { source = _source; } // TODO call changed()
+    void setSource(cObject *_source) { if (source != _source) {source = _source; changed(F_SOURCE);}}
     cObject *getSource() const { return source; }
 
     cObject *getProtocolData() const { return protocolData; }

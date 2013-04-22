@@ -40,3 +40,9 @@ IRoutingTable *IPv6Route::getRoutingTableAsGeneric() const
 {
     return getRoutingTable();
 }
+
+void IPv6Route::changed(int fieldCode)
+{
+    if (_rt)
+        _rt->routeChanged(this, fieldCode);
+}

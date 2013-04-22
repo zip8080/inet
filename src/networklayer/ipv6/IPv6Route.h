@@ -32,7 +32,6 @@ class IPv6RoutingTable;
  * Represents a route in the route table. Routes with sourceType=ROUTER_ADVERTISEMENT represent
  * on-link prefixes advertised by routers.
  */
-// TODO change notifications
 class INET_API IPv6Route : public cObject, public IRoute
 {
   protected:
@@ -46,6 +45,9 @@ class INET_API IPv6Route : public cObject, public IRoute
     int _metric;
     cObject *_source;        /// Object identifying the source
     cObject *_protocolData; /// Routing Protocol specific data
+
+  protected:
+    void changed(int fieldCode);
 
   public:
     /**
@@ -73,9 +75,9 @@ class INET_API IPv6Route : public cObject, public IRoute
     virtual void setRoutingTable(IPv6RoutingTable *rt) {_rt = rt;}
     IPv6RoutingTable *getRoutingTable() const {return _rt;}
 
-    void setNextHop(const IPv6Address& nextHop)  {_nextHop = nextHop;}
+    void setNextHop(const IPv6Address& nextHop)  {if (_nextHop != nextHop) {_nextHop = nextHop; changed(F_NEXTHOP);}}
     void setExpiryTime(simtime_t expiryTime)  {_expiryTime = expiryTime;}
-    void setMetric(int metric)  {_metric = metric;}
+    void setMetric(int metric)  {if (_metric != metric) {_metric = metric; changed(F_METRIC);}}
 
     const IPv6Address& getDestPrefix() const {return _destPrefix;}
     virtual int getPrefixLength() const  {return _prefixLength;}
@@ -85,15 +87,15 @@ class INET_API IPv6Route : public cObject, public IRoute
     virtual int getMetric() const  {return _metric;}
     virtual IRoutingTable *getRoutingTableAsGeneric() const;
 
-    virtual void setDestination(const Address& dest) { _destPrefix = dest.toIPv6();}
-    virtual void setPrefixLength(int prefixLength) {_prefixLength = prefixLength;}
-    virtual void setNextHop(const Address& nextHop) { _nextHop = nextHop.toIPv6();}
-    virtual void setSource(cObject *source) {_source = source;}
-    virtual void setSourceType(SourceType type) { _sourceType = type; }
+    virtual void setDestination(const Address& dest) {if (_destPrefix != dest.toIPv6()) {_destPrefix = dest.toIPv6(); changed(F_DESTINATION);}}
+    virtual void setPrefixLength(int prefixLength) {if (_prefixLength != prefixLength) {_prefixLength = prefixLength; changed(F_PREFIX_LENGTH);}}
+    virtual void setNextHop(const Address& nextHop) {if (_nextHop != nextHop.toIPv6()) {_nextHop = nextHop.toIPv6(); changed(F_NEXTHOP);}}
+    virtual void setSource(cObject *source) {if (_source != source) {_source = source; changed(F_SOURCE);}}
+    virtual void setSourceType(SourceType type) {if (_sourceType != type) {_sourceType = type; changed(F_TYPE);}}
     virtual Address getDestinationAsGeneric() const {return getDestPrefix();} //TODO rename IPv6 method
     virtual Address getNextHopAsGeneric() const {return getNextHop();}
     virtual InterfaceEntry *getInterface() const {return _interfacePtr; }
-    virtual void setInterface(InterfaceEntry *ie) {_interfacePtr = ie;}
+    virtual void setInterface(InterfaceEntry *ie) {if (_interfacePtr != ie) {_interfacePtr = ie; changed(F_IFACE);}}
     virtual cObject *getSource() const {return _source;}
     virtual cObject *getProtocolData() const { return _protocolData; }
     virtual void setProtocolData(cObject *protocolData) { _protocolData = protocolData; }
