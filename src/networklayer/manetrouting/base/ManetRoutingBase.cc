@@ -1115,7 +1115,7 @@ bool ManetRoutingBase::setRoute(const ManetAddress & destination, const ManetAdd
                 && oldentry->getGateway() == gateway
                 && oldentry->getMetric() == hops
                 && oldentry->getInterface() == ie
-                && oldentry->getSourceType() == IPv4Route::MANUAL)
+                && oldentry->getSourceType() == IRoute::MANUAL)
             return true;
         inet_rt->deleteRoute(oldentry);
     }

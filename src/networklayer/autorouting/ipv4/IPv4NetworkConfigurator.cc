@@ -1389,6 +1389,7 @@ void IPv4NetworkConfigurator::addManualRoutes(cXMLElement *root, IPv4Topology& t
 
                         // create and add route
                         IPv4Route *route = new IPv4Route();
+                        route->setSourceType(IRoute::MANUAL);
                         route->setDestination(destination);
                         route->setNetmask(netmask);
                         route->setGateway(gateway); // may be unspecified
@@ -1490,6 +1491,7 @@ void IPv4NetworkConfigurator::addManualMulticastRoutes(cXMLElement *root, IPv4To
                         {
                             // create and add route
                             IPv4MulticastRoute *route = new IPv4MulticastRoute();
+                            route->setSourceType(IRoute::MANUAL);
                             route->setOrigin(source);
                             route->setOriginNetmask(netmask);
                             route->setMulticastGroup(groups[j]);
@@ -1683,7 +1685,7 @@ void IPv4NetworkConfigurator::addStaticRoutes(IPv4Topology& topology, Node * sou
         route->setGateway(IPv4Address::UNSPECIFIED_ADDRESS);
         route->setNetmask(netmask);
         route->setInterface(sourceInterfaceEntry);
-        route->setSourceType(IPv4Route::MANUAL);
+        route->setSourceType(IRoute::MANUAL);
         sourceRoutingTable->addRoute(route);
 
         // add a default route towards the only one gateway
@@ -1693,7 +1695,7 @@ void IPv4NetworkConfigurator::addStaticRoutes(IPv4Topology& topology, Node * sou
         route->setNetmask(IPv4Address::UNSPECIFIED_ADDRESS);
         route->setGateway(gateway);
         route->setInterface(sourceInterfaceEntry);
-        route->setSourceType(IPv4Route::MANUAL);
+        route->setSourceType(IRoute::MANUAL);
         sourceRoutingTable->addRoute(route);
 
         // skip building and optimizing the whole routing table
@@ -1758,7 +1760,7 @@ void IPv4NetworkConfigurator::addStaticRoutes(IPv4Topology& topology, Node * sou
                     route->setInterface(sourceInterfaceEntry);
                     if (gatewayAddress != destinationAddress)
                         route->setGateway(gatewayAddress);
-                    route->setSourceType(IPv4Route::MANUAL);
+                    route->setSourceType(IRoute::MANUAL);
                     if (containsRoute(sourceRoutes, route))
                         delete route;
                     else {
