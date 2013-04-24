@@ -397,7 +397,7 @@ class INET_API IPv6InterfaceData : public InterfaceProtocolData
   protected:
     int findAddress(const IPv6Address& addr) const;
     void choosePreferredAddress();
-    void changed1() {changed(NF_INTERFACE_IPv6CONFIG_CHANGED);}
+    void changed1(int fieldId) {changed(NF_INTERFACE_IPv6CONFIG_CHANGED, fieldId);}
 
     static bool addrLess(const AddressData& a, const AddressData& b);
 

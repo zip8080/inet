@@ -145,7 +145,7 @@ void IPv4InterfaceData::joinMulticastGroup(const IPv4Address& multicastAddress)
     multicastGroups.push_back(multicastAddress);
     refCounts.push_back(1);
 
-    changed1();
+    changed1(F_MULTICAST_ADDRESSES);
 
     if (!nb)
         nb = NotificationBoardAccess().get();
@@ -169,7 +169,7 @@ void IPv4InterfaceData::leaveMulticastGroup(const IPv4Address& multicastAddress)
                 multicastGroups.erase(multicastGroups.begin()+i);
                 refCounts.erase(refCounts.begin()+i);
 
-                changed1();
+                changed1(F_MULTICAST_ADDRESSES);
 
                 if (!nb)
                     nb = NotificationBoardAccess().get();
@@ -194,7 +194,7 @@ void IPv4InterfaceData::addMulticastListener(const IPv4Address &multicastAddress
     if (!hasMulticastListener(multicastAddress))
     {
         getRouterData()->reportedMulticastGroups.push_back(multicastAddress);
-        changed1();
+        changed1(F_MULTICAST_LISTENERS);
     }
 }
 
@@ -210,6 +210,6 @@ void IPv4InterfaceData::removeMulticastListener(const IPv4Address &multicastAddr
     if (i != n)
     {
         multicastGroups.erase(multicastGroups.begin() + i);
-        changed1();
+        changed1(F_MULTICAST_LISTENERS);
     }
 }
