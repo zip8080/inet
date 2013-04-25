@@ -53,6 +53,8 @@ module NodeBase
         string routingTableType = default("IPv4RoutingTable");
         bool IPForward = default(true);
         bool forwardMulticast = default(false);
+        routingTable.IPForward = IPForward;               // TODO should we remove these parameters from the routingTable
+        routingTable.forwardMulticast = forwardMulticast; //      and use the parameters of the node in the C++ code?
     gates:
         input radioIn[numRadios] @directIn;
         inout pppg[] @labels(PPPFrame-conn);
