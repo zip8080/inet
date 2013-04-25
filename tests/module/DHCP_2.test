@@ -9,7 +9,7 @@ import inet.applications.dhcp.DHCPClient;
 import inet.applications.dhcp.DHCPServer;
 import inet.base.NotificationBoard;
 import inet.networklayer.common.InterfaceTable;
-import inet.networklayer.ipv4.RoutingTable;
+import inet.networklayer.ipv4.IPv4RoutingTable;
 
 
 module DHCPNode
@@ -31,7 +31,7 @@ module DHCPNode
         interfaceTable: InterfaceTable {
             @display("p=66,145");
         }
-        routingTable: RoutingTable {
+        routingTable: IPv4RoutingTable {
             @display("p=68,216");
         }
     connections:
