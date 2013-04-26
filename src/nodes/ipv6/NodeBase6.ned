@@ -17,6 +17,7 @@
 
 package inet.nodes.ipv6;
 
+import inet.networklayer.ipv6.IPv6NetworkLayer;
 import inet.networklayer.ipv6.IPv6RoutingTable;
 import inet.networklayer.common.InterfaceTable;
 import inet.mobility.IMobility;
@@ -62,7 +63,7 @@ module NodeBase6
         }
 
         // network layer
-        networkLayer: NetworkLayer6 {
+        networkLayer: IPv6NetworkLayer {
             parameters:
                 @display("p=329,287;q=queue");
         }

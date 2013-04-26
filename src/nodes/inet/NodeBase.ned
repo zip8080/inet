@@ -23,6 +23,7 @@ import inet.linklayer.IWiredNic;
 import inet.linklayer.IWirelessNic;
 import inet.mobility.IMobility;
 import inet.networklayer.common.InterfaceTable;
+import inet.networklayer.ipv4.IPv4NetworkLayer;
 import inet.networklayer.ipv4.IPv4RoutingTable;
 import inet.status.NodeStatus;
 import inet.util.PcapRecorder;
@@ -72,7 +73,7 @@ module NodeBase
         }
 
         // network layer
-        networkLayer: NetworkLayer {
+        networkLayer: IPv4NetworkLayer {
             parameters:
                 @display("p=329,287;q=queue");
         }
