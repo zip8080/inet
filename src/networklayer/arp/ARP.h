@@ -85,13 +85,10 @@ class INET_API ARP : public cSimpleModule, public IARPCache, public ILifecycle
     static int globalArpCacheRefCnt;
 
     cQueue pendingQueue; // outbound packets waiting for ARP resolution
-    int nicOutBaseGateId;  // id of the nicOut[0] gate
 
     IInterfaceTable *ift;
-    IIPv4RoutingTable *rt;  // for Proxy ARP
-
-    // Maps an IP multicast address to an Ethernet multicast address.
-    MACAddress mapMulticastAddress(IPv4Address addr);
+    IIPv4RoutingTable *rt;  // for answering ProxyARP requests
+    cGate *netwOutGate;
 
   public:
     ARP();
