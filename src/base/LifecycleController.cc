@@ -18,7 +18,7 @@
 #include "LifecycleController.h"
 #include "IInterfaceTable.h"
 #include "InterfaceEntry.h"
-#include "IPvXAddressResolver.h"
+#include "AddressResolver.h"
 #include "LifecycleOperation.h"
 
 Define_Module(LifecycleController);

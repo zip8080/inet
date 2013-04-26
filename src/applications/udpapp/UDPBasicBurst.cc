@@ -22,11 +22,11 @@
 #include "UDPBasicBurst.h"
 
 #include "UDPControlInfo_m.h"
-#include "IPvXAddressResolver.h"
-#include "IRoutingTable.h"
-#include "RoutingTableAccess.h"
-#include "RoutingTable6.h"
-#include "RoutingTable6Access.h"
+#include "AddressResolver.h"
+#include "IIPv4RoutingTable.h"
+#include "IPv4RoutingTableAccess.h"
+#include "IPv6RoutingTable.h"
+#include "IPv6RoutingTableAccess.h"
 
 
 EXECUTE_ON_STARTUP(
@@ -110,7 +110,7 @@ void UDPBasicBurst::initialize(int stage)
     }
 }
 
-IPvXAddress UDPBasicBurst::chooseDestAddr()
+Address UDPBasicBurst::chooseDestAddr()
 {
     if (destAddresses.size() == 1)
         return destAddresses[0];
@@ -143,10 +143,10 @@ void UDPBasicBurst::processStart()
     bool excludeLocalDestAddresses = par("excludeLocalDestAddresses").boolValue();
 
 #ifdef WITH_IPv4
-    IRoutingTable *rt = RoutingTableAccess().getIfExists();
+    IIPv4RoutingTable *rt = IPv4RoutingTableAccess().getIfExists();
 #endif
 #ifdef WITH_IPv6
-    RoutingTable6 *rt6 = RoutingTable6Access().getIfExists();
+    IPv6RoutingTable *rt6 = IPv6RoutingTableAccess().getIfExists();
 #endif
 
     while ((token = tokenizer.nextToken()) != NULL)
@@ -155,13 +155,13 @@ void UDPBasicBurst::processStart()
             destAddresses.push_back(IPv4Address::ALLONES_ADDRESS);
         else
         {
-            IPvXAddress addr = IPvXAddressResolver().resolve(token);
+            Address addr = AddressResolver().resolve(token);
 #ifdef WITH_IPv4
-            if (excludeLocalDestAddresses && rt && rt->isLocalAddress(addr.get4()))
+            if (excludeLocalDestAddresses && rt && rt->isLocalAddress(addr.toIPv4()))
                 continue;
 #endif
 #ifdef WITH_IPv6
-            if (excludeLocalDestAddresses && rt6 && rt6->isLocalAddress(addr.get6()))
+            if (excludeLocalDestAddresses && rt6 && rt6->isLocalAddress(addr.toIPv6()))
                 continue;
 #endif
             destAddresses.push_back(addr);

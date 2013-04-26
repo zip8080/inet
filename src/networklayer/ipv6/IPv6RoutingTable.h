@@ -49,7 +49,7 @@ class INET_API IPv6Route : public cObject
     IPv6Address _destPrefix;
     short _length;
     RouteSrc _src;
-    int _interfaceID;      //XXX IPv4 IRoutingTable uses interface pointer
+    int _interfaceID;      //XXX IPv4 IIPv4RoutingTable uses interface pointer
     IPv6Address _nextHop;  // unspecified means "direct"
     simtime_t _expiryTime; // if route is an advertised prefix: prefix lifetime
     int _metric;
@@ -101,7 +101,7 @@ class INET_API IPv6Route : public cObject
  * be read and modified during simulation, typically by routing protocol
  * implementations.
  */
-class INET_API RoutingTable6 : public cSimpleModule, protected INotifiable, public ILifecycle
+class INET_API IPv6RoutingTable : public cSimpleModule, protected INotifiable, public ILifecycle
 {
   protected:
     IInterfaceTable *ift; // cached pointer
@@ -157,8 +157,8 @@ class INET_API RoutingTable6 : public cSimpleModule, protected INotifiable, publ
     virtual void updateDisplayString();
 
   public:
-    RoutingTable6();
-    virtual ~RoutingTable6();
+    IPv6RoutingTable();
+    virtual ~IPv6RoutingTable();
 
   protected:
     virtual int numInitStages() const  {return 5;}

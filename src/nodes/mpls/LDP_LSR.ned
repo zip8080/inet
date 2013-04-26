@@ -14,7 +14,7 @@ package inet.nodes.mpls;
 import inet.base.NotificationBoard;
 import inet.linklayer.IWiredNic;
 import inet.networklayer.common.InterfaceTable;
-import inet.networklayer.ipv4.RoutingTable;
+import inet.networklayer.ipv4.IPv4RoutingTable;
 import inet.networklayer.ldp.LDP;
 import inet.networklayer.mpls.LIBTable;
 import inet.networklayer.mpls.MPLS;
@@ -57,7 +57,7 @@ module LDP_LSR
             parameters:
                 @display("p=70,150");
         }
-        routingTable: RoutingTable {
+        routingTable: IPv4RoutingTable {
             parameters:
                 IPForward = true;
                 routerId = routerId;

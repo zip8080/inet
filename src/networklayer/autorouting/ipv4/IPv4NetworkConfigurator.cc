@@ -20,9 +20,9 @@
 
 #include <set>
 #include "stlutils.h"
-#include "IRoutingTable.h"
+#include "IIPv4RoutingTable.h"
 #include "IInterfaceTable.h"
-#include "IPvXAddressResolver.h"
+#include "AddressResolver.h"
 #include "IPv4NetworkConfigurator.h"
 #include "InterfaceEntry.h"
 #include "IPv4InterfaceData.h"
@@ -124,7 +124,7 @@ void IPv4NetworkConfigurator::assignAddress(InterfaceEntry *interfaceEntry)
     assignAddresses(topology);
 }
 
-void IPv4NetworkConfigurator::addStaticRoutes(IRoutingTable *routingTable)
+void IPv4NetworkConfigurator::addStaticRoutes(IIPv4RoutingTable *routingTable)
 {
     IPv4Topology topology;
     extractTopology(topology);
@@ -149,8 +149,8 @@ void IPv4NetworkConfigurator::extractTopology(IPv4Topology& topology)
         Node *node = (Node *)topology.getNode(i);
         cModule *module = node->getModule();
         node->module = module;
-        node->interfaceTable = IPvXAddressResolver().findInterfaceTableOf(module);
-        node->routingTable = IPvXAddressResolver().findRoutingTableOf(module);
+        node->interfaceTable = AddressResolver().findInterfaceTableOf(module);
+        node->routingTable = AddressResolver().findRoutingTableOf(module);
         if (node->routingTable && !node->routingTable->isIPForwardingEnabled())
             node->setWeight(DBL_MAX);
     }
@@ -462,7 +462,7 @@ IPv4NetworkConfigurator::InterfaceInfo *IPv4NetworkConfigurator::determineGatewa
     {
         InterfaceInfo *interfaceInfo = linkInfo->interfaceInfos[interfaceIndex];
         IInterfaceTable *interfaceTable = interfaceInfo->node->interfaceTable;
-        IRoutingTable *routingTable = interfaceInfo->node->routingTable;
+        IIPv4RoutingTable *routingTable = interfaceInfo->node->routingTable;
 
         // count how many (non-loopback) interfaces this node has
         int numInterfaces = 0;
@@ -1215,7 +1215,7 @@ void IPv4NetworkConfigurator::dumpConfig(IPv4Topology& topology)
     for (int i = 0; i < topology.getNumNodes(); i++)
     {
         Node *node = (Node *)topology.getNode(i);
-        IRoutingTable *routingTable = node->routingTable;
+        IIPv4RoutingTable *routingTable = node->routingTable;
         if (routingTable)
         {
             for (int j = 0; j < routingTable->getNumRoutes(); j++)
@@ -1238,7 +1238,7 @@ void IPv4NetworkConfigurator::dumpConfig(IPv4Topology& topology)
     for (int i = 0; i < topology.getNumNodes(); i++)
     {
         Node *node = (Node *)topology.getNode(i);
-        IRoutingTable *routingTable = node->routingTable;
+        IIPv4RoutingTable *routingTable = node->routingTable;
         if (routingTable)
         {
             for (int j = 0; j < routingTable->getNumMulticastRoutes(); j++)
@@ -1345,9 +1345,9 @@ void IPv4NetworkConfigurator::addManualRoutes(cXMLElement *root, IPv4Topology& t
     {
         cXMLElement *routeElement = routeElements[i];
         const char *hostAttr = getMandatoryAttribute(routeElement, "hosts");
-        const char *destinationAttr = getMandatoryAttribute(routeElement, "destination"); // destination address  (IPvXAddressResolver syntax)
+        const char *destinationAttr = getMandatoryAttribute(routeElement, "destination"); // destination address  (AddressResolver syntax)
         const char *netmaskAttr = routeElement->getAttribute("netmask"); // default: 255.255.255.255; alternative notation: "/23"
-        const char *gatewayAttr = routeElement->getAttribute("gateway"); // next hop address (IPvXAddressResolver syntax)
+        const char *gatewayAttr = routeElement->getAttribute("gateway"); // next hop address (AddressResolver syntax)
         const char *interfaceAttr = routeElement->getAttribute("interface"); // output interface name
         const char *metricAttr = routeElement->getAttribute("metric");
 
@@ -1356,7 +1356,7 @@ void IPv4NetworkConfigurator::addManualRoutes(cXMLElement *root, IPv4Topology& t
             // parse and check the attributes
             IPv4Address destination;
             if (!isEmpty(destinationAttr) && strcmp(destinationAttr, "*"))
-                destination = IPvXAddressResolver().resolve(destinationAttr, IPvXAddressResolver::ADDR_IPv4).get4();
+                destination = AddressResolver().resolve(destinationAttr, AddressResolver::ADDR_IPv4).toIPv4();
             IPv4Address netmask;
             if (!isEmpty(netmaskAttr) && strcmp(netmaskAttr, "*"))
             {
@@ -1414,7 +1414,7 @@ void IPv4NetworkConfigurator::addManualMulticastRoutes(cXMLElement *root, IPv4To
     {
         cXMLElement *routeElement = routeElements[i];
         const char *hostAttr = routeElement->getAttribute("hosts");
-        const char *sourceAttr = routeElement->getAttribute("source"); // source address  (IPvXAddressResolver syntax)
+        const char *sourceAttr = routeElement->getAttribute("source"); // source address  (AddressResolver syntax)
         const char *netmaskAttr = routeElement->getAttribute("netmask"); // default: 255.255.255.255; alternative notation: "/23"
         const char *groupsAttr = routeElement->getAttribute("groups"); // addresses of the multicast groups, default: 0.0.0.0, matching all groups
         const char *parentAttr = routeElement->getAttribute("parent"); // name of expected input interface
@@ -1426,7 +1426,7 @@ void IPv4NetworkConfigurator::addManualMulticastRoutes(cXMLElement *root, IPv4To
             // parse and check the attributes
             IPv4Address source;
             if (!isEmpty(sourceAttr) && strcmp(sourceAttr, "*"))
-                source = IPvXAddressResolver().resolve(sourceAttr, IPvXAddressResolver::ADDR_IPv4).get4();
+                source = AddressResolver().resolve(sourceAttr, AddressResolver::ADDR_IPv4).toIPv4();
             IPv4Address netmask;
             if (!isEmpty(netmaskAttr) && strcmp(netmaskAttr, "*"))
             {
@@ -1538,7 +1538,7 @@ void IPv4NetworkConfigurator::resolveInterfaceAndGateway(Node *node, const char 
     ASSERT(isNotEmpty(gatewayAttr)); // see "if" above
 
     // check syntax of gatewayAttr, and obtain an initial value
-    outGateway = IPvXAddressResolver().resolve(gatewayAttr, IPvXAddressResolver::ADDR_IPv4).get4();
+    outGateway = AddressResolver().resolve(gatewayAttr, AddressResolver::ADDR_IPv4).toIPv4();
 
     IPv4Address gatewayAddressOnCommonLink;
 
@@ -1575,8 +1575,8 @@ void IPv4NetworkConfigurator::resolveInterfaceAndGateway(Node *node, const char 
     // the address of the interface which is towards the configured node (i.e. on the same link)
     //
     // gatewayAttr may be an IP address, or a module name, or modulename+interfacename
-    // in a syntax accepted by IPvXAddressResolver. If the gatewayAttr is a concrete IP address
-    // or contains a gateway interface name (IPvXAddressResolver accepts it after a "/"), we're done
+    // in a syntax accepted by AddressResolver. If the gatewayAttr is a concrete IP address
+    // or contains a gateway interface name (AddressResolver accepts it after a "/"), we're done
     if (IPv4Address::isWellFormed(gatewayAttr) || strchr(gatewayAttr, '/') != NULL)
         return;
 
@@ -1658,7 +1658,7 @@ void IPv4NetworkConfigurator::addStaticRoutes(IPv4Topology& topology, Node * sou
 {
     if (!sourceNode->interfaceTable)
         return;
-    IRoutingTable *sourceRoutingTable = sourceNode->routingTable;
+    IIPv4RoutingTable *sourceRoutingTable = sourceNode->routingTable;
     if (!sourceRoutingTable)
         return;
 

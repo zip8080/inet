@@ -56,8 +56,8 @@ void SCTPAssociation::decreaseOutstandingBytes(SCTPDataVariables* chunk)
 
 
 bool SCTPAssociation::process_RCV_Message(SCTPMessage*       sctpmsg,
-                                                        const IPvXAddress& src,
-                                                        const IPvXAddress& dest)
+                                                        const Address& src,
+                                                        const Address& dest)
 {
     // ====== Header checks ==================================================
     sctpEV3 << getFullPath()  << " SCTPAssociationRcvMessage:process_RCV_Message"
@@ -385,7 +385,7 @@ bool SCTPAssociation::processInitArrived(SCTPInitChunk* initchunk, int32 srcPort
             numberOfRemoteAddresses = initchunk->getAddressesArraySize();
             IInterfaceTable *ift = interfaceTableAccess.get();
             state->localAddresses.clear();
-            if (localAddressList.front() == IPvXAddress("0.0.0.0"))
+            if (localAddressList.front() == Address("0.0.0.0"))
             {
                 for (int32 i=0; i<ift->getNumInterfaces(); ++i)
                 {
@@ -568,7 +568,7 @@ bool SCTPAssociation::processInitAckArrived(SCTPInitAckChunk* initAckChunk)
 
 
 
-bool SCTPAssociation::processCookieEchoArrived(SCTPCookieEchoChunk* cookieEcho, IPvXAddress addr)
+bool SCTPAssociation::processCookieEchoArrived(SCTPCookieEchoChunk* cookieEcho, Address addr)
 {
     bool trans = false;
     SCTPCookie* cookie = check_and_cast<SCTPCookie*>(cookieEcho->getStateCookie());
@@ -961,7 +961,7 @@ SCTPEventCode SCTPAssociation::processSackArrived(SCTPSackChunk* sackChunk)
     sctpEV3 << "Before ccUpdateBytesAcked: ";
     for (SCTPPathMap::iterator piter = sctpPathMap.begin(); piter != sctpPathMap.end(); piter++) {
         SCTPPathVariables* myPath = piter->second;
-        const IPvXAddress& myPathId = myPath->remoteAddress;
+        const Address& myPathId = myPath->remoteAddress;
 
 
         if (myPath->newlyAckedBytes > 0) {
@@ -990,7 +990,7 @@ SCTPEventCode SCTPAssociation::processSackArrived(SCTPSackChunk* sackChunk)
     // ====== Need to stop or restart T3 timer? ==============================
     for (SCTPPathMap::iterator piter = sctpPathMap.begin(); piter != sctpPathMap.end(); piter++) {
         SCTPPathVariables* myPath = piter->second;
-        const IPvXAddress& myPathId = myPath->remoteAddress;
+        const Address& myPathId = myPath->remoteAddress;
 
         if (myPath->outstandingBytes == 0) {
             // T.D. 07.01.2010: Only stop T3 timer when there is nothing more to send on this path!
@@ -1371,7 +1371,7 @@ SCTPEventCode SCTPAssociation::processHeartbeatAckArrived(SCTPHeartbeatAckChunk*
     path->numberOfHeartbeatAcksRcvd++;
     path->pathRcvdHbAck->record(path->numberOfHeartbeatAcksRcvd);
     /* hb-ack goes to pathmanagement, reset error counters, stop timeout timer */
-    const IPvXAddress addr = hback->getRemoteAddr();
+    const Address addr = hback->getRemoteAddr();
     const simtime_t hbTimeField = hback->getTimeField();
     stopTimer(path->HeartbeatTimer);
     /* assume a valid RTT measurement on this path */

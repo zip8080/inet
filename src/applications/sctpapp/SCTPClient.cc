@@ -19,7 +19,7 @@
 
 #include "SCTPClient.h"
 
-#include "IPvXAddressResolver.h"
+#include "AddressResolver.h"
 #include "ModuleAccess.h"
 #include "NodeStatus.h"
 #include "SCTPAssociation.h"
@@ -58,7 +58,7 @@ void SCTPClient::initialize(int stage)
 
         // parameters
         const char *addressesString = par("localAddress");
-        AddressVector addresses = IPvXAddressResolver().resolve(cStringTokenizer(addressesString).asVector());
+        AddressVector addresses = AddressResolver().resolve(cStringTokenizer(addressesString).asVector());
         int32 port = par("localPort");
         echo = par("echo").boolValue();
         ordered = par("ordered").boolValue();
@@ -141,7 +141,7 @@ void SCTPClient::connect()
     ev << "issuing OPEN command\n";
     setStatusString("connecting");
     ev << "connect to address " << connectAddress << "\n";
-    socket.connect(IPvXAddressResolver().resolve(connectAddress, 1), connectPort, (uint32)par("numRequestsPerSession"));
+    socket.connect(AddressResolver().resolve(connectAddress, 1), connectPort, (uint32)par("numRequestsPerSession"));
     numSessions++;
 }
 
@@ -522,17 +522,17 @@ void SCTPClient::setPrimaryPath(const char* str)
 
     if (strcmp(str, "") != 0)
     {
-        pinfo->setRemoteAddress(IPvXAddress(str));
+        pinfo->setRemoteAddress(Address(str));
     }
     else
     {
         str = (const char*)par("newPrimary");
         if (strcmp(str, "") != 0)
-            pinfo->setRemoteAddress(IPvXAddress(str));
+            pinfo->setRemoteAddress(Address(str));
         else
         {
             str = (const char*)par("connectAddress");
-            pinfo->setRemoteAddress(IPvXAddress(str));
+            pinfo->setRemoteAddress(Address(str));
         }
     }
 
@@ -579,7 +579,7 @@ void SCTPClient::sendqueueAbatedArrived(int32 assocId, uint64 buffer)
     }
 }
 
-void SCTPClient::addressAddedArrived(int32 assocId, IPvXAddress remoteAddr)
+void SCTPClient::addressAddedArrived(int32 assocId, Address remoteAddr)
 {
 }
 
