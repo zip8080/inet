@@ -1491,7 +1491,7 @@ void IPv4NetworkConfigurator::addManualMulticastRoutes(cXMLElement *root, IPv4To
                         {
                             // create and add route
                             IPv4MulticastRoute *route = new IPv4MulticastRoute();
-                            route->setSourceType(IRoute::MANUAL);
+                            route->setSourceType(IMulticastRoute::MANUAL);
                             route->setOrigin(source);
                             route->setOriginNetmask(netmask);
                             route->setMulticastGroup(groups[j]);

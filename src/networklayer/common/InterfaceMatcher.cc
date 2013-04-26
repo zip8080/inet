@@ -126,7 +126,7 @@ static bool hasInterfaceTable(cModule *module)
 static cGate *findRemoteGate(cGate *startGate)
 {
     for (cGate *gate = startGate->getNextGate(); gate; gate = gate->getNextGate())
-        if (isNode(gate->getOwnerModule()))
+        if (isNetworkNode(gate->getOwnerModule()))
             return gate;
     return NULL;
 }
