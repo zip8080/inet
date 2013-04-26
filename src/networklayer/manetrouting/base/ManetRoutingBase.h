@@ -40,14 +40,12 @@
 #include "ILocator.h"
 #endif
 
-#include "ARP.h"
-
 #include <vector>
 #include <set>
 
 class ManetRoutingBase;
 
-
+class IARPCache;
 
 typedef std::set<ManetAddress> AddressGroup;
 
@@ -92,7 +90,7 @@ class INET_API ManetRoutingBase : public cSimpleModule, public INotifiable, prot
     bool sendToICMP;
     ManetRoutingBase *colaborativeProtocol;
 
-    ARP *arp;
+    IARPCache *arp;
 
     typedef struct InterfaceIdentification
     {

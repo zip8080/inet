@@ -29,6 +29,7 @@
 #include "ModuleAccess.h"
 #include "IPv4Address.h"
 #include "ILifecycle.h"
+#include "IARPCache.h"
 
 // Forward declarations:
 class ARPPacket;
@@ -39,7 +40,7 @@ class IIPv4RoutingTable;
 /**
  * ARP implementation.
  */
-class INET_API ARP : public cSimpleModule, public ILifecycle
+class INET_API ARP : public cSimpleModule, public IARPCache, public ILifecycle
 {
   public:
     struct ARPCacheEntry;
@@ -96,8 +97,8 @@ class INET_API ARP : public cSimpleModule, public ILifecycle
     ARP();
     virtual ~ARP();
     int numInitStages() const {return 5;}
-    const MACAddress getDirectAddressResolution(const IPv4Address &) const;
-    const IPv4Address getInverseAddressResolution(const MACAddress &) const;
+    virtual MACAddress getDirectAddressResolution(const IPv4Address &) const;
+    virtual IPv4Address getInverseAddressResolution(const MACAddress &) const;
     void setChangeAddress(const IPv4Address &);
 
   protected:
@@ -125,12 +126,6 @@ class INET_API ARP : public cSimpleModule, public ILifecycle
     virtual void dumpARPPacket(ARPPacket *arp);
     virtual void updateDisplayString();
 
-};
-
-class INET_API ArpAccess : public ModuleAccess<ARP>
-{
-  public:
-    ArpAccess() : ModuleAccess<ARP>("arp") {}
 };
 
 #endif
