@@ -105,11 +105,11 @@ module RSVP_LSR
                 @display("p=312,268");
         }
     connections allowunconnected:
-        linkStateRouting.ipOut --> networkLayer.ospfIn;
-        linkStateRouting.ipIn <-- networkLayer.ospfOut;
+        linkStateRouting.ipOut --> networkLayer.transportIn++;
+        linkStateRouting.ipIn <-- networkLayer.transportOut++;
 
-        rsvp.ipOut --> networkLayer.rsvpIn;
-        rsvp.ipIn <-- networkLayer.rsvpOut;
+        rsvp.ipOut --> networkLayer.transportIn++;
+        rsvp.ipIn <-- networkLayer.transportOut++;
 
         for i=0..sizeof(pppg)-1 {
             pppg[i] <--> ppp[i].phys;

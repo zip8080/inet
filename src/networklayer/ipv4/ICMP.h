@@ -67,6 +67,7 @@ class INET_API ICMP : public cSimpleModule
     virtual void sendErrorMessage(cPacket *transportPacket, IPv4ControlInfo *ctrl, ICMPType type, ICMPCode code);
 
   protected:
+    virtual void initialize(int stage);
     virtual void handleMessage(cMessage *msg);
 };
 

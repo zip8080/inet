@@ -74,8 +74,8 @@ module BurstHost
         }
     connections allowunconnected:
         // transport connections
-        networkLayer.udpOut --> trafGen.ipIn;
-        networkLayer.udpIn <-- trafGen.ipOut;
+        networkLayer.transportOut++ --> trafGen.ipIn;
+        networkLayer.transportIn++ <-- trafGen.ipOut;
 
         // connections to network outside
         for i=0..0 {

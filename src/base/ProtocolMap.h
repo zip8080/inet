@@ -32,6 +32,9 @@ class INET_API ProtocolMapping
     {
         int protocolNumber;
         int outGateIndex;
+
+        Entry() { }
+        Entry(int protocolNumber, int outGateIndex) { this->protocolNumber = protocolNumber; this->outGateIndex = outGateIndex; }
     };
     // we use vector because it's probably faster: we'll hit 1st or 2nd entry
     // (TCP or UDP) in 90% of cases
@@ -41,6 +44,7 @@ class INET_API ProtocolMapping
   public:
     ProtocolMapping() {}
     ~ProtocolMapping() {}
+    void addProtocolMapping(int protocol, int gateIndex) { entries.push_back(Entry(protocol, gateIndex)); }
     void parseProtocolMapping(const char *s);
     int getOutputGateForProtocol(int protocol);
 };
