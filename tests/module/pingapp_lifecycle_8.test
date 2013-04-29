@@ -43,7 +43,7 @@ network Test
 
 %contains-regex: stdout
 
-.*Event #1  T=0.*
+.*Event #\d+  T=0.*
 Starting up: .*
 Sending ping #0
 .*
