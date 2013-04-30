@@ -17,13 +17,9 @@
 // author: Zoltan Bojthe
 //
 
-
 #include "IdealChannelModelAccess.h"
-
+#include "ModuleAccess.h"
 #include "IMobility.h"
-
-
-#define coreEV (ev.isDisabled()||!coreDebug) ? ev : ev << logName() << "::IdealChannelModelAccess: "
 
 simsignal_t IdealChannelModelAccess::mobilityStateChangedSignal = SIMSIGNAL_NULL;
 
@@ -46,15 +42,13 @@ IdealChannelModelAccess::~IdealChannelModelAccess()
  */
 void IdealChannelModelAccess::initialize(int stage)
 {
-    BasicModule::initialize(stage);
-
     if (stage == 0)
     {
         cc = dynamic_cast<IdealChannelModel *>(simulation.getModuleByPath("channelControl"));
         if (!cc)
             throw cRuntimeError("Could not find ChannelControl module with name 'channelControl' in the toplevel network.");
 
-        hostModule = findHost();
+        hostModule = findContainingNode(this, true);
 
         positionUpdateArrived = false;
         // register to get a notification when position changes
@@ -80,7 +74,7 @@ void IdealChannelModelAccess::initialize(int stage)
  */
 void IdealChannelModelAccess::sendToChannel(IdealAirFrame *msg)
 {
-    coreEV << "sendToChannel: sending to gates\n";
+    EV << "sendToChannel: sending to gates\n";
 
     // delegate it to ChannelControl
     cc->sendToChannel(myRadioRef, msg);
