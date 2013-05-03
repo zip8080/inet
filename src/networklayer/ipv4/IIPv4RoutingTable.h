@@ -15,8 +15,8 @@
 // along with this program; if not, see <http://www.gnu.org/licenses/>.
 //
 
-#ifndef __INET_IROUTINGTABLE_H
-#define __INET_IROUTINGTABLE_H
+#ifndef __INET_IIPV4ROUTINGTABLE_H
+#define __INET_IIPV4ROUTINGTABLE_H
 
 #include <vector>
 
@@ -24,6 +24,8 @@
 
 #include "IPv4Address.h"
 #include "IPv4Route.h"  // not strictly required, but most clients will need it anyway
+
+class IRoutingTable;
 
 /**
  * A C++ interface to abstract the functionality of IIPv4RoutingTable.
@@ -52,6 +54,11 @@ class INET_API IIPv4RoutingTable
      * Returns the host or router this routing table lives in.
      */
     virtual cModule *getHostModule() = 0;
+
+    /**
+     * TODO
+     */
+    virtual IRoutingTable *asGeneric() = 0;
 
     /** @name Interfaces */
     //@{

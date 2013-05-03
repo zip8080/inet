@@ -25,6 +25,9 @@
 
 class InterfaceEntry;
 class IIPv4RoutingTable;
+class IRoute;
+class IMulticastRoute;
+
 
 /**
  * IPv4 unicast route in IIPv4RoutingTable.
@@ -55,6 +58,9 @@ class INET_API IPv4Route : public cObject
     InterfaceEntry *interfacePtr; ///< interface
     RouteSource source;   ///< manual, routing prot, etc.
     int metric;           ///< Metric ("cost" to reach the destination)
+    cObject *sourceXXX;   ///< Object identifying the source
+    cObject *protocolData; ///< Routing Protocol specific data
+    IRoute *adapter;
 
   public:
     enum {F_DESTINATION, F_NETMASK, F_GATEWAY, F_IFACE, F_TYPE, F_SOURCE, F_METRIC, F_LAST}; // field codes for changed()
@@ -68,8 +74,8 @@ class INET_API IPv4Route : public cObject
     void changed(int fieldCode);
 
   public:
-    IPv4Route() : rt(NULL), interfacePtr(NULL), source(MANUAL), metric(0) {}
-    virtual ~IPv4Route() {}
+    IPv4Route() : rt(NULL), interfacePtr(NULL), source(MANUAL), metric(0), sourceXXX(NULL), protocolData(NULL), adapter(NULL) {}
+    virtual ~IPv4Route();
     virtual std::string info() const;
     virtual std::string detailedInfo() const;
 
@@ -80,6 +86,8 @@ class INET_API IPv4Route : public cObject
     /** To be called by the routing table when this route is added or removed from it */
     virtual void setRoutingTable(IIPv4RoutingTable *rt) {this->rt = rt;}
     IIPv4RoutingTable *getRoutingTable() const {return rt;}
+
+    virtual IRoute *asGeneric();
 
     /** test validity of route entry, e.g. check expiry */
     virtual bool isValid() const { return true; }
@@ -111,6 +119,12 @@ class INET_API IPv4Route : public cObject
 
     /** "Cost" to reach the destination */
     int getMetric() const {return metric;}
+
+    void setSourceXXX(cObject *_source) { sourceXXX = _source; }
+    cObject *getSourceXXX() const { return sourceXXX; }
+
+    cObject *getProtocolData() const { return protocolData; }
+    void setProtocolData(cObject *protocolData) { this->protocolData = protocolData; }
 };
 
 /**
@@ -170,6 +184,7 @@ class INET_API IPv4MulticastRoute : public cObject
     ChildInterfaceVector children; ///< Child interfaces
     RouteSource source;            ///< manual, routing prot, etc.
     int metric;                    ///< Metric ("cost" to reach the source)
+    IMulticastRoute *adapter;
 
   public:
     // field codes for changed()
@@ -184,7 +199,7 @@ class INET_API IPv4MulticastRoute : public cObject
     IPv4MulticastRoute& operator=(const IPv4MulticastRoute& obj);
 
   public:
-    IPv4MulticastRoute() : rt(NULL), parent(NULL), source(MANUAL), metric(0) {}
+    IPv4MulticastRoute() : rt(NULL), parent(NULL), source(MANUAL), metric(0), adapter(NULL) {}
     virtual ~IPv4MulticastRoute();
     virtual std::string info() const;
     virtual std::string detailedInfo() const;
@@ -192,6 +207,8 @@ class INET_API IPv4MulticastRoute : public cObject
     /** To be called by the routing table when this route is added or removed from it */
     virtual void setRoutingTable(IIPv4RoutingTable *rt) {this->rt = rt;}
     IIPv4RoutingTable *getRoutingTable() const {return rt;}
+
+    virtual IMulticastRoute *asGeneric();
 
     /** test validity of route entry, e.g. check expiry */
     virtual bool isValid() const { return true; }

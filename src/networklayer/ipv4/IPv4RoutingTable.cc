@@ -33,6 +33,7 @@
 #include "NotifierConsts.h"
 #include "RoutingTableParser.h"
 #include "NodeOperations.h"
+#include "IPv4RoutingTableAdapter.h"
 
 Define_Module(IPv4RoutingTable);
 
@@ -53,10 +54,12 @@ IPv4RoutingTable::IPv4RoutingTable()
 {
     ift = NULL;
     nb = NULL;
+    adapter = NULL;
 }
 
 IPv4RoutingTable::~IPv4RoutingTable()
 {
+    delete adapter;
     for (unsigned int i=0; i<routes.size(); i++)
         delete routes[i];
     for (unsigned int i=0; i<multicastRoutes.size(); i++)
@@ -84,6 +87,7 @@ void IPv4RoutingTable::initialize(int stage)
         WATCH_PTRVECTOR(routes);
         WATCH_PTRVECTOR(multicastRoutes);
         WATCH(IPForward);
+        WATCH(multicastForward);
         WATCH(routerId);
     }
     else if (stage==1)
@@ -211,6 +215,13 @@ cModule *IPv4RoutingTable::getHostModule()
     return findContainingNode(this);
 }
 
+IRoutingTable *IPv4RoutingTable::asGeneric()
+{
+    if (!adapter)
+        adapter = new IPv4RoutingTableAdapter(this);
+    return adapter;
+}
+
 void IPv4RoutingTable::deleteInterfaceRoutes(InterfaceEntry *entry)
 {
     bool changed = false;
@@ -223,7 +234,7 @@ void IPv4RoutingTable::deleteInterfaceRoutes(InterfaceEntry *entry)
         {
             it = routes.erase(it);
             ASSERT(route->getRoutingTable() == this); // still filled in, for the listeners' benefit
-            nb->fireChangeNotification(NF_IPv4_ROUTE_DELETED, route);
+            nb->fireChangeNotification(NF_ROUTE_DELETED, route->asGeneric());
             delete route;
             changed = true;
         }
@@ -241,7 +252,7 @@ void IPv4RoutingTable::deleteInterfaceRoutes(InterfaceEntry *entry)
         {
             it = multicastRoutes.erase(it);
             ASSERT(route->getRoutingTable() == this); // still filled in, for the listeners' benefit
-            nb->fireChangeNotification(NF_IPv4_MROUTE_DELETED, route);
+            nb->fireChangeNotification(NF_MROUTE_DELETED, route->asGeneric());
             delete route;
             changed = true;
         }
@@ -250,7 +261,7 @@ void IPv4RoutingTable::deleteInterfaceRoutes(InterfaceEntry *entry)
             bool removed = route->removeChild(entry);
             if (removed)
             {
-                nb->fireChangeNotification(NF_IPv4_MROUTE_CHANGED, route);
+                nb->fireChangeNotification(NF_MROUTE_CHANGED, route->asGeneric());
                 changed = true;
             }
             ++it;
@@ -458,7 +469,7 @@ void IPv4RoutingTable::purge()
         {
             it = routes.erase(it);
             ASSERT(route->getRoutingTable() == this); // still filled in, for the listeners' benefit
-            nb->fireChangeNotification(NF_IPv4_ROUTE_DELETED, route);
+            nb->fireChangeNotification(NF_ROUTE_DELETED, route->asGeneric());
             delete route;
             deleted = true;
         }
@@ -474,7 +485,7 @@ void IPv4RoutingTable::purge()
         {
             it = multicastRoutes.erase(it);
             ASSERT(route->getRoutingTable() == this); // still filled in, for the listeners' benefit
-            nb->fireChangeNotification(NF_IPv4_MROUTE_DELETED, route);
+            nb->fireChangeNotification(NF_MROUTE_DELETED, route->asGeneric());
             delete route;
             deleted = true;
         }
@@ -633,7 +644,7 @@ void IPv4RoutingTable::addRoute(IPv4Route *entry)
     invalidateCache();
     updateDisplayString();
 
-    nb->fireChangeNotification(NF_IPv4_ROUTE_ADDED, entry);
+    nb->fireChangeNotification(NF_ROUTE_ADDED, entry->asGeneric());
 }
 
 IPv4Route *IPv4RoutingTable::internalRemoveRoute(IPv4Route *entry)
@@ -658,13 +669,13 @@ IPv4Route *IPv4RoutingTable::removeRoute(IPv4Route *entry)
         invalidateCache();
         updateDisplayString();
         ASSERT(entry->getRoutingTable() == this); // still filled in, for the listeners' benefit
-        nb->fireChangeNotification(NF_IPv4_ROUTE_DELETED, entry);
+        nb->fireChangeNotification(NF_ROUTE_DELETED, entry->asGeneric());
         entry->setRoutingTable(NULL);
     }
     return entry;
 }
 
-bool IPv4RoutingTable::deleteRoute(IPv4Route *entry)
+bool IPv4RoutingTable::deleteRoute(IPv4Route *entry)  //TODO this is almost duplicate of removeRoute()
 {
     Enter_Method("deleteRoute(...)");
 
@@ -675,7 +686,7 @@ bool IPv4RoutingTable::deleteRoute(IPv4Route *entry)
         invalidateCache();
         updateDisplayString();
         ASSERT(entry->getRoutingTable() == this); // still filled in, for the listeners' benefit
-        nb->fireChangeNotification(NF_IPv4_ROUTE_DELETED, entry);
+        nb->fireChangeNotification(NF_ROUTE_DELETED, entry->asGeneric());
         delete entry;
     }
     return entry != NULL;
@@ -747,7 +758,7 @@ void IPv4RoutingTable::addMulticastRoute(IPv4MulticastRoute *entry)
     invalidateCache();
     updateDisplayString();
 
-    nb->fireChangeNotification(NF_IPv4_MROUTE_ADDED, entry);
+    nb->fireChangeNotification(NF_MROUTE_ADDED, entry->asGeneric());
 }
 
 IPv4MulticastRoute *IPv4RoutingTable::internalRemoveMulticastRoute(IPv4MulticastRoute *entry)
@@ -772,7 +783,7 @@ IPv4MulticastRoute *IPv4RoutingTable::removeMulticastRoute(IPv4MulticastRoute *e
         invalidateCache();
         updateDisplayString();
         ASSERT(entry->getRoutingTable() == this); // still filled in, for the listeners' benefit
-        nb->fireChangeNotification(NF_IPv4_MROUTE_DELETED, entry);
+        nb->fireChangeNotification(NF_MROUTE_DELETED, entry->asGeneric());
         entry->setRoutingTable(NULL);
     }
     return entry;
@@ -789,7 +800,7 @@ bool IPv4RoutingTable::deleteMulticastRoute(IPv4MulticastRoute *entry)
         invalidateCache();
         updateDisplayString();
         ASSERT(entry->getRoutingTable() == this); // still filled in, for the listeners' benefit
-        nb->fireChangeNotification(NF_IPv4_MROUTE_DELETED, entry);
+        nb->fireChangeNotification(NF_MROUTE_DELETED, entry->asGeneric());
         delete entry;
     }
     return entry != NULL;
@@ -806,7 +817,7 @@ void IPv4RoutingTable::routeChanged(IPv4Route *entry, int fieldCode)
         invalidateCache();
         updateDisplayString();
     }
-    nb->fireChangeNotification(NF_IPv4_ROUTE_CHANGED, entry); // TODO include fieldCode in the notification
+    nb->fireChangeNotification(NF_ROUTE_CHANGED, entry->asGeneric()); // TODO include fieldCode in the notification
 }
 
 void IPv4RoutingTable::multicastRouteChanged(IPv4MulticastRoute *entry, int fieldCode)
@@ -821,7 +832,7 @@ void IPv4RoutingTable::multicastRouteChanged(IPv4MulticastRoute *entry, int fiel
         invalidateCache();
         updateDisplayString();
     }
-    nb->fireChangeNotification(NF_IPv4_MROUTE_CHANGED, entry); // TODO include fieldCode in the notification
+    nb->fireChangeNotification(NF_MROUTE_CHANGED, entry->asGeneric()); // TODO include fieldCode in the notification
 }
 
 void IPv4RoutingTable::updateNetmaskRoutes()
@@ -835,7 +846,7 @@ void IPv4RoutingTable::updateNetmaskRoutes()
             IPv4Route *route = *it;
             routes.erase(it);
             ASSERT(route->getRoutingTable() == this); // still filled in, for the listeners' benefit
-            nb->fireChangeNotification(NF_IPv4_ROUTE_DELETED, route);
+            nb->fireChangeNotification(NF_ROUTE_DELETED, route->asGeneric());
             delete route;
         }
     }
@@ -850,6 +861,7 @@ void IPv4RoutingTable::updateNetmaskRoutes()
         {
             IPv4Route *route = new IPv4Route();
             route->setSource(IPv4Route::IFACENETMASK);
+            route->asGeneric()->setSource(ie);
             route->setDestination(ie->ipv4Data()->getIPAddress().doAnd(ie->ipv4Data()->getNetmask()));
             route->setNetmask(ie->ipv4Data()->getNetmask());
             route->setGateway(IPv4Address());
@@ -858,7 +870,7 @@ void IPv4RoutingTable::updateNetmaskRoutes()
             route->setRoutingTable(this);
             RouteVector::iterator pos = upper_bound(routes.begin(), routes.end(), route, routeLessThan);
             routes.insert(pos, route);
-            nb->fireChangeNotification(NF_IPv4_ROUTE_ADDED, route);
+            nb->fireChangeNotification(NF_ROUTE_ADDED, route->asGeneric());
         }
     }
 

@@ -25,8 +25,8 @@
 //  Cleanup and rewrite: Andras Varga, 2004
 //
 
-#ifndef __ROUTINGTABLE_H
-#define __ROUTINGTABLE_H
+#ifndef __INET_IPV4ROUTINGTABLE_H
+#define __INET_IPV4ROUTINGTABLE_H
 
 #include <vector>
 
@@ -40,6 +40,7 @@
 class IInterfaceTable;
 class NotificationBoard;
 class RoutingTableParser;
+class IRoutingTable;
 
 
 /**
@@ -77,6 +78,7 @@ class INET_API IPv4RoutingTable: public cSimpleModule, public IIPv4RoutingTable,
   protected:
     IInterfaceTable *ift; // cached pointer
     NotificationBoard *nb; // cached pointer
+    IRoutingTable *adapter;
 
     IPv4Address routerId;
     bool IPForward;
@@ -170,6 +172,11 @@ class INET_API IPv4RoutingTable: public cSimpleModule, public IIPv4RoutingTable,
      * Returns the host or router this routing table lives in.
      */
     virtual cModule *getHostModule();
+
+    /**
+     * TODO
+     */
+    virtual IRoutingTable *asGeneric();
 
     /** @name Interfaces */
     //@{

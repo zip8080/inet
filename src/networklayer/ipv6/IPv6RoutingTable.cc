@@ -25,12 +25,18 @@
 
 #include "IPv6InterfaceData.h"
 #include "InterfaceTableAccess.h"
-
 #include "IPv6TunnelingAccess.h"
 #include "NodeOperations.h"
+#include "IPv6RoutingTableAdapter.h"
+#include "IPv6RouteAdapter.h"
 
 Define_Module(IPv6RoutingTable);
 
+
+IPv6Route::~IPv6Route()
+{
+    delete adapter;
+}
 
 std::string IPv6Route::info() const
 {
@@ -60,6 +66,13 @@ const char *IPv6Route::routeSrcName(RouteSrc src)
     }
 }
 
+IRoute *IPv6Route::asGeneric()
+{
+    if (!adapter)
+        adapter = new IPv6RouteAdapter(this);
+    return adapter;
+}
+
 //----
 
 std::ostream& operator<<(std::ostream& os, const IPv6Route& e)
@@ -76,10 +89,12 @@ std::ostream& operator<<(std::ostream& os, const IPv6RoutingTable::DestCacheEntr
 
 IPv6RoutingTable::IPv6RoutingTable()
 {
+    adapter = NULL;
 }
 
 IPv6RoutingTable::~IPv6RoutingTable()
 {
+    delete adapter;
     for (unsigned int i=0; i<routeList.size(); i++)
         delete routeList[i];
 }
@@ -415,6 +430,13 @@ void IPv6RoutingTable::configureTunnelFromXML(cXMLElement* cfg)
     }
 }
 
+IRoutingTable *IPv6RoutingTable::asGeneric()
+{
+    if (!adapter)
+        adapter = new IPv6RoutingTableAdapter(this);
+    return adapter;
+}
+
 InterfaceEntry *IPv6RoutingTable::getInterfaceByAddress(const IPv6Address& addr)
 {
     Enter_Method("getInterfaceByAddress(%s)=?", addr.str().c_str());
@@ -591,10 +613,10 @@ void IPv6RoutingTable::addOrUpdateOnLinkPrefix(const IPv6Address& destPrefix, in
     else
     {
         // update existing one; notification-wise, we pretend the route got removed then re-added
-        nb->fireChangeNotification(NF_IPv6_ROUTE_DELETED, route);
+        nb->fireChangeNotification(NF_ROUTE_DELETED, route->asGeneric());
         route->setInterfaceId(interfaceId);
         route->setExpiryTime(expiryTime);
-        nb->fireChangeNotification(NF_IPv6_ROUTE_ADDED, route);
+        nb->fireChangeNotification(NF_ROUTE_ADDED, route->asGeneric());
     }
 
     updateDisplayString();
@@ -630,10 +652,10 @@ void IPv6RoutingTable::addOrUpdateOwnAdvPrefix(const IPv6Address& destPrefix, in
     else
     {
         // update existing one; notification-wise, we pretend the route got removed then re-added
-        nb->fireChangeNotification(NF_IPv6_ROUTE_DELETED, route);
+        nb->fireChangeNotification(NF_ROUTE_DELETED, route->asGeneric());
         route->setInterfaceId(interfaceId);
         route->setExpiryTime(expiryTime);
-        nb->fireChangeNotification(NF_IPv6_ROUTE_ADDED, route);
+        nb->fireChangeNotification(NF_ROUTE_ADDED, route->asGeneric());
     }
 
     updateDisplayString();
@@ -714,7 +736,7 @@ void IPv6RoutingTable::addRoute(IPv6Route *route)
 
     updateDisplayString();
 
-    nb->fireChangeNotification(NF_IPv6_ROUTE_ADDED, route);
+    nb->fireChangeNotification(NF_ROUTE_ADDED, route->asGeneric());
 }
 
 void IPv6RoutingTable::removeRoute(IPv6Route *route)
@@ -722,7 +744,7 @@ void IPv6RoutingTable::removeRoute(IPv6Route *route)
     RouteList::iterator it = std::find(routeList.begin(), routeList.end(), route);
     ASSERT(it!=routeList.end());
 
-    nb->fireChangeNotification(NF_IPv6_ROUTE_DELETED, route); // rather: going to be deleted
+    nb->fireChangeNotification(NF_ROUTE_DELETED, route->asGeneric()); // rather: going to be deleted
 
     routeList.erase(it);
     delete route;
@@ -849,6 +871,7 @@ bool IPv6RoutingTable::isOnLinkAddress(const IPv6Address& address)
 
     return false;
 }
+
 #endif /* WITH_xMIPv6 */
 
 

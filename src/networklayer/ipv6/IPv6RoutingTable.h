@@ -15,8 +15,8 @@
 // along with this program; if not, see <http://www.gnu.org/licenses/>.
 //
 
-#ifndef __INET_ROUTINGTABLE6_H
-#define __INET_ROUTINGTABLE6_H
+#ifndef __INET_IPV6ROUTINGTABLE_H
+#define __INET_IPV6ROUTINGTABLE_H
 
 #include <vector>
 
@@ -28,6 +28,11 @@
 
 class IInterfaceTable;
 class InterfaceEntry;
+class IRoutingTable;
+class IRoute;
+class IPv6RouteAdapter;
+//TODO class IPv6MulticastRouteAdapter;
+class IPv6RoutingTableAdapter;
 
 /**
  * Represents a route in the route table. Routes with src=FROM_RA represent
@@ -53,6 +58,7 @@ class INET_API IPv6Route : public cObject
     IPv6Address _nextHop;  // unspecified means "direct"
     simtime_t _expiryTime; // if route is an advertised prefix: prefix lifetime
     int _metric;
+    IPv6RouteAdapter *adapter;
 
   public:
     /**
@@ -66,11 +72,16 @@ class INET_API IPv6Route : public cObject
         _interfaceID = -1;
         _expiryTime = 0;
         _metric = 0;
+        adapter = NULL;
     }
+
+    virtual ~IPv6Route();
 
     virtual std::string info() const;
     virtual std::string detailedInfo() const;
     static const char *routeSrcName(RouteSrc src);
+
+    virtual IRoute *asGeneric();
 
     void setInterfaceId(int interfaceId)  {_interfaceID = interfaceId;}
     void setNextHop(const IPv6Address& nextHop)  {_nextHop = nextHop;}
@@ -106,6 +117,7 @@ class INET_API IPv6RoutingTable : public cSimpleModule, protected INotifiable, p
   protected:
     IInterfaceTable *ift; // cached pointer
     NotificationBoard *nb; // cached pointer
+    IPv6RoutingTableAdapter *adapter;
 
     bool isrouter;
 
@@ -184,6 +196,11 @@ class INET_API IPv6RoutingTable : public cSimpleModule, protected INotifiable, p
      */
     virtual InterfaceEntry *getInterfaceByAddress(const IPv6Address& address);
     //@}
+
+    /**
+     * TODO
+     */
+    virtual IRoutingTable *asGeneric();
 
     /**
      * IP forwarding on/off

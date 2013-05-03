@@ -18,6 +18,9 @@
 
 package inet.networklayer.ipv6;
 
+import inet.networklayer.contract.IRoutingTable;
+
+
 //
 // IPv6 Routing Table and Neighbour Discovery data structures.
 // NOTE: This component MUST be named as "routingTable6" inside
@@ -26,10 +29,10 @@ package inet.networklayer.ipv6;
 //
 // @see ~IPv6, ~IPv6NeighbourDiscovery, ~ICMPv6
 //
-simple IPv6RoutingTable
+simple IPv6RoutingTable like IRoutingTable
 {
     parameters:
+        @display("i=block/table");
         xml routingTable = default(xml("<routingTable/>"));
         bool isRouter;
-        @display("i=block/table");
 }

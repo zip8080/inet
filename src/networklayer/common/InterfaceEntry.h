@@ -122,7 +122,7 @@ class INET_API InterfaceEntry : public cNamedObject
 
   public:
     InterfaceEntry(cModule *interfaceModule);
-    virtual ~InterfaceEntry() {}
+    virtual ~InterfaceEntry() {} // TODO: who is responsible for deleting interface data objects?
     virtual std::string info() const;
     virtual std::string detailedInfo() const;
     virtual std::string getFullPath() const;
@@ -181,8 +181,8 @@ class INET_API InterfaceEntry : public cNamedObject
     //@{
     IPv4InterfaceData *ipv4Data() const {return ipv4data;}
     IPv6InterfaceData *ipv6Data() const  {return ipv6data;}
-    InterfaceProtocolData *getProtocol3Data() const {return protocol3data;}
-    InterfaceProtocolData *getProtocol4Data() const {return protocol4data;}
+    InterfaceProtocolData *getProtocol3Data() const {return protocol3data;}  //TODO eliminate
+    InterfaceProtocolData *getProtocol4Data() const {return protocol4data;} //TODO eliminate
     //@}
 
     /** @name Installing protocol-specific interface data */
