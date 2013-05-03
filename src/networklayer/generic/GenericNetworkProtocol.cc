@@ -349,12 +349,24 @@ void GenericNetworkProtocol::routeMulticastPacket(GenericDatagram *datagram, con
 
 void GenericNetworkProtocol::reassembleAndDeliver(GenericDatagram *datagram)
 {
-    // decapsulate and send on appropriate output gate
     int protocol = datagram->getTransportProtocol();
-    cPacket *packet = decapsulateGeneric(datagram);
 
-    int gateindex = mapping.getOutputGateForProtocol(protocol);
-    send(packet, "transportOut", gateindex);
+    int gateindex = mapping.findOutputGateForProtocol(protocol);
+    // check if the transportOut port are connected, otherwise discard the packet
+    if (gateindex >= 0)
+    {
+        cGate* outGate = gate("transportOut", gateindex);
+        if (outGate->isPathOK())
+        {
+            // decapsulate and send on appropriate output gate
+            cPacket *packet = decapsulateGeneric(datagram);
+            delete datagram;
+            send(packet, "transportOut", gateindex);
+            return;
+        }
+    }
+
+    //TODO send an ICMP error: protocol unreachable
     delete datagram;
 }
 
