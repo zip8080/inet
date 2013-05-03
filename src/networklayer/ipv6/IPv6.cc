@@ -64,6 +64,10 @@ void IPv6::initialize(int stage)
         lastCheckTime = 0;
         fragbuf.init(icmp);
 
+        // NetFilter:
+        hooks.clear();
+        queuedDatagramsForHooks.clear();
+
         numMulticast = numLocalDeliver = numDropped = numUnroutable = numForwarded = 0;
 
         WATCH(numMulticast);
@@ -168,14 +172,24 @@ void IPv6::handleDatagramFromNetwork(IPv6Datagram *datagram)
     // 2. The Ethernet or PPP frame is dropped by the link-layer if there is a transmission error.
     ASSERT(!datagram->hasBitError());
 
+    const InterfaceEntry *fromIE = getSourceInterfaceFrom(datagram);
+    const InterfaceEntry *destIE = NULL;
+    Address nextHop(IPv6Address::UNSPECIFIED_ADDRESS);
+    if (datagramPreRoutingHook(datagram, fromIE, destIE, nextHop) == INetfilter::IHook::ACCEPT)
+        preroutingFinish(datagram, fromIE, destIE, nextHop.toIPv6());
+}
+
+void IPv6::preroutingFinish(IPv6Datagram *datagram, const InterfaceEntry *fromIE, const InterfaceEntry *destIE, IPv6Address nextHopAddr)
+{
+    IPv6Address &destAddr = datagram->getDestAddress();
     // remove control info
     delete datagram->removeControlInfo();
 
     // routepacket
-    if (!datagram->getDestAddress().isMulticast())
-        routePacket(datagram, NULL, false);
+    if (!destAddr.isMulticast())
+        routePacket(datagram, destIE, nextHopAddr, false);
     else
-        routeMulticastPacket(datagram, NULL, getSourceInterfaceFrom(datagram), false);
+        routeMulticastPacket(datagram, destIE, fromIE, false);
 }
 
 void IPv6::handleMessageFromHL(cPacket *msg)
@@ -191,7 +205,7 @@ void IPv6::handleMessageFromHL(cPacket *msg)
     IPv6ControlInfo *controlInfo = check_and_cast<IPv6ControlInfo*>(msg->removeControlInfo());
     // encapsulate upper-layer packet into IPv6Datagram
     // IPV6_MULTICAST_IF option, but allow interface selection for unicast packets as well
-    InterfaceEntry *destIE = ift->getInterfaceById(controlInfo->getInterfaceId());
+    const InterfaceEntry *destIE = ift->getInterfaceById(controlInfo->getInterfaceId());
     IPv6Datagram *datagram = encapsulate(msg, controlInfo);
     delete controlInfo;
 
@@ -204,16 +218,27 @@ void IPv6::handleMessageFromHL(cPacket *msg)
     }
 #endif /* WITH_xMIPv6 */
 
+    Address nextHopAddr(IPv6Address::UNSPECIFIED_ADDRESS);
+    if (datagramLocalOutHook(datagram, destIE, nextHopAddr) == INetfilter::IHook::ACCEPT)
+        datagramLocalOut(datagram, destIE, nextHopAddr.toIPv6());
+}
+
+void IPv6::datagramLocalOut(IPv6Datagram* datagram, const InterfaceEntry* destIE, IPv6Address requestedNextHopAddress)
+{
     // route packet
     if (destIE != NULL)
-        fragmentAndSend(datagram, destIE, MACAddress::BROADCAST_ADDRESS, true); // FIXME what MAC address to use?
+    {
+        MACAddress nextHopMACAddr = MACAddress::BROADCAST_ADDRESS; // FIXME what MAC address to use?
+        fragmentAndSend(datagram, destIE, nextHopMACAddr, true);
+    }
     else if (!datagram->getDestAddress().isMulticast())
-        routePacket(datagram, destIE, true);
+        routePacket(datagram, destIE, requestedNextHopAddress, true);
     else
         routeMulticastPacket(datagram, destIE, NULL, true);
 }
 
-void IPv6::routePacket(IPv6Datagram *datagram, InterfaceEntry *destIE, bool fromHL)
+//FIXME should use parameters!!!
+void IPv6::routePacket(IPv6Datagram *datagram, const InterfaceEntry *destIE___, IPv6Address requestedNextHopAddress___, bool fromHL)
 {
     // TBD add option handling code here
     IPv6Address destAddress = datagram->getDestAddress();
@@ -347,7 +372,7 @@ void IPv6::routePacket(IPv6Datagram *datagram, InterfaceEntry *destIE, bool from
     fragmentAndSend(datagram, ie, macAddr, fromHL);
 }
 
-void IPv6::routeMulticastPacket(IPv6Datagram *datagram, InterfaceEntry *destIE, InterfaceEntry *fromIE, bool fromHL)
+void IPv6::routeMulticastPacket(IPv6Datagram *datagram, const InterfaceEntry *destIE, const InterfaceEntry *fromIE, bool fromHL)
 {
     const IPv6Address& destAddr = datagram->getDestAddress();
 
@@ -673,7 +698,7 @@ IPv6Datagram *IPv6::encapsulate(cPacket *transportPacket, IPv6ControlInfo *contr
     return datagram;
 }
 
-void IPv6::fragmentAndSend(IPv6Datagram *datagram, InterfaceEntry *ie, const MACAddress& nextHopAddr, bool fromHL)
+void IPv6::fragmentAndSend(IPv6Datagram *datagram, const InterfaceEntry *ie, const MACAddress& nextHopAddr, bool fromHL)
 {
     // hop counter check
     if (datagram->getHopLimit() <= 0)
@@ -762,7 +787,7 @@ void IPv6::fragmentAndSend(IPv6Datagram *datagram, InterfaceEntry *ie, const MAC
     delete datagram;
 }
 
-void IPv6::sendDatagramToOutput(IPv6Datagram *datagram, InterfaceEntry *ie, const MACAddress& macAddr)
+void IPv6::sendDatagramToOutput(IPv6Datagram *datagram, const InterfaceEntry *destIE, const MACAddress& macAddr)
 {
     // if link layer uses MAC addresses (basically, not PPP), add control info
     if (!macAddr.isUnspecified())
@@ -774,7 +799,7 @@ void IPv6::sendDatagramToOutput(IPv6Datagram *datagram, InterfaceEntry *ie, cons
     }
 
     // send datagram to link layer
-    send(datagram, "queueOut", ie->getNetworkLayerGateIndex());
+    send(datagram, "queueOut", destIE->getNetworkLayerGateIndex());
 }
 
 bool IPv6::determineOutputInterface(const IPv6Address& destAddress, IPv6Address& nextHop,
@@ -885,3 +910,146 @@ bool IPv6::handleOperationStage(LifecycleOperation *operation, int stage, IDoneC
     throw cRuntimeError("Lifecycle operation support not implemented");
 }
 
+// NetFilter:
+void IPv6::registerHook(int priority, INetfilter::IHook* hook)
+{
+    Enter_Method("registerHook()");
+    hooks.insert(std::pair<int, INetfilter::IHook*>(priority, hook));
+}
+
+void IPv6::unregisterHook(int priority, INetfilter::IHook* hook)
+{
+    Enter_Method("unregisterHook()");
+    for (HookList::iterator iter = hooks.begin(); iter != hooks.end(); iter++) {
+        if ((iter->first == priority) && (iter->second == hook)) {
+            hooks.erase(iter);
+            return;
+        }
+    }
+}
+
+void IPv6::dropQueuedDatagram(const INetworkDatagram* datagram)
+{
+    Enter_Method("dropQueuedDatagram()");
+    for (DatagramQueueForHooks::iterator iter = queuedDatagramsForHooks.begin(); iter != queuedDatagramsForHooks.end(); iter++) {
+        if (iter->datagram == datagram) {
+            delete datagram;
+            queuedDatagramsForHooks.erase(iter);
+            return;
+        }
+    }
+}
+
+void IPv6::reinjectQueuedDatagram(const INetworkDatagram* datagram)
+{
+    Enter_Method("reinjectDatagram()");
+    for (DatagramQueueForHooks::iterator iter = queuedDatagramsForHooks.begin(); iter != queuedDatagramsForHooks.end(); iter++) {
+        if (iter->datagram == datagram) {
+            IPv6Datagram* datagram = iter->datagram;
+            switch (iter->hookType) {
+                case INetfilter::IHook::LOCALOUT:
+                    datagramLocalOut(datagram, iter->outIE, iter->nextHopAddr);
+                    break;
+                case INetfilter::IHook::PREROUTING:
+                    preroutingFinish(datagram, iter->inIE, iter->outIE, iter->nextHopAddr);
+                    break;
+                case INetfilter::IHook::POSTROUTING:
+                    //fragmentAndSend(datagram, iter->outIE, iter->nextHopAddr);
+                    throw cRuntimeError("Re-injection of datagram queued for POSTROUTING hook not implemented");
+                    break;
+                case INetfilter::IHook::LOCALIN:
+                    //reassembleAndDeliverFinish(datagram);
+                    throw cRuntimeError("Re-injection of datagram queued for LOCALIN hook not implemented");
+                    break;
+                case INetfilter::IHook::FORWARD:
+                    throw cRuntimeError("Re-injection of datagram queued for FORWARD hook not implemented");
+                    break;
+                default:
+                    throw cRuntimeError("Unknown hook ID: %d", (int)(iter->hookType));
+                    break;
+            }
+            queuedDatagramsForHooks.erase(iter);
+            return;
+        }
+    }
+}
+
+INetfilter::IHook::Result IPv6::datagramPreRoutingHook(INetworkDatagram* datagram, const InterfaceEntry* inIE, const InterfaceEntry*& outIE, Address& nextHopAddr)
+{
+    for (HookList::iterator iter = hooks.begin(); iter != hooks.end(); iter++) {
+        IHook::Result r = iter->second->datagramPreRoutingHook(datagram, inIE, outIE, nextHopAddr);
+        switch(r)
+        {
+            case INetfilter::IHook::ACCEPT: break;   // continue iteration
+            case INetfilter::IHook::DROP:   delete datagram; return r;
+            case INetfilter::IHook::QUEUE:  queuedDatagramsForHooks.push_back(QueuedDatagramForHook(dynamic_cast<IPv6Datagram *>(datagram), inIE, outIE, nextHopAddr.toIPv6(), INetfilter::IHook::PREROUTING)); return r;
+            case INetfilter::IHook::STOLEN: return r;
+            default: throw cRuntimeError("Unknown Hook::Result value: %d", (int)r);
+        }
+    }
+    return INetfilter::IHook::ACCEPT;
+}
+
+INetfilter::IHook::Result IPv6::datagramForwardHook(INetworkDatagram* datagram, const InterfaceEntry* inIE, const InterfaceEntry*& outIE, Address& nextHopAddr)
+{
+    for (HookList::iterator iter = hooks.begin(); iter != hooks.end(); iter++) {
+        IHook::Result r = iter->second->datagramForwardHook(datagram, inIE, outIE, nextHopAddr);
+        switch(r)
+        {
+            case INetfilter::IHook::ACCEPT: break;   // continue iteration
+            case INetfilter::IHook::DROP:   delete datagram; return r;
+            case INetfilter::IHook::QUEUE:  queuedDatagramsForHooks.push_back(QueuedDatagramForHook(dynamic_cast<IPv6Datagram *>(datagram), inIE, outIE, nextHopAddr.toIPv6(), INetfilter::IHook::FORWARD)); return r;
+            case INetfilter::IHook::STOLEN: return r;
+            default: throw cRuntimeError("Unknown Hook::Result value: %d", (int)r);
+        }
+    }
+    return INetfilter::IHook::ACCEPT;
+}
+
+INetfilter::IHook::Result IPv6::datagramPostRoutingHook(INetworkDatagram* datagram, const InterfaceEntry* inIE, const InterfaceEntry*& outIE, Address& nextHopAddr)
+{
+    for (HookList::iterator iter = hooks.begin(); iter != hooks.end(); iter++) {
+        IHook::Result r = iter->second->datagramPostRoutingHook(datagram, inIE, outIE, nextHopAddr);
+        switch(r)
+        {
+            case INetfilter::IHook::ACCEPT: break;   // continue iteration
+            case INetfilter::IHook::DROP:   delete datagram; return r;
+            case INetfilter::IHook::QUEUE:  queuedDatagramsForHooks.push_back(QueuedDatagramForHook(dynamic_cast<IPv6Datagram *>(datagram), inIE, outIE, nextHopAddr.toIPv6(), INetfilter::IHook::POSTROUTING)); return r;
+            case INetfilter::IHook::STOLEN: return r;
+            default: throw cRuntimeError("Unknown Hook::Result value: %d", (int)r);
+        }
+    }
+    return INetfilter::IHook::ACCEPT;
+}
+
+INetfilter::IHook::Result IPv6::datagramLocalInHook(INetworkDatagram* datagram, const InterfaceEntry* inIE)
+{
+    for (HookList::iterator iter = hooks.begin(); iter != hooks.end(); iter++) {
+        IHook::Result r = iter->second->datagramLocalInHook(datagram, inIE);
+        switch(r)
+        {
+            case INetfilter::IHook::ACCEPT: break;   // continue iteration
+            case INetfilter::IHook::DROP:   delete datagram; return r;
+            case INetfilter::IHook::QUEUE:  queuedDatagramsForHooks.push_back(QueuedDatagramForHook(dynamic_cast<IPv6Datagram *>(datagram), inIE, NULL, IPv6Address::UNSPECIFIED_ADDRESS, INetfilter::IHook::LOCALIN)); return r;
+            case INetfilter::IHook::STOLEN: return r;
+            default: throw cRuntimeError("Unknown Hook::Result value: %d", (int)r);
+        }
+    }
+    return INetfilter::IHook::ACCEPT;
+}
+
+INetfilter::IHook::Result IPv6::datagramLocalOutHook(INetworkDatagram* datagram, const InterfaceEntry*& outIE, Address& nextHopAddr)
+{
+    for (HookList::iterator iter = hooks.begin(); iter != hooks.end(); iter++) {
+        IHook::Result r = iter->second->datagramLocalOutHook(datagram, outIE, nextHopAddr);
+        switch(r)
+        {
+            case INetfilter::IHook::ACCEPT: break;   // continue iteration
+            case INetfilter::IHook::DROP:   delete datagram; return r;
+            case INetfilter::IHook::QUEUE:  queuedDatagramsForHooks.push_back(QueuedDatagramForHook(dynamic_cast<IPv6Datagram *>(datagram), NULL, outIE, nextHopAddr.toIPv6(), INetfilter::IHook::LOCALOUT)); return r;
+            case INetfilter::IHook::STOLEN: return r;
+            default: throw cRuntimeError("Unknown Hook::Result value: %d", (int)r);
+        }
+    }
+    return INetfilter::IHook::ACCEPT;
+}
