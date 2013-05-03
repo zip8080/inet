@@ -13,7 +13,7 @@ ENDREV=topic/failover
 STARTREV=topic/tcp
 
 # the command to run on each commit
-COMMAND="./fingerprints -x NSC"
+COMMAND="./fingerprints"
 
 # the label (actually, branch) names added to commits where command output changes
 LABEL=error
@@ -25,7 +25,19 @@ INET_ROOT=../..
 commits=`git rev-list --reverse $STARTREV..$ENDREV || exit 1`
 
 # make clean
-(cd .. && make cleanall)
+(cd $INET_ROOT && make cleanall)
+
+rm .buildlog-*
+rm *.csv.UPDATED
+rm *.csv.diff-*
+
+#clean old branches
+i=0
+for commit in $commits; do
+    (( i += 1 ))
+    git branch -d "$LABEL-$i" 2>/dev/null
+    git branch -d "$BLABEL-$i" 2>/dev/null
+done
 
 i=0
 for commit in $commits; do
@@ -37,26 +49,29 @@ for commit in $commits; do
     git log -n 1 --pretty=oneline $commit | cat || exit 1
     git checkout -q $commit || exit 1
 
-    git branch -d "$LABEL-$i" 2>/dev/null
-    git branch -d "$BLABEL-$i" 2>/dev/null
-
     echo "Building..."
-    (cd $INET_ROOT && make makefiles)
-    if (cd $INET_ROOT && make -j2) > .buildlog 2>&1; then
+    (cd $INET_ROOT && make -f makemakefiles)
+    if (cd $INET_ROOT && make -j8) > .buildlog 2>&1; then
         : # build OK
     else
         echo "BUILD ERROR! Tagging with '$BLABEL-$i'"
         git branch -f "$BLABEL-$i"
+        cp .buildlog ".buildlog-$i"
         continue
     fi
 
     echo "Running test script..."
 
 
-    if $COMMAND; then
+    if $COMMAND | tee "fp_out-$i.out"; then
+        rm "fp_out-$i.out"
         echo "OK"
     else
         echo "ERROR! Tagging with '$LABEL-$i'"
         git branch -f "$LABEL-$i"
+        diff -u examples.csv examples.csv.UPDATED >"examples.csv.diff-$i"
+        diff -u manet.csv manet.csv.UPDATED >"manet.csv.diff-$i"
+        rm *.csv.UPDATED
     fi
 done
+
