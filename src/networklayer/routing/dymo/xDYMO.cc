@@ -26,10 +26,6 @@
 #include "INetworkProtocolControlInfo.h"
 #include "UDPControlInfo.h"
 
-// KLUDGE: kill this when they implements IRoutingTable
-#include "IPv4RoutingTable.h"
-#include "IPv6RoutingTable.h"
-
 DYMO_NAMESPACE_BEGIN
 
 Define_Module(DYMO::xDYMO);
@@ -89,11 +85,7 @@ void xDYMO::initialize(int stage)
         // context
         notificationBoard = NotificationBoardAccess().get(this);
         interfaceTable = InterfaceTableAccess().get(this);
-        // KLUDGE: simplify this when IPv4RoutingTable implements IRoutingTable
-        cModule * module = findModuleWhereverInNode(routingTableModule, this);
-        routingTable = dynamic_cast<IRoutingTable *>(module);
-        if (!routingTable && dynamic_cast<IPv4RoutingTable *>(module)) routingTable = dynamic_cast<IPv4RoutingTable *>(module)->asGeneric();
-        if (!routingTable && dynamic_cast<IPv6RoutingTable *>(module)) routingTable = dynamic_cast<IPv6RoutingTable *>(module)->asGeneric();
+        routingTable = dynamic_cast<IRoutingTable *>(findModuleWhereverInNode(routingTableModule, this));
         networkProtocol = check_and_cast<INetfilter *>(findModuleWhereverInNode(networkProtocolModule, this));
         // internal
         expungeTimer = new cMessage("ExpungeTimer");
@@ -747,7 +739,7 @@ void xDYMO::sendRREP(RREP * rrep, IRoute * route)
 {
     const Address & target = rrep->getTargetNode().getAddress();
     const Address & originator = rrep->getOriginatorNode().getAddress();
-    const Address & nextHop = route->getNextHop();
+    const Address & nextHop = route->getNextHopAsGeneric();
     rrep->setBitLength(computeRREPBitLength(rrep));
     DYMO_EV << "Sending unicast RREP: originator = " << originator << ", target = " << target << ", nextHop = " << nextHop << endl;
     sendDYMOPacket(rrep, route->getInterface(), nextHop, 0);
@@ -886,12 +878,12 @@ void xDYMO::sendRERRForBrokenLink(const InterfaceEntry * interfaceEntry, const A
         if (route->getSource() == this) {
             DYMORouteData * routeData = check_and_cast<DYMORouteData *>(route->getProtocolData());
             DYMORouteState routeState = getRouteState(routeData);
-            if (routeState != BROKEN && route->getInterface() == interfaceEntry && route->getNextHop() == nextHop)
+            if (routeState != BROKEN && route->getInterface() == interfaceEntry && route->getNextHopAsGeneric() == nextHop)
             {
                 DYMO_EV << "Marking route as broken: " << route << endl;
                 route->setEnabled(false);
                 routeData->setBroken(true);
-                unreachableAddresses.push_back(route->getDestination());
+                unreachableAddresses.push_back(route->getDestinationAsGeneric());
             }
         }
     }
@@ -932,8 +924,8 @@ void xDYMO::processRERR(RERR * rerrIncoming)
                     // 4. The UnreachableNode.SeqNum is unknown, OR Route.SeqNum <=
                     //    UnreachableNode.SeqNum (using signed 16-bit arithmetic).
                     if (unreachableAddress.isUnicast() &&
-                        unreachableAddress == route->getDestination() &&
-                        route->getNextHop() == networkProtocolControlInfo->getSourceAddress() &&
+                        unreachableAddress == route->getDestinationAsGeneric() &&
+                        route->getNextHopAsGeneric() == networkProtocolControlInfo->getSourceAddress() &&
                         route->getInterface()->getInterfaceId() == networkProtocolControlInfo->getInterfaceId() &&
                         routeData->getSequenceNumber() <= addressBlock.getSequenceNumber())
                     {
@@ -1043,7 +1035,7 @@ void xDYMO::updateRoutes(RteMsg * rteMsg, AddressBlock & addressBlock)
             IRoute * routeCandidate = routingTable->getRoute(i);
             if (routeCandidate->getSource() == this) {
                 DYMORouteData *routeData = check_and_cast<DYMORouteData *>(routeCandidate->getProtocolData());
-                if (routeCandidate->getDestination() == address && routeData->getMetricType() == addressBlock.getMetricType()) {
+                if (routeCandidate->getDestinationAsGeneric() == address && routeData->getMetricType() == addressBlock.getMetricType()) {
                     route = routeCandidate;
                     break;
                 }
@@ -1254,7 +1246,7 @@ std::string xDYMO::getHostName()
 
 Address xDYMO::getSelfAddress()
 {
-    return routingTable->getRouterId();
+    return routingTable->getRouterIdAsGeneric();
 }
 
 bool xDYMO::isClientAddress(const Address & address)
@@ -1327,7 +1319,7 @@ INetfilter::IHook::Result xDYMO::ensureRouteForDatagram(INetworkDatagram * datag
         IRoute * route = routingTable->findBestMatchingRoute(destination);
         DYMORouteData * routeData = route ? dynamic_cast<DYMORouteData *>(route->getProtocolData()) : NULL;
         bool broken = routeData && routeData->getBroken();
-        if (route && !route->getNextHop().isUnspecified() && !broken) {
+        if (route && !route->getNextHopAsGeneric().isUnspecified() && !broken) {
             DYMO_EV << "Route found: source = " << source << ", destination = " << destination << ", route: " << route << endl;
             if (routeData)
                 // 8.1. Handling Route Lifetimes During Packet Forwarding
@@ -1368,7 +1360,7 @@ void xDYMO::receiveChangeNotification(int category, const cObject *details)
                 const Address & destination = datagram->getDestinationAddress();
                 IRoute * route = routingTable->findBestMatchingRoute(destination);
                 if (route) {
-                    const Address & nextHop = route->getNextHop();
+                    const Address & nextHop = route->getNextHopAsGeneric();
                     sendRERRForBrokenLink(route->getInterface(), nextHop);
                 }
             }

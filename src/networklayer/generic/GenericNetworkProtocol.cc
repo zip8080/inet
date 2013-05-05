@@ -198,7 +198,7 @@ void GenericNetworkProtocol::routePacket(GenericDatagram *datagram, const Interf
 
         // extract interface and next-hop address from routing table entry
         destIE = re->getInterface();
-        nextHop = re->getNextHop();
+        nextHop = re->getNextHopAsGeneric();
     }
 
     // set datagram source address if not yet set

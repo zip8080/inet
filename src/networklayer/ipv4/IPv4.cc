@@ -196,7 +196,7 @@ void IPv4::preroutingFinish(IPv4Datagram *datagram, const InterfaceEntry *fromIE
             reassembleAndDeliver(datagram->dup());
 
         // don't forward if IP forwarding is off, or if dest address is link-scope
-        if (!rt->isIPForwardingEnabled() || destAddr.isLinkLocalMulticast())
+        if (!rt->isForwardingEnabled() || destAddr.isLinkLocalMulticast())
             delete datagram;
         else if (datagram->getTimeToLive() == 0)
         {
@@ -219,13 +219,13 @@ void IPv4::preroutingFinish(IPv4Datagram *datagram, const InterfaceEntry *fromIE
         else if (destAddr.isLimitedBroadcastAddress() || (broadcastIE=rt->findInterfaceByLocalBroadcastAddress(destAddr)))
         {
             // broadcast datagram on the target subnet if we are a router
-            if (broadcastIE && fromIE != broadcastIE && rt->isIPForwardingEnabled())
+            if (broadcastIE && fromIE != broadcastIE && rt->isForwardingEnabled())
                 fragmentPostRouting(datagram->dup(), broadcastIE, IPv4Address::ALLONES_ADDRESS);
 
             EV << "Broadcast received\n";
             reassembleAndDeliver(datagram);
         }
-        else if (!rt->isIPForwardingEnabled())
+        else if (!rt->isForwardingEnabled())
         {
             EV << "forwarding off, dropping packet\n";
             numDropped++;

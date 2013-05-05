@@ -26,7 +26,6 @@
 /**
  * A C++ interface to abstract the functionality of a routing table, regardless of address type.
  */
-//TODO the "Generic" can be dropped from the name, once IPv4RoutingTable[6] is renamed to IPv[4|6]IPv4RoutingTable
 class INET_API IRoutingTable
 {
     public:
@@ -47,7 +46,7 @@ class INET_API IRoutingTable
         /**
          * Returns routerId.
          */
-        virtual Address getRouterId() const = 0;
+        virtual Address getRouterIdAsGeneric() const = 0;
 
         /**
          * Checks if the address is a local one, i.e. one of the host's.

@@ -36,7 +36,7 @@ void ManetNetfilterHook::initHook(cModule* _module)
     module = _module;
     ipLayer = check_and_cast<IPv4*>(findModuleWhereverInNode("ip", module));
     ift = InterfaceTableAccess().get();
-    rt = IPv4RoutingTableAccess().get()->asGeneric();
+    rt = IPv4RoutingTableAccess().get();
     cProperties *props = module->getProperties();
     isReactive = props && props->getAsBool("reactive");
 

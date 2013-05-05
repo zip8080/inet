@@ -21,9 +21,6 @@
 #include "InterfaceTableAccess.h"
 #include "IPProtocolId_m.h"
 #include "IPSocket.h"
-// KLUDGE:
-#include "IPv4RoutingTable.h"
-#include "IPv6RoutingTable.h"
 
 Define_Module(GPSR);
 
@@ -74,11 +71,7 @@ void GPSR::initialize(int stage)
         notificationBoard = NotificationBoardAccess().get(this);
         interfaceTable = InterfaceTableAccess().get(this);
         mobility = check_and_cast<IMobility *>(findModuleWhereverInNode("mobility", this));
-        // KLUDGE: simplify this when IPv4RoutingTable implements IRoutingTable
-        cModule * module = findModuleWhereverInNode(routingTableModule, this);
-        routingTable = dynamic_cast<IRoutingTable *>(module);
-        if (!routingTable && dynamic_cast<IPv4RoutingTable *>(module)) routingTable = dynamic_cast<IPv4RoutingTable *>(module)->asGeneric();
-        if (!routingTable && dynamic_cast<IPv6RoutingTable *>(module)) routingTable = dynamic_cast<IPv6RoutingTable *>(module)->asGeneric();
+        routingTable = dynamic_cast<IRoutingTable *>(findModuleWhereverInNode(routingTableModule, this));
         networkProtocol = check_and_cast<INetfilter *>(findModuleWhereverInNode(networkProtocolModule, this));
         // internal
         beaconTimer = new cMessage("BeaconTimer");
@@ -344,7 +337,7 @@ std::string GPSR::getHostName()
 
 Address GPSR::getSelfAddress()
 {
-    return routingTable->getRouterId();
+    return routingTable->getRouterIdAsGeneric();
 }
 
 Address GPSR::getSenderNeighborAddress(INetworkDatagram * datagram)

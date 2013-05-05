@@ -209,8 +209,8 @@ bool GenericRoutingTable::routeLessThan(const GenericRoute *a, const GenericRout
     if (a->getPrefixLength() != b->getPrefixLength())
         return a->getPrefixLength() > b->getPrefixLength();
 
-    if (a->getDestination() != b->getDestination())
-        return a->getDestination() < b->getDestination();
+    if (a->getDestinationAsGeneric() != b->getDestinationAsGeneric())
+        return a->getDestinationAsGeneric() < b->getDestinationAsGeneric();
 
     return a->getMetric() < b->getMetric();
 }
@@ -225,7 +225,7 @@ bool GenericRoutingTable::isMulticastForwardingEnabled() const
     return multicastForwardingEnabled;
 }
 
-Address GenericRoutingTable::getRouterId() const
+Address GenericRoutingTable::getRouterIdAsGeneric() const
 {
     return routerId;
 }
@@ -269,7 +269,7 @@ GenericRoute* GenericRoutingTable::findBestMatchingRoute(const Address& dest) co
         GenericRoute *e = *i;
         if (e->isEnabled() && !e->isExpired())
         {
-            if (dest.matches(e->getDestination(), e->getPrefixLength()))
+            if (dest.matches(e->getDestinationAsGeneric(), e->getPrefixLength()))
             {
                 bestRoute = const_cast<GenericRoute *>(e);
                 break;
@@ -292,7 +292,7 @@ Address GenericRoutingTable::getNextHopForDestination(const Address& dest) const
     //TODO Enter_Method("getGatewayForDestAddr(%u.%u.%u.%u)", dest.getDByte(0), dest.getDByte(1), dest.getDByte(2), dest.getDByte(3)); // note: str().c_str() too slow here
 
     const IRoute *e = findBestMatchingRoute(dest);
-    return e ? e->getNextHop() : Address();
+    return e ? e->getNextHopAsGeneric() : Address();
 }
 
 bool GenericRoutingTable::isLocalMulticastAddress(const Address& dest) const
@@ -360,7 +360,7 @@ IRoute* GenericRoutingTable::removeRoute(IRoute* route)
     {
         routes.erase(i);
         updateDisplayString();
-        ASSERT(entry->getRoutingTable() == this); // still filled in, for the listeners' benefit
+        ASSERT(entry->getRoutingTableAsGeneric() == this); // still filled in, for the listeners' benefit
         nb->fireChangeNotification(NF_ROUTE_DELETED, entry);
         entry->setRoutingTable(NULL);
         return entry;

@@ -95,7 +95,7 @@ class INET_API GenericRoutingTable : public cSimpleModule, public IRoutingTable,
         /**
          * Returns routerId.
          */
-        virtual Address getRouterId() const;
+        virtual Address getRouterIdAsGeneric() const;
 
         /**
          * Checks if the address is a local one, i.e. one of the host's.

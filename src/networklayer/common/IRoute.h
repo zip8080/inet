@@ -30,8 +30,7 @@ class IRoutingTable;
  *
  * @see IRoutingTable, IPv4Route, IPv6Route
  */
-//TODO the "Generic" can be dropped from the name, once IRoutingTable is renamed to IPv4RoutingTable
-class INET_API IRoute : public cObject
+class INET_API IRoute
 {
     public:
 //TODO maybe:
@@ -45,7 +44,7 @@ class INET_API IRoute : public cObject
         virtual ~IRoute() {}
 
         /** The routing table in which this route is inserted, or NULL. */
-        virtual IRoutingTable *getRoutingTable() const = 0;
+        virtual IRoutingTable *getRoutingTableAsGeneric() const = 0;
 
         virtual void setEnabled(bool enabled) = 0;
         virtual void setDestination(const Address& dest) = 0;
@@ -62,13 +61,13 @@ class INET_API IRoute : public cObject
         virtual bool isExpired() const = 0;
 
         /** Destination address prefix to match */
-        virtual Address getDestination() const = 0;
+        virtual Address getDestinationAsGeneric() const = 0;
 
         /** Represents length of prefix to match */
         virtual int getPrefixLength() const = 0;
 
         /** Next hop address */
-        virtual Address getNextHop() const = 0;
+        virtual Address getNextHopAsGeneric() const = 0;
 
         /** Next hop interface */
         virtual InterfaceEntry *getInterface() const = 0;
@@ -86,9 +85,9 @@ class INET_API IRoute : public cObject
 // TODO: move into info()?
 inline std::ostream& operator<<(std::ostream& out, const IRoute * route)
 {
-    out << "destination = " << route->getDestination();
+    out << "destination = " << route->getDestinationAsGeneric();
     out << ", prefixLength = " << route->getPrefixLength();
-    out << ", nextHop = " << route->getNextHop();
+    out << ", nextHop = " << route->getNextHopAsGeneric();
     out << ", metric = " << route->getMetric();
     if (route->getInterface())
         out << ", interface = " << route->getInterface()->getName();
@@ -115,9 +114,7 @@ inline std::ostream& operator<<(std::ostream& out, const IRoute * route)
  *
  * @see IRoutingTable, IPv4MulticastRoute, IPv6MulticastRoute
  */
-//TODO the "Generic" can be dropped from the name, once IRoutingTable is renamed to IPv4RoutingTable
-//TODO decide whether IPv4Route should implement this or rather have a wrapper?
-class INET_API IMulticastRoute : public cObject
+class INET_API IMulticastRoute
 {
   public:
 //TODO maybe:
@@ -127,7 +124,7 @@ class INET_API IMulticastRoute : public cObject
         virtual ~IMulticastRoute() {}
 
         /** The routing table in which this route is inserted, or NULL. */
-        virtual IRoutingTable *getRoutingTable() const = 0;
+        virtual IRoutingTable *getRoutingTableAsGeneric() const = 0;
 
         virtual void setEnabled(bool enabled) = 0;
         virtual void setOrigin(const Address& origin) = 0;
@@ -146,13 +143,13 @@ class INET_API IMulticastRoute : public cObject
         virtual bool isExpired() const = 0;
 
         /** Source address prefix to match */
-        virtual Address getOrigin() const = 0;
+        virtual Address getOriginAsGeneric() const = 0;
 
         /** Prefix length to match */
         virtual int getPrefixLength() const = 0;
 
         /** Multicast group address */
-        virtual Address getMulticastGroup() const = 0;
+        virtual Address getMulticastGroupAsGeneric() const = 0;
 
         /** Parent interface */
         virtual InterfaceEntry *getParent() const = 0;

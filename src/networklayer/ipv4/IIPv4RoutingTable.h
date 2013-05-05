@@ -24,8 +24,8 @@
 
 #include "IPv4Address.h"
 #include "IPv4Route.h"  // not strictly required, but most clients will need it anyway
+#include "IRoutingTable.h"
 
-class IRoutingTable;
 
 /**
  * A C++ interface to abstract the functionality of IIPv4RoutingTable.
@@ -35,7 +35,7 @@ class IRoutingTable;
  *
  * @see IIPv4RoutingTable, IPv4Route
  */
-class INET_API IIPv4RoutingTable
+class INET_API IIPv4RoutingTable : public IRoutingTable
 {
   public:
     virtual ~IIPv4RoutingTable() {};
@@ -55,11 +55,6 @@ class INET_API IIPv4RoutingTable
      */
     virtual cModule *getHostModule() = 0;
 
-    /**
-     * TODO
-     */
-    virtual IRoutingTable *asGeneric() = 0;
-
     /** @name Interfaces */
     //@{
     virtual void configureInterfaceForIPv4(InterfaceEntry *ie) = 0;
@@ -73,17 +68,17 @@ class INET_API IIPv4RoutingTable
     /**
      * IPv4 forwarding on/off
      */
-    virtual bool isIPForwardingEnabled() = 0;
+    virtual bool isForwardingEnabled() const = 0;
 
     /**
      * IPv4 multicast forwarding on/off
      */
-    virtual bool isMulticastForwardingEnabled() = 0;
+    virtual bool isMulticastForwardingEnabled() const = 0;
 
     /**
      * Returns routerId.
      */
-    virtual IPv4Address getRouterId() = 0;
+    virtual IPv4Address getRouterId() const = 0;
 
     /**
      * Sets routerId.

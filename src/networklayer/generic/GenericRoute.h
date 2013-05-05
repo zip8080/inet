@@ -29,7 +29,7 @@ class IRoutingTable;
 /**
  * TODO
  */
-class INET_API GenericRoute : public IRoute
+class INET_API GenericRoute : public cObject, public IRoute
 {
     private:
         IRoutingTable *owner;
@@ -62,7 +62,7 @@ class INET_API GenericRoute : public IRoute
         virtual void setProtocolData(cObject *protocolData) {this->protocolData = protocolData;}
 
         /** The routing table in which this route is inserted, or NULL. */
-        virtual IRoutingTable *getRoutingTable() const {return owner;}
+        virtual IRoutingTable *getRoutingTableAsGeneric() const {return owner;}
 
         /** Disabled entries are ignored by routing until the became enabled again. */
         virtual bool isEnabled() const {return enabled;}
@@ -71,13 +71,13 @@ class INET_API GenericRoute : public IRoute
         virtual bool isExpired() const {return false;}
 
         /** Destination address prefix to match */
-        virtual Address getDestination() const {return destination;}
+        virtual Address getDestinationAsGeneric() const {return destination;}
 
         /** Represents length of prefix to match */
         virtual int getPrefixLength() const {return prefixLength;}
 
         /** Next hop address */
-        virtual Address getNextHop() const {return nextHop;}
+        virtual Address getNextHopAsGeneric() const {return nextHop;}
 
         /** Next hop interface */
         virtual InterfaceEntry *getInterface() const {return interface;}
@@ -131,7 +131,7 @@ class INET_API GenericMulticastRoute : public cObject, public IGenericMulticastR
         virtual void setMetric(int metric) {this->metric = metric;}
 
         /** The routing table in which this route is inserted, or NULL. */
-        virtual IRoutingTable *getRoutingTable() {return owner;}
+        virtual IRoutingTable *getRoutingTableAsGeneric() {return owner;}
 
         /** Disabled entries are ignored by routing until the became enabled again. */
         virtual bool isEnabled() const {return enabled;}

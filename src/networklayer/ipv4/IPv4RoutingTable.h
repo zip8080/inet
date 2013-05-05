@@ -173,11 +173,6 @@ class INET_API IPv4RoutingTable: public cSimpleModule, public IIPv4RoutingTable,
      */
     virtual cModule *getHostModule();
 
-    /**
-     * TODO
-     */
-    virtual IRoutingTable *asGeneric();
-
     /** @name Interfaces */
     //@{
     virtual void configureInterfaceForIPv4(InterfaceEntry *ie);
@@ -191,17 +186,17 @@ class INET_API IPv4RoutingTable: public cSimpleModule, public IIPv4RoutingTable,
     /**
      * IPv4 forwarding on/off
      */
-    virtual bool isIPForwardingEnabled()  {return IPForward;}
+    virtual bool isForwardingEnabled() const  {return IPForward;}
 
     /**
      * IPv4 multicast forwarding on/off
      */
-    virtual bool isMulticastForwardingEnabled() { return multicastForward; }
+    virtual bool isMulticastForwardingEnabled() const  { return multicastForward; }
 
     /**
      * Returns routerId.
      */
-    virtual IPv4Address getRouterId()  {return routerId;}
+    virtual IPv4Address getRouterId() const  {return routerId;}
 
     /**
      * Sets routerId.
@@ -368,7 +363,27 @@ class INET_API IPv4RoutingTable: public cSimpleModule, public IIPv4RoutingTable,
      * ILifecycle method
      */
     virtual bool handleOperationStage(LifecycleOperation *operation, int stage, IDoneCallback *doneCallback);
+
+    virtual Address getRouterIdAsGeneric() const {return getRouterId();}
+    virtual bool isLocalAddress(const Address& dest) const {return isLocalAddress(dest.toIPv4());}
+    virtual InterfaceEntry *getInterfaceByAddress(const Address& address) const {return getInterfaceByAddress(address.toIPv4());}
+    virtual IRoute *findBestMatchingRoute(const Address& dest) const {return findBestMatchingRoute(dest.toIPv4());}
+    virtual InterfaceEntry *getOutputInterfaceForDestination(const Address& dest) const {return getInterfaceForDestAddr(dest.toIPv4());} //XXX inconsistent names
+    virtual Address getNextHopForDestination(const Address& dest) const {return getGatewayForDestAddr(dest.toIPv4());}  //XXX inconsistent names
+    virtual bool isLocalMulticastAddress(const Address& dest) const {return isLocalMulticastAddress(dest.toIPv4());}
+    virtual IMulticastRoute *findBestMatchingMulticastRoute(const Address &origin, const Address& group) const {return const_cast<IPv4MulticastRoute*>(findBestMatchingMulticastRoute(origin.toIPv4(), group.toIPv4()));} //XXX remove 'const' from IPv4 method?
+    virtual void purgeExpiredRoutes() {purge();}  //XXX inconsistent names
+    virtual IRoute *createRoute() { return new IPv4Route(); }
+
+
+  private:
+    virtual void addRoute(IRoute *entry) { addRoute(check_and_cast<IPv4Route *>(entry)); }
+    virtual IRoute *removeRoute(IRoute *entry) { return removeRoute(check_and_cast<IPv4Route *>(entry)); }
+    virtual bool deleteRoute(IRoute *entry) { return deleteRoute(check_and_cast<IPv4Route *>(entry)); }
+
+    virtual void addMulticastRoute(IMulticastRoute *entry) { addMulticastRoute(check_and_cast<IPv4MulticastRoute *>(entry)); }
+    virtual IMulticastRoute *removeMulticastRoute(IMulticastRoute *entry) { return removeMulticastRoute(check_and_cast<IPv4MulticastRoute *>(entry)); }
+    virtual bool deleteMulticastRoute(IMulticastRoute *entry) { return deleteMulticastRoute(check_and_cast<IPv4MulticastRoute *>(entry)); }
 };
 
 #endif
-

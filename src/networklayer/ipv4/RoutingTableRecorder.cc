@@ -123,14 +123,14 @@ void RoutingTableRecorder::recordSnapshot()
             // TODO: find out host correctly
             cModule *host = module->getParentModule();
             for (int i = 0; i < rt->getNumRoutes(); i++)
-                recordRoute(host, rt->getRoute(i)->asGeneric(), -1);
+                recordRoute(host, rt->getRoute(i), -1);
         }
         IPv6RoutingTable *rt6 = dynamic_cast<IPv6RoutingTable *>(module);
         if (rt6) {
             // TODO: find out host correctly
             cModule *host = module->getParentModule();
             for (int i = 0; i < rt6->getNumRoutes(); i++)
-                recordRoute(host, rt6->getRoute(i)->asGeneric(), -1);
+                recordRoute(host, rt6->getRoute(i), -1);
         }
         GenericRoutingTable *generic = dynamic_cast<GenericRoutingTable *>(module);
         if (generic) {
@@ -176,7 +176,7 @@ void RoutingTableRecorder::recordRoute(cModule *host,  IRoute *route, int catego
     cEnvir* envir = simulation.getEnvir();
     // moduleId, dest, dest netmask, nexthop
     std::stringstream content;
-    content << host->getId() << " " << route->getDestination().str() << " " << route->getPrefixLength() << " " << route->getNextHop().str();
+    content << host->getId() << " " << route->getDestinationAsGeneric().str() << " " << route->getPrefixLength() << " " << route->getNextHopAsGeneric().str();
     switch (category) {
         case NF_ROUTE_ADDED:
             envir->customCreatedEntry("RT", routeKey, content.str().c_str());
