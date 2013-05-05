@@ -40,8 +40,8 @@ simple GPSR like IGPSR
         @display("i=block/routing");
 
         // context parameters
-        string routingTableModuleName = default("routingTable");
-        string networkProtocolModuleName = default("ip");
+        string routingTableModule = default("routingTable");
+        string networkProtocolModule = default("ip");
 
         // gpsr parameters
         int planarizationMode @enum(0,1) = default(0); // 0 for GG, 1 for RNG
@@ -62,12 +62,12 @@ module MultiGPSR like IGPSR
         bool enableIPv4 = default(true);
         bool enableIPv6 = default(true);
         bool enableGeneric = default(true);
-        ipv4GPSR.routingTableModuleName = default("ipv4RoutingTable");
-        ipv4GPSR.networkProtocolModuleName = default("ip");
-        ipv6GPSR.routingTableModuleName = default("ipv6RoutingTable");
-        ipv6GPSR.networkProtocolModuleName = default("ipv6");
-        genericGPSR.routingTableModuleName = default("genericRoutingTable");
-        genericGPSR.networkProtocolModuleName = default("gnp");
+        ipv4GPSR.routingTableModule = default("ipv4RoutingTable");
+        ipv4GPSR.networkProtocolModule = default("ip");
+        ipv6GPSR.routingTableModule = default("ipv6RoutingTable");
+        ipv6GPSR.networkProtocolModule = default("ipv6");
+        genericGPSR.routingTableModule = default("genericRoutingTable");
+        genericGPSR.networkProtocolModule = default("gnp");
 
     gates:
         input ipIn;

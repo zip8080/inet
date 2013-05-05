@@ -41,8 +41,8 @@ class INET_API GPSR : public cSimpleModule, public INotifiable, public INetfilte
 {
     private:
         // context parameters
-        const char * routingTableModuleName; // TODO: delete when necessary functions are moved to interface table
-        const char * networkProtocolModuleName;
+        const char * routingTableModule; // TODO: delete when necessary functions are moved to interface table
+        const char * networkProtocolModule;
 
         // gpsr parameters
         GPSRPlanarizationMode planarizationMode;

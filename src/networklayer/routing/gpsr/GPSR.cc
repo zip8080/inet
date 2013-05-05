@@ -62,8 +62,8 @@ void GPSR::initialize(int stage)
 {
     if (stage == 0) {
         // context parameters
-        routingTableModuleName = par("routingTableModuleName");
-        networkProtocolModuleName = par("networkProtocolModuleName");
+        routingTableModule = par("routingTableModule");
+        networkProtocolModule = par("networkProtocolModule");
         // gpsr parameters
         planarizationMode = (GPSRPlanarizationMode)(int)par("planarizationMode");
         interfaces = par("interfaces");
@@ -75,11 +75,11 @@ void GPSR::initialize(int stage)
         interfaceTable = InterfaceTableAccess().get(this);
         mobility = check_and_cast<IMobility *>(findModuleWhereverInNode("mobility", this));
         // KLUDGE: simplify this when IPv4RoutingTable implements IRoutingTable
-        cModule * module = findModuleWhereverInNode(routingTableModuleName, this);
+        cModule * module = findModuleWhereverInNode(routingTableModule, this);
         routingTable = dynamic_cast<IRoutingTable *>(module);
         if (!routingTable && dynamic_cast<IPv4RoutingTable *>(module)) routingTable = dynamic_cast<IPv4RoutingTable *>(module)->asGeneric();
         if (!routingTable && dynamic_cast<IPv6RoutingTable *>(module)) routingTable = dynamic_cast<IPv6RoutingTable *>(module)->asGeneric();
-        networkProtocol = check_and_cast<INetfilter *>(findModuleWhereverInNode(networkProtocolModuleName, this));
+        networkProtocol = check_and_cast<INetfilter *>(findModuleWhereverInNode(networkProtocolModule, this));
         // internal
         beaconTimer = new cMessage("BeaconTimer");
         purgeNeighborsTimer = new cMessage("PurgeNeighborsTimer");

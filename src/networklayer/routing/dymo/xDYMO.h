@@ -54,8 +54,8 @@ class INET_API xDYMO : public cSimpleModule, public INotifiable, public INetfilt
 {
   private:
     // context parameters
-    const char * routingTableModuleName;
-    const char * networkProtocolModuleName;
+    const char * routingTableModule;
+    const char * networkProtocolModule;
 
     // DYMO parameters from RFC
     const char * clientAddresses;

@@ -45,8 +45,8 @@ simple xDYMO like IDYMO
         @display("i=block/routing");
 
         // context parameters
-        string routingTableModuleName = default("routingTable");
-        string networkProtocolModuleName = default("ip");
+        string routingTableModule = default("routingTable");
+        string networkProtocolModule = default("ip");
 
         // 1. DYMO parameter group
         string clientAddresses = default("10.10.0.0/24 10.20.0.0"); // CLIENT_ADDRESSES
@@ -93,12 +93,12 @@ module MultiDYMO like IDYMO
         bool enableIPv4 = default(true);
         bool enableIPv6 = default(true);
         bool enableGeneric = default(true);
-        ipv4DYMO.routingTableModuleName = default("ipv4RoutingTable");
-        ipv4DYMO.networkProtocolModuleName = default("ip");
-        ipv6DYMO.routingTableModuleName = default("ipv6RoutingTable");
-        ipv6DYMO.networkProtocolModuleName = default("ipv6");
-        genericDYMO.routingTableModuleName = default("genericRoutingTable");
-        genericDYMO.networkProtocolModuleName = default("gnp");
+        ipv4DYMO.routingTableModule = default("ipv4RoutingTable");
+        ipv4DYMO.networkProtocolModule = default("ip");
+        ipv6DYMO.routingTableModule = default("ipv6RoutingTable");
+        ipv6DYMO.networkProtocolModule = default("ipv6");
+        genericDYMO.routingTableModule = default("genericRoutingTable");
+        genericDYMO.networkProtocolModule = default("gnp");
 
     gates:
         input ipIn;

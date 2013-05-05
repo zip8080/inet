@@ -65,8 +65,8 @@ void xDYMO::initialize(int stage)
 {
     if (stage == 0) {
         // context parameters
-        routingTableModuleName = par("routingTableModuleName");
-        networkProtocolModuleName = par("networkProtocolModuleName");
+        routingTableModule = par("routingTableModule");
+        networkProtocolModule = par("networkProtocolModule");
         // DYMO parameters from RFC
         clientAddresses = par("clientAddresses");
         useMulticastRREP = par("useMulticastRREP");
@@ -90,11 +90,11 @@ void xDYMO::initialize(int stage)
         notificationBoard = NotificationBoardAccess().get(this);
         interfaceTable = InterfaceTableAccess().get(this);
         // KLUDGE: simplify this when IPv4RoutingTable implements IRoutingTable
-        cModule * module = findModuleWhereverInNode(routingTableModuleName, this);
+        cModule * module = findModuleWhereverInNode(routingTableModule, this);
         routingTable = dynamic_cast<IRoutingTable *>(module);
         if (!routingTable && dynamic_cast<IPv4RoutingTable *>(module)) routingTable = dynamic_cast<IPv4RoutingTable *>(module)->asGeneric();
         if (!routingTable && dynamic_cast<IPv6RoutingTable *>(module)) routingTable = dynamic_cast<IPv6RoutingTable *>(module)->asGeneric();
-        networkProtocol = check_and_cast<INetfilter *>(findModuleWhereverInNode(networkProtocolModuleName, this));
+        networkProtocol = check_and_cast<INetfilter *>(findModuleWhereverInNode(networkProtocolModule, this));
         // internal
         expungeTimer = new cMessage("ExpungeTimer");
         IPSocket socket(gate("ipOut"));
