@@ -131,8 +131,8 @@ class INET_API IMulticastRoute
         virtual void setPrefixLength(int len) = 0;
         virtual void setMulticastGroup(const Address& group) = 0;
         virtual void setParent(InterfaceEntry *ie) = 0;
-        virtual bool addChild(InterfaceEntry *ie, bool isLeaf) = 0;
-        virtual bool removeChild(InterfaceEntry *ie) = 0;
+        virtual bool addChild(const InterfaceEntry *ie, bool isLeaf) = 0;
+        virtual bool removeChild(const InterfaceEntry *ie) = 0;
         virtual void setSource(cObject *source) = 0;
         virtual void setMetric(int metric) = 0;
 
@@ -158,7 +158,7 @@ class INET_API IMulticastRoute
         virtual int getNumChildren() const = 0;
 
         /** Returns the ith child interface */
-        virtual InterfaceEntry *getChild(int i) const = 0;
+        virtual const InterfaceEntry *getChild(int i) const = 0;
 
         /** Returns true if the ith child interface is a leaf */
         virtual bool getChildIsLeaf(int i) const = 0;

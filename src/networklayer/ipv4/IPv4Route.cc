@@ -132,7 +132,7 @@ IRoutingTable *IPv4MulticastRoute::getRoutingTableAsGeneric() const
     return getRoutingTable();
 }
 
-bool IPv4MulticastRoute::addChild(InterfaceEntry *ie, bool isLeaf)
+bool IPv4MulticastRoute::addChild(const InterfaceEntry *ie, bool isLeaf)
 {
     ChildInterfaceVector::iterator it;
     for (it = children.begin(); it != children.end(); ++it)
@@ -161,7 +161,7 @@ bool IPv4MulticastRoute::addChild(InterfaceEntry *ie, bool isLeaf)
     }
 }
 
-bool IPv4MulticastRoute::removeChild(InterfaceEntry *ie)
+bool IPv4MulticastRoute::removeChild(const InterfaceEntry *ie)
 {
     for (ChildInterfaceVector::iterator it = children.begin(); it != children.end(); ++it)
     {

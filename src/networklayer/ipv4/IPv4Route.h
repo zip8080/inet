@@ -165,14 +165,14 @@ class INET_API IPv4MulticastRoute : public cObject, public IMulticastRoute
     class ChildInterface
     {
       protected:
-        InterfaceEntry *ie;
+        const InterfaceEntry *ie;
         bool _isLeaf;        // for TRPB support
       public:
-        ChildInterface(InterfaceEntry *ie, bool isLeaf = false) : ie(ie), _isLeaf(isLeaf) {}
+        ChildInterface(const InterfaceEntry *ie, bool isLeaf = false) : ie(ie), _isLeaf(isLeaf) {}
         virtual ~ChildInterface() {}
 
-        InterfaceEntry *getInterface() { return ie; }
-        bool isLeaf() { return _isLeaf; }
+        const InterfaceEntry *getInterface() const { return ie; }
+        bool isLeaf() const { return _isLeaf; }
     };
 
     typedef std::vector<ChildInterface*> ChildInterfaceVector;
@@ -232,8 +232,8 @@ class INET_API IPv4MulticastRoute : public cObject, public IMulticastRoute
     virtual void setOriginNetmask(IPv4Address _netmask)  { if (originNetmask != _netmask) {originNetmask = _netmask; changed(F_ORIGINMASK);} }
     virtual void setMulticastGroup(IPv4Address _group)  { if (group != _group) {group = _group; changed(F_MULTICASTGROUP);} }
     virtual void setParent(InterfaceEntry *_parent)  { if (parent != _parent) {parent = _parent; changed(F_PARENT);} }
-    virtual bool addChild(InterfaceEntry *ie, bool isLeaf);
-    virtual bool removeChild(InterfaceEntry *ie);
+    virtual bool addChild(const InterfaceEntry *ie, bool isLeaf);
+    virtual bool removeChild(const InterfaceEntry *ie);
     virtual void setSourceType(RouteSource _source)  { if (sourceType != _source) {sourceType = _source; changed(F_SOURCE);} }
     virtual void setMetric(int _metric)  { if (metric != _metric) {metric = _metric; changed(F_METRIC);} }
 
@@ -273,7 +273,7 @@ class INET_API IPv4MulticastRoute : public cObject, public IMulticastRoute
     virtual int getPrefixLength() const {return getOriginNetmask().getNetmaskLength();} //TODO inconsistent naming
     virtual Address getMulticastGroupAsGeneric() const {return getMulticastGroup();}
     virtual int getNumChildren() const {return getChildren().size();}
-    virtual InterfaceEntry *getChild(int i) const {return getChildren()[i]->getInterface();}  //XXX impedance mismatch
+    virtual const InterfaceEntry *getChild(int i) const {return getChildren()[i]->getInterface();}  //XXX impedance mismatch
     virtual bool getChildIsLeaf(int i) const {return getChildren()[i]->isLeaf();}
 
 };
