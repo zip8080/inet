@@ -133,7 +133,11 @@ int IPv4Serializer::serialize(const IPv4Datagram *dgram, unsigned char *buf, uns
         throw cRuntimeError(dgram, "IPv4Serializer: cannot serialize protocol %d", dgram->getTransportProtocol());
     }
 
+#if defined(_WIN32) || defined(__WIN32__) || defined(WIN32) || defined(__CYGWIN__) || defined(_WIN64) || defined (LINUX)
     ip->ip_len = htons(packetLength);
+#else
+    ip->ip_len = packetLength;
+#endif
 
     if (hasCalcChkSum)
     {
