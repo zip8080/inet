@@ -45,6 +45,7 @@ simple SCTP like ISCTP
         double validCookieLifetime @unit(s) = default(10s);
 
         //#====== Testing =====================================================
+        bool checkQueues = default(true);
 
         //#====== Heartbeats ==================================================
         bool enableHeartbeats = default(true);

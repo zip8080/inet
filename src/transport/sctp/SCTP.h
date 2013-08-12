@@ -197,6 +197,7 @@ class INET_API SCTP : public cSimpleModule
         static bool logverbose;  // if !testing, turns on more verbose logging
         void printInfoAssocMap();
         void printVTagMap();
+        static bool checkQueues; // perform intensive checks for queue lengths for debugging
 
         void removeAssociation(SCTPAssociation *assoc);
         simtime_t testTimeout;

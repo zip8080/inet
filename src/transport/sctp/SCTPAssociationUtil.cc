@@ -79,6 +79,83 @@ void SCTPAssociation::listOrderedQ()
 }
 
 
+//
+// helper functions
+//
+
+void SCTPAssociation::checkOutstandingBytes()
+{
+    bool                                       problem = false;
+    unsigned int                               totalOutstandingBytesExpected = 0;
+    unsigned int                               totalOutstandingBytesCounted = 0;
+    std::map<const SCTPPathVariables*, uint32> outstandingBytesOnPath;
+    std::map<const SCTPPathVariables*, uint32> queuedBytesOnPath;
+
+    for (SCTPPathMap::iterator iterator = sctpPathMap.begin(); iterator != sctpPathMap.end(); ++iterator) {
+        SCTPPathVariables* path = iterator->second;
+        outstandingBytesOnPath[path] = 0;
+        queuedBytesOnPath[path] = 0;
+        totalOutstandingBytesExpected += path->outstandingBytes;
+    }
+
+    for (SCTPQueue::PayloadQueue::const_iterator iterator = retransmissionQ->payloadQueue.begin();
+            iterator != retransmissionQ->payloadQueue.end(); ++iterator) {
+        const SCTPDataVariables* chunk = iterator->second;
+        SCTPPathVariables* lastPath = chunk->getLastDestinationPath();
+        if (chunk->countsAsOutstanding) {
+            outstandingBytesOnPath[lastPath] += chunk->booksize;
+            totalOutstandingBytesCounted += chunk->booksize;
+        }
+        if (chunk->enqueuedInTransmissionQ) {
+            assert(transmissionQ->getChunk(chunk->tsn) != NULL);
+        }
+        queuedBytesOnPath[chunk->queuedOnPath] += chunk->booksize;
+    }
+
+    for (SCTPPathMap::iterator iterator = sctpPathMap.begin();
+            iterator != sctpPathMap.end(); ++iterator) {
+        const SCTPPathVariables* path = iterator->second;
+        sctpEV3 << "- " << outstandingBytesOnPath[path]
+                                                  << " (outstanding is " << path->outstandingBytes << ")"
+                                                  << ", booked " << queuedBytesOnPath[path]
+                                                                                              << " (queuedOnPath=" << path->queuedBytes << ","
+                                                                                              << " roomTransQ=" << qCounter.roomTransQ.find(path->remoteAddress)->second << ","
+                                                                                              << " bookedTransQ=" << qCounter.bookedTransQ.find(path->remoteAddress)->second << ","
+                                                                                              << " roomRetransQ=" << qCounter.roomRetransQ.find(path->remoteAddress)->second << ")"
+                                                                                              << " on path " << path->remoteAddress << endl;
+
+        problem = (problem || (path->outstandingBytes != outstandingBytesOnPath[path]));
+        problem = (problem || ((int32)qCounter.roomRetransQ.find(path->remoteAddress)->second < 0));
+        problem = (problem || (path->queuedBytes != queuedBytesOnPath[path]));
+    }
+    sctpEV3 << "=> " << totalOutstandingBytesCounted << " total" << endl;
+    if (problem) {
+        std::cerr << "BOOKKEEPING PROBLEM DETECTED!"
+                << "\tcountedOSB=" << totalOutstandingBytesCounted
+                << ", expectedOSB=" << totalOutstandingBytesExpected << endl;
+        for (SCTPPathMap::iterator iterator = sctpPathMap.begin();
+                iterator != sctpPathMap.end(); ++iterator) {
+            const SCTPPathVariables* path = iterator->second;
+            std::cerr << "- " << outstandingBytesOnPath[path]
+                      << " (outstanding is " << path->outstandingBytes << ")"
+                      << ", booked " << queuedBytesOnPath[path]
+                      << " (queuedOnPath=" << path->queuedBytes << ","
+                      << " roomTransQ=" << qCounter.roomTransQ.find(path->remoteAddress)->second << ","
+                      << " bookedTransQ=" << qCounter.bookedTransQ.find(path->remoteAddress)->second << ","
+                      << " roomRetransQ=" << qCounter.roomRetransQ.find(path->remoteAddress)->second << ")"
+                      << " on path " << path->remoteAddress << endl;
+            if (path->outstandingBytes != outstandingBytesOnPath[path]) {
+                std::cerr << "ERROR: Path outstanding bytes mismatch!" << std::endl;
+            }
+            if (path->queuedBytes != queuedBytesOnPath[path]) {
+                std::cerr << "ERROR: Path queued bytes mismatch!" << std::endl;
+            }
+        }
+        assert(false);
+    }
+    assert(state->outstandingBytes == totalOutstandingBytesCounted);
+}
+
 void SCTPAssociation::printSctpPathMap() const
 {
     sctpEV3 <<"SCTP PathMap:" << endl;

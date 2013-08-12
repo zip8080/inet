@@ -47,6 +47,10 @@ void SCTPAssociation::storePacket(SCTPPathVariables* pathVar,
                                              const uint16         dataChunksAdded,
                                              const bool           authAdded)
 {
+    if (SCTP::checkQueues) {
+        checkOutstandingBytes();
+    }
+
     uint32 packetBytes = 0;
     for (uint16 i = 0; i < sctpMsg->getChunksArraySize(); i++) {
         SCTPDataVariables* chunk = retransmissionQ->payloadQueue.find(((SCTPDataChunk*)sctpMsg->getChunks(i))->getTsn())->second;
@@ -70,6 +74,9 @@ void SCTPAssociation::storePacket(SCTPPathVariables* pathVar,
         qCounter.roomSumSendStreams += state->packetBytes + (dataChunksAdded * SCTP_DATA_CHUNK_LENGTH);
     qCounter.bookedSumSendStreams += state->packetBytes;
 
+    if (SCTP::checkQueues) {
+        checkOutstandingBytes();
+    }
 }
 
 void SCTPAssociation::loadPacket(SCTPPathVariables* pathVar,
@@ -78,6 +85,10 @@ void SCTPAssociation::loadPacket(SCTPPathVariables* pathVar,
                                             uint16*              dataChunksAdded,
                                             bool*                    authAdded)
 {
+    if (SCTP::checkQueues) {
+        checkOutstandingBytes();
+    }
+
     *sctpMsg = state->sctpMsg;
     state->sctpMsg = NULL;
     *chunksAdded = state->chunksAdded;
@@ -101,6 +112,9 @@ void SCTPAssociation::loadPacket(SCTPPathVariables* pathVar,
         chunk->countsAsOutstanding = true;
     }
 
+    if (SCTP::checkQueues) {
+        checkOutstandingBytes();
+    }
 }
 
 
@@ -394,6 +408,9 @@ void SCTPAssociation::sendOnPath(SCTPPathVariables* pathId, bool firstPass)
                   << " scount="      << scount
                   << " nextTSN="         << state->nextTSN << endl;
 
+        if (SCTP::checkQueues) {    // Verbose status printing
+            checkOutstandingBytes();
+        }
         bool sackOnly;
         bool sackWithData;
         timeForSack(sackOnly, sackWithData);
@@ -945,6 +962,9 @@ void SCTPAssociation::sendOnPath(SCTPPathVariables* pathId, bool firstPass)
     }    // while(sendingAllowed)
 
     sctpEV3 << "sendAll: nothing more to send... BYE!\n";
+    if (SCTP::checkQueues) {
+        checkOutstandingBytes();
+    }
 }
 
 

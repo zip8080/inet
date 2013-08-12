@@ -41,6 +41,15 @@
 void SCTPAssociation::decreaseOutstandingBytes(SCTPDataVariables* chunk)
 {
     SCTPPathVariables* lastPath = chunk->getLastDestinationPath();
+    if (SCTP::checkQueues) {
+        sctpEV3 << "Paths before decreaseOutstandingBytes(): ";
+        sctpEV3 << "Decreasing osb on path " << chunk->getLastDestination()
+                    << " from " << lastPath->outstandingBytes << " by "
+                    << chunk->booksize << " to "
+                    << lastPath->outstandingBytes - chunk->booksize
+                    << " [chunk TSN=" << chunk->tsn << ", SSN=" << chunk->ssn << "]"
+                    << " ..." << endl;
+    }
 
     if (chunk->countsAsOutstanding) {
         assert(lastPath->outstandingBytes >= chunk->booksize);
@@ -59,6 +68,11 @@ void SCTPAssociation::decreaseOutstandingBytes(SCTPDataVariables* chunk)
         else
             iterator->second -= ADD_PADDING(chunk->booksize + SCTP_DATA_CHUNK_LENGTH);
     }
+
+    if (SCTP::checkQueues) {
+        sctpEV3 << "Paths after decreaseOutstandingBytes(): ";
+        checkOutstandingBytes();
+    }
 }
 
 
@@ -70,6 +84,9 @@ bool SCTPAssociation::process_RCV_Message(SCTPMessage*       sctpmsg,
     sctpEV3 << getFullPath()  << " SCTPAssociationRcvMessage:process_RCV_Message"
               << " localAddr="  << localAddr
               << " remoteAddr=" << remoteAddr << endl;
+    if (SCTP::checkQueues) {
+        checkOutstandingBytes();
+    }
     state->pktDropSent = false;
     if ((sctpmsg->hasBitError() || !sctpmsg->getChecksumOk()))
     {
@@ -457,6 +474,9 @@ bool SCTPAssociation::process_RCV_Message(SCTPMessage*       sctpmsg,
     }
 
     // ====== Clean-up =======================================================
+    if (SCTP::checkQueues) {
+        checkOutstandingBytes();
+    }
     if (!state->pktDropSent) {
         disposeOf(state->sctpmsg);
         sctpEV3 << "state->sctpmsg was disposed" << endl;
@@ -1008,6 +1028,9 @@ SCTPEventCode SCTPAssociation::processSackArrived(SCTPSackChunk* sackChunk)
 
     sctpEV3 << "Before processSackArrived for path " << path->remoteAddress
             << " with tsna=" << tsna << ":" << endl;
+    if (SCTP::checkQueues) {
+        checkOutstandingBytes();
+    }
 
     // ====== SACK Sequence Number Check =====================================
     sctpEV3 << "SACK Seq Number = " << sackChunk->getSackSeqNum() << endl;
@@ -1366,7 +1389,11 @@ SCTPEventCode SCTPAssociation::processSackArrived(SCTPSackChunk* sackChunk)
         }
     }
 
-
+    sctpEV3 << "After processSackArrived for path " << path->remoteAddress
+            << " with tsna=" << tsna << ":" << endl;
+    if (SCTP::checkQueues) {
+        checkOutstandingBytes();
+    }
 
     return SCTP_E_IGNORE;
 }
@@ -1711,7 +1738,9 @@ SCTPEventCode SCTPAssociation::processForwardTsnArrived(SCTPForwardTsnChunk* fwC
 {
     sctpEV3 << "processForwardTsnArrived\n";
     sctpEV3 << "last state->cTsnAck=" << state->gapList.getCumAckTSN() << " fwCumAck=" << fwChunk->getNewCumTsn() << "\n";
-
+    if (SCTP::checkQueues) {
+        checkOutstandingBytes();
+    }
     /* Ignore old FORWARD_TSNs, probably stale retransmits. */
     if (state->gapList.getCumAckTSN() >= fwChunk->getNewCumTsn()) {
         return SCTP_E_IGNORE;
@@ -1745,6 +1774,10 @@ SCTPEventCode SCTPAssociation::processForwardTsnArrived(SCTPForwardTsnChunk* fwC
             state->gapList.tryToAdvanceCumAckTSN();
         }
     }
+
+    if (SCTP::checkQueues) {
+        checkOutstandingBytes();
+    }
     return SCTP_E_IGNORE;
 }
 
@@ -1775,6 +1808,9 @@ SCTPEventCode SCTPAssociation::processDataArrived(SCTPDataChunk* dataChunk)
         state->ackState = sackFrequency;
     }
     calculateRcvBuffer();
+    if (SCTP::checkQueues) {
+        checkOutstandingBytes();
+    }
 
     SCTPSimpleMessage* smsg = check_and_cast <SCTPSimpleMessage*>(dataChunk->decapsulate());
     dataChunk->setBitLength(SCTP_DATA_CHUNK_LENGTH*8);
@@ -1897,6 +1933,9 @@ SCTPEventCode SCTPAssociation::processDataArrived(SCTPDataChunk* dataChunk)
         state->newChunkReceived = false;
     }
 
+    if (SCTP::checkQueues) {
+        checkOutstandingBytes();
+    }
     return (event);
 }
 
@@ -2454,6 +2493,9 @@ bool SCTPAssociation::processPacketDropArrived(SCTPPacketDropChunk* packetDropCh
 
     if (packetDropChunk->getMFlag() == false) {
         sctpEV3 << "processPacketDropArrived" << endl;
+        if (SCTP::checkQueues) {
+            checkOutstandingBytes();
+        }
         if (packetDropChunk->getEncapsulatedPacket() != NULL) {
             SCTPMessage* sctpmsg = (SCTPMessage*)(packetDropChunk->decapsulate());
             const uint32 numberOfChunks = sctpmsg->getChunksArraySize();
@@ -2544,6 +2586,9 @@ bool SCTPAssociation::processPacketDropArrived(SCTPPacketDropChunk* packetDropCh
                 packetDropChunk->getQueuedData() -
                 getOutstandingBytes();
         statisticsPeerRwnd->record(state->peerRwnd);
+        if (SCTP::checkQueues) {
+            checkOutstandingBytes();
+        }
         return dataReceived;
     }
     return false;
@@ -2724,12 +2769,18 @@ void SCTPAssociation::process_TIMEOUT_RESET(SCTPPathVariables* path)
     if ((value = updateCounters(path)) == 1)
     {
         sctpEV3 << "Performing timeout reset" << endl;
+        if (SCTP::checkQueues) {
+            checkOutstandingBytes();
+        }
         retransmitReset();
 
         /* increase the RTO (by doubling it) */
         path->pathRto = min(2*path->pathRto.dbl(), sctpMain->par("rtoMax"));
         path->statisticsPathRTO->record(path->pathRto);
         startTimer(path->ResetTimer, path->pathRto);
+        if (SCTP::checkQueues) {
+            checkOutstandingBytes();
+        }
     }
 }
 
@@ -2797,6 +2848,9 @@ void SCTPAssociation::process_TIMEOUT_ASCONF(SCTPPathVariables* path)
 void SCTPAssociation::process_TIMEOUT_RTX(SCTPPathVariables* path)
 {
     sctpEV3 << "Processing retransmission timeout ..." << endl;
+    if (SCTP::checkQueues) {
+        checkOutstandingBytes();
+    }
 
     // ====== Increase the RTO (by doubling it) ==============================
     path->pathRto = min(2 * path->pathRto.dbl(), sctpMain->par("rtoMax"));
@@ -2917,6 +2971,9 @@ void SCTPAssociation::process_TIMEOUT_RTX(SCTPPathVariables* path)
     sctpEV3 << "TimeoutRTX: sendOnAllPaths()" << endl;
     sendOnAllPaths(nextPath);
 
+    if (SCTP::checkQueues) {
+        checkOutstandingBytes();
+    }
 }
 
 

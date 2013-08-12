@@ -35,7 +35,7 @@ Define_Module(SCTP);
 
 bool SCTP::testing;
 bool SCTP::logverbose;
-
+bool SCTP::checkQueues;
 int32 SCTP::nextAssocId = 0;
 
 
@@ -95,8 +95,10 @@ void SCTP::initialize()
 
     cModule *netw = simulation.getSystemModule();
 
+    checkQueues = par("checkQueues");
     testing = netw->hasPar("testing") && netw->par("testing").boolValue();
     if (testing) {
+        checkQueues = true;   // Always check queues in testing mode.
     }
     if (netw->hasPar("testTimeout"))
     {
