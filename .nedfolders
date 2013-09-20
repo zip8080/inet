@@ -23,8 +23,8 @@ src
 -inet.examples.manetrouting
 -inet.examples.sctp
 -inet.examples.httptools.socket
--inet.networklayer.arp
 -inet.examples.emulation
+-inet.networklayer.arp
 -inet.world.radio
 -inet.nodes.inet
 -inet.networklayer.ted
