@@ -245,7 +245,7 @@ void Ieee80211Mac::initialize(int stage)
         else
             Ieee80211Descriptor::getIdx(opMode, basicBitrate);
 
-        controlBitRate = par("basicBitrate").doubleValue();
+        controlBitRate = par("controlBitrate").doubleValue();
 
         if (controlBitRate == -1)
         {
