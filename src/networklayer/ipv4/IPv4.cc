@@ -115,7 +115,7 @@ void IPv4::handleMessage(cMessage *msg)
 void IPv4::endService(cPacket *packet)
 {
     if (!isUp) {
-        EV << "IPv4 is down -- discarding message\n";
+        EV_ERROR << "IPv4 is down -- discarding message\n";
         delete packet;
         return;
     }
@@ -129,6 +129,7 @@ void IPv4::endService(cPacket *packet)
     }
     else // from network
     {
+        EV_INFO << "Received " << packet << " from network.\n";
         const InterfaceEntry *fromIE = getSourceInterfaceFrom(packet);
         if (dynamic_cast<ARPPacket *>(packet))
             handleIncomingARPPacket((ARPPacket *)packet, fromIE);
@@ -165,13 +166,13 @@ void IPv4::handleIncomingDatagram(IPv4Datagram *datagram, const InterfaceEntry *
         double relativeHeaderLength = datagram->getHeaderLength() / (double)datagram->getByteLength();
         if (dblrand() <= relativeHeaderLength)
         {
-            EV << "bit error found, sending ICMP_PARAMETER_PROBLEM\n";
+            EV_WARN << "bit error found, sending ICMP_PARAMETER_PROBLEM\n";
             icmpAccess.get()->sendErrorMessage(datagram, ICMP_PARAMETER_PROBLEM, 0);
             return;
         }
     }
 
-    EV << "Received datagram `" << datagram->getName() << "' with dest=" << datagram->getDestAddress() << "\n";
+    EV_DETAIL << "Received datagram `" << datagram->getName() << "' with dest=" << datagram->getDestAddress() << "\n";
 
     const InterfaceEntry *destIE = NULL;
     Address nextHop(IPv4Address::UNSPECIFIED_ADDRESS);
@@ -200,17 +201,22 @@ void IPv4::preroutingFinish(IPv4Datagram *datagram, const InterfaceEntry *fromIE
                 (rt->isMulticastForwardingEnabled() && datagram->getTransportProtocol() == IP_PROT_IGMP))
             reassembleAndDeliver(datagram->dup());
         else
-            EV << "Skip local delivery of multicast datagram (input interface not in multicast group)\n";
+            EV_WARN << "Skip local delivery of multicast datagram (input interface not in multicast group)\n";
 
         // don't forward if IP forwarding is off, or if dest address is link-scope
-        if (!rt->isForwardingEnabled() || destAddr.isLinkLocalMulticast())
+        if (!rt->isMulticastForwardingEnabled())
         {
-            EV << "Skip forwarding of multicast datagram (packet is link-local or forwarding disabled)\n";
+            EV_WARN << "Skip forwarding of multicast datagram (forwarding disabled)\n";
+            delete datagram;
+        }
+        else if (destAddr.isLinkLocalMulticast())
+        {
+            EV_WARN << "Skip forwarding of multicast datagram (packet is link-local)\n";
             delete datagram;
         }
         else if (datagram->getTimeToLive() == 0)
         {
-            EV << "Skip forwarding of multicast datagram (TTL reached 0)\n";
+            EV_WARN << "Skip forwarding of multicast datagram (TTL reached 0)\n";
             delete datagram;
         }
         else
@@ -232,12 +238,12 @@ void IPv4::preroutingFinish(IPv4Datagram *datagram, const InterfaceEntry *fromIE
             if (broadcastIE && fromIE != broadcastIE && rt->isForwardingEnabled())
                 fragmentPostRouting(datagram->dup(), broadcastIE, IPv4Address::ALLONES_ADDRESS);
 
-            EV << "Broadcast received\n";
+            EV_INFO << "Broadcast received\n";
             reassembleAndDeliver(datagram);
         }
         else if (!rt->isForwardingEnabled())
         {
-            EV << "forwarding off, dropping packet\n";
+            EV_WARN << "forwarding off, dropping packet\n";
             numDropped++;
             delete datagram;
         }
@@ -251,6 +257,7 @@ void IPv4::handleIncomingARPPacket(ARPPacket *packet, const InterfaceEntry *from
     // give it to the ARP module
     Ieee802Ctrl *ctrl = check_and_cast<Ieee802Ctrl*>(packet->getControlInfo());
     ctrl->setInterfaceId(fromIE->getInterfaceId());
+    EV_INFO << "Sending " << packet << " to arp.\n";
     send(packet, arpOutGate);
 }
 
@@ -281,10 +288,12 @@ void IPv4::handleIncomingICMP(ICMPMessage *packet)
 
 void IPv4::handlePacketFromHL(cPacket *packet)
 {
+    EV_INFO << "Received " << packet << " from upper layer.\n";
+
     // if no interface exists, do not send datagram
     if (ift->getNumInterfaces() == 0)
     {
-        EV << "No interfaces exist, dropping packet\n";
+        EV_ERROR << "No interfaces exist, dropping packet\n";
         numDropped++;
         delete packet;
         return;
@@ -315,6 +324,7 @@ void IPv4::handlePacketFromHL(cPacket *packet)
 
 void IPv4::handlePacketFromARP(cPacket *packet)
 {
+    EV_INFO << "Received " << packet << " from arp.\n";
     // send out packet on the appropriate interface
     Ieee802Ctrl *ctrl = check_and_cast<Ieee802Ctrl*>(packet->getControlInfo());
     InterfaceEntry *destIE = ift->getInterfaceById(ctrl->getInterfaceId());
@@ -334,7 +344,7 @@ void IPv4::datagramLocalOut(IPv4Datagram* datagram, const InterfaceEntry* destIE
     // send
     IPv4Address &destAddr = datagram->getDestAddress();
 
-    EV << "Sending datagram `" << datagram->getName() << "' with dest=" << destAddr << "\n";
+    EV_DETAIL << "Sending datagram " << datagram << " with destination = " << destAddr << "\n";
 
     if (datagram->getDestAddress().isMulticast())
     {
@@ -355,7 +365,7 @@ void IPv4::datagramLocalOut(IPv4Datagram* datagram, const InterfaceEntry* destIE
         }
         else
         {
-            EV << "No multicast interface, packet dropped\n";
+            EV_ERROR << "No multicast interface, packet dropped\n";
             numUnroutable++;
             delete datagram;
         }
@@ -365,10 +375,10 @@ void IPv4::datagramLocalOut(IPv4Datagram* datagram, const InterfaceEntry* destIE
         // check for local delivery
         if (rt->isLocalAddress(destAddr))
         {
-            EV << "local delivery\n";
+            EV_INFO << "Delivering " << datagram << " locally.\n";
             if (destIE && !destIE->isLoopback())
             {
-                EV << "datagram destination address is local, ignoring destination interface specified in the control info\n";
+                EV_DETAIL << "datagram destination address is local, ignoring destination interface specified in the control info\n";
                 destIE = NULL;
             }
             if (!destIE)
@@ -395,7 +405,7 @@ const InterfaceEntry *IPv4::determineOutgoingInterfaceForMulticastDatagram(IPv4D
     if (multicastIFOption)
     {
         ie = multicastIFOption;
-        EV << "multicast packet routed by socket option via output interface " << ie->getName() << "\n";
+        EV_DETAIL << "multicast packet routed by socket option via output interface " << ie->getName() << "\n";
     }
     if (!ie)
     {
@@ -403,19 +413,19 @@ const InterfaceEntry *IPv4::determineOutgoingInterfaceForMulticastDatagram(IPv4D
         if (route)
             ie = route->getInterface();
         if (ie)
-            EV << "multicast packet routed by routing table via output interface " << ie->getName() << "\n";
+            EV_DETAIL << "multicast packet routed by routing table via output interface " << ie->getName() << "\n";
     }
     if (!ie)
     {
         ie = rt->getInterfaceByAddress(datagram->getSrcAddress());
         if (ie)
-            EV << "multicast packet routed by source address via output interface " << ie->getName() << "\n";
+            EV_DETAIL << "multicast packet routed by source address via output interface " << ie->getName() << "\n";
     }
     if (!ie)
     {
         ie = ift->getFirstMulticastInterface();
         if (ie)
-            EV << "multicast packet routed via the first multicast interface " << ie->getName() << "\n";
+            EV_DETAIL << "multicast packet routed via the first multicast interface " << ie->getName() << "\n";
     }
     return ie;
 }
@@ -424,14 +434,13 @@ const InterfaceEntry *IPv4::determineOutgoingInterfaceForMulticastDatagram(IPv4D
 void IPv4::routeUnicastPacket(IPv4Datagram *datagram, const InterfaceEntry *fromIE, const InterfaceEntry *destIE, IPv4Address requestedNextHopAddress)
 {
     IPv4Address destAddr = datagram->getDestAddress();
-
-    EV << "Routing datagram `" << datagram->getName() << "' with dest=" << destAddr << ": ";
+    EV_INFO << "Routing " << datagram << " with destination = " << destAddr << ", ";
 
     IPv4Address nextHopAddr;
     // if output port was explicitly requested, use that, otherwise use IPv4 routing
     if (destIE)
     {
-        EV << "using manually specified output interface " << destIE->getName() << "\n";
+        EV_DETAIL << "using manually specified output interface " << destIE->getName() << "\n";
         // and nextHopAddr remains unspecified
         if (!requestedNextHopAddress.isUnspecified())
             nextHopAddr = requestedNextHopAddress;
@@ -457,7 +466,7 @@ void IPv4::routeUnicastPacket(IPv4Datagram *datagram, const InterfaceEntry *from
 
     if (!destIE) // no route found
     {
-        EV << "unroutable, sending ICMP_DESTINATION_UNREACHABLE\n";
+        EV_WARN << "unroutable, sending ICMP_DESTINATION_UNREACHABLE\n";
         numUnroutable++;
         icmpAccess.get()->sendErrorMessage(datagram, ICMP_DESTINATION_UNREACHABLE, 0);
     }
@@ -477,7 +486,7 @@ void IPv4::routeUnicastPacket(IPv4Datagram *datagram, const InterfaceEntry *from
 
 void IPv4::routeUnicastPacketFinish(IPv4Datagram *datagram, const InterfaceEntry *fromIE, const InterfaceEntry *destIE, IPv4Address nextHopAddr)
 {
-    EV << "output interface is " << destIE->getName() << ", next-hop address: " << nextHopAddr << "\n";
+    EV_INFO << "output interface = " << destIE->getName() << ", next hop address = " << nextHopAddr << "\n";
     numForwarded++;
     fragmentPostRouting(datagram, destIE, nextHopAddr);
 }
@@ -524,14 +533,14 @@ void IPv4::forwardMulticastPacket(IPv4Datagram *datagram, const InterfaceEntry *
     if (!nb)
         throw cRuntimeError("If multicast forwarding is enabled, then the node must contain a NotificationBoard.");
 
-    EV << "Forwarding multicast datagram `" << datagram->getName() << "' with dest=" << destAddr << "\n";
+    EV_INFO << "Forwarding multicast datagram `" << datagram->getName() << "' with dest=" << destAddr << "\n";
 
     numMulticast++;
 
     const IPv4MulticastRoute *route = rt->findBestMatchingMulticastRoute(srcAddr, destAddr);
     if (!route)
     {
-        EV << "Multicast route does not exist, try to add.\n";
+        EV_WARN << "Multicast route does not exist, try to add.\n";
         nb->fireChangeNotification(NF_IPv4_NEW_MULTICAST, datagram);
 
         // read new record
@@ -539,7 +548,7 @@ void IPv4::forwardMulticastPacket(IPv4Datagram *datagram, const InterfaceEntry *
 
         if (!route)
         {
-            EV << "No route, packet dropped.\n";
+            EV_ERROR << "No route, packet dropped.\n";
             numUnroutable++;
             delete datagram;
             return;
@@ -548,7 +557,7 @@ void IPv4::forwardMulticastPacket(IPv4Datagram *datagram, const InterfaceEntry *
 
     if (route->getInInterface() && fromIE != route->getInInterface()->getInterface())
     {
-        EV << "Did not arrive on input interface, packet dropped.\n";
+        EV_ERROR << "Did not arrive on input interface, packet dropped.\n";
         nb->fireChangeNotification(NF_IPv4_DATA_ON_NONRPF, datagram);
         numDropped++;
         delete datagram;
@@ -556,7 +565,7 @@ void IPv4::forwardMulticastPacket(IPv4Datagram *datagram, const InterfaceEntry *
     // backward compatible: no parent means shortest path interface to source (RPB routing)
     else if (!route->getInInterface() && fromIE != getShortestPathInterfaceToSource(datagram))
     {
-        EV << "Did not arrive on shortest path, packet dropped.\n";
+        EV_ERROR << "Did not arrive on shortest path, packet dropped.\n";
         numDropped++;
         delete datagram;
     }
@@ -574,12 +583,12 @@ void IPv4::forwardMulticastPacket(IPv4Datagram *datagram, const InterfaceEntry *
             {
                 int ttlThreshold = destIE->ipv4Data()->getMulticastTtlThreshold();
                 if (datagram->getTimeToLive() <= ttlThreshold)
-                    EV << "Not forwarding to " << destIE->getName() << " (ttl treshold reached)\n";
+                    EV_WARN << "Not forwarding to " << destIE->getName() << " (ttl treshold reached)\n";
                 else if (outInterface->isLeaf() && !destIE->ipv4Data()->hasMulticastListener(destAddr))
-                    EV << "Not forwarding to " << destIE->getName() << " (no listeners)\n";
+                    EV_WARN << "Not forwarding to " << destIE->getName() << " (no listeners)\n";
                 else
                 {
-                    EV << "Forwarding to " << destIE->getName() << "\n";
+                    EV_DETAIL << "Forwarding to " << destIE->getName() << "\n";
                     fragmentPostRouting(datagram->dup(), destIE, destAddr);
                 }
             }
@@ -594,16 +603,16 @@ void IPv4::forwardMulticastPacket(IPv4Datagram *datagram, const InterfaceEntry *
 
 void IPv4::reassembleAndDeliver(IPv4Datagram *datagram)
 {
-    EV << "Local delivery\n";
+    EV_INFO << "Delivering " << datagram << " locally.\n";
 
     if (datagram->getSrcAddress().isUnspecified())
-        EV << "Received datagram '%s' without source address filled in" << datagram->getName() << "\n";
+        EV_WARN << "Received datagram '%s' without source address filled in" << datagram->getName() << "\n";
 
     // reassemble the packet (if fragmented)
     if (datagram->getFragmentOffset()!=0 || datagram->getMoreFragments())
     {
-        EV << "Datagram fragment: offset=" << datagram->getFragmentOffset()
-           << ", MORE=" << (datagram->getMoreFragments() ? "true" : "false") << ".\n";
+        EV_DETAIL << "Datagram fragment: offset=" << datagram->getFragmentOffset()
+                 << ", MORE=" << (datagram->getMoreFragments() ? "true" : "false") << ".\n";
 
         // erase timed out fragments in fragmentation buffer; check every 10 seconds max
         if (simTime() >= lastCheckTime + 10)
@@ -615,10 +624,10 @@ void IPv4::reassembleAndDeliver(IPv4Datagram *datagram)
         datagram = fragbuf.addFragment(datagram, simTime());
         if (!datagram)
         {
-            EV << "No complete datagram yet.\n";
+            EV_DETAIL << "No complete datagram yet.\n";
             return;
         }
-        EV << "This fragment completes the datagram.\n";
+        EV_DETAIL << "This fragment completes the datagram.\n";
     }
 
     if (datagramLocalInHook(datagram, getSourceInterfaceFrom(datagram)) != INetfilter::IHook::ACCEPT)
@@ -660,7 +669,7 @@ void IPv4::reassembleAndDeliverFinish(IPv4Datagram *datagram)
             }
         }
 
-        EV << "L3 Protocol not connected. discarding packet" << endl;
+        EV_ERROR << "L3 Protocol not connected. discarding packet" << endl;
         icmpAccess.get()->sendErrorMessage(datagram, ICMP_DESTINATION_UNREACHABLE, ICMP_DU_PROTOCOL_UNREACHABLE);
     }
 }
@@ -710,7 +719,7 @@ void IPv4::fragmentAndSend(IPv4Datagram *datagram, const InterfaceEntry *ie, IPv
     if (datagram->getTimeToLive() < 0)
     {
         // drop datagram, destruction responsibility in ICMP
-        EV << "datagram TTL reached zero, sending ICMP_TIME_EXCEEDED\n";
+        EV_WARN << "datagram TTL reached zero, sending ICMP_TIME_EXCEEDED\n";
         icmpAccess.get()->sendErrorMessage(datagram, ICMP_TIME_EXCEEDED, 0);
         numDropped++;
         return;
@@ -728,7 +737,7 @@ void IPv4::fragmentAndSend(IPv4Datagram *datagram, const InterfaceEntry *ie, IPv
     // if "don't fragment" bit is set, throw datagram away and send ICMP error message
     if (datagram->getDontFragment())
     {
-        EV << "datagram larger than MTU and don't fragment bit set, sending ICMP_DESTINATION_UNREACHABLE\n";
+        EV_WARN << "datagram larger than MTU and don't fragment bit set, sending ICMP_DESTINATION_UNREACHABLE\n";
         icmpAccess.get()->sendErrorMessage(datagram, ICMP_DESTINATION_UNREACHABLE,
                                                      ICMP_FRAGMENTATION_ERROR_CODE);
         numDropped++;
@@ -744,7 +753,7 @@ void IPv4::fragmentAndSend(IPv4Datagram *datagram, const InterfaceEntry *ie, IPv
         throw cRuntimeError("Cannot fragment datagram: MTU=%d too small for header size (%d bytes)", mtu, headerLength); // exception and not ICMP because this is likely a simulation configuration error, not something one wants to simulate
 
     int noOfFragments = (payloadLength + fragmentLength - 1) / fragmentLength;
-    EV << "Breaking datagram into " << noOfFragments << " fragments\n";
+    EV_DETAIL << "Breaking datagram into " << noOfFragments << " fragments\n";
 
     // create and send fragments
     std::string fragMsgName = datagram->getName();
@@ -858,6 +867,7 @@ void IPv4::sendDatagramToOutput(IPv4Datagram *datagram, const InterfaceEntry *ie
                 routingDecision->setNextHopAddr(nextHopAddr);
                 datagram->setControlInfo(routingDecision);
 
+                EV_INFO << "Sending " << datagram << " to arp." << endl;
                 send(datagram, arpDgramOutGate);  // send to ARP for resolution
             }
             else {
@@ -871,14 +881,14 @@ MACAddress IPv4::resolveNextHopMacAddress(cPacket *packet, IPv4Address nextHopAd
 {
     if (nextHopAddr.isLimitedBroadcastAddress() || nextHopAddr == destIE->ipv4Data()->getNetworkBroadcastAddress())
     {
-        EV << "destination address is broadcast, sending packet to broadcast MAC address\n";
+        EV_DETAIL << "destination address is broadcast, sending packet to broadcast MAC address\n";
         return MACAddress::BROADCAST_ADDRESS;
     }
 
     if (nextHopAddr.isMulticast())
     {
         MACAddress macAddr = MACAddress::makeMulticastAddress(nextHopAddr);
-        EV << "destination address is multicast, sending packet to MAC address " << macAddr << "\n";
+        EV_DETAIL << "destination address is multicast, sending packet to MAC address " << macAddr << "\n";
         return macAddr;
     }
 
@@ -901,7 +911,7 @@ void IPv4::sendPacketToIeee802NIC(cPacket *packet, const InterfaceEntry *ie, con
 
 void IPv4::sendPacketToNIC(cPacket *packet, const InterfaceEntry *ie)
 {
-    EV << "Sending out packet to interface " << ie->getName() << endl;
+    EV_INFO << "Sending " << packet << " to output interface = " << ie->getName() << ".\n";
     send(packet, queueOutGateBaseId + ie->getNetworkLayerGateIndex());
 }
 
