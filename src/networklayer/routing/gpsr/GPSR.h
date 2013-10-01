@@ -121,7 +121,6 @@ class INET_API GPSR : public cSimpleModule, public ILifecycle, public INotifiabl
         double getNeighborAngle(const Address & address);
 
         // address
-        std::string getHostName();
         Address getSelfAddress();
         Address getSenderNeighborAddress(INetworkDatagram * datagram);
 
