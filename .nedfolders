@@ -1,6 +1,5 @@
 examples
 src
--inet.util.headerserializers.tcp
 -inet.examples.mpls
 -inet.world.httptools
 -inet.applications.httptools
@@ -8,10 +7,7 @@ src
 -inet.transport.tcp_lwip
 -inet.transport.tcp_nsc
 -inet.networklayer.autorouting.ipv6
--inet.transport.udp
 -inet.examples.voipstream
--inet.examples.inet
--inet.transport.tcp
 -inet.examples.httptools.direct
 -inet.examples.diffserv
 -inet.examples.voip
@@ -24,7 +20,6 @@ src
 -inet.examples.manetrouting
 -inet.examples.emulation
 -inet.world.radio
--inet.transport.tcp_common
 -inet.networklayer.ted
 -inet.transport.sctp
 -inet.nodes.ipv6
@@ -36,7 +31,6 @@ src
 -inet.networklayer.internetcloud
 -inet.nodes.xmipv6
 -inet.networklayer.rsvp_te
--inet.applications.tcpapp
 -inet.networklayer.diffserv
 -inet.transport.rtp
 -inet.examples.dhcp
@@ -46,13 +40,10 @@ src
 -inet.examples.traci
 -inet.applications.voip
 -inet.examples.ethernet
--inet.util.headerserializers.udp
 -inet.examples.ipv6
 -inet.examples.internetcloud
 -inet.examples.ospfv2
 -inet.nodes.bgp
--inet.applications.udpapp
--inet.linklayer.ppp
 -inet.mobility.models
 -inet.examples.rtp
 -inet.networklayer.ospfv2
