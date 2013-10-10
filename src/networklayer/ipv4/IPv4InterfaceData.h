@@ -31,6 +31,8 @@
 #include "InterfaceEntry.h"
 #include "IPv4Address.h"
 
+enum McastSourceFilterMode { MCAST_INCLUDE_SOURCES, MCAST_EXCLUDE_SOURCES };
+
 /*
  * Info for NF_IPv4_MCAST_JOIN and NF_IPv4_MCAST_LEAVE notifications
  */
@@ -42,6 +44,19 @@ struct INET_API IPv4MulticastGroupInfo : public cObject
     IPv4Address groupAddress;
 };
 
+/*
+ * Info for NF_IPv4_MCAST_CHANGE notifications
+ */
+struct INET_API IPv4MulticastGroupSourceInfo : public IPv4MulticastGroupInfo
+{
+    typedef std::vector<IPv4Address> IPv4AddressVector;
+
+    IPv4MulticastGroupSourceInfo(InterfaceEntry * const ie, const IPv4Address &groupAddress, McastSourceFilterMode filterMode, const IPv4AddressVector &sourceList)
+        : IPv4MulticastGroupInfo(ie, groupAddress), filterMode(filterMode), sourceList(sourceList) {}
+
+    McastSourceFilterMode filterMode;
+    IPv4AddressVector sourceList;
+};
 
 /**
  * IPv4-specific data in an InterfaceEntry. Stores interface IPv4 address,
@@ -49,6 +64,7 @@ struct INET_API IPv4MulticastGroupInfo : public cObject
  *
  * @see InterfaceEntry
  */
+// XXX pass IPv4Address parameters as values
 class INET_API IPv4InterfaceData : public InterfaceProtocolData
 {
   public:
@@ -58,13 +74,39 @@ class INET_API IPv4InterfaceData : public InterfaceProtocolData
     enum {F_IP_ADDRESS, F_NETMASK, F_METRIC, F_MULTICAST_TTL_THRESHOLD, F_MULTICAST_ADDRESSES, F_MULTICAST_LISTENERS};
 
   protected:
+
+    struct HostMulticastGroupData
+    {
+        IPv4Address multicastGroup;
+        std::map<IPv4Address,int> includeCounts;
+        std::map<IPv4Address,int> excludeCounts;
+        int numOfExcludeModeSockets;
+
+        // computed fields
+        McastSourceFilterMode filterMode;
+        IPv4AddressVector sourceList;
+
+        HostMulticastGroupData(IPv4Address multicastGroup)
+            : multicastGroup(multicastGroup), numOfExcludeModeSockets(0), filterMode(MCAST_INCLUDE_SOURCES) {}
+        bool updateSourceList();
+    };
+
+    typedef std::vector<HostMulticastGroupData> HostMulticastGroupVector;
+
     struct HostMulticastData
     {
-        IPv4AddressVector joinedMulticastGroups; // multicast groups this interface joined
-        std::vector<int> refCounts;              // ref count of the corresponding multicast group
+        HostMulticastGroupVector joinedMulticastGroups; // multicast groups this interface joined
 
         std::string info();
         std::string detailedInfo();
+    };
+
+    // IGMPv2: filterMode is EXCLUDE, sourceList is empty
+    struct RouterMulticastGroupData
+    {
+        IPv4Address multicastGroup;
+        McastSourceFilterMode filterMode;
+        IPv4AddressVector sourceList;
     };
 
     struct RouterMulticastData
@@ -89,6 +131,8 @@ class INET_API IPv4InterfaceData : public InterfaceProtocolData
     void changed1(int fieldId) {changed(NF_INTERFACE_IPv4CONFIG_CHANGED, fieldId);}
     HostMulticastData *getHostData() { if (!hostData) hostData = new HostMulticastData(); return hostData; }
     const HostMulticastData *getHostData() const { return const_cast<IPv4InterfaceData*>(this)->getHostData(); }
+    HostMulticastGroupData *findHostGroupData(IPv4Address multicastAddress);
+    bool removeHostGroupData(IPv4Address multicastAddress);
     RouterMulticastData *getRouterData() { if (!routerData) routerData = new RouterMulticastData(); return routerData; }
     const RouterMulticastData *getRouterData() const { return const_cast<IPv4InterfaceData*>(this)->getRouterData(); }
 
@@ -110,7 +154,8 @@ class INET_API IPv4InterfaceData : public InterfaceProtocolData
     IPv4Address getNetworkBroadcastAddress() const {return inetAddr.makeBroadcastAddress(netmask);}
     int getMetric() const  {return metric;}
     int getMulticastTtlThreshold() const {return getRouterData()->multicastTtlThreshold;}
-    const IPv4AddressVector& getJoinedMulticastGroups() const {return getHostData()->joinedMulticastGroups;}
+    int getNumOfJoinedMulticastGroups() const { return getHostData()->joinedMulticastGroups.size(); }
+    IPv4Address getJoinedMulticastGroup(int index) const { return getHostData()->joinedMulticastGroups[index].multicastGroup; }
     const IPv4AddressVector& getReportedMulticastGroups() const {return getRouterData()->reportedMulticastGroups;}
     bool isMemberOfMulticastGroup(const IPv4Address &multicastAddress) const;
     bool hasMulticastListener(const IPv4Address &multicastAddress) const;
@@ -124,6 +169,8 @@ class INET_API IPv4InterfaceData : public InterfaceProtocolData
     virtual void setMulticastTtlThreshold(int threshold) {getRouterData()->multicastTtlThreshold=threshold; changed1(F_MULTICAST_TTL_THRESHOLD);}
     virtual void joinMulticastGroup(const IPv4Address& multicastAddress);
     virtual void leaveMulticastGroup(const IPv4Address& multicastAddress);
+    virtual void changeMulticastGroupMembership(IPv4Address multicastAddress, McastSourceFilterMode oldFilterMode, const IPv4AddressVector &oldSourceList,
+                                                                              McastSourceFilterMode newFilterMode, const IPv4AddressVector &newSourceList);
     virtual void addMulticastListener(const IPv4Address &multicastAddress);
     virtual void removeMulticastListener(const IPv4Address &multicastAddress);
     //@}

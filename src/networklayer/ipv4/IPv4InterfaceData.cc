@@ -34,7 +34,7 @@ std::string IPv4InterfaceData::HostMulticastData::info()
         bool addComma = false;
         for (int i = 0; i < (int)joinedMulticastGroups.size(); ++i)
         {
-                out << (addComma?",":"") << joinedMulticastGroups[i];
+                out << (addComma?",":"") << joinedMulticastGroups[i].multicastGroup;
                 addComma = true;
         }
     }
@@ -47,7 +47,7 @@ std::string IPv4InterfaceData::HostMulticastData::detailedInfo()
     std::stringstream out;
     out << "Joined Groups:";
     for (int i = 0; i < (int)joinedMulticastGroups.size(); ++i)
-        out << " " << joinedMulticastGroups[i] << "(" << refCounts[i] << ")";
+        out << " " << joinedMulticastGroups[i].multicastGroup; // << "(" << refCounts[i] << ")";
     out << "\n";
     return out.str();
 }
@@ -118,63 +118,138 @@ std::string IPv4InterfaceData::detailedInfo() const
 
 bool IPv4InterfaceData::isMemberOfMulticastGroup(const IPv4Address &multicastAddress) const
 {
-    const IPv4AddressVector &multicastGroups = getJoinedMulticastGroups();
-    return find(multicastGroups.begin(), multicastGroups.end(), multicastAddress) != multicastGroups.end();
+    HostMulticastGroupVector groups = getHostData()->joinedMulticastGroups;
+    for (HostMulticastGroupVector::const_iterator it = groups.begin(); it != groups.end(); ++it)
+        if (it->multicastGroup == multicastAddress)
+            return true;
+    return false;
 }
 
+// XXX deprecated
 void IPv4InterfaceData::joinMulticastGroup(const IPv4Address& multicastAddress)
 {
-    if(!multicastAddress.isMulticast())
-        throw cRuntimeError("IPv4InterfaceData::joinMulticastGroup(): multicast address expected, received %s.", multicastAddress.str().c_str());
-
-    IPv4AddressVector &multicastGroups = getHostData()->joinedMulticastGroups;
-    std::vector<int> &refCounts = getHostData()->refCounts;
-    for (int i = 0; i < (int)multicastGroups.size(); ++i)
-    {
-        if (multicastGroups[i] == multicastAddress)
-        {
-            refCounts[i]++;
-            return;
-        }
-    }
-
-    multicastGroups.push_back(multicastAddress);
-    refCounts.push_back(1);
-
-    changed1(F_MULTICAST_ADDRESSES);
-
-    if (!nb)
-        nb = NotificationBoardAccess().get();
-    IPv4MulticastGroupInfo info(ownerp, multicastAddress);
-    nb->fireChangeNotification(NF_IPv4_MCAST_JOIN, &info);
+    IPv4AddressVector empty;
+    changeMulticastGroupMembership(multicastAddress, MCAST_INCLUDE_SOURCES, empty, MCAST_EXCLUDE_SOURCES, empty);
 }
 
+// XXX deprecated
 void IPv4InterfaceData::leaveMulticastGroup(const IPv4Address& multicastAddress)
 {
+    IPv4AddressVector empty;
+    changeMulticastGroupMembership(multicastAddress, MCAST_EXCLUDE_SOURCES, empty, MCAST_INCLUDE_SOURCES, empty);
+}
+
+/**
+ * This method is called by sockets to register their multicast group membership changes in the interface.
+ */
+void IPv4InterfaceData::changeMulticastGroupMembership(IPv4Address multicastAddress,
+        McastSourceFilterMode oldFilterMode, const IPv4AddressVector &oldSourceList,
+        McastSourceFilterMode newFilterMode, const IPv4AddressVector &newSourceList)
+{
     if(!multicastAddress.isMulticast())
-        throw cRuntimeError("IPv4InterfaceData::leaveMulticastGroup(): multicast address expected, received %s.", multicastAddress.str().c_str());
+        throw cRuntimeError("IPv4InterfaceData::changeMulticastGroupMembership(): multicast address expected, received %s.", multicastAddress.str().c_str());
 
-    IPv4AddressVector &multicastGroups = getHostData()->joinedMulticastGroups;
-    std::vector<int> &refCounts = getHostData()->refCounts;
-    for (int i = 0; i < (int)multicastGroups.size(); ++i)
+    HostMulticastGroupData *entry = findHostGroupData(multicastAddress);
+    if (!entry)
     {
-        if (multicastGroups[i] == multicastAddress)
+        ASSERT(oldFilterMode == MCAST_INCLUDE_SOURCES && oldSourceList.empty());
+        HostMulticastData *data = getHostData();
+        data->joinedMulticastGroups.push_back(HostMulticastGroupData(multicastAddress));
+        entry = &data->joinedMulticastGroups.back();
+    }
+
+    std::map<IPv4Address,int> &counts = oldFilterMode == MCAST_INCLUDE_SOURCES ? entry->includeCounts : entry->excludeCounts;
+    for (IPv4AddressVector::const_iterator source = oldSourceList.begin(); source != oldSourceList.end(); ++source)
+    {
+        std::map<IPv4Address,int>::iterator count = counts.find(*source);
+        if (count == counts.end())
+            throw cRuntimeError("");
+        else if (count->second == 1)
+            counts.erase(count);
+        else
+            count->second--;
+    }
+
+    counts = newFilterMode == MCAST_INCLUDE_SOURCES ? entry->includeCounts : entry->excludeCounts;
+    for (IPv4AddressVector::const_iterator source = newSourceList.begin(); source != newSourceList.end(); ++source)
+    {
+        std::map<IPv4Address,int>::iterator count = counts.find(*source);
+        if (count == counts.end())
+            counts[*source] = 1;
+        else
+            count->second++;
+    }
+
+    // update number of EXCLUDE mode sockets
+    if (oldFilterMode == MCAST_INCLUDE_SOURCES && newFilterMode == MCAST_EXCLUDE_SOURCES)
+        entry->numOfExcludeModeSockets++;
+    else if (oldFilterMode == MCAST_EXCLUDE_SOURCES && newFilterMode == MCAST_INCLUDE_SOURCES)
+        entry->numOfExcludeModeSockets--;
+
+    // compute filterMode and sourceList
+    bool changed = entry->updateSourceList();
+
+    if (changed)
+    {
+        changed1(F_MULTICAST_ADDRESSES);
+
+        if (!nb)
+            nb = NotificationBoardAccess().get();
+        IPv4MulticastGroupSourceInfo info(ownerp, multicastAddress, entry->filterMode, entry->sourceList);
+        nb->fireChangeNotification(NF_IPv4_MCAST_CHANGE, &info);
+
+        // Legacy notifications
+        if (oldFilterMode != newFilterMode && oldSourceList.empty() && newSourceList.empty())
         {
-            if (--refCounts[i] == 0)
-            {
-                multicastGroups.erase(multicastGroups.begin()+i);
-                refCounts.erase(refCounts.begin()+i);
+            IPv4MulticastGroupInfo info2(ownerp, multicastAddress);
+            nb->fireChangeNotification(newFilterMode == MCAST_EXCLUDE_SOURCES ? NF_IPv4_MCAST_JOIN : NF_IPv4_MCAST_LEAVE, &info2);
+        }
 
-                changed1(F_MULTICAST_ADDRESSES);
-
-                if (!nb)
-                    nb = NotificationBoardAccess().get();
-                IPv4MulticastGroupInfo info(ownerp, multicastAddress);
-                nb->fireChangeNotification(NF_IPv4_MCAST_LEAVE, &info);
-            }
+        // remove group data if it is INCLUDE(empty)
+        if (entry->filterMode == MCAST_INCLUDE_SOURCES && entry->sourceList.empty())
+        {
+            removeHostGroupData(multicastAddress);
         }
     }
 }
+
+/**
+ * Computes the filterMode and sourceList of the interface from the socket reference counts
+ * according to RFC3376 3.2.
+ * Returns true if filterMode or sourceList has been changed.
+ */
+bool IPv4InterfaceData::HostMulticastGroupData::updateSourceList()
+{
+    // Filter mode is EXCLUDE if any of the sockets are in EXCLUDE mode, otherwise INCLUDE
+    McastSourceFilterMode filterMode = numOfExcludeModeSockets == 0 ? MCAST_INCLUDE_SOURCES : MCAST_EXCLUDE_SOURCES;
+
+    IPv4AddressVector sourceList;
+    if (numOfExcludeModeSockets == 0)
+    {
+        // If all socket is in INCLUDE mode, then the sourceList is the union of included sources
+        for (std::map<IPv4Address,int>::iterator it = includeCounts.begin(); it != includeCounts.end(); ++it)
+            sourceList.push_back(it->first);
+
+    }
+    else
+    {
+        // If some socket is in EXCLUDE mode, then the sourceList contains the sources that are
+        // excluded by all EXCLUDE mode sockets except if there is a socket including the source.
+        for (std::map<IPv4Address,int>::iterator it = excludeCounts.begin(); it != excludeCounts.end(); ++it)
+            if (it->second == numOfExcludeModeSockets && includeCounts.find(it->first) == includeCounts.end())
+                sourceList.push_back(it->first);
+    }
+
+    if (this->filterMode != filterMode || this->sourceList != sourceList)
+    {
+        this->filterMode = filterMode;
+        this->sourceList = sourceList;
+        return true;
+    }
+    else
+        return false;
+}
+
 
 bool IPv4InterfaceData::hasMulticastListener(const IPv4Address &multicastAddress) const
 {
@@ -208,4 +283,27 @@ void IPv4InterfaceData::removeMulticastListener(const IPv4Address &multicastAddr
         multicastGroups.erase(multicastGroups.begin() + i);
         changed1(F_MULTICAST_LISTENERS);
     }
+}
+
+IPv4InterfaceData::HostMulticastGroupData *IPv4InterfaceData::findHostGroupData(IPv4Address multicastAddress)
+{
+    ASSERT(multicastAddress.isMulticast());
+    HostMulticastGroupVector &entries = getHostData()->joinedMulticastGroups;
+    for (HostMulticastGroupVector::iterator it = entries.begin(); it != entries.end(); ++it)
+        if (it->multicastGroup == multicastAddress)
+            return &(*it);
+    return NULL;
+}
+
+bool IPv4InterfaceData::removeHostGroupData(IPv4Address multicastAddress)
+{
+    ASSERT(multicastAddress.isMulticast());
+    HostMulticastGroupVector &entries = getHostData()->joinedMulticastGroups;
+    for (HostMulticastGroupVector::iterator it = entries.begin(); it != entries.end(); ++it)
+        if (it->multicastGroup == multicastAddress)
+        {
+            entries.erase(it);
+            return true;
+        }
+    return false;
 }
