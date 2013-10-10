@@ -21,8 +21,8 @@
 #include "SCTPAssociation.h"
 #include "SCTPCommand_m.h"
 #include "IPSocket.h"
-#include "IPv4ControlInfo.h"
-#include "IPv6ControlInfo.h"
+#include "IAddressType.h"
+#include "INetworkProtocolControlInfo.h"
 
 #ifdef WITH_IPv4
 #include "IPv4Datagram.h"
@@ -170,7 +170,7 @@ void SCTP::handleMessage(cMessage *msg)
         if (!ret)
             removeAssociation(assoc);
     }
-    else if (msg->arrivedOn("from_ip") || msg->arrivedOn("from_ipv6"))
+    else if (msg->arrivedOn("from_ip"))
     {
         sctpEV3<<"Message from IP\n";
         printInfoAssocMap();
@@ -192,7 +192,7 @@ void SCTP::handleMessage(cMessage *msg)
             delete msg;
             return;
         }
-        if (msg->arrivedOn("from_ip"))
+
         {
             if (par("udpEncapsEnabled"))
             {
@@ -205,21 +205,12 @@ void SCTP::handleMessage(cMessage *msg)
             }
             else
             {
-                IPv4ControlInfo *controlInfo = check_and_cast<IPv4ControlInfo *>(msg->removeControlInfo());
-                IPv4Datagram *datagram = controlInfo->removeOrigDatagram();
-                delete datagram;
-                sctpEV3<<"controlInfo srcAddr="<<controlInfo->getSrcAddr()<<"   destAddr="<<controlInfo->getDestAddr()<<"\n";
-                srcAddr = controlInfo->getSrcAddr();
-                destAddr = controlInfo->getDestAddr();
+                INetworkProtocolControlInfo *controlInfo = check_and_cast<INetworkProtocolControlInfo *>(msg->removeControlInfo());
+                srcAddr = controlInfo->getSourceAddress();
+                destAddr = controlInfo->getDestinationAddress();
+                sctpEV3 << "controlInfo srcAddr=" << srcAddr << "   destAddr=" << destAddr << "\n";
             }
         }
-        else
-        {
-            IPv6ControlInfo *controlInfoV6 = check_and_cast<IPv6ControlInfo *>(msg->removeControlInfo());
-            srcAddr = controlInfoV6->getSrcAddr();
-            destAddr = controlInfoV6->getDestAddr();
-        }
-
 
         sctpEV3<<"srcAddr="<<srcAddr<<" destAddr="<<destAddr<<"\n";
         if (sctpmsg->getByteLength()>(SCTP_COMMON_HEADER))
@@ -371,11 +362,12 @@ void SCTP::sendAbortFromMain(SCTPMessage* sctpmsg, Address srcAddr, Address dest
     }
     else
     {
-        IPv4ControlInfo *controlInfo = new IPv4ControlInfo();
+        IAddressType *addressType = destAddr.getAddressType();
+        INetworkProtocolControlInfo *controlInfo = addressType->createNetworkProtocolControlInfo();
         controlInfo->setProtocol(IP_PROT_SCTP);
-        controlInfo->setSrcAddr(srcAddr.toIPv4());
-        controlInfo->setDestAddr(destAddr.toIPv4());
-        msg->setControlInfo(controlInfo);
+        controlInfo->setSourceAddress(srcAddr);
+        controlInfo->setDestinationAddress(destAddr);
+        msg->setControlInfo(check_and_cast<cObject *>(controlInfo));
         send(msg, "to_ip");
     }
 }
@@ -398,14 +390,14 @@ void SCTP::sendShutdownCompleteFromMain(SCTPMessage* sctpmsg, Address srcAddr, A
 
     scChunk->setBitLength(SCTP_SHUTDOWN_ACK_LENGTH*8);
     msg->addChunk(scChunk);
-    IPv4ControlInfo *controlInfo = new IPv4ControlInfo();
+    IAddressType *addressType = destAddr.getAddressType();
+    INetworkProtocolControlInfo *controlInfo = addressType->createNetworkProtocolControlInfo();
     controlInfo->setProtocol(IP_PROT_SCTP);
-    controlInfo->setSrcAddr(srcAddr.toIPv4());
-    controlInfo->setDestAddr(destAddr.toIPv4());
-    msg->setControlInfo(controlInfo);
+    controlInfo->setSourceAddress(srcAddr);
+    controlInfo->setDestinationAddress(destAddr);
+    msg->setControlInfo(check_and_cast<cObject *>(controlInfo));
     send(msg, "to_ip");
 }
-
 
 void SCTP::updateDisplayString()
 {
