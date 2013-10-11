@@ -19,8 +19,8 @@
 #include "TCP.h"
 
 #include "IPSocket.h"
-#include "IPv4ControlInfo.h"
-#include "IPv6ControlInfo.h"
+#include "INetworkProtocolControlInfo.h"
+#include "IPProtocolId_m.h"
 #include "LifecycleOperation.h"
 #include "ModuleAccess.h"
 #include "NodeOperations.h"

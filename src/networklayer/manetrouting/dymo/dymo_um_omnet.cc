@@ -435,9 +435,9 @@ void DYMOUM::handleMessage(cMessage *msg)
             dymoMsg = check_and_cast  <DYMO_element *>(msg_aux);
             if (!isInMacLayer())
             {
-                IPv4ControlInfo *controlInfo = check_and_cast<IPv4ControlInfo*>(udpPacket->removeControlInfo());
-                src_addr.s_addr = ManetAddress(controlInfo->getSrcAddr());
-                dymoMsg->setControlInfo(controlInfo);
+                INetworkProtocolControlInfo *controlInfo = check_and_cast<INetworkProtocolControlInfo*>(udpPacket->removeControlInfo());
+                src_addr.s_addr = ManetAddress(controlInfo->getSourceAddress());
+                dymoMsg->setControlInfo(check_and_cast<cObject *>(controlInfo));
             }
             else
             {
@@ -650,8 +650,8 @@ void DYMOUM::recvDYMOUMPacket(cMessage * msg)
     if (!isInMacLayer())
     {
         IPv4ControlInfo *ctrl = check_and_cast<IPv4ControlInfo *>(msg->removeControlInfo());
-        Address srcAddr = ctrl->getSrcAddr();
-        Address destAddr = ctrl->getDestAddr();
+        Address srcAddr = ctrl->getSourceAddress();
+        Address destAddr = ctrl->getDestinationAddress();
         src.s_addr = ManetAddress(srcAddr);
         dst.s_addr = ManetAddress(destAddr);
         interfaceId = ctrl->getInterfaceId();
@@ -675,9 +675,7 @@ void DYMOUM::recvDYMOUMPacket(cMessage * msg)
             dst.s_addr = ManetAddress(ctrl->getDest());
             if (ctrl)
                 delete ctrl;
-
         }
-
     }
 
     InterfaceEntry *   ie;
