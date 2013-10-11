@@ -39,7 +39,6 @@
 #include "IPv4Datagram.h"
 #include "UDPPacket.h"
 #include "IPv4InterfaceData.h"
-#include "IPv6ControlInfo.h"
 
 #include "NotifierConsts.h"
 #include "IPv4RoutingTableAccess.h"

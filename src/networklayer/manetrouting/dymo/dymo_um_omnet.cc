@@ -29,7 +29,6 @@
 
 #include "UDPPacket.h"
 #include "IPv4ControlInfo.h"
-#include "IPv6ControlInfo.h"
 #include "ICMPMessage_m.h"
 #include "ICMPAccess.h"
 #include "NotifierConsts.h"
