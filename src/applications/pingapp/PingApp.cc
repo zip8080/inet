@@ -111,8 +111,10 @@ void PingApp::handleMessage(cMessage *msg)
     }
     if (msg == timer)
     {
-        sendPingRequest();
-        scheduleNextPingRequest(simTime());
+        if (isEnabled()) {
+            sendPingRequest();
+            scheduleNextPingRequest(simTime());
+        }
     }
     else
         processPingResponse(check_and_cast<PingPayload *>(msg));
@@ -220,7 +222,7 @@ void PingApp::sendPingRequest()
     sentCount++;
 }
 
-void PingApp::sendToICMP(cMessage *msg, const Address& destAddr, const Address& srcAddr, int hopLimit)
+void PingApp::sendToICMP(PingPayload *msg, const Address& destAddr, const Address& srcAddr, int hopLimit)
 {
     IAddressType * addressType = destAddr.getAddressType();
     INetworkProtocolControlInfo * controlInfo = addressType->createNetworkProtocolControlInfo();
