@@ -31,8 +31,6 @@
 #include "InterfaceEntry.h"
 #include "IPv4Address.h"
 
-enum McastSourceFilterMode { MCAST_INCLUDE_SOURCES, MCAST_EXCLUDE_SOURCES };
-
 /*
  * Info for NF_IPv4_MCAST_JOIN and NF_IPv4_MCAST_LEAVE notifications
  */
