@@ -43,6 +43,7 @@
 #  define EV_INFO   EV
 #  define EV_DEBUG  EV << "DEBUG: "
 #  define EV_TRACE  EV << "TRACE: "
+#  define EV_DETAIL EV << "DETAIL: "
 #endif
 
 typedef unsigned short ushort;
