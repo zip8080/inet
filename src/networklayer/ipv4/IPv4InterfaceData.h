@@ -154,6 +154,8 @@ class INET_API IPv4InterfaceData : public InterfaceProtocolData
     int getMulticastTtlThreshold() const {return getRouterData()->multicastTtlThreshold;}
     int getNumOfJoinedMulticastGroups() const { return getHostData()->joinedMulticastGroups.size(); }
     IPv4Address getJoinedMulticastGroup(int index) const { return getHostData()->joinedMulticastGroups[index].multicastGroup; }
+    McastSourceFilterMode getJoinedGroupFilterMode(int index) const { return getHostData()->joinedMulticastGroups[index].filterMode; }
+    const IPv4AddressVector& getJoinedGroupSourceList(int index) const { return getHostData()->joinedMulticastGroups[index].sourceList; }
     const IPv4AddressVector& getReportedMulticastGroups() const {return getRouterData()->reportedMulticastGroups;}
     bool isMemberOfMulticastGroup(const IPv4Address &multicastAddress) const;
     bool hasMulticastListener(const IPv4Address &multicastAddress) const;
