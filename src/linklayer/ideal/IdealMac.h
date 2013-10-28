@@ -20,13 +20,11 @@
 #ifndef __INET_IdealMac_H
 #define __INET_IdealMac_H
 
-
 #include "INETDefs.h"
-
+#include "IRadio.h"
 #include "MACAddress.h"
-#include "RadioState.h"
 #include "WirelessMacBase.h"
-#include "IdealFrame_m.h"
+#include "IdealMacFrame_m.h"
 
 class InterfaceEntry;
 class IPassiveQueue;
@@ -39,19 +37,17 @@ class IPassiveQueue;
 class INET_API IdealMac : public WirelessMacBase, public cListener
 {
   protected:
-    static simsignal_t radioStateSignal;
     static simsignal_t dropPkNotForUsSignal;
 
     // parameters
-    int headerLength;       // IdealAirFrame header length in bytes
+    int headerLength;       // IdealMacFrame header length in bytes
     double bitrate;         // [bits per sec]
     bool promiscuous;       // promiscuous mode
     MACAddress address;     // MAC address
 
+    IRadio *radio;
     IPassiveQueue *queueModule;
-    cModule *radioModule;
 
-    RadioState::State radioState;
     int outStandingRequests;
     simtime_t lastTransmitStartTime;
 
@@ -64,16 +60,16 @@ class INET_API IdealMac : public WirelessMacBase, public cListener
     //@}
 
     virtual void startTransmitting(cPacket *msg);
-    virtual bool dropFrameNotForUs(IdealFrame *frame);
-    virtual IdealFrame *encapsulate(cPacket *msg);
-    virtual cPacket *decapsulate(IdealFrame *frame);
+    virtual bool dropFrameNotForUs(IdealMacFrame *frame);
+    virtual IdealMacFrame *encapsulate(cPacket *msg);
+    virtual cPacket *decapsulate(IdealMacFrame *frame);
     virtual void initializeMACAddress();
 
     // get MSG from queue
     virtual void getNextMsgFromHL();
 
     //cListener:
-    virtual void receiveSignal(cComponent *src, simsignal_t id, long x);
+    virtual void receiveSignal(cComponent *src, simsignal_t id, long value);
 
     /** implements WirelessMacBase functions */
     //@{

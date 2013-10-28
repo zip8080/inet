@@ -32,13 +32,12 @@
 
 Define_Module(IdealMac);
 
-simsignal_t IdealMac::radioStateSignal = SIMSIGNAL_NULL;
 simsignal_t IdealMac::dropPkNotForUsSignal = SIMSIGNAL_NULL;
 
 IdealMac::IdealMac()
 {
     queueModule = NULL;
-    radioModule = NULL;
+    radio = NULL;
 }
 
 IdealMac::~IdealMac()
@@ -76,12 +75,11 @@ void IdealMac::initialize(int stage)
         headerLength = par("headerLength").longValue();
         promiscuous = par("promiscuous");
 
-        radioStateSignal = registerSignal("radioState");
         dropPkNotForUsSignal = registerSignal("dropPkNotForUs");
 
-        radioModule = gate("lowerLayerOut")->getPathEndGate()->getOwnerModule();
-        IdealRadio *irm = check_and_cast<IdealRadio *>(radioModule);
-        irm->subscribe(radioStateSignal, this);
+        cModule *radioModule = gate("lowerLayerOut")->getPathEndGate()->getOwnerModule();
+        radioModule->subscribe(IRadio::radioChannelStateChangedSignal, this);
+        radio = check_and_cast<IRadio *>(radioModule);
 
         // find queueModule
         cGate *queueOut = gate("upperLayerIn")->getPathStartGate();
@@ -95,6 +93,10 @@ void IdealMac::initialize(int stage)
     {
         // register our interface entry in IInterfaceTable
         registerInterface();
+    }
+    else if (stage == 1)
+    {
+        radio->setRadioMode(IRadio::RADIO_MODE_RECEIVER);
     }
 }
 
@@ -141,23 +143,25 @@ InterfaceEntry *IdealMac::createInterfaceEntry()
     return e;
 }
 
-void IdealMac::receiveSignal(cComponent *src, simsignal_t id, long x)
+void IdealMac::receiveSignal(cComponent *src, simsignal_t id, long value)
 {
-    if (id == radioStateSignal && src == radioModule)
+    if (id == IRadio::radioChannelStateChangedSignal)
     {
-        radioState = (RadioState::State)x;
-        if (radioState != RadioState::TRANSMIT)
+        if ((IRadio::RadioChannelState)value != IRadio::RADIO_CHANNEL_STATE_TRANSMITTING) {
+            radio->setRadioMode(IRadio::RADIO_MODE_RECEIVER);
             getNextMsgFromHL();
+        }
     }
 }
 
 void IdealMac::startTransmitting(cPacket *msg)
 {
     // if there's any control info, remove it; then encapsulate the packet
-    IdealFrame *frame = encapsulate(msg);
+    IdealMacFrame *frame = encapsulate(msg);
 
     // send
     EV << "Starting transmission of " << frame << endl;
+    radio->setRadioMode(IRadio::RADIO_MODE_TRANSMITTER);
     sendDown(frame);
 }
 
@@ -180,14 +184,10 @@ void IdealMac::getNextMsgFromHL()
 void IdealMac::handleUpperMsg(cPacket *msg)
 {
     outStandingRequests--;
-    if (radioState == RadioState::TRANSMIT)
+    if (radio->getRadioChannelState() == IRadio::RADIO_CHANNEL_STATE_TRANSMITTING)
     {
         // Logic error: we do not request packet from the external queue when radio is transmitting
         error("Received msg for transmission but transmitter is busy");
-    }
-    else if (radioState == RadioState::SLEEP)
-    {
-        EV << "Dropped upper layer message " << msg << " because radio is SLEEPing.\n";
     }
     else
     {
@@ -204,7 +204,7 @@ void IdealMac::handleCommand(cMessage *msg)
 
 void IdealMac::handleLowerMsg(cPacket *msg)
 {
-    IdealFrame *frame = check_and_cast<IdealFrame *>(msg);
+    IdealMacFrame *frame = check_and_cast<IdealMacFrame *>(msg);
     if (frame->hasBitError())
     {
         EV << "Bit error in " << frame << ", discarding" << endl;
@@ -221,10 +221,10 @@ void IdealMac::handleLowerMsg(cPacket *msg)
     }
 }
 
-IdealFrame *IdealMac::encapsulate(cPacket *msg)
+IdealMacFrame *IdealMac::encapsulate(cPacket *msg)
 {
     Ieee802Ctrl *ctrl = check_and_cast<Ieee802Ctrl*>(msg->removeControlInfo());
-    IdealFrame *frame = new IdealFrame(msg->getName());
+    IdealMacFrame *frame = new IdealMacFrame(msg->getName());
     frame->setByteLength(headerLength);
     frame->setSrc(ctrl->getSrc());
     frame->setDest(ctrl->getDest());
@@ -233,7 +233,7 @@ IdealFrame *IdealMac::encapsulate(cPacket *msg)
     return frame;
 }
 
-bool IdealMac::dropFrameNotForUs(IdealFrame *frame)
+bool IdealMac::dropFrameNotForUs(IdealMacFrame *frame)
 {
     // Current implementation does not support the configuration of multicast
     // MAC address groups. We rather accept all multicast frames (just like they were
@@ -257,7 +257,7 @@ bool IdealMac::dropFrameNotForUs(IdealFrame *frame)
     return true;
 }
 
-cPacket *IdealMac::decapsulate(IdealFrame *frame)
+cPacket *IdealMac::decapsulate(IdealMacFrame *frame)
 {
     // decapsulate and attach control info
     cPacket *packet = frame->decapsulate();

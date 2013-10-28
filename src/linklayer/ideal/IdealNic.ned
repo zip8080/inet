@@ -38,8 +38,7 @@ import inet.physicallayer.radio.contract.IRadio;
 // affected at all. There are no collisions -- a radio can simultaneously
 // receive any number of frames, and also transmit a single frame at the same time.
 //
-// This module requires an ~IdealChannelModel instance in the network
-// as channel control module.
+// This module requires an ~IdealRadioChannel instance in the network.
 //
 module IdealNic like IWirelessNic
 {
@@ -53,7 +52,7 @@ module IdealNic like IWirelessNic
     gates:
         input upperLayerIn;
         output upperLayerOut;
-        input radioIn @labels(IdealAirFrame);
+        input radioIn @labels(IdealRadioFrame);
     submodules:
         queue: <queueType> like IOutputQueue {
             parameters:
@@ -69,10 +68,9 @@ module IdealNic like IWirelessNic
         }
     connections:
         upperLayerIn --> { @display("m=n"); } --> queue.in;
-        mac.upperLayerOut --> { @display("m=n"); } --> upperLayerOut;
         queue.out --> mac.upperLayerIn;
+        mac.lowerLayerOut --> radio.upperLayerIn;
+        mac.upperLayerOut --> { @display("m=n"); } --> upperLayerOut;
         radioIn --> { @display("m=s"); } --> radio.radioIn;
-        radio.upperLayerIn <-- mac.lowerLayerOut;
         radio.upperLayerOut --> mac.lowerLayerIn;
 }
-

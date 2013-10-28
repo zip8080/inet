@@ -26,7 +26,7 @@ import inet.linklayer.contract.ILinkLayer;
 //
 // Implements a trivial MAC layer for use in ~IdealNic.
 //
-// This module only provides encapsulation/decapsulation (into IdealAirFrame), 
+// This module only provides encapsulation/decapsulation (into IdealMacFrame), 
 // but no real medium access protocol.
 //
 // Higher layer packets should have Ieee802Ctrl attached to them as
@@ -42,15 +42,15 @@ simple IdealMac like ILinkLayer
                                             // a generated MAC address in init stage 0.
         double bitrate @unit("bps");
         int mtu @unit("B") = default(4470B);
-        int headerLength @unit("B");        // IdealFrame.byteLength = headerLength + packetFromUpperLayer.byteLength
+        int headerLength @unit("B");        // IdealMacFrame.byteLength = headerLength + packetFromUpperLayer.byteLength
         bool promiscuous = default(false);
         @display("i=block/rxtx");
 
-        @signal[packetSentToLower](type=IdealFrame);
-        @signal[packetReceivedFromLower](type=IdealFrame);
+        @signal[packetSentToLower](type=IdealMacFrame);
+        @signal[packetReceivedFromLower](type=IdealMacFrame);
         @signal[packetSentToUpper](type=cPacket);   // cPacket with Ieee802Ctrl ctrlinfo
         @signal[packetReceivedFromUpper](type=cPacket);   // cPacket with Ieee802Ctrl ctrlinfo
-        @signal[dropPkNotForUs](type=IdealFrame);
+        @signal[dropPkNotForUs](type=IdealMacFrame);
 
         @statistic[passedUpPk](title="packets passed to higher layer"; source=packetSentToUpper; record=count,"sum(packetBytes)","vector(packetBytes)"; interpolationmode=none);
         @statistic[sentDownPk](title="packets sent to lower layer"; source=packetSentToLower; record=count,"sum(packetBytes)","vector(packetBytes)"; interpolationmode=none);
@@ -61,6 +61,6 @@ simple IdealMac like ILinkLayer
     gates:
         input upperLayerIn @labels(Ieee802Ctrl);        // should connect to output gate of an IPassiveQueue module
         output upperLayerOut @labels(Ieee802Ctrl);
-        input lowerLayerIn @labels(IdealFrame);
-        output lowerLayerOut @labels(IdealFrame);
+        input lowerLayerIn @labels(IdealMacFrame);
+        output lowerLayerOut @labels(IdealMacFrame);
 }

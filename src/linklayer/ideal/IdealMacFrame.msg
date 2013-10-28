@@ -29,7 +29,7 @@ class noncobject MACAddress;
 // Packet for ~IdealMac. Packet size is configurable
 // in the MAC layer. 
 //
-packet IdealFrame
+packet IdealMacFrame
 {
     MACAddress src;     // source address
     MACAddress dest;    // destination address
