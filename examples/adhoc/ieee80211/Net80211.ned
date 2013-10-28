@@ -20,25 +20,26 @@ package inet.examples.adhoc.ieee80211;
 
 import inet.networklayer.autorouting.ipv4.IPv4NetworkConfigurator;
 import inet.nodes.inet.AdhocHost;
-import inet.world.radio.ChannelControl;
+import inet.physicallayer.radio.contract.IRadioChannel;
 
 
 network Net80211
 {
     parameters:
         int numHosts;
+        string radioChannelType = default("SimplifiedRadioChannel");
     submodules:
+        radioChannel: <radioChannelType> like IRadioChannel {
+            parameters:
+                @display("p=50,50");
+        }
+        configurator: IPv4NetworkConfigurator {
+            parameters:
+                @display("p=50,100");
+        }
         host[numHosts]: AdhocHost {
             parameters:
                 @display("r=,,#707070;p=250,58");
-        }
-        channelControl: ChannelControl {
-            parameters:
-                @display("p=60,50");
-        }
-        configurator: IPv4NetworkConfigurator {
-            config=xml("<config><interface hosts='*' address='192.168.x.x' netmask='255.255.0.0'/></config>");
-            @display("p=140,50");
         }
 }
 

@@ -17,14 +17,14 @@
 
 package inet.examples.bgpv4.BGPOpen;
 
-import inet.util.MessageChecker;
-import inet.transport.ITCP;
+import inet.base.NotificationBoard;
+import inet.linklayer.IWiredNic;
+import inet.networklayer.bgpv4.BGPRouting;
+import inet.networklayer.common.InterfaceTable;
 import inet.networklayer.ipv4.IPv4NetworkLayer;
 import inet.networklayer.ipv4.IPv4RoutingTable;
-import inet.networklayer.common.InterfaceTable;
-import inet.networklayer.bgpv4.BGPRouting;
-import inet.linklayer.IWiredNic;
-import inet.base.NotificationBoard;
+import inet.transport.ITCP;
+import inet.util.MessageChecker;
 
 
 //
