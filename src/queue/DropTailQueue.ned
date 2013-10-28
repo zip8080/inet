@@ -16,7 +16,7 @@
 //
 
 
-package inet.linklayer.queue;
+package inet.queue;
 
 import inet.linklayer.IOutputQueue;
 
