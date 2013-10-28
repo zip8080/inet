@@ -16,7 +16,7 @@
 
 package inet.networklayer.generic;
 
-import inet.networklayer.contract.IRoutingTable;
+import inet.networklayer.common.IRoutingTable;
 
 
 //

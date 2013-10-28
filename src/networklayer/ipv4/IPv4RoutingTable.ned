@@ -18,7 +18,7 @@
 
 package inet.networklayer.ipv4;
 
-import inet.networklayer.contract.IRoutingTable;
+import inet.networklayer.common.IRoutingTable;
 
 
 //

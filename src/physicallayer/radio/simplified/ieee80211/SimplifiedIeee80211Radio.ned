@@ -17,7 +17,7 @@
 //
 
 
-package inet.linklayer.ieee80211.radio;
+package inet.physicallayer.radio.simplified.ieee80211;
 import inet.physicallayer.radio.simplified.SimplifiedRadio;
 
 
@@ -29,7 +29,7 @@ import inet.physicallayer.radio.simplified.SimplifiedRadio;
 // @see Radio
 // @author Alfonso Ariza Quintana
 //
-simple Ieee80211Radio extends SimplifiedRadio
+simple SimplifiedIeee80211Radio extends SimplifiedRadio
 {
     parameters:
         @display("i=block/wrxtx");
@@ -44,4 +44,3 @@ simple Ieee80211Radio extends SimplifiedRadio
 
         bool AutoHeaderSize = default(false); // in the receiver the radio model compute the header size in function of timers and bitrate
 }
-

@@ -20,9 +20,9 @@ package inet.networklayer.diffserv;
 
 import inet.base.Sink;
 import inet.linklayer.IOutputQueue;
-import inet.linklayer.queue.DropTailQueue;
-import inet.linklayer.queue.PriorityScheduler;
-import inet.linklayer.queue.WRRScheduler;
+import inet.queue.DropTailQueue;
+import inet.queue.PriorityScheduler;
+import inet.queue.WRRScheduler;
 
 
 //
