@@ -18,7 +18,7 @@
 
 #include "IRadio.h"
 #include "Ieee80211MgmtSTA.h"
-#include "Ieee802Ctrl_m.h"
+#include "Ieee802Ctrl.h"
 #include "NotifierConsts.h"
 #include "PhyControlInfo_m.h"
 #include "SimplifiedRadioChannelAccess.h"

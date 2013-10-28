@@ -23,7 +23,7 @@
 #include "IdealMac.h"
 
 #include "IdealRadio.h"
-#include "Ieee802Ctrl_m.h"
+#include "Ieee802Ctrl.h"
 #include "IInterfaceTable.h"
 #include "InterfaceTableAccess.h"
 #include "IPassiveQueue.h"
