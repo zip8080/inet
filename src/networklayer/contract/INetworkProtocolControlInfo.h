@@ -1,5 +1,5 @@
 //
-// Copyright (C) 2012 Andras Varga
+// Copyright (C) 2013 Andras Varga
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public License
@@ -15,20 +15,24 @@
 // along with this program; if not, see <http://www.gnu.org/licenses/>.
 //
 
-#ifndef __INET_INETWORKDATAGRAM_H_
-#define __INET_INETWORKDATAGRAM_H_
+#ifndef __INET_INETWORKPROTOCOLCONTROLINFO_H_
+#define __INET_INETWORKPROTOCOLCONTROLINFO_H_
 
 #include "Address.h"
 
-class INetworkDatagram {
+class INET_API INetworkProtocolControlInfo {
   public:
-    virtual ~INetworkDatagram() { }
+    virtual ~INetworkProtocolControlInfo() { }
+    virtual short getProtocol() const = 0;
+    virtual void setProtocol(short protocol) = 0;
     virtual Address getSourceAddress() const = 0;
     virtual void setSourceAddress(const Address & address) = 0;
     virtual Address getDestinationAddress() const = 0;
     virtual void setDestinationAddress(const Address & address) = 0;
-    virtual int getTransportProtocol() const = 0;
-    virtual void setTransportProtocol(int protocol) = 0;
+    virtual int getInterfaceId() const = 0;
+    virtual void setInterfaceId(int interfaceId) = 0;
+    virtual short getHopLimit() const = 0;
+    virtual void setHopLimit(short hopLimit) = 0;
 };
 
 #endif
