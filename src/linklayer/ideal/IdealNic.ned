@@ -18,13 +18,12 @@
 //
 
 
-package inet.linklayer.idealwireless;
+package inet.linklayer.ideal;
 
-import inet.base.IHook;
 import inet.linklayer.IOutputQueue;
-import inet.linklayer.ITrafficConditioner;
 import inet.linklayer.IWirelessNic;
-import inet.linklayer.radio.IdealRadio;
+import inet.linklayer.contract.ILinkLayer;
+import inet.physicallayer.radio.contract.IRadio;
 
 
 //
@@ -42,12 +41,15 @@ import inet.linklayer.radio.IdealRadio;
 // This module requires an ~IdealChannelModel instance in the network
 // as channel control module.
 //
-module IdealWirelessNic like IWirelessNic
+module IdealNic like IWirelessNic
 {
     parameters:
         @display("i=block/ifcard;bgb=214,335;bgl=53");
         double bitrate @unit("bps");
         string queueType = default("DropTailQueue");    // DropTailQueue, a Diffserv queue, etc.
+        string macType = default("IdealMac");
+        string radioType = default("IdealRadio");
+        **.bitrate = bitrate;
     gates:
         input upperLayerIn;
         output upperLayerOut;
@@ -57,14 +59,12 @@ module IdealWirelessNic like IWirelessNic
             parameters:
                 @display("p=23,125;q=l2queue");
         }
-        mac: IdealWirelessMac {
+        mac: <macType> like ILinkLayer {
             parameters:
-                bitrate = bitrate;
                 @display("p=98,207");
         }
-        radio: IdealRadio {
+        radio: <radioType> like IRadio {
             parameters:
-                bitrate = bitrate;
                 @display("p=98,278");
         }
     connections:

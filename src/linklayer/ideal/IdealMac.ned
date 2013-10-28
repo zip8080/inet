@@ -17,11 +17,14 @@
 // author: Zoltan Bojthe
 //
 
-package inet.linklayer.idealwireless;
+package inet.linklayer.ideal;
+
+
+import inet.linklayer.contract.ILinkLayer;
 
 
 //
-// Implements a trivial MAC layer for use in ~IdealWirelessNic.
+// Implements a trivial MAC layer for use in ~IdealNic.
 //
 // This module only provides encapsulation/decapsulation (into IdealAirFrame), 
 // but no real medium access protocol.
@@ -29,9 +32,9 @@ package inet.linklayer.idealwireless;
 // Higher layer packets should have Ieee802Ctrl attached to them as
 // control info.
 //
-// See ~IdealWirelessNic for rationale and details.
+// See ~IdealNic for rationale and details.
 //
-simple IdealWirelessMac
+simple IdealMac like ILinkLayer
 {
     parameters:
         string address = default("auto");   // MAC address as hex string (12 hex digits), or
@@ -39,15 +42,15 @@ simple IdealWirelessMac
                                             // a generated MAC address in init stage 0.
         double bitrate @unit("bps");
         int mtu @unit("B") = default(4470B);
-        int headerLength @unit("B");        // IdealWirelessFrame.byteLength = headerLength + packetFromUpperLayer.byteLength
+        int headerLength @unit("B");        // IdealFrame.byteLength = headerLength + packetFromUpperLayer.byteLength
         bool promiscuous = default(false);
         @display("i=block/rxtx");
 
-        @signal[packetSentToLower](type=IdealWirelessFrame);
-        @signal[packetReceivedFromLower](type=IdealWirelessFrame);
+        @signal[packetSentToLower](type=IdealFrame);
+        @signal[packetReceivedFromLower](type=IdealFrame);
         @signal[packetSentToUpper](type=cPacket);   // cPacket with Ieee802Ctrl ctrlinfo
         @signal[packetReceivedFromUpper](type=cPacket);   // cPacket with Ieee802Ctrl ctrlinfo
-        @signal[dropPkNotForUs](type=IdealWirelessFrame);
+        @signal[dropPkNotForUs](type=IdealFrame);
 
         @statistic[passedUpPk](title="packets passed to higher layer"; source=packetSentToUpper; record=count,"sum(packetBytes)","vector(packetBytes)"; interpolationmode=none);
         @statistic[sentDownPk](title="packets sent to lower layer"; source=packetSentToLower; record=count,"sum(packetBytes)","vector(packetBytes)"; interpolationmode=none);
@@ -58,7 +61,6 @@ simple IdealWirelessMac
     gates:
         input upperLayerIn @labels(Ieee802Ctrl);        // should connect to output gate of an IPassiveQueue module
         output upperLayerOut @labels(Ieee802Ctrl);
-        input lowerLayerIn @labels(IdealWirelessFrame);
-        output lowerLayerOut @labels(IdealWirelessFrame);
+        input lowerLayerIn @labels(IdealFrame);
+        output lowerLayerOut @labels(IdealFrame);
 }
-

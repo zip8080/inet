@@ -17,8 +17,8 @@
 // author: Zoltan Bojthe
 //
 
-#ifndef __INET_IdealWirelessMac_H
-#define __INET_IdealWirelessMac_H
+#ifndef __INET_IdealMac_H
+#define __INET_IdealMac_H
 
 
 #include "INETDefs.h"
@@ -26,8 +26,8 @@
 #include "MACAddress.h"
 #include "RadioState.h"
 #include "WirelessMacBase.h"
+#include "IdealFrame_m.h"
 
-class IdealWirelessFrame;
 class InterfaceEntry;
 class IPassiveQueue;
 
@@ -36,7 +36,7 @@ class IPassiveQueue;
  *
  * See the NED file for details.
  */
-class INET_API IdealWirelessMac : public WirelessMacBase, public cListener
+class INET_API IdealMac : public WirelessMacBase, public cListener
 {
   protected:
     static simsignal_t radioStateSignal;
@@ -64,9 +64,9 @@ class INET_API IdealWirelessMac : public WirelessMacBase, public cListener
     //@}
 
     virtual void startTransmitting(cPacket *msg);
-    virtual bool dropFrameNotForUs(IdealWirelessFrame *frame);
-    virtual IdealWirelessFrame *encapsulate(cPacket *msg);
-    virtual cPacket *decapsulate(IdealWirelessFrame *frame);
+    virtual bool dropFrameNotForUs(IdealFrame *frame);
+    virtual IdealFrame *encapsulate(cPacket *msg);
+    virtual cPacket *decapsulate(IdealFrame *frame);
     virtual void initializeMACAddress();
 
     // get MSG from queue
@@ -84,8 +84,8 @@ class INET_API IdealWirelessMac : public WirelessMacBase, public cListener
     //@}
 
   public:
-    IdealWirelessMac();
-    virtual ~IdealWirelessMac();
+    IdealMac();
+    virtual ~IdealMac();
 
   protected:
     virtual int numInitStages() const { return NUM_INIT_STAGES; }
