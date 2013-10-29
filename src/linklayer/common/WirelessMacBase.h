@@ -38,6 +38,7 @@ class NotificationBoard;
  *
  * @author Daniel Willkomm, Andras Varga
  */
+// TODO: there's nothing wireless specific in this class, call it accordingly or merge into its base class
 class INET_API WirelessMacBase : public MACBase
 {
   protected:
