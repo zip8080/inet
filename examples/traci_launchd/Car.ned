@@ -23,7 +23,7 @@ package inet.examples.traci_launchd;
 import inet.applications.traci.TraCIDemo;
 import inet.base.NotificationBoard;
 import inet.linklayer.ieee80211.Ieee80211Nic;
-import inet.mobility.models.TraCIMobility;
+import inet.mobility.single.TraCIMobility;
 import inet.networklayer.autorouting.ipv4.HostAutoConfigurator;
 import inet.networklayer.common.InterfaceTable;
 import inet.networklayer.ipv4.IPv4NetworkLayer;
