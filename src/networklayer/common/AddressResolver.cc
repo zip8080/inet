@@ -415,7 +415,6 @@ bool AddressResolver::getInterfaceModulePathAddress(Address &ret, InterfaceEntry
             ret = addr;
             return true;
         }
-        return true;
     }
     return false;
 }
@@ -430,7 +429,6 @@ bool AddressResolver::getInterfaceModuleIdAddress(Address &ret, InterfaceEntry *
             ret = addr;
             return true;
         }
-        return true;
     }
     return false;
 }
