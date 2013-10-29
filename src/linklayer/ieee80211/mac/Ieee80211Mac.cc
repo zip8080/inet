@@ -276,9 +276,6 @@ void Ieee80211Mac::initialize(int stage)
         endReserve = new cMessage("Reserve");
         mediumStateChange = new cMessage("MediumStateChange");
 
-        // subscribe for the information of the carrier sense
-        nb->subscribe(this, NF_RADIOSTATE_CHANGED);
-
         // obtain pointer to external queue
         initializeQueueModule();  //FIXME STAGE: this should be in L2 initialization!!!!
 

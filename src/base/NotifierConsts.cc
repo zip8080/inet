@@ -30,8 +30,6 @@ const char *notificationCategoryName(int category)
         case NF_NODE_FAILURE: return "FAILURE";
         case NF_NODE_RECOVERY: return "RECOVERY";
 
-        case NF_RADIOSTATE_CHANGED: return "RADIO-STATE";
-        case NF_RADIO_CHANNEL_CHANGED: return "RADIO-CHANNEL";
         case NF_PP_TX_BEGIN: return "TX-BEG";
         case NF_PP_TX_END: return "TX-END";
         case NF_PP_RX_END: return "RX-END";
@@ -71,8 +69,6 @@ const char *notificationCategoryName(int category)
         case NF_OVERLAY_TRANSPORTADDRESS_CHANGED: return "OVERLAY-TRANSPORTADDESS";
         case NF_OVERLAY_NODE_LEAVE: return "OVERLAY-NODE-LEAVE";
         case NF_OVERLAY_NODE_GRACEFUL_LEAVE: return "NODE-GRACEFUL-LEAVE";
-        case NF_BATTERY_CHANGED: return "NF_BATTERY_CHANGED";
-        case NF_BATTERY_CPUTIME_CONSUMED: return "NF_BATTERY_CPUTIME_CONSUMED";
 
         default: sprintf(buf, "%d", category); s = buf; break;
     }
