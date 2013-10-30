@@ -17,16 +17,14 @@
 
 package inet.physicallayer.radio.detailed;
 
-import inet.physicallayer.radio.contract.IRadio;
+import inet.physicallayer.radio.common.RadioBase;
 
 // Physical layer module which knows how to initialize the Deciders
 // and AnalogueModels from the modules directory.
 // See the classes documentation for details.
-simple DetailedRadio like IRadio
+simple DetailedRadio extends RadioBase
 {
     parameters:
-        @display("i=block/wrxtx");
-
         bool recordStats = default(false); //enable/disable tracking of statistics (eg. cOutvectors)
         int headerLength @unit(bit) = default(0); //defines the length of the phy header (/preamble)
 
@@ -59,9 +57,5 @@ simple DetailedRadio like IRadio
         int nbRadioChannels = default(1);  // Number of available radio channels. Defaults to single channel radio.
         int initialRadioChannel = default(0);  // Initial radio channel.
 
-    gates:
-        input upperLayerIn; 	// from the MAC layer
-        output upperLayerOut; 	// to the MAC layer
-
-        input radioIn @labels(DetailedRadioFrame);
+        @class(DetailedRadio);
 }

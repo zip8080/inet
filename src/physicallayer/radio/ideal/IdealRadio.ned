@@ -17,7 +17,7 @@
 
 package inet.physicallayer.radio.ideal;
 
-import inet.physicallayer.radio.contract.IRadio;
+import inet.physicallayer.radio.common.RadioBase;
 
 //
 // Implements a unit disk radio for use in ~IdealWirelessNic.
@@ -26,17 +26,12 @@ import inet.physicallayer.radio.contract.IRadio;
 //
 // See ~IdealRadioChannel, ~IdealWirelessMac, ~IdealWirelessNic
 //
-simple IdealRadio like IRadio
+simple IdealRadio extends RadioBase
 {
     parameters:
-        @display("i=block/wrxtx");
         double bitrate @unit("bps");            // transmission speed [bit/sec]
         double transmissionRange @unit("m");    // max. distance from sender where reception is possible
         bool drawCoverage = default(true);      // draw the coverage area in Tkenv
-        @display("i=block/wrxtx");
-        @signal[radioState](type=long);
-    gates:
-        input upperLayerIn @labels(ILinkLayerFrame/down);
-        output upperLayerOut @labels(ILinkLayerFrame/up);
-        input radioIn @labels(IdealRadioFrame);
+
+        @class(IdealRadio);
 }
