@@ -5,7 +5,7 @@
 
 #include <omnetpp.h>
 
-#include "MiXiMDefs.h"
+#include "INETDefs.h"
 
 class INET_API PassedMessage : public cObject {
  public:

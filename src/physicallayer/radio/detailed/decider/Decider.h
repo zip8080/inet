@@ -9,7 +9,7 @@
 
 #include <omnetpp.h>
 
-#include "MiXiMDefs.h"
+#include "INETDefs.h"
 #include "DeciderToPhyInterface.h"
 #include "ChannelSenseRequest_m.h"
 #include "ChannelState.h"

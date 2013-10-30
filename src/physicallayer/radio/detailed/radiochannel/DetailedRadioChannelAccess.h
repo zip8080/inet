@@ -26,7 +26,7 @@
 #include <omnetpp.h>
 #include <vector>
 #include <MobilityAccess.h>
-#include "MiXiMDefs.h"
+#include "INETDefs.h"
 #include "MiximBatteryAccess.h"
 
 class NicEntry;

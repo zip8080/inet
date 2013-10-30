@@ -3,7 +3,7 @@
 
 #include <list>
 #include "INETDefs.h"
-#include "MiXiMDefs.h"
+#include "INETDefs.h"
 #include "IRadioSignal.h"
 #include "Mapping.h"
 

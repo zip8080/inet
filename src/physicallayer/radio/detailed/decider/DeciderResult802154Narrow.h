@@ -8,7 +8,7 @@
 #ifndef DECIDERRESULT802154NARROW_H_
 #define DECIDERRESULT802154NARROW_H_
 
-#include "MiXiMDefs.h"
+#include "INETDefs.h"
 #include "Decider.h"
 
 /**

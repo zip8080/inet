@@ -24,7 +24,7 @@
 #include <sstream>
 #include <omnetpp.h>
 
-#include "MiXiMDefs.h"
+#include "INETDefs.h"
 #include "HostState.h"
 
 /**

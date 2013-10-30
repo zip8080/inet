@@ -16,7 +16,7 @@
 #ifndef LOGNORMALSHADOWING_H_
 #define LOGNORMALSHADOWING_H_
 
-#include "MiXiMDefs.h"
+#include "INETDefs.h"
 #include "AnalogueModel.h"
 
 /**

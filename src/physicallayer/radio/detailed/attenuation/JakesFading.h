@@ -16,7 +16,7 @@
 #ifndef JAKESFADING_H_
 #define JAKESFADING_H_
 
-#include "MiXiMDefs.h"
+#include "INETDefs.h"
 #include "AnalogueModel.h"
 #include "Mapping.h"
 

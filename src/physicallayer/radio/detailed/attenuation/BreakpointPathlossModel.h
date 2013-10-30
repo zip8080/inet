@@ -3,7 +3,7 @@
 
 #include <cstdlib>
 
-#include "MiXiMDefs.h"
+#include "INETDefs.h"
 #include "AnalogueModel.h"
 
 /**

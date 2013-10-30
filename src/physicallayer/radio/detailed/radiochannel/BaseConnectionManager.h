@@ -6,7 +6,7 @@
 #include <string>
 
 #include "IRadioChannel.h"
-#include "MiXiMDefs.h"
+#include "INETDefs.h"
 #include "NicEntry.h"
 
 class DetailedRadioChannelAccess;

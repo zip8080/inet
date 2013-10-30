@@ -11,7 +11,7 @@
 #include <list>
 #include <omnetpp.h>
 
-#include "MiXiMDefs.h"
+#include "INETDefs.h"
 
 class DetailedRadioFrame;
 class ConstMapping;

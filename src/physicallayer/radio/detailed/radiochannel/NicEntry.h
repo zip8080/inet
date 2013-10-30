@@ -25,7 +25,7 @@
 #include <omnetpp.h>
 #include <map>
 
-#include "MiXiMDefs.h"
+#include "INETDefs.h"
 #include "Coord.h"
 
 class DetailedRadioChannelAccess;

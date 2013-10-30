@@ -8,7 +8,7 @@
 #ifndef MIXIMBATTERYACCESS_H_
 #define MIXIMBATTERYACCESS_H_
 
-#include "MiXiMDefs.h"
+#include "INETDefs.h"
 #include "BaseModule.h"
 #include "BaseBattery.h"
 

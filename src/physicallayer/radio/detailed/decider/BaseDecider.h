@@ -8,7 +8,7 @@
 #ifndef BASEDECIDER_H_
 #define BASEDECIDER_H_
 
-#include "MiXiMDefs.h"
+#include "INETDefs.h"
 #include "Decider.h"
 
 class Mapping;

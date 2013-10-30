@@ -22,7 +22,7 @@
 #ifndef BASE_LAYER_H
 #define BASE_LAYER_H
 
-#include "MiXiMDefs.h"
+#include "INETDefs.h"
 #include "MiximBatteryAccess.h"
 #include "PassedMessage.h"
 

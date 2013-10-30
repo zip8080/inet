@@ -5,7 +5,7 @@
 #include <map>
 #include <omnetpp.h>
 
-#include "MiXiMDefs.h"
+#include "INETDefs.h"
 #include "DetailedRadioFrame.h"
 
 /**

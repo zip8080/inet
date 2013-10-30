@@ -10,7 +10,7 @@
 
 #include <omnetpp.h>
 
-#include "MiXiMDefs.h"
+#include "INETDefs.h"
 #include "SimpleAddress.h"
 
 /**

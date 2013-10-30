@@ -25,7 +25,7 @@
 #include "FindModule.h"
 
 // Could not initialize simsignal_t it here!? I got the POST_MODEL_CHANGE id!?
-const simsignal_t BaseModule::catHostStateSignal = cComponent::registerSignal(MIXIM_SIGNAL_HOSTSTATE_NAME);
+const simsignal_t BaseModule::catHostStateSignal = cComponent::registerSignal("inet.mixim.base.utils.hoststate");
 
 BaseModule::BaseModule()
 	: cSimpleModule()

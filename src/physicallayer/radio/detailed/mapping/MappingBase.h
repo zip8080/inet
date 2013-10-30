@@ -10,7 +10,7 @@
 #include <sstream>
 #include <iomanip>
 
-#include "MiXiMDefs.h"
+#include "INETDefs.h"
 #include "Interpolation.h"
 
 /**

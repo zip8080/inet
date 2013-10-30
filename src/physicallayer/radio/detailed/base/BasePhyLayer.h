@@ -5,7 +5,7 @@
 #include <vector>
 #include <string>
 
-#include "MiXiMDefs.h"
+#include "INETDefs.h"
 #include "IRadio.h"
 #include "ChannelState.h"
 #include "PhyUtils.h"

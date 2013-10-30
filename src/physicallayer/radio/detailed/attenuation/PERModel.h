@@ -3,7 +3,7 @@
 
 #include <cassert>
 
-#include "MiXiMDefs.h"
+#include "INETDefs.h"
 #include "AnalogueModel.h"
 
 /**

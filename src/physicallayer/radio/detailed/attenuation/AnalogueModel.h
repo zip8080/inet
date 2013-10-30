@@ -1,7 +1,7 @@
 #ifndef ANALOGUEMODEL_
 #define ANALOGUEMODEL_
 
-#include "MiXiMDefs.h"
+#include "INETDefs.h"
 #include "Coord.h"
 
 class DetailedRadioFrame;

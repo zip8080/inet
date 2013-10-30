@@ -27,9 +27,9 @@
 
 #include <assert.h>
 
-const simsignal_t BaseLayer::catPassedMsgSignal     = cComponent::registerSignal(MIXIM_SIGNAL_PASSEDMSG_NAME);
-const simsignal_t BaseLayer::catPacketSignal        = cComponent::registerSignal(MIXIM_SIGNAL_PACKET_NAME);
-const simsignal_t BaseLayer::catDroppedPacketSignal = cComponent::registerSignal(MIXIM_SIGNAL_DROPPEDPACKET_NAME);
+const simsignal_t BaseLayer::catPassedMsgSignal     = cComponent::registerSignal("inet.mixim.base.utils.passedmsg");
+const simsignal_t BaseLayer::catPacketSignal        = cComponent::registerSignal("inet.mixim.modules.utility.packet");
+const simsignal_t BaseLayer::catDroppedPacketSignal = cComponent::registerSignal("inet.mixim.modules.utility.droppedpacket");
 
 /**
  * First we have to initialize the module from which we derived ours,
