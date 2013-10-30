@@ -1,5 +1,5 @@
 //**************************************************************************
-// * file:        AirFrame.msg
+// * file:        SimplifiedRadioFrame.msg
 // *
 // * author:      Marc Loebbers
 // *
@@ -30,7 +30,7 @@ class noncobject ModulationType;
 //
 // Format of the messages that are sent to the channel
 //
-// subclass if you want to create your own ~AirFrame message class
+// subclass if you want to create your own ~SimplifiedRadioFrame message class
 //
 // This message format is used to send a packet from a snrEval module
 // to the channel. All other snrEval modules that can 'hear' this
@@ -47,8 +47,10 @@ class noncobject ModulationType;
 // the id with a pointer to the nodes coordinates itself.
 // @author Marc Loebbers
 //
-packet AirFrame
+packet SimplifiedRadioFrame
 {
+    @customize(true);
+    
     double pSend; // Power with which this packet is transmitted
     int channelNumber; // Channel on which the packet is sent
     simtime_t duration; // Time it takes to transmit the packet, in seconds
@@ -65,7 +67,7 @@ packet AirFrame
 //
 // Support of multiples gates
 //
-//packet AirFrameExtended extends AirFrame
+//packet SimplifiedRadioFrameExtended extends SimplifiedRadioFrame
 //{
 //   double carrierFrequency; //
 //   double bandwidth;

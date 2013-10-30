@@ -16,7 +16,7 @@
 //
 
 
-package inet.linklayer.radio;
+package inet.physicallayer.radio.simplified;
 
 //
 // Generic radio module. The implementation is largely based on the
@@ -25,7 +25,7 @@ package inet.linklayer.radio;
 // @see ~IRadio
 // @author Andras Varga
 //
-simple GenericRadio extends Radio
+simple GenericRadio extends SimplifiedRadio
 {
     parameters:
         @display("i=block/wrxtx");

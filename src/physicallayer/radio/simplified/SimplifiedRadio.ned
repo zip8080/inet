@@ -1,5 +1,5 @@
 // * **************************************************************************
-// * file:        AbstactRadio.ned
+// * file:        SimplifiedRadio.ned
 // *
 // * author:      Oliver Graute, Andreas Kuntz, Felix Schmidt-Eisenlohr
 // *
@@ -19,12 +19,15 @@
 // ***************************************************************************
 // ***************************************************************************
 
-package inet.linklayer.radio;
+package inet.physicallayer.radio.simplified;
+
+import inet.physicallayer.radio.contract.IRadio;
+
 
 //
 // This is an abstract module that defines all parameters for radio modules
 //
-simple Radio like IRadio
+simple SimplifiedRadio like IRadio
 {
     parameters:
         int channelNumber = default(0); // channel identifier this radio listens. Works only with simlified management module. Otherwise it scans all the channels as specified in ieee 80211
@@ -66,11 +69,11 @@ simple Radio like IRadio
 
         xml SensitivityTable = default(xml("<NoSensitivityTable> </NoSensitivityTable>"));
 
-        @signal[bitrate](type="double";unit=bps); // current transmit bitrate
+        @signal[bitrate](type="double"; unit=bps); // current transmit bitrate
         @signal[channelNo](type=long);
         @signal[radioState](type=long);  // enum
         @signal[lossRate](type="double"); // 0..1; percentage of frames received incorrectly in the last period
-        @statistic[bitrate](title="tx bitrate"; record=min,max,timeavg,vector; interpolationmode=sample-hold;unit=bps);
+        @statistic[bitrate](title="tx bitrate"; record=min,max,timeavg,vector; interpolationmode=sample-hold; unit=bps);
         @statistic[channelNo](title="channel no"; record=histogram,vector; interpolationmode=sample-hold);
         @statistic[radioState](title="radio state (enum)"; record=count,vector; interpolationmode=sample-hold);
         @statistic[lossRate](title="packet loss rate"; record=min,max,timeavg,vector; interpolationmode=backward-sample-hold);

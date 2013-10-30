@@ -19,9 +19,9 @@
 #ifndef RADIO_H
 #define RADIO_H
 
-#include "ChannelAccess.h"
-#include "RadioState.h"
-#include "AirFrame_m.h"
+#include "IRadio.h"
+#include "SimplifiedRadioChannelAccess.h"
+#include "SimplifiedRadioFrame.h"
 #include "IRadioModel.h"
 #include "IReceptionModel.h"
 #include "SnrList.h"
@@ -54,15 +54,33 @@
  *
  * @author Andras Varga, Levente Meszaros
  */
-class INET_API Radio : public ChannelAccess, public ILifecycle
+class INET_API SimplifiedRadio : public SimplifiedRadioChannelAccess, public IRadio, public ILifecycle
 {
   protected:
     typedef std::map<double,double> SensitivityList; // Sensitivity list
     SensitivityList sensitivityList;
     virtual void getSensitivityList(cXMLElement* xmlConfig);
   public:
-    Radio();
-    virtual ~Radio();
+    SimplifiedRadio();
+    virtual ~SimplifiedRadio();
+
+    virtual Coord getRadioPosition() const { return radioPos; }
+    virtual const cGate *getRadioGate() const { return gate("radioIn"); }
+
+    virtual RadioMode getRadioMode() const { return radioMode; }
+    virtual void setRadioMode(RadioMode radioMode);
+
+    virtual RadioChannelState getRadioChannelState() const { return radioChannelState; }
+
+    virtual int getRadioChannel() const { return radioChannel; }
+    /**
+     * Change transmitter and receiver to a new channel.
+     * This method throws an error if the radio state is transmit.
+     * Messages that are already sent to the new channel and would
+     * reach us in the future - thus they are on the air - will be
+     * received correctly.
+     */
+    virtual void setRadioChannel(int radioChannel);
 
     virtual bool handleOperationStage(LifecycleOperation *operation, int stage, IDoneCallback *doneCallback);
 
@@ -73,53 +91,38 @@ class INET_API Radio : public ChannelAccess, public ILifecycle
 
     virtual void handleMessage(cMessage *msg);
 
-    virtual void handleUpperMsg(AirFrame*);
+    virtual void handleUpperMsg(SimplifiedRadioFrame*);
 
     virtual void handleSelfMsg(cMessage*);
 
     virtual void handleCommand(int msgkind, cObject *ctrl);
 
     /** @brief Buffer the frame and update noise levels and snr information */
-    virtual void handleLowerMsgStart(AirFrame *airframe);
+    virtual void handleLowerMsgStart(SimplifiedRadioFrame *airframe);
 
     /** @brief Unbuffer the frame and update noise levels and snr information */
-    virtual void handleLowerMsgEnd(AirFrame *airframe);
+    virtual void handleLowerMsgEnd(SimplifiedRadioFrame *airframe);
 
     /** @brief Buffers message for 'transmission time' */
-    virtual void bufferMsg(AirFrame *airframe);
+    virtual void bufferMsg(SimplifiedRadioFrame *airframe);
 
     /** @brief Unbuffers a message after 'transmission time' */
-    virtual AirFrame *unbufferMsg(cMessage *msg);
+    virtual SimplifiedRadioFrame *unbufferMsg(cMessage *msg);
 
     /** Sends a message to the upper layer */
-    virtual void sendUp(AirFrame *airframe);
+    virtual void sendUp(SimplifiedRadioFrame *airframe);
 
     /** Sends a message to the channel */
-    virtual void sendDown(AirFrame *airframe);
+    virtual void sendDown(SimplifiedRadioFrame *airframe);
 
     /** Encapsulates a MAC frame into an Air Frame */
-    virtual AirFrame *encapsulatePacket(cPacket *msg);
-
-    /** Sets the radio state, and also fires change notification */
-    virtual void setRadioState(RadioState::State newState);
-
-    /** Returns the current channel the radio is tuned to */
-    virtual int getChannelNumber() const {return rs.getChannelNumber();}
+    virtual SimplifiedRadioFrame *encapsulatePacket(cPacket *msg);
 
     /** Updates the SNR information of the relevant AirFrame */
     virtual void addNewSnr();
 
     /** Create a new AirFrame */
-    virtual AirFrame *createAirFrame() {return new AirFrame();}
-
-    /**
-     * Change transmitter and receiver to a new channel.
-     * This method throws an error if the radio state is transmit.
-     * Messages that are already sent to the new channel and would
-     * reach us in the future - thus they are on the air - will be
-     * received correctly.
-     */
-    virtual void changeChannel(int channel);
+    virtual SimplifiedRadioFrame *createAirFrame() {return new SimplifiedRadioFrame();}
 
     /**
      * Change the bitrate to the given value. This method throws an error
@@ -127,18 +130,20 @@ class INET_API Radio : public ChannelAccess, public ILifecycle
      */
     virtual void setBitrate(double bitrate);
 
+    virtual void updateRadioChannelState();
+
     /** @brief updates the sensitivity value if the bitrate varies */
     virtual void updateSensitivity(double bitrate);
     /*
      *  check if the packet must be processes
      */
-    virtual bool processAirFrame(AirFrame *airframe);
+    virtual bool processAirFrame(SimplifiedRadioFrame *airframe);
 
     /*
      * Routines to connect or disconnect the transmission and reception  of packets
      */
-    virtual void connectTransceiver() { transceiverConnected = true; }
-    virtual void disconnectTransceiver() { transceiverConnected = false; }
+    virtual void connectTransmitter() { transmitterConnected = true; }
+    virtual void disconnectTransmitter() { transmitterConnected = false; }
     virtual void connectReceiver();
     virtual void disconnectReceiver();
 
@@ -152,7 +157,6 @@ class INET_API Radio : public ChannelAccess, public ILifecycle
   protected:
 	// Support of noise generators, the noise generators allow that the radio can change between  RECV <-->IDLE without to receive a frame
     static simsignal_t changeLevelNoise;
-    virtual void receiveSignal(cComponent *source, simsignal_t signalID, cObject *obj);
 
     INoiseGenerator *noiseGenerator;
     cMessage *updateString;
@@ -160,6 +164,13 @@ class INET_API Radio : public ChannelAccess, public ILifecycle
     ObstacleControl* obstacles;
     IRadioModel *radioModel;
     IReceptionModel *receptionModel;
+
+    /** Timers */
+    //@{
+    cMessage *endTransmissionTimer;
+    typedef std::list<cMessage *> EndReceptionTimers;
+    EndReceptionTimers endReceptionTimers;
+    //@}
 
     /** @name Statistics */
     //@{
@@ -170,6 +181,13 @@ class INET_API Radio : public ChannelAccess, public ILifecycle
 
     /** Power used to transmit messages */
     double transmitterPower;
+
+    /** Bitrate used to transmit messages */
+    double bitrate;
+
+    RadioMode radioMode;
+    RadioChannelState radioChannelState;
+    int radioChannel;
 
     /** @name Gate Ids */
     //@{
@@ -183,7 +201,7 @@ class INET_API Radio : public ChannelAccess, public ILifecycle
      */
     struct SnrStruct
     {
-        AirFrame *ptr;    ///< pointer to the message this information belongs to
+        SimplifiedRadioFrame *ptr;    ///< pointer to the message this information belongs to
         double rcvdPower; ///< received power of the message
         SnrList sList;    ///< stores SNR over time
     };
@@ -200,21 +218,18 @@ class INET_API Radio : public ChannelAccess, public ILifecycle
      * receive power.
      */
     struct Compare {
-        bool operator() (AirFrame* const &lhs, AirFrame* const &rhs) const {
+        bool operator() (SimplifiedRadioFrame* const &lhs, SimplifiedRadioFrame* const &rhs) const {
             ASSERT(lhs && rhs);
             return lhs->getId() < rhs->getId();
         }
     };
-    typedef std::map<AirFrame*, double, Compare> RecvBuff;
+    typedef std::map<SimplifiedRadioFrame*, double, Compare> RecvBuff;
 
     /**
      * State: A buffer to store a pointer to a message and the related
      * receive power.
      */
     RecvBuff recvBuff;
-
-    /** State: the current RadioState of the NIC; includes channel number */
-    RadioState rs;
 
     /** State: if not -1, we have to switch to that channel once we finished transmitting */
     int newChannel;
@@ -226,7 +241,7 @@ class INET_API Radio : public ChannelAccess, public ILifecycle
     double noiseLevel;
 
     /**
-     * Configuration: The carrier frequency used. It is read from the ChannelControl module.
+     * Configuration: The carrier frequency used. It is read from the SimplifiedRadioChannel module.
      */
     double carrierFrequency;
 
@@ -250,9 +265,9 @@ class INET_API Radio : public ChannelAccess, public ILifecycle
     double receptionThreshold;
 
     /*
-     * this variable is used to disconnect the possibility of sent packets to the ChannelControl
+     * this variable is used to disconnect the possibility of sent packets to the SimplifiedRadioChannel
      */
-    bool transceiverConnected;
+    bool transmitterConnected;
     bool receiverConnected;
 
     // if true draw coverage circles
@@ -261,8 +276,6 @@ class INET_API Radio : public ChannelAccess, public ILifecycle
 
     // statistics:
     static simsignal_t bitrateSignal;
-    static simsignal_t radioStateSignal; //enum
-    static simsignal_t channelNumberSignal;
     static simsignal_t lossRateSignal;
 };
 

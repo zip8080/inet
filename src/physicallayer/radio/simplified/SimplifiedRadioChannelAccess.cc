@@ -16,10 +16,11 @@
  **************************************************************************/
 
 
-#include "ChannelAccess.h"
+#include "ModuleAccess.h"
+#include "SimplifiedRadioChannelAccess.h"
 #include "IMobility.h"
 
-simsignal_t ChannelAccess::mobilityStateChangedSignal = SIMSIGNAL_NULL;
+simsignal_t SimplifiedRadioChannelAccess::mobilityStateChangedSignal = SIMSIGNAL_NULL;
 
 static int parseInt(const char *s, int defaultValue)
 {
@@ -32,12 +33,12 @@ static int parseInt(const char *s, int defaultValue)
 }
 
 // the destructor unregister the radio module
-ChannelAccess::~ChannelAccess()
+SimplifiedRadioChannelAccess::~SimplifiedRadioChannelAccess()
 {
     if (cc && myRadioRef)
     {
         // check if channel control exist
-        IChannelControl *cc = dynamic_cast<IChannelControl *>(simulation.getModuleByPath("channelControl"));
+        ISimplifiedRadioChannel *cc = dynamic_cast<ISimplifiedRadioChannel *>(simulation.getModuleByPath("channelControl"));
         if (cc)
              cc->unregisterRadio(myRadioRef);
         myRadioRef = NULL;
@@ -46,16 +47,15 @@ ChannelAccess::~ChannelAccess()
 
 /**
  * Upon initialization ChannelAccess registers the nic parent module
- * to have all its connections handled by ChannelControl
+ * to have all its connections handled by SimplifiedRadioChannel
  */
-void ChannelAccess::initialize(int stage)
+void SimplifiedRadioChannelAccess::initialize(int stage)
 {
     cSimpleModule::initialize(stage);
 
     if (stage == INITSTAGE_LOCAL)
     {
-        cc = getChannelControl();
-        nb = NotificationBoardAccess().get();
+        cc = getSimplifiedRadioChannel();
         hostModule = findContainingNode(this, true);
         myRadioRef = NULL;
 
@@ -63,6 +63,7 @@ void ChannelAccess::initialize(int stage)
         // register to get a notification when position changes
         mobilityStateChangedSignal = registerSignal("mobilityStateChanged");
         hostModule->subscribe(mobilityStateChangedSignal, this);
+        myRadioRef = cc->registerRadio(this);
     }
     else if (stage == INITSTAGE_PHYSICAL_LAYER)
     {
@@ -84,16 +85,15 @@ void ChannelAccess::initialize(int stage)
                         hostModule->getFullPath().c_str());
         }
 
-        myRadioRef = cc->registerRadio(this);
         cc->setRadioPosition(myRadioRef, radioPos);
     }
 }
 
-IChannelControl *ChannelAccess::getChannelControl()
+ISimplifiedRadioChannel *SimplifiedRadioChannelAccess::getSimplifiedRadioChannel()
 {
-    IChannelControl *cc = dynamic_cast<IChannelControl *>(simulation.getModuleByPath("channelControl"));
+    ISimplifiedRadioChannel *cc = dynamic_cast<ISimplifiedRadioChannel *>(simulation.getModuleByPath("radioChannel"));
     if (!cc)
-        throw cRuntimeError("Could not find ChannelControl module with name 'channelControl' in the toplevel network.");
+        throw cRuntimeError("Could not find SimplifiedRadioChannel module with name 'radioChannel' in the toplevel network.");
     return cc;
 }
 
@@ -104,15 +104,15 @@ IChannelControl *ChannelAccess::getChannelControl()
  * This function really sends the message away, so if you still want
  * to work with it you should send a duplicate!
  */
-void ChannelAccess::sendToChannel(AirFrame *msg)
+void SimplifiedRadioChannelAccess::sendToChannel(SimplifiedRadioFrame *msg)
 {
     EV << "sendToChannel: sending to gates\n";
 
-    // delegate it to ChannelControl
+    // delegate it to SimplifiedRadioChannel
     cc->sendToChannel(myRadioRef, msg);
 }
 
-void ChannelAccess::receiveSignal(cComponent *source, simsignal_t signalID, cObject *obj)
+void SimplifiedRadioChannelAccess::receiveSignal(cComponent *source, simsignal_t signalID, cObject *obj)
 {
     if (signalID == mobilityStateChangedSignal)
     {
