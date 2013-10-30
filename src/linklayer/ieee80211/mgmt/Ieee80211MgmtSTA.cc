@@ -16,12 +16,12 @@
 //
 
 
+#include "IRadio.h"
 #include "Ieee80211MgmtSTA.h"
 #include "Ieee802Ctrl_m.h"
 #include "NotifierConsts.h"
 #include "PhyControlInfo_m.h"
-#include "RadioState.h"
-#include "ChannelAccess.h"
+#include "SimplifiedRadioChannelAccess.h"
 #include "Radio80211aControlInfo_m.h"
 
 //TBD supportedRates!
@@ -109,8 +109,9 @@ void Ieee80211MgmtSTA::initialize(int stage)
     else if (stage == INITSTAGE_LINK_LAYER)
     {
         // determine numChannels (needed when we're told to scan "all" channels)
-        IChannelControl *cc = ChannelAccess::getChannelControl();
-        numChannels = cc->getNumChannels();
+        // TODO: ISimplifiedRadioChannel *cc = SimplifiedRadioChannelAccess::getSimplifiedRadioChannel();
+        numChannels = 1; // TODO: cc->getNumChannels();
+        nb->subscribe(this, NF_LINK_FULL_PROMISCUOUS);
     }
 }
 
@@ -350,17 +351,7 @@ void Ieee80211MgmtSTA::receiveChangeNotification(int category, const cObject *de
     Enter_Method_Silent();
     printNotificationBanner(category, details);
 
-    // Note that we are only subscribed during scanning!
-    if (category==NF_RADIOSTATE_CHANGED)
-    {
-        const RadioState::State radioState = check_and_cast<const RadioState *>(details)->getState();
-        if (radioState==RadioState::RECV)
-        {
-            EV << "busy radio channel detected during scanning\n";
-            scanning.busyChannelDetected = true;
-        }
-    }
-    else if (category==NF_LINK_FULL_PROMISCUOUS)
+    if (category==NF_LINK_FULL_PROMISCUOUS)
     {
         Ieee80211DataOrMgmtFrame *frame = dynamic_cast<Ieee80211DataOrMgmtFrame*>(const_cast<cPolymorphic*>(details));
         if (!frame || frame->getControlInfo()==NULL)
@@ -374,6 +365,20 @@ void Ieee80211MgmtSTA::receiveChangeNotification(int category, const cObject *de
         APInfo *ap = lookupAP(beacon->getTransmitterAddress());
         if (ap)
             ap->rxPower=ctl->getRecPow();
+    }
+}
+
+void Ieee80211MgmtSTA::receiveSignal(cComponent *source, simsignal_t signalID, long value)
+{
+    // Note that we are only subscribed during scanning!
+    if (signalID == IRadio::radioChannelStateChangedSignal)
+    {
+        IRadio::RadioChannelState radioState = (IRadio::RadioChannelState)value;
+        if (radioState != IRadio::RADIO_CHANNEL_STATE_FREE)
+        {
+            EV << "busy radio channel detected during scanning\n";
+            scanning.busyChannelDetected = true;
+        }
     }
 }
 
@@ -417,7 +422,7 @@ void Ieee80211MgmtSTA::processScanCommand(Ieee80211Prim_ScanRequest *ctrl)
 
     // start scanning
     if (scanning.activeScan)
-        nb->subscribe(this, NF_RADIOSTATE_CHANGED);
+        getParentModule()->subscribe(IRadio::radioChannelStateChangedSignal, this);
     scanning.currentChannelIndex = -1; // so we'll start with index==0
     isScanning = true;
     scanNextChannel();
@@ -430,7 +435,7 @@ bool Ieee80211MgmtSTA::scanNextChannel()
     {
         EV << "Finished scanning last channel\n";
         if (scanning.activeScan)
-            nb->unsubscribe(this, NF_RADIOSTATE_CHANGED);
+            getParentModule()->unsubscribe(IRadio::radioChannelStateChangedSignal, this);
         isScanning = false;
         return true; // we're done
     }

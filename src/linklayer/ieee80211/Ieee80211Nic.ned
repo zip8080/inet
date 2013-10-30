@@ -23,7 +23,7 @@ import inet.linklayer.IWirelessNic;
 import inet.linklayer.ieee80211.mac.Ieee80211Mac;
 import inet.linklayer.ieee80211.mgmt.IIeee80211Mgmt;
 import inet.linklayer.ieee80211.mgmt.Ieee80211AgentSTA;
-import inet.linklayer.ieee80211.radio.Ieee80211Radio;
+import inet.physicallayer.radio.contract.IRadio;
 
 
 //
@@ -38,6 +38,7 @@ module Ieee80211Nic like IWirelessNic
 {
     parameters:
         string mgmtType = default("Ieee80211MgmtSTA"); // name of the management module type (implements IIeee80211Mgmt)
+        string radioType = default("Ieee80211Radio");
         string opMode @enum("b","g","a","p") = default("g");
         double bitrate @unit("bps") = default(opMode == "b" ? 11Mbps : opMode == "p" ? 27Mbps : 54Mbps);
         int numOutputHooks = default(0);
@@ -71,10 +72,10 @@ module Ieee80211Nic like IWirelessNic
                 queueModule = "mgmt";
                 @display("p=157,217");
         }
-        radio: Ieee80211Radio {
+        radio: <radioType> like IRadio {
             parameters:
-                phyOpMode = opMode;
-                bitrate = bitrate;
+                //                phyOpMode = opMode;
+                //                bitrate = bitrate;
                 @display("p=157,302");
         }
     connections:

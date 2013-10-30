@@ -18,7 +18,9 @@
 
 
 package inet.linklayer.ieee80211.radio;
-import inet.linklayer.radio.Radio;
+import inet.physicallayer.radio.simplified.SimplifiedRadio;
+
+
 //
 // Physical layer for the IEEE 802.11 models. Its external interface
 // (including gates and how it communicates with other modules)
@@ -27,7 +29,7 @@ import inet.linklayer.radio.Radio;
 // @see Radio
 // @author Alfonso Ariza Quintana
 //
-simple Ieee80211Radio extends Radio
+simple Ieee80211Radio extends SimplifiedRadio
 {
     parameters:
         @display("i=block/wrxtx");

@@ -30,10 +30,9 @@
 #include "IPassiveQueue.h"
 #include "Ieee80211Frame_m.h"
 #include "Ieee80211Consts.h"
-#include "NotificationBoard.h"
-#include "RadioState.h"
 #include "FSMA.h"
 #include "IQoSClassifier.h"
+#include "IRadio.h"
 
 /**
  * IEEE 802.11g with e Media Access Control Layer.
@@ -57,7 +56,7 @@
  *
  * @ingroup macLayer
  */
-class INET_API Ieee80211Mac : public WirelessMacBase
+class INET_API Ieee80211Mac : public WirelessMacBase, protected cListener
 {
     typedef std::list<Ieee80211DataOrMgmtFrame*> Ieee80211DataOrMgmtFrameList;
     /**
@@ -334,12 +333,7 @@ class INET_API Ieee80211Mac : public WirelessMacBase
     /** XXX Remember for which AC we wait for ACK. */
     //int ACKcurrentAC;
 
-    /** Physical radio (medium) state copied from physical layer */
-    RadioState::State radioState;
-    // Use to distinguish the radio module that send the event
-    int radioModule;
-
-    int getRadioModuleId() {return radioModule;}
+    IRadio *radio;
 
     Ieee80211DataOrMgmtFrame *fr;
 
@@ -450,8 +444,8 @@ class INET_API Ieee80211Mac : public WirelessMacBase
      * @brief Functions called from other classes to notify about state changes and to handle messages.
      */
     //@{
-    /** @brief Called by the NotificationBoard whenever a change occurs we're interested in */
-    virtual void receiveChangeNotification(int category, const cObject * details);
+    /** @brief Handle signals */
+    virtual void receiveSignal(cComponent *source, simsignal_t signalID, long value);
 
     /** @brief Handle commands (msg kind+control info) coming from upper layers */
     virtual void handleCommand(cMessage *msg);

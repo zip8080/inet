@@ -17,16 +17,16 @@
 // along with this program; if not, see <http://www.gnu.org/licenses/>.
 //
 
+#include "IRadio.h"
 #include "Ieee80211Mac.h"
-#include "RadioState.h"
 #include "IInterfaceTable.h"
 #include "InterfaceTableAccess.h"
 #include "PhyControlInfo_m.h"
-#include "AirFrame_m.h"
 #include "Radio80211aControlInfo_m.h"
 #include "Ieee80211eClassifier.h"
 #include "Ieee80211DataRate.h"
 #include "opp_utils.h"
+#include "NotificationBoard.h"
 
 // TODO: 9.3.2.1, If there are buffered multicast or broadcast frames, the PC shall transmit these prior to any unicast frames.
 // TODO: control frames must send before
@@ -44,14 +44,6 @@ Register_Enum(Ieee80211Mac,
                Ieee80211Mac::WAITCTS,
                Ieee80211Mac::WAITSIFS,
                Ieee80211Mac::RECEIVE));
-
-// don't forget to keep synchronized the C++ enum and the runtime enum definition
-Register_Enum(RadioState,
-              (RadioState::IDLE,
-               RadioState::RECV,
-               RadioState::TRANSMIT,
-               RadioState::SLEEP,
-               RadioState::OFF));
 
 /****************************************************************
  * Construction functions.
@@ -295,7 +287,6 @@ void Ieee80211Mac::initialize(int stage)
         mode = DCF;
         sequenceNumber = 0;
 
-        radioState = RadioState::IDLE;
         currentAC = 0;
         oldcurrentAC = 0;
         lastReceiveFailed = false;
@@ -342,7 +333,7 @@ void Ieee80211Mac::initialize(int stage)
         stateVector.setName("State");
         stateVector.setEnum("Ieee80211Mac");
         radioStateVector.setName("RadioState");
-        radioStateVector.setEnum("RadioState");
+        radioStateVector.setEnum("RadioChannelState");
         for (int i=0; i<numCategories(); i++)
         {
             EdcaOutVector outVectors;
@@ -369,7 +360,15 @@ void Ieee80211Mac::initialize(int stage)
         // initialize watches
         validRecMode = false;
         initWatches();
-        radioModule = gate("lowerLayerOut")->getNextGate()->getOwnerModule()->getId();
+
+        cModule *radioModule = gate("lowerLayerOut")->getNextGate()->getOwnerModule();
+        radioModule->subscribe(IRadio::radioModeChangedSignal, this);
+        radioModule->subscribe(IRadio::radioChannelStateChangedSignal, this);
+        radio = check_and_cast<IRadio *>(radioModule);
+    }
+    else if (stage == 1)
+    {
+        radio->setRadioMode(IRadio::RADIO_MODE_RECEIVER);
     }
     else if (stage == INITSTAGE_LINK_LAYER)
     {
@@ -383,7 +382,6 @@ void Ieee80211Mac::initWatches()
 {
 // initialize watches
      WATCH(fsm);
-     WATCH(radioState);
      for (int i=0; i<numCategories(); i++)
          WATCH(edcCAF[i].retryCounter);
      for (int i=0; i<numCategories(); i++)
@@ -825,30 +823,16 @@ void Ieee80211Mac::handleLowerMsg(cPacket *msg)
     EV<<"Leave handleLowerMsg...\n";
 }
 
-void Ieee80211Mac::receiveChangeNotification(int category, const cObject *details)
+void Ieee80211Mac::receiveSignal(cComponent *source, simsignal_t signalID, long value)
 {
     Enter_Method_Silent();
-    MACBase::receiveChangeNotification(category, details);
-
-    printNotificationBanner(category, details);
-
-    if (category == NF_RADIOSTATE_CHANGED)
+    if (signalID == IRadio::radioChannelStateChangedSignal)
     {
-        const RadioState * rstate = check_and_cast<const RadioState *>(details);
-        if (rstate->getRadioId()!=getRadioModuleId())
-            return;
-
-        RadioState::State newRadioState = rstate->getState();
-
-
-
-        // FIXME: double recording, because there's no sample hold in the gui
+        IRadio::RadioChannelState radioState = (IRadio::RadioChannelState)value;
         radioStateVector.record(radioState);
-        radioStateVector.record(newRadioState);
-
-        radioState = newRadioState;
-
         handleWithFSM(mediumStateChange);
+        if (radioState != IRadio::RADIO_CHANNEL_STATE_TRANSMITTING)
+            radio->setRadioMode(IRadio::RADIO_MODE_RECEIVER);
     }
 }
 
@@ -1718,7 +1702,7 @@ void Ieee80211Mac::scheduleReservePeriod(Ieee80211Frame *frame)
             reserve = std::max(reserve, oldReserve);
             cancelEvent(endReserve);
         }
-        else if (radioState == RadioState::IDLE)
+        else if (radio->getRadioChannelState() == IRadio::RADIO_CHANNEL_STATE_FREE)
         {
             // NAV: the channel just became virtually busy according to the spec
             scheduleAt(simTime(), mediumStateChange);
@@ -1798,6 +1782,7 @@ void Ieee80211Mac::sendACKFrame(Ieee80211DataOrMgmtFrame *frameToACK)
 {
     EV << "sending ACK frame\n";
     numAckSend++;
+    radio->setRadioMode(IRadio::RADIO_MODE_TRANSMITTER);
     sendDown(setBasicBitrate(buildACKFrame(frameToACK)));
 }
 
@@ -1843,12 +1828,14 @@ void Ieee80211Mac::sendDataFrame(Ieee80211DataOrMgmtFrame *frameToSend)
         scheduleAt(simTime() + time, endTXOP);
     }
     EV << "sending Data frame\n";
+    radio->setRadioMode(IRadio::RADIO_MODE_TRANSMITTER);
     sendDown(buildDataFrame(dynamic_cast<Ieee80211DataOrMgmtFrame*>(setBitrateFrame(frameToSend))));
 }
 
 void Ieee80211Mac::sendRTSFrame(Ieee80211DataOrMgmtFrame *frameToSend)
 {
     EV << "sending RTS frame\n";
+    radio->setRadioMode(IRadio::RADIO_MODE_TRANSMITTER);
     sendDown(setBasicBitrate(buildRTSFrame(frameToSend)));
 }
 
@@ -1857,6 +1844,7 @@ void Ieee80211Mac::sendMulticastFrame(Ieee80211DataOrMgmtFrame *frameToSend)
     EV << "sending Multicast frame\n";
     if (frameToSend->getControlInfo())
         delete frameToSend->removeControlInfo();
+    radio->setRadioMode(IRadio::RADIO_MODE_TRANSMITTER);
     sendDown(buildDataFrame(dynamic_cast<Ieee80211DataOrMgmtFrame*>(setBasicBitrate(frameToSend))));
 }
 
@@ -1871,6 +1859,7 @@ void Ieee80211Mac::sendCTSFrameOnEndSIFS()
 void Ieee80211Mac::sendCTSFrame(Ieee80211RTSFrame *rtsFrame)
 {
     EV << "sending CTS frame\n";
+    radio->setRadioMode(IRadio::RADIO_MODE_TRANSMITTER);
     sendDown(setBasicBitrate(buildCTSFrame(rtsFrame)));
 }
 
@@ -2079,12 +2068,12 @@ void Ieee80211Mac::resetStateVariables()
 
 bool Ieee80211Mac::isMediumStateChange(cMessage *msg)
 {
-    return msg == mediumStateChange || (msg == endReserve && radioState == RadioState::IDLE);
+    return msg == mediumStateChange || (msg == endReserve && radio->getRadioChannelState() == IRadio::RADIO_CHANNEL_STATE_FREE);
 }
 
 bool Ieee80211Mac::isMediumFree()
 {
-    return radioState == RadioState::IDLE && !endReserve->isScheduled();
+    return radio->getRadioChannelState() == IRadio::RADIO_CHANNEL_STATE_FREE && !endReserve->isScheduled();
 }
 
 bool Ieee80211Mac::isMulticast(Ieee80211Frame *frame)
@@ -2213,7 +2202,7 @@ void Ieee80211Mac::logState()
     EV << "\n# retryCounter 0.." << numCategs << " =";
     for (int i=0; i<numCategs; i++)
         EV << " " << edcCAF[i].retryCounter;
-    EV << ", radioState = " << radioState << ", nav = " << nav <<  ", txop is "<< txop << "\n";
+    EV << ", radioMode" << radio->getRadioMode() << ", radioState = " << radio->getRadioChannelState() << ", nav = " << nav <<  ", txop is "<< txop << "\n";
     EV << "#queue size 0.." << numCategs << " =";
     for (int i=0; i<numCategs; i++)
         EV << " " << transmissionQueue(i)->size();

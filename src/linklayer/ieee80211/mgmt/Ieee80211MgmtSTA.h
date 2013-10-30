@@ -31,7 +31,7 @@
  *
  * @author Andras Varga
  */
-class INET_API Ieee80211MgmtSTA : public Ieee80211MgmtBase
+class INET_API Ieee80211MgmtSTA : public Ieee80211MgmtBase, public INotifiable, protected cListener
 {
   public:
     //
@@ -86,7 +86,7 @@ class INET_API Ieee80211MgmtSTA : public Ieee80211MgmtBase
   protected:
     NotificationBoard *nb;
 
-    // number of channels in ChannelControl -- used if we're told to scan "all" channels
+    // number of channels in SimplifiedRadioChannel -- used if we're told to scan "all" channels
     int numChannels;
 
     // scanning status
@@ -169,6 +169,8 @@ class INET_API Ieee80211MgmtSTA : public Ieee80211MgmtBase
 
     /** Called by the NotificationBoard whenever a change occurs we're interested in */
     virtual void receiveChangeNotification(int category, const cObject *details);
+
+    void receiveSignal(cComponent *source, simsignal_t signalID, long value);
 
     /** Utility function: converts Ieee80211StatusCode (->frame) to Ieee80211PrimResultCode (->primitive) */
     virtual int statusCodeToPrimResultCode(int statusCode);
