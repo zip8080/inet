@@ -15,21 +15,21 @@
 // along with this program; if not, see <http://www.gnu.org/licenses/>.
 //
 
+package inet.physicallayer.radio.ideal;
 
-package inet.world.radio;
+import inet.physicallayer.radio.contract.IRadioChannel;
 
 //
-// Channel controller module for ~IdealRadio.
+// ~IRadioChannel controller module for ~IdealRadio.
 //
-// ~IdealChannelModel should have exactly one instance in every network model that
+// ~IdealRadioChannel should have exactly one instance in every network model that
 // contains wireless nodes with ~IdealRadio. This module gets informed about the
 // location and movement of nodes, and determines which nodes are within
 // communication distance.
 //
-simple IdealChannelModel
+simple IdealRadioChannel like IRadioChannel
 {
     parameters:
-        @display("i=misc/sun");
-        @labels(node);
+        @display("i=misc/sun_s");
 }
 

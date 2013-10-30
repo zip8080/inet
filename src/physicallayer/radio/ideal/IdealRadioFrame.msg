@@ -14,9 +14,6 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program; if not, see <http://www.gnu.org/licenses/>.
 //
-// author: Zoltan Bojthe
-//
-
 
 cplusplus {{
 #include "INETDefs.h"
@@ -24,16 +21,16 @@ cplusplus {{
 #include "Coord.h"
 }}
 
-
 class noncobject Coord;
 
 //
-// AirFrame used with ~IdealRadio and ~IdealChannelModel
+// Radio frame used with ~IdealRadio and ~IdealRadioChannel
 //
-packet IdealAirFrame
+packet IdealRadioFrame
 {
+    @customize(true);
+
     simtime_t transmissionDuration;     // Time it takes to transmit the packet, in seconds
     Coord transmissionStartPosition;    // position of sender when transmission starts
     double transmissionRange;           // max. distance from sender where reception is possible
 }
-

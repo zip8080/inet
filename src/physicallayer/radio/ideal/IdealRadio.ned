@@ -14,30 +14,29 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program; if not, see <http://www.gnu.org/licenses/>.
 //
-// author: Zoltan Bojthe
-//
 
+package inet.physicallayer.radio.ideal;
 
-package inet.linklayer.radio;
+import inet.physicallayer.radio.contract.IRadio;
 
 //
 // Implements a unit disk radio for use in ~IdealWirelessNic.
 //
 // See ~IdealWirelessNic for rationale and details.
 //
-// See ~IdealChannelModel, ~IdealWirelessMac, ~IdealWirelessNic
+// See ~IdealRadioChannel, ~IdealWirelessMac, ~IdealWirelessNic
 //
 simple IdealRadio like IRadio
 {
     parameters:
+        @display("i=block/wrxtx");
         double bitrate @unit("bps");            // transmission speed [bit/sec]
         double transmissionRange @unit("m");    // max. distance from sender where reception is possible
         bool drawCoverage = default(true);      // draw the coverage area in Tkenv
         @display("i=block/wrxtx");
         @signal[radioState](type=long);
     gates:
-        input upperLayerIn; // from higher layer protocol (MAC)
-        output upperLayerOut; // to higher layer protocol (MAC)
-        input radioIn @labels(IdealAirFrame); // to receive frames (IdealAirFrame) on the radio channel
+        input upperLayerIn @labels(ILinkLayerFrame/down);
+        output upperLayerOut @labels(ILinkLayerFrame/up);
+        input radioIn @labels(IdealRadioFrame);
 }
-
