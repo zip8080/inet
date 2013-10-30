@@ -700,7 +700,7 @@ void xMIPv6::sendMobilityMessageToIPv6Module(cMessage *msg, const IPv6Address& d
     if (sendTime > 0)
         sendDelayed(msg, sendTime, "toIPv6");
     else
-        send(msg, "toIPv6");
+        sendSync(msg, "toIPv6");
 }
 
 /*
@@ -734,7 +734,7 @@ void xMIPv6::sendMobilityMessageToIPv6Module(cMessage *msg, const IPv6Address& d
         }
     }
 
-    send(msg,"toIPv6");
+    sendSync(msg,"toIPv6");
 }
 */
 
@@ -2209,7 +2209,7 @@ void xMIPv6::processType2RH(IPv6Datagram* datagram, IPv6RoutingHeader* rh)
     if (validRH2)
     {
         EV << "Valid RH2 - copied address from RH2 to datagram" << endl;
-        send(datagram, "toIPv6");
+        sendSync(datagram, "toIPv6");
     }
     else // update 12.09.07 - CB
         delete datagram;
@@ -2288,7 +2288,7 @@ void xMIPv6::processHoAOpt(IPv6Datagram* datagram, HomeAddressOption* hoaOpt)
     if (validHoAOpt)
     {
         EV << "Valid HoA Option - copied address from HoA Option to datagram" << endl;
-        send(datagram, "toIPv6");
+        sendSync(datagram, "toIPv6");
     }
     else
         delete datagram;

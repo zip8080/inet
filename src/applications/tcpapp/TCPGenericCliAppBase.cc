@@ -109,7 +109,7 @@ void TCPGenericCliAppBase::sendPacket(int numBytes, int expectedReplyBytes, bool
     msg->setServerClose(serverClose);
 
     emit(sentPkSignal, msg);
-    socket.send(msg);
+    socket.sendSync(msg);
 
     packetsSent++;
     bytesSent += numBytes;

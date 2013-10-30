@@ -141,7 +141,7 @@ void SCTPPeer::sendOrSchedule(cPacket *msg)
 {
     if (delay==0)
     {
-        send(msg, "sctpOut");
+        sendSync(msg, "sctpOut");
     }
     else
     {
@@ -617,7 +617,7 @@ void SCTPPeer::sendRequest(bool last)
 
     // send SCTPMessage with SCTPSimpleMessage enclosed
     emit(sentPkSignal, msg);
-    clientSocket.send(cmsg, last);
+    clientSocket.sendSync(cmsg, last);
     bytesSent += numBytes;
 }
 
@@ -738,7 +738,7 @@ void SCTPPeer::socketDataArrived(int32, void *, cPacket *msg, bool)
         cmsg->setKind(ind->getSendUnordered() ? SCTP_C_SEND_UNORDERED : SCTP_C_SEND_ORDERED);
         packetsSent++;
         delete msg;
-        clientSocket.send(cmsg, 0, 0, 1);
+        clientSocket.sendSync(cmsg, 0, 0, 1);
     }
 
     if ((long)par("numPacketsToReceive")>0)

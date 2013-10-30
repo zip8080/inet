@@ -56,7 +56,7 @@ cMessage *FIFOQueue::dequeue()
 
 void FIFOQueue::sendOut(cMessage *msg)
 {
-    send(msg, outGate);
+    sendSync(msg, outGate);
 }
 
 bool FIFOQueue::isEmpty()

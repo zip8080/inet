@@ -241,6 +241,6 @@ void LinkStateRouting::sendToIP(LinkStateMsg *msg, IPv4Address destAddr)
 
     msg->addPar("color") = TED_TRAFFIC;
 
-    send(msg, "ipOut");
+    sendSync(msg, "ipOut");
 }
 

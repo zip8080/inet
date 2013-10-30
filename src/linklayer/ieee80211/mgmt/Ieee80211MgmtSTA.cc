@@ -274,7 +274,7 @@ void Ieee80211MgmtSTA::changeChannel(int channelNum)
     phyCtrl->setChannelNumber(channelNum);
     cMessage *msg = new cMessage("changeChannel", PHY_C_CONFIGURERADIO);
     msg->setControlInfo(phyCtrl);
-    send(msg, "macOut");
+    sendSync(msg, "macOut");
 }
 
 void Ieee80211MgmtSTA::beaconLost()
@@ -587,7 +587,7 @@ void Ieee80211MgmtSTA::sendConfirm(Ieee80211PrimConfirm *confirm, int resultCode
     confirm->setResultCode(resultCode);
     cMessage *msg = new cMessage(confirm->getClassName());
     msg->setControlInfo(confirm);
-    send(msg, "agentOut");
+    sendSync(msg, "agentOut");
 }
 
 int Ieee80211MgmtSTA::statusCodeToPrimResultCode(int statusCode)

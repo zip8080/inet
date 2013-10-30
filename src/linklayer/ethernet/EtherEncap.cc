@@ -127,7 +127,7 @@ void EtherEncap::processPacketFromHigherLayer(cPacket *msg)
     if (frame->getByteLength() < MIN_ETHERNET_FRAME_BYTES)
         frame->setByteLength(MIN_ETHERNET_FRAME_BYTES);  // "padding"
 
-    send(frame, "lowerLayerOut");
+    sendSync(frame, "lowerLayerOut");
 }
 
 void EtherEncap::processFrameFromMAC(EtherFrame *frame)
@@ -152,7 +152,7 @@ void EtherEncap::processFrameFromMAC(EtherFrame *frame)
     emit(decapPkSignal, higherlayermsg);
 
     // pass up to higher layers.
-    send(higherlayermsg, "upperLayerOut");
+    sendSync(higherlayermsg, "upperLayerOut");
     delete frame;
 }
 
@@ -177,7 +177,7 @@ void EtherEncap::handleSendPause(cMessage *msg)
     frame->setDest(dest);
     frame->setByteLength(ETHER_PAUSE_COMMAND_PADDED_BYTES);
 
-    send(frame, "lowerLayerOut");
+    sendSync(frame, "lowerLayerOut");
     delete msg;
 
     emit(pauseSentSignal, pauseUnits);

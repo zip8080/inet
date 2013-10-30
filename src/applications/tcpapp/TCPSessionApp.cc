@@ -230,7 +230,7 @@ void TCPSessionApp::activity()
         cPacket *msg = genDataMsg(sendBytes);
         bytesSent += sendBytes;
         emit(sentPkSignal, msg);
-        socket.send(msg);
+        socket.sendSync(msg);
     }
 
     for (CommandVector::iterator i = commands.begin(); i != commands.end(); ++i)
@@ -240,7 +240,7 @@ void TCPSessionApp::activity()
         cPacket *msg = genDataMsg(i->numBytes);
         bytesSent += i->numBytes;
         emit(sentPkSignal, msg);
-        socket.send(msg);
+        socket.sendSync(msg);
     }
 
     // close

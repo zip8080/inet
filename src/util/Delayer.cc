@@ -40,7 +40,7 @@ void Delayer::handleMessage(cMessage *msg)
     if (msg->isSelfMessage())
     {
         emit(sentPkSignal, msg);
-        send(msg, "out");
+        sendSync(msg, "out");
     }
     else
     {
