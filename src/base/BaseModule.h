@@ -25,19 +25,9 @@
 #include <omnetpp.h>
 
 #include "INETDefs.h"
-#include "HostState.h"
 
 /**
  * @brief Base class for all simple modules of a host.
- *
- * This method raises
- * an error if the host state changes to something else than ACTIVE.
- * Therefore that a sub-classing module can be used in a simulation
- * where the host state can change it has to override that method
- * which forces the author to make sure the module reacts well to
- * host state changes.
- * Alternatively one can also set a "notAffectedByHostState" parameter
- * of the module to true.
  *
  * The base module additionally provides a function findHost which
  * returns a pointer to the host module and a function hostIndex to
@@ -51,35 +41,7 @@
  * @author Andreas Koepke
  */
 class INET_API BaseModule: public cSimpleModule, public cListener {
-  protected:
-    /** @brief Stores if this module is affected by changes in the
-     * hosts state. If not explicitly set this module has to capture
-     * changes in the host state.*/
-    bool notAffectedByHostState;
-
-    /** @brief Stores the category of the HostState*/
-    const static simsignal_t catHostStateSignal;
 protected:
-
-    /**
-     * @brief Called whenever the hosts state changes.
-     *
-     * Default implementation of this method throws an error whenever the host
-     * state changes and the "notAffectedbyHostState" variable is not explicitly
-     * set. This is because every module of a host has to make sure to react
-     * well to changes in the host state. Or it has to explicitly set its
-     * parameter "notAffectedbyHostState" to true.
-     */
-    virtual void handleHostState(const HostState& state);
-
-    /**
-     * @brief Switches the host to the passed state.
-     *
-     * If the hosts state is switched to anything else than "ACTIVE" every
-     * module of the host has to handle this explicitly (see method
-     * "handleHostState()")!
-     */
-    void switchHostState(HostState::States state);
 
     /** @brief Function to get a pointer to the host module*/
     cModule* findHost(void);

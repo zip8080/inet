@@ -24,19 +24,14 @@
 
 #include "FindModule.h"
 
-// Could not initialize simsignal_t it here!? I got the POST_MODEL_CHANGE id!?
-const simsignal_t BaseModule::catHostStateSignal = cComponent::registerSignal("inet.mixim.base.utils.hoststate");
-
 BaseModule::BaseModule()
 	: cSimpleModule()
 	, cListener()
-	, notAffectedByHostState(true)
 {}
 
 BaseModule::BaseModule(unsigned stacksize)
 	: cSimpleModule(stacksize)
 	, cListener()
-	, notAffectedByHostState(true)
 {}
 
 /**
@@ -47,44 +42,10 @@ BaseModule::BaseModule(unsigned stacksize)
  * inherited class!
  */
 void BaseModule::initialize(int stage) {
-    if (stage == 0) {
-    	notAffectedByHostState = 	hasPar("notAffectedByHostState")
-								 && par("notAffectedByHostState").boolValue();
-        findHost()->subscribe(catHostStateSignal, this);
-    }
 }
 
 void BaseModule::receiveSignal(cComponent */*source*/, simsignal_t signalID, cObject *obj) {
 	Enter_Method_Silent();
-	if (signalID == catHostStateSignal) {
-		const HostState *const pHostState = dynamic_cast<const HostState *const>(obj);
-		if (pHostState) {
-			handleHostState(*pHostState);
-		}
-		else {
-			opp_warning("Got catHostStateSignal but obj was not a HostState pointer?");
-		}
-	}
-}
-
-void BaseModule::handleHostState(const HostState& state)
-{
-	if(notAffectedByHostState)
-		return;
-
-	if(state.get() != HostState::ACTIVE) {
-		error("Hosts state changed to something else than active which"
-			  " is not handled by this module. Either handle this state"
-			  " correctly or if this module really isn't affected by the"
-			  " hosts state set the parameter \"notAffectedByHostState\""
-			  " of this module to true.");
-	}
-}
-
-void BaseModule::switchHostState(HostState::States state)
-{
-	HostState hostState(state);
-	emit(catHostStateSignal, &hostState);
 }
 
 cModule* BaseModule::findHost(void)

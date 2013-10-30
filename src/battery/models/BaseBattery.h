@@ -5,7 +5,6 @@
 
 #include "INETDefs.h"
 #include "BaseModule.h"
-#include "HostState.h"
 
 /**
  * @brief Defines the amount of power drawn by a device from
@@ -122,8 +121,6 @@ public:
 	virtual double estimateResidualRelative() const = 0;
 	/** @brief current state of charge of the battery (mW-s) */
 	virtual double estimateResidualAbs() const = 0;
-	/** @brief Current state of the battery. */
-	virtual HostState::States getState() const = 0;
 	/*@}*/
 };
 

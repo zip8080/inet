@@ -20,9 +20,6 @@ package inet.base;
 //
 simple BaseLayer
 {
-    parameters:
-        bool notAffectedByHostState = default(false);
-        
     gates:
         input upperLayerIn; // from upper layer
         output upperLayerOut; // to uppe layer
