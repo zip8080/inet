@@ -39,7 +39,7 @@ const simsignal_t BaseLayer::catDroppedPacketSignal = cComponent::registerSignal
  **/
 void BaseLayer::initialize(int stage)
 {
-    MiximBatteryAccess::initialize(stage);
+    BaseModule::initialize(stage);
     if(stage==0) {
         passedMsg = NULL;
         if (hasPar("stats") && par("stats").boolValue()) {

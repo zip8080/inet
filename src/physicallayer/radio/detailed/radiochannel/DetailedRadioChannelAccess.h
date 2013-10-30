@@ -27,7 +27,7 @@
 #include <vector>
 #include <MobilityAccess.h>
 #include "INETDefs.h"
-#include "MiximBatteryAccess.h"
+#include "BaseModule.h"
 
 class NicEntry;
 class BaseConnectionManager;
@@ -47,7 +47,7 @@ class BaseConnectionManager;
  * @ingroup phyLayer
  * @ingroup baseModules
  **/
-class INET_API DetailedRadioChannelAccess : public MiximBatteryAccess, protected MobilityAccess
+class INET_API DetailedRadioChannelAccess : public BaseModule, protected MobilityAccess
 {
 protected:
 	/** @brief use sendDirect or not?*/
@@ -97,7 +97,7 @@ private:
 
 public:
 	DetailedRadioChannelAccess()
-		: MiximBatteryAccess()
+		: BaseModule()
 		, MobilityAccess()
 		, useSendDirect(false)
 		, cc(NULL)
@@ -105,7 +105,7 @@ public:
 		, isRegistered(false)
 	{}
 	DetailedRadioChannelAccess(unsigned sz)
-		: MiximBatteryAccess(sz)
+		: BaseModule(sz)
 		, MobilityAccess()
 		, useSendDirect(false)
 		, cc(NULL)

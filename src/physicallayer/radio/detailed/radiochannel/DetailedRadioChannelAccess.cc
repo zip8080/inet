@@ -52,7 +52,7 @@ BaseConnectionManager* DetailedRadioChannelAccess::getConnectionManager(const cM
 
 void DetailedRadioChannelAccess::initialize( int stage )
 {
-	MiximBatteryAccess::initialize(stage);
+    BaseModule::initialize(stage);
 
     if( stage == 0 ){
         findHost()->subscribe(IMobility::mobilityStateChangedSignal, this);

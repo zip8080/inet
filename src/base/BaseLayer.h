@@ -23,7 +23,7 @@
 #define BASE_LAYER_H
 
 #include "INETDefs.h"
-#include "MiximBatteryAccess.h"
+#include "BaseModule.h"
 #include "PassedMessage.h"
 
 /**
@@ -35,7 +35,7 @@
  * @ingroup baseModules
  * @author Andreas Koepke
  */
-class INET_API BaseLayer : public MiximBatteryAccess
+class INET_API BaseLayer : public BaseModule
 {
 public:
     /** @brief SignalID for packets. */
@@ -72,7 +72,7 @@ private:
 
 public:
     BaseLayer()
-        : MiximBatteryAccess()
+        : BaseModule()
     	, upperLayerIn(-1)
     	, upperLayerOut(-1)
     	, lowerLayerIn(-1)
@@ -84,7 +84,7 @@ public:
         , passedMsg(NULL)
     {}
     BaseLayer(unsigned stacksize)
-        : MiximBatteryAccess(stacksize)
+        : BaseModule(stacksize)
         , upperLayerIn(-1)
         , upperLayerOut(-1)
         , lowerLayerIn(-1)
