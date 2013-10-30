@@ -27,12 +27,12 @@ import inet.mobility.contract.IMobility;
 simple MobilityBase like IMobility
 {
     parameters:
-        @signal[mobilityStateChanged](type=MobilityBase);
-        @display("i=block/cogwheel");
         double constraintAreaMinX @unit(m) = default(-1m/0); // min x position of the constraint area, unconstrained by default (negative infinity)
         double constraintAreaMinY @unit(m) = default(-1m/0); // min y position of the constraint area, unconstrained by default (negative infinity)
         double constraintAreaMinZ @unit(m) = default(-1m/0); // min z position of the constraint area, unconstrained by default (negative infinity)
         double constraintAreaMaxX @unit(m) = default(1m/0); // max x position of the constraint area, unconstrained by default (positive infinity)
         double constraintAreaMaxY @unit(m) = default(1m/0); // max y position of the constraint area, unconstrained by default (positive infinity)
         double constraintAreaMaxZ @unit(m) = default(1m/0); // max z position of the constraint area, unconstrained by default (positive infinity)
+        @display("i=block/cogwheel");
+        @signal[mobilityStateChanged];
 }
