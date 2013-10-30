@@ -22,6 +22,8 @@
 #include "IRadio.h"
 #include "SimplifiedRadioChannelAccess.h"
 #include "SimplifiedRadioFrame.h"
+#include "IPowerSource.h"
+#include "IPowerConsumer.h"
 #include "IRadioModel.h"
 #include "IReceptionModel.h"
 #include "SnrList.h"
@@ -54,7 +56,7 @@
  *
  * @author Andras Varga, Levente Meszaros
  */
-class INET_API SimplifiedRadio : public SimplifiedRadioChannelAccess, public IRadio, public ILifecycle
+class INET_API SimplifiedRadio : public SimplifiedRadioChannelAccess, public IRadio, public ILifecycle, public IPowerConsumer
 {
   protected:
     typedef std::map<double,double> SensitivityList; // Sensitivity list
@@ -147,7 +149,7 @@ class INET_API SimplifiedRadio : public SimplifiedRadioChannelAccess, public IRa
     virtual void connectReceiver();
     virtual void disconnectReceiver();
 
-    virtual void registerBattery();
+    virtual double getPowerConsumption();
 
     virtual void updateDisplayString();
 
@@ -158,6 +160,8 @@ class INET_API SimplifiedRadio : public SimplifiedRadioChannelAccess, public IRa
 	// Support of noise generators, the noise generators allow that the radio can change between  RECV <-->IDLE without to receive a frame
     static simsignal_t changeLevelNoise;
 
+    int powerConsumerId;
+    IPowerSource *powerSource;
     INoiseGenerator *noiseGenerator;
     cMessage *updateString;
     simtime_t updateStringInterval;
@@ -181,6 +185,12 @@ class INET_API SimplifiedRadio : public SimplifiedRadioChannelAccess, public IRa
 
     /** Power used to transmit messages */
     double transmitterPower;
+    double sleepModePowerConsumption;
+    double receiverModeFreeChannelPowerConsumption;
+    double receiverModeBusyChannelPowerConsumption;
+    double receiverModeReceivingPowerConsumption;
+    double transmitterModeIdlePowerConsumption;
+    double transmitterModeTransmittingPowerConsumption;
 
     /** Bitrate used to transmit messages */
     double bitrate;

@@ -57,11 +57,14 @@ simple SimplifiedRadio extends RadioBase
         // RiceModel
         double K @unit("dB") = default(8dB);
 
-        // battery module parameters (if any of them is negative, the battery module is disabled)
-        double usage_radio_idle @unit(mA) = default(-1mA); // disable battery registration
-        double usage_radio_recv @unit(mA) = default(-1mA); // disable battery registration
-        double usage_radio_sleep @unit(mA) = default(-1mA); // disable battery registration
-        double usage_radio_send @unit(mA) = default(-1mA); // disable battery registration
+        // power consumption
+        double sleepModePowerConsumption @unit(mW) = default(0mW);
+        double receiverModeFreeChannelPowerConsumption @unit(mW) = default(0mW);
+        double receiverModeBusyChannelPowerConsumption @unit(mW) = default(0mW);
+        double receiverModeReceivingPowerConsumption @unit(mW) = default(10mW);
+        double transmitterModeIdlePowerConsumption @unit(mW) = default(0mW);
+        double transmitterModeTransmittingPowerConsumption @unit(mW) = default(100mW);
+
         // misc
         bool drawCoverage = default(true);  // draw the coverage area in Tkenv
         int refreshCoverageInterval @unit("s") = default(0s);  // update period in simulation time for coverage redraw

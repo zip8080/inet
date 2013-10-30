@@ -20,13 +20,44 @@
 //
 
 
-#include "SimplifiedRadio.h"
-#include "FWMath.h"
-#include "PhyControlInfo_m.h"
-#include "Radio80211aControlInfo_m.h"
-#include "BasicBattery.h"
-#include "NodeStatus.h"
-#include "NodeOperations.h"
+#include <cdisplaystring.h>
+#include <cenvir.h>
+#include <cexception.h>
+#include <cgate.h>
+#include <checkandcast.h>
+#include <clistener.h>
+#include <clog.h>
+#include <cobjectfactory.h>
+#include <cpar.h>
+#include <cregistrationlist.h>
+#include <csimulation.h>
+#include <cwatch.h>
+#include <cxmlelement.h>
+#include <Coord.h>
+#include <FWMath.h>
+#include <INETDefs.h>
+#include <ISimplifiedRadioChannel.h>
+#include <ModuleAccess.h>
+#include <NodeOperations.h>
+#include <NodeStatus.h>
+#include <onstartup.h>
+#include <PhyControlInfo_m.h>
+#include <regmacros.h>
+#include <Radio80211aControlInfo_m.h>
+#include <simkerneldefs.h>
+#include <simtime.h>
+#include <simtime_t.h>
+#include <simutil.h>
+#include <SimplifiedRadio.h>
+#include <cmath>
+#include <cstdlib>
+#include <iostream>
+#include <iterator>
+#include <list>
+#include <map>
+#include <string>
+#include <utility>
+#include <vector>
 
 simsignal_t SimplifiedRadio::bitrateSignal = SIMSIGNAL_NULL;
 simsignal_t SimplifiedRadio::lossRateSignal = SIMSIGNAL_NULL;
@@ -41,6 +72,8 @@ SimplifiedRadio::SimplifiedRadio()
     radioMode = RADIO_MODE_OFF;
     radioChannelState = RADIO_CHANNEL_STATE_UNKNOWN;
     radioChannel = 0;
+    powerConsumerId = 0;
+    powerSource = NULL;
     obstacles = NULL;
     radioModel = NULL;
     receptionModel = NULL;
@@ -68,6 +101,12 @@ void SimplifiedRadio::initialize(int stage)
 
         // read parameters
         transmitterPower = par("transmitterPower");
+        sleepModePowerConsumption = par("sleepModePowerConsumption");
+        receiverModeFreeChannelPowerConsumption = par("receiverModeFreeChannelPowerConsumption");
+        receiverModeBusyChannelPowerConsumption = par("receiverModeBusyChannelPowerConsumption");
+        receiverModeReceivingPowerConsumption = par("receiverModeReceivingPowerConsumption");
+        transmitterModeIdlePowerConsumption = par("transmitterModeIdlePowerConsumption");
+        transmitterModeTransmittingPowerConsumption = par("transmitterModeTransmittingPowerConsumption");
         if (transmitterPower > (double) (getSimplifiedRadioChannelPar("pMax")))
             error("transmitterPower cannot be bigger than pMax in SimplifiedRadioChannel!");
         bitrate = par("bitrate");
@@ -141,6 +180,10 @@ void SimplifiedRadio::initialize(int stage)
             }
         }
 
+        powerSource = dynamic_cast<IPowerSource *>(hostModule->getSubmodule("powerSource"));
+        if (powerSource)
+            powerConsumerId = powerSource->addPowerConsumer(this);
+
         // radio model to handle frame length and reception success calculation (modulation, error correction etc.)
         std::string rModel = par("radioModel").stdstringValue();
         if (rModel=="")
@@ -161,10 +204,6 @@ void SimplifiedRadio::initialize(int stage)
             updateStringInterval = par("refreshCoverageInterval");
         else
             updateStringInterval = 0;
-    }
-    else if (stage == INITSTAGE_PHYSICAL_LAYER)
-    {
-        registerBattery();
     }
     else if (stage == 2)
     {
@@ -840,6 +879,8 @@ void SimplifiedRadio::updateRadioChannelState()
         EV << "Changing radio channel state from " << getRadioChannelStateName(radioChannelState) << " to " << getRadioChannelStateName(newRadioChannelState) << ".\n";
         radioChannelState = newRadioChannelState;
         emit(radioChannelStateChangedSignal, newRadioChannelState);
+        if (powerSource)
+            powerSource->setPowerConsumption(powerConsumerId, getPowerConsumption());
     }
 }
 
@@ -901,24 +942,6 @@ void SimplifiedRadio::updateSensitivity(double rate)
     EV <<" sensitivity after updateSensitivity: "<<sensitivity<<endl;
 }
 
-void SimplifiedRadio::registerBattery()
-{
-    BasicBattery *bat = BatteryAccess().getIfExists();
-    if (bat)
-    {
-        //int id,double mUsageRadioIdle,double mUsageRadioRecv,double mUsageRadioSend,double mUsageRadioSleep)=0;
-        // read parameters
-        double mUsageRadioIdle = par("usage_radio_idle");
-        double mUsageRadioRecv = par("usage_radio_recv");
-        double mUsageRadioSleep = par("usage_radio_sleep");
-        double mUsageRadioSend = par("usage_radio_send");
-        if (mUsageRadioIdle<0 || mUsageRadioRecv<0 || mUsageRadioSleep<0 || mUsageRadioSend < 0)
-            return;
-        // TODO: create correct battery interface and revive
-        // bat->registerWirelessDevice(rs.getRadioId(), mUsageRadioIdle, mUsageRadioRecv, mUsageRadioSend, mUsageRadioSleep);
-    }
-}
-
 void SimplifiedRadio::updateDisplayString() {
     // draw the interference area and sensitivity area
     // according pathloss propagation only
@@ -969,8 +992,6 @@ double SimplifiedRadio::calcDistFreeSpace()
     return interfDistance;
 }
 
-
-
 double SimplifiedRadio::calcDistDoubleRay()
 {
     //the carrier frequency used
@@ -980,6 +1001,36 @@ double SimplifiedRadio::calcDistDoubleRay()
     double interfDistance = pow(transmitterPower/minReceivePower, 1.0 / 4);
 
     return interfDistance;
+}
+
+double SimplifiedRadio::getPowerConsumption()
+{
+    if (radioMode == RADIO_MODE_OFF)
+        return 0;
+    else if (radioMode == RADIO_MODE_SLEEP)
+        return sleepModePowerConsumption;
+    else if (radioMode == RADIO_MODE_RECEIVER) {
+        if (radioChannelState == RADIO_CHANNEL_STATE_FREE)
+            return receiverModeFreeChannelPowerConsumption;
+        else if (radioChannelState == RADIO_CHANNEL_STATE_BUSY)
+            return receiverModeBusyChannelPowerConsumption;
+        else if (radioChannelState == RADIO_CHANNEL_STATE_RECEIVING)
+            return receiverModeReceivingPowerConsumption;
+        else
+            throw cRuntimeError("Unkown radio channel state");
+    }
+    else if (radioMode == RADIO_MODE_TRANSMITTER) {
+        if (radioChannelState == RADIO_CHANNEL_STATE_FREE)
+            return transmitterModeIdlePowerConsumption;
+        else if (radioChannelState == RADIO_CHANNEL_STATE_TRANSMITTING)
+            return transmitterModeTransmittingPowerConsumption;
+        else
+            throw cRuntimeError("Unkown radio channel state");
+    }
+    else if (radioMode == RADIO_MODE_SWITCHING)
+        return 0;
+    else
+        throw cRuntimeError("Unkown radio mode");
 }
 
 void SimplifiedRadio::disconnectReceiver()
