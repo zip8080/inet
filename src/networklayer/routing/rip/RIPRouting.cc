@@ -148,7 +148,7 @@ simsignal_t RIPRouting::numRoutesSignal = SIMSIGNAL_NULL;
 
 void RIPRouting::initialize(int stage)
 {
-    cSimpleModule::initialize(stage);
+    InetSimpleModule::initialize(stage);
 
     if (stage == INITSTAGE_LOCAL)
     {

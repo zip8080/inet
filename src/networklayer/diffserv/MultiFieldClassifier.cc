@@ -133,7 +133,7 @@ simsignal_t MultiFieldClassifier::pkClassSignal = SIMSIGNAL_NULL;
 
 void MultiFieldClassifier::initialize(int stage)
 {
-    cSimpleModule::initialize(stage);
+    InetSimpleModule::initialize(stage);
 
     if (stage == INITSTAGE_LOCAL)
     {

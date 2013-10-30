@@ -48,7 +48,7 @@ class TED;
 /**
  * LDP (rfc 3036) protocol implementation.
  */
-class INET_API LDP: public cSimpleModule, public TCPSocket::CallbackInterface, public IClassifier, public INotifiable, public ILifecycle
+class INET_API LDP: public InetSimpleModule, public TCPSocket::CallbackInterface, public IClassifier, public INotifiable, public ILifecycle
 {
   public:
 

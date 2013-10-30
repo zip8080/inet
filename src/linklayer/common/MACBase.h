@@ -30,7 +30,7 @@ class InterfaceEntry;
 /**
  * Base class for MAC modules.
  */
-class INET_API MACBase : public cSimpleModule, public ILifecycle, public INotifiable
+class INET_API MACBase : public InetSimpleModule, public ILifecycle, public INotifiable
 {
     protected:
         NotificationBoard *nb;

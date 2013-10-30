@@ -29,7 +29,7 @@ Define_Module(TraCIDemo);
 
 void TraCIDemo::initialize(int stage)
 {
-    cSimpleModule::initialize(stage);
+    InetSimpleModule::initialize(stage);
 
     if (stage == INITSTAGE_LOCAL)
     {

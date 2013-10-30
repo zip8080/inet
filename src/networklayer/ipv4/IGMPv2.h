@@ -31,7 +31,7 @@ class IInterfaceTable;
 class IIPv4RoutingTable;
 class NotificationBoard;
 
-class INET_API IGMPv2 : public cSimpleModule, protected INotifiable
+class INET_API IGMPv2 : public InetSimpleModule, protected INotifiable
 {
   protected:
     enum RouterState

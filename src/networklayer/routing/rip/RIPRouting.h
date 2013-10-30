@@ -131,7 +131,7 @@ struct RIPInterfaceEntry
  * 2. There is no merging of subnet routes. RFC 2453 3.7 suggests that subnetted network routes should
  *    not be advertised outside the subnetted network.
  */
-class INET_API RIPRouting : public cSimpleModule, protected INotifiable, public ILifecycle
+class INET_API RIPRouting : public InetSimpleModule, protected INotifiable, public ILifecycle
 {
     enum Mode { RIPv2, RIPng };
     typedef std::vector<RIPInterfaceEntry> InterfaceVector;

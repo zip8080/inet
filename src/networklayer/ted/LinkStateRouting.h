@@ -54,7 +54,7 @@ class NotificationBoard;
  *
  * See NED file for more info.
  */
-class LinkStateRouting : public cSimpleModule, public INotifiable
+class LinkStateRouting : public InetSimpleModule, public INotifiable
 {
   protected:
     TED *tedmod;

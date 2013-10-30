@@ -36,7 +36,7 @@
  *
  * @author Andras Varga
  */
-class INET_API Ieee80211AgentSTA : public cSimpleModule, public INotifiable
+class INET_API Ieee80211AgentSTA : public InetSimpleModule, public INotifiable
 {
   protected:
     InterfaceEntry *myIface;
@@ -61,7 +61,7 @@ class INET_API Ieee80211AgentSTA : public cSimpleModule, public INotifiable
     virtual int numInitStages() const { return NUM_INIT_STAGES; }
     virtual void initialize(int);
 
-    /** Overridden cSimpleModule method */
+    /** Overridden InetSimpleModule method */
     virtual void handleMessage(cMessage *msg);
 
     /** Handle timers */

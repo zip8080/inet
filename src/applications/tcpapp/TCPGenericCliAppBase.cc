@@ -25,7 +25,7 @@ simsignal_t TCPGenericCliAppBase::sentPkSignal = SIMSIGNAL_NULL;
 
 void TCPGenericCliAppBase::initialize(int stage)
 {
-    cSimpleModule::initialize(stage);
+    InetSimpleModule::initialize(stage);
 
     if (stage == INITSTAGE_LOCAL)
     {

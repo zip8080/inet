@@ -33,7 +33,7 @@ class NotificationBoard;
  *
  * See NED file for more info.
  */
-class TED : public cSimpleModule, public ILifecycle
+class TED : public InetSimpleModule, public ILifecycle
 {
   public:
     /**

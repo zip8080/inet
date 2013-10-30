@@ -30,7 +30,7 @@
 #include "INotifiable.h"
 #include "ILifecycle.h"
 
-class INET_API DHCPClient : public cSimpleModule, public INotifiable, public ILifecycle
+class INET_API DHCPClient : public InetSimpleModule, public INotifiable, public ILifecycle
 {
     protected:
         int bootps_port; // server

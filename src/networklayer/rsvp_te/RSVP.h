@@ -39,7 +39,7 @@ class LIBTable;
 /**
  * TODO documentation
  */
-class INET_API RSVP : public cSimpleModule, public IScriptable, public ILifecycle
+class INET_API RSVP : public InetSimpleModule, public IScriptable, public ILifecycle
 {
   protected:
 

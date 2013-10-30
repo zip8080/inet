@@ -50,7 +50,7 @@ simsignal_t PingTestApp::pingRxSeqSignal = SIMSIGNAL_NULL;
 
 void PingTestApp::initialize(int stage)
 {
-    cSimpleModule::initialize(stage);
+    InetSimpleModule::initialize(stage);
 
     if (stage == INITSTAGE_LOCAL)
     {

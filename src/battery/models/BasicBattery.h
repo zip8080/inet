@@ -79,7 +79,7 @@ class DrawAmount
 };
 
 
-class INET_API BasicBattery : public cSimpleModule, public INotifiable
+class INET_API BasicBattery : public InetSimpleModule, public INotifiable
 {
   protected:
     virtual int numInitStages() const { return NUM_INIT_STAGES; }

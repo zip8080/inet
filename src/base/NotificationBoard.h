@@ -63,7 +63,7 @@
  * A module which implements INotifiable looks like this:
  *
  * <pre>
- * class Foo : public cSimpleModule, public INotifiable {
+ * class Foo : public InetSimpleModule, public INotifiable {
  *     ...
  *     virtual void receiveChangeNotification(int category, const cObject *details) {..}
  *     ...
@@ -83,7 +83,7 @@
  * @see INotifiable
  * @author Andras Varga
  */
-class INET_API NotificationBoard : public cSimpleModule
+class INET_API NotificationBoard : public InetSimpleModule
 {
   public: // should be protected
     typedef std::vector<INotifiable *> NotifiableVector;

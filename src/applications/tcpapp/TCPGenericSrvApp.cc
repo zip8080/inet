@@ -30,7 +30,7 @@ simsignal_t TCPGenericSrvApp::sentPkSignal = SIMSIGNAL_NULL;
 
 void TCPGenericSrvApp::initialize(int stage)
 {
-    cSimpleModule::initialize(stage);
+    InetSimpleModule::initialize(stage);
 
     if (stage == INITSTAGE_LOCAL)
     {

@@ -52,7 +52,7 @@ typedef std::set<ManetAddress>::const_iterator AddressGroupConstIterator;
 /**
  * Base class for Manet Routing
  */
-class INET_API ManetRoutingBase : public cSimpleModule, public INotifiable, protected cListener, public ManetNetfilterHook
+class INET_API ManetRoutingBase : public InetSimpleModule, public INotifiable, protected cListener, public ManetNetfilterHook
 {
   private:
     static simsignal_t mobilityStateChangedSignal;
