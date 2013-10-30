@@ -39,7 +39,6 @@ class INET_API InetSimpleBattery : public BasicBattery
       public:
         int currentState;
         cObject * owner;
-        double radioUsageCurrent[4];
         double  draw;
         int     currentActivity;
         int     numAccts;
@@ -53,8 +52,6 @@ class INET_API InetSimpleBattery : public BasicBattery
             accts = NULL;
             times = NULL;
             owner = NULL;
-            for (int i=0; i<4; i++)
-                radioUsageCurrent[i] = 0.0;
         }
         ~DeviceEntry()
         {
@@ -84,7 +81,6 @@ class INET_API InetSimpleBattery : public BasicBattery
      * Has to be implemented by actual battery implementations.
      */
     virtual int registerDevice(cObject *id, int numAccts);
-    virtual void registerWirelessDevice(int id, double mUsageRadioIdle, double mUsageRadioRecv, double mUsageRadioSend, double mUsageRadioSleep);
 
     /**
      * @brief Draws power from the battery.
@@ -121,8 +117,6 @@ class INET_API InetSimpleBattery : public BasicBattery
     simtime_t lastUpdateTime;
 
     virtual void deductAndCheck();
-    void receiveChangeNotification(int aCategory, const cObject* aDetails);
-
 };
 #endif
 

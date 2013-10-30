@@ -22,7 +22,6 @@
 
 #include "INETDefs.h"
 
-#include "RadioState.h"
 #include "InetSimpleBattery.h"
 #include "Energy.h"
 
@@ -114,42 +113,6 @@ int InetSimpleBattery::registerDevice(cObject *id, int numAccts)
     return deviceEntryVector.size()-1;
 }
 
-void InetSimpleBattery::registerWirelessDevice(int id, double mUsageRadioIdle, double mUsageRadioRecv, double mUsageRadioSend, double mUsageRadioSleep)
-{
-    Enter_Method_Silent();
-    if (deviceEntryMap.find(id) != deviceEntryMap.end())
-    {
-        EV << "This device is register \n";
-        return;
-    }
-
-    DeviceEntry *device = new DeviceEntry();
-    const int N = 5;  // number of radio states  TODO symbolic name!!!
-    device->numAccts = N;
-    device->accts = new double[N];
-    device->times = new simtime_t[N];
-
-    ASSERT(RadioState::IDLE<N && RadioState::RECV<N && RadioState::TRANSMIT<N && RadioState::SLEEP<N && RadioState::OFF<N);
-    device->radioUsageCurrent[RadioState::IDLE] = mUsageRadioIdle;
-    device->radioUsageCurrent[RadioState::RECV] = mUsageRadioRecv;
-    device->radioUsageCurrent[RadioState::TRANSMIT] = mUsageRadioSend;
-    device->radioUsageCurrent[RadioState::SLEEP] = mUsageRadioSleep;
-    device->radioUsageCurrent[RadioState::OFF] = 0;
-
-    for (int i = 0; i < N; i++)
-    {
-        device->accts[i] = 0.0;
-        device->times[i] = SIMTIME_ZERO;
-    }
-
-    deviceEntryMap.insert(std::pair<int,DeviceEntry*>(id, device));
-    if (mustSubscribe)
-    {
-        mpNb->subscribe(this, NF_RADIOSTATE_CHANGED);
-        mustSubscribe = false;
-    }
-}
-
 void InetSimpleBattery::handleMessage(cMessage *msg)
 {
     if (msg->isSelfMessage())
@@ -186,35 +149,6 @@ void InetSimpleBattery::finish()
     deductAndCheck();
     deviceEntryMap.clear();
     deviceEntryVector.clear();
-}
-
-void InetSimpleBattery::receiveChangeNotification(int aCategory, const cObject* aDetails)
-{
-    Enter_Method_Silent();
-    //EV << "[Battery]: receiveChangeNotification" << endl;
-    if (aCategory == NF_RADIOSTATE_CHANGED)
-    {
-        const RadioState *rs = check_and_cast<const RadioState *>(aDetails);
-
-        DeviceEntryMap::iterator it = deviceEntryMap.find(rs->getRadioId());
-        if (it==deviceEntryMap.end())
-            return;
-
-        if (rs->getState()>=it->second->numAccts)
-            opp_error("Error in battery states");
-
-        double current = it->second->radioUsageCurrent[rs->getState()];
-
-        EV << simTime() << " wireless device " << rs->getRadioId() << " draw current " << current <<
-        "mA, new state = " << rs->getState() << "\n";
-
-        // update the residual capacity (finish previous current draw)
-        deductAndCheck();
-
-        // set the new current draw in the device vector
-        it->second->draw = current;
-        it->second->currentActivity = rs->getState();
-    }
 }
 
 void InetSimpleBattery::draw(int deviceID, DrawAmount& amount, int activity)
