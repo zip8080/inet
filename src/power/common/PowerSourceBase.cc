@@ -1,5 +1,5 @@
 //
-// Copyright (C) 2013 Andras Varga
+// Copyright (C) 2013 OpenSim Ltd.
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public License
@@ -17,12 +17,12 @@
 
 #include "PowerSourceBase.h"
 
-IPowerConsumer * PowerSourceBase::getPowerConsumer(int index)
+IPowerConsumer *PowerSourceBase::getPowerConsumer(int index)
 {
     return powerConsumers[index].powerConsumer;
 }
 
-int PowerSourceBase::addPowerConsumer(IPowerConsumer * powerConsumer)
+int PowerSourceBase::addPowerConsumer(IPowerConsumer *powerConsumer)
 {
     powerConsumers.push_back(PowerConsumerEntry(powerConsumer, 0));
     return powerConsumers.size() - 1;

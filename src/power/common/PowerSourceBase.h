@@ -1,5 +1,5 @@
 //
-// Copyright (C) 2013 Andras Varga
+// Copyright (C) 2013 OpenSim Ltd.
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public License
@@ -15,14 +15,13 @@
 // along with this program; if not, see <http://www.gnu.org/licenses/>.
 //
 
-#ifndef __INET_PowerSourceBASE_H
-#define __INET_PowerSourceBASE_H
+#ifndef __INET_POWERSOURCEBASE_H
+#define __INET_POWERSOURCEBASE_H
 
-#include "INETDefs.h"
 #include "IPowerSource.h"
 
 /**
- * This is a base class for different power sources.
+ * This is an abstract base class for different power sources.
  *
  * @author Levente Meszaros
  */
@@ -35,7 +34,7 @@ class INET_API PowerSourceBase : public cSimpleModule, public IPowerSource
         /**
          * The owner power consumer.
          */
-        IPowerConsumer * powerConsumer;
+        IPowerConsumer *powerConsumer;
 
         /**
          * Current power consumption [W].
@@ -43,7 +42,7 @@ class INET_API PowerSourceBase : public cSimpleModule, public IPowerSource
         double consumedPower;
 
       public:
-        PowerConsumerEntry(IPowerConsumer * powerConsumer, double consumedPower) :
+        PowerConsumerEntry(IPowerConsumer *powerConsumer, double consumedPower) :
             powerConsumer(powerConsumer), consumedPower(consumedPower) { }
     };
 
@@ -60,9 +59,9 @@ class INET_API PowerSourceBase : public cSimpleModule, public IPowerSource
   public:
     virtual int getNumPowerConsumers() { return powerConsumers.size(); }
 
-    virtual IPowerConsumer * getPowerConsumer(int index);
+    virtual IPowerConsumer *getPowerConsumer(int index);
 
-    virtual int addPowerConsumer(IPowerConsumer * powerConsumer);
+    virtual int addPowerConsumer(IPowerConsumer *powerConsumer);
 
     virtual void removePowerConsumer(int id);
 
