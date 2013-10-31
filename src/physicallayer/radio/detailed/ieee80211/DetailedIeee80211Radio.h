@@ -24,9 +24,11 @@
 class INET_API DetailedIeee80211Radio : public DetailedRadio
 {
   protected:
-    virtual DetailedRadioSignal * createSignal(cPacket * macFrame);
-    virtual simtime_t packetDuration(cPacket * macFrame, double bitrate);
-    virtual DetailedRadioSignal * createSignal(simtime_t_cref start, simtime_t_cref length, double power, double bitrate);
+    virtual DetailedRadioSignal *createSignal(cPacket *macFrame);
+
+    virtual simtime_t packetDuration(cPacket *macFrame, double bitrate);
+
+    virtual DetailedRadioSignal *createSignal(simtime_t_cref start, simtime_t_cref length, double power, double bitrate);
 };
 
 #endif

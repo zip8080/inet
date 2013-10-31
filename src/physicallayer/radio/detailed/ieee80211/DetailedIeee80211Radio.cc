@@ -22,10 +22,10 @@
 
 Define_Module(DetailedIeee80211Radio);
 
-DetailedRadioSignal * DetailedIeee80211Radio::createSignal(cPacket * macFrame)
+DetailedRadioSignal *DetailedIeee80211Radio::createSignal(cPacket *macFrame)
 {
-    if (dynamic_cast<Ieee80211Frame *>(macFrame)) {
-        PhyControlInfo *controlInfo = dynamic_cast<PhyControlInfo *>(macFrame->getControlInfo());
+    if (dynamic_cast<Ieee80211Frame*>(macFrame)) {
+        PhyControlInfo *controlInfo = dynamic_cast<PhyControlInfo*>(macFrame->getControlInfo());
         // TODO: KLUDGE:
         double bitrate = controlInfo ? controlInfo->getBitrate() : 2E+6;
         return createSignal(simTime(), packetDuration(macFrame, bitrate), txPower, bitrate);
@@ -34,16 +34,16 @@ DetailedRadioSignal * DetailedIeee80211Radio::createSignal(cPacket * macFrame)
         throw cRuntimeError("Unknown MAC packet");
 }
 
-DetailedRadioSignal* DetailedIeee80211Radio::createSignal(simtime_t_cref start, simtime_t_cref length, double power, double bitrate)
+DetailedRadioSignal *DetailedIeee80211Radio::createSignal(simtime_t_cref start, simtime_t_cref length, double power, double bitrate)
 {
     simtime_t end = start + length;
     //create signal with start at current simtime and passed length
-    DetailedRadioSignal* s = new DetailedRadioSignal(start, length);
+    DetailedRadioSignal *s = new DetailedRadioSignal(start, length);
 
     //create and set tx power mapping
     // TODO: channel
     double centerFreq = CENTER_FREQUENCIES[getRadioChannel()];
-    ConstMapping* txPowerMapping
+    ConstMapping *txPowerMapping
             = createSingleFrequencyMapping( start, end,
                                             centerFreq, 11.0e6,
                                             power);
@@ -52,7 +52,7 @@ DetailedRadioSignal* DetailedIeee80211Radio::createSignal(simtime_t_cref start, 
     //create and set bitrate mapping
 
     //create mapping over time
-    Mapping* bitrateMapping
+    Mapping *bitrateMapping
             = MappingUtils::createMapping(DimensionSet::timeDomain,
                                           Mapping::STEPS);
 
@@ -67,7 +67,7 @@ DetailedRadioSignal* DetailedIeee80211Radio::createSignal(simtime_t_cref start, 
     return s;
 }
 
-simtime_t DetailedIeee80211Radio::packetDuration(cPacket * macFrame, double br)
+simtime_t DetailedIeee80211Radio::packetDuration(cPacket *macFrame, double br)
 {
     return macFrame->getBitLength() / br + PHY_HEADER_LENGTH / BITRATE_HEADER;
 }

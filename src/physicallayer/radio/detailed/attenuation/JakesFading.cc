@@ -131,8 +131,8 @@ JakesFading::~JakesFading() {
 void JakesFading::filterSignal(DetailedRadioFrame* frame, const Coord& /*sendersPos*/, const Coord& /*receiverPos*/)
 {
 	DetailedRadioSignal&                signal           = frame->getSignal();
-	IMobility * senderMobility   = dynamic_cast<DetailedRadioChannelAccess *>(frame->getSenderModule())->getMobilityModule();
-	IMobility * receiverMobility = dynamic_cast<DetailedRadioChannelAccess *>(frame->getArrivalModule())->getMobilityModule();
+	IMobility * senderMobility   = dynamic_cast<DetailedRadioChannelAccess *>(frame->getSenderModule())->getMobility();
+	IMobility * receiverMobility = dynamic_cast<DetailedRadioChannelAccess *>(frame->getArrivalModule())->getMobility();
 	const double           relSpeed         = (senderMobility->getCurrentSpeed() - receiverMobility->getCurrentSpeed()).length();
 
 	signal.addAttenuation(new JakesFadingMapping(this, relSpeed,

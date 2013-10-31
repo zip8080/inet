@@ -6,12 +6,11 @@
 #include <string>
 
 #include "INETDefs.h"
-#include "IRadio.h"
 #include "ChannelState.h"
 #include "PhyUtils.h"
 #include "DetailedRadioChannelAccess.h"
 #include "DeciderToPhyInterface.h"
-
+#include "ModuleAccess.h"
 #include "ChannelInfo.h"
 
 class AnalogueModel;
@@ -64,7 +63,7 @@ class cXMLElement;
  * @ingroup phyLayer
  * @ingroup baseModules
  */
-class INET_API BasePhyLayer: public DetailedRadioChannelAccess, public DeciderToPhyInterface, public IRadio
+class INET_API BasePhyLayer: public DetailedRadioChannelAccess, public DeciderToPhyInterface
 {
 
 protected:
@@ -110,10 +109,6 @@ protected:
 	/** @brief Defines the strength of the thermal noise.*/
 	ConstantSimpleConstMapping* thermalNoise;
 
-	RadioMode radioMode;
-	RadioChannelState radioChannelState;
-	int radioChannel;
-
     /** @brief The transmission power */
     double txPower;
 
@@ -143,11 +138,6 @@ protected:
 
 	/** @brief List of the analogue models to use.*/
 	AnalogueModelList analogueModels;
-
-	/** @brief The id of the in-data gate from the Mac layer */
-	int upperLayerIn;
-	/** @brief The id of the out-data gate to the Mac layer */
-	int upperLayerOut;
 
 	/**
 	 * @brief Self message scheduled to the point in time when the
@@ -305,7 +295,7 @@ protected:
 	 */
 	template <class _DECIDER_CLASS_>
 	_DECIDER_CLASS_* createDecider(const ParameterMap& params) {
-		_DECIDER_CLASS_ *const pDecider = new _DECIDER_CLASS_(this, sensitivity, findHost()->getIndex());
+		_DECIDER_CLASS_ *const pDecider = new _DECIDER_CLASS_(this, sensitivity, findContainingNode(this)->getIndex());
 		if (pDecider != NULL && !pDecider->initFromMap(params)) {
 			opp_warning("Decider from config.xml could not be initialized correctly!");
 		}
@@ -466,16 +456,8 @@ public:
 	 * @brief These methods implement the MacToPhyInterface.
 	 **/
 	/*@{ */
-    virtual Coord getRadioPosition() const { ASSERT(false); return Coord(); }
-
-    virtual const cGate *getRadioGate() const { return gate("radioIn"); }
-
-    virtual RadioMode getRadioMode() const { return radioMode; }
     virtual void setRadioMode(RadioMode radioMode);
 
-    virtual RadioChannelState getRadioChannelState() const { return radioChannelState; }
-
-    virtual int getRadioChannel() const { return radioChannel; }
     virtual void setRadioChannel(int radioChannel);
 
 	/**

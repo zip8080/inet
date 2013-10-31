@@ -12,6 +12,7 @@
 #include <INETDefs.h>
 #define ERFC(x) erfc(x)
 
+#include "IRadio.h"
 #include "DeciderResult80211.h"
 #include "Ieee80211Consts.h"
 #include "Mapping.h"
@@ -24,9 +25,10 @@ Decider80211::Decider80211( DeciderToPhyInterface* phy
     , snrThreshold(0)
     , centerFrequency(0)
 {
-	assert(1                             <= phy->getRadioChannel());
-	assert(phy->getRadioChannel() <= 14);
-	centerFrequency = CENTER_FREQUENCIES[phy->getRadioChannel()];
+    int radioChannel = dynamic_cast<IRadio*>(phy)->getRadioChannel();
+	assert(1 <= radioChannel);
+	assert(radioChannel <= 14);
+	centerFrequency = CENTER_FREQUENCIES[radioChannel];
 }
 
 bool Decider80211::initFromMap(const ParameterMap& params) {

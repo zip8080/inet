@@ -20,14 +20,10 @@
  *                from this class and use the sendToChannel() function!!
  **************************************************************************/
 
-#ifndef CONNECTION_MANAGER_ACCESS_H
-#define CONNECTION_MANAGER_ACCESS_H
+#ifndef __INET_DETAILEDRADIOCHANNELACCESS_H
+#define __INET_DETAILEDRADIOCHANNELACCESS_H
 
-#include <omnetpp.h>
-#include <vector>
-#include <MobilityAccess.h>
-#include "INETDefs.h"
-#include "BaseModule.h"
+#include "RadioBase.h"
 
 class NicEntry;
 class BaseConnectionManager;
@@ -47,7 +43,7 @@ class BaseConnectionManager;
  * @ingroup phyLayer
  * @ingroup baseModules
  **/
-class INET_API DetailedRadioChannelAccess : public BaseModule, protected MobilityAccess
+class INET_API DetailedRadioChannelAccess : public RadioBase, public cListener
 {
 protected:
 	/** @brief use sendDirect or not?*/
@@ -90,29 +86,19 @@ protected:
 private:
 	/** @brief Copy constructor is not allowed.
 	 */
-        DetailedRadioChannelAccess(const DetailedRadioChannelAccess&);
+    DetailedRadioChannelAccess(const DetailedRadioChannelAccess&);
 	/** @brief Assignment operator is not allowed.
 	 */
-        DetailedRadioChannelAccess& operator=(const DetailedRadioChannelAccess&);
+    DetailedRadioChannelAccess& operator=(const DetailedRadioChannelAccess&);
 
 public:
 	DetailedRadioChannelAccess()
-		: BaseModule()
-		, MobilityAccess()
+		: RadioBase()
 		, useSendDirect(false)
 		, cc(NULL)
 		, usePropagationDelay(false)
 		, isRegistered(false)
 	{}
-	DetailedRadioChannelAccess(unsigned sz)
-		: BaseModule(sz)
-		, MobilityAccess()
-		, useSendDirect(false)
-		, cc(NULL)
-		, usePropagationDelay(false)
-		, isRegistered(false)
-	{}
-	virtual ~DetailedRadioChannelAccess() {}
 
 	/**
 	 * @brief Returns a pointer to the ConnectionManager responsible for the
@@ -138,15 +124,6 @@ public:
 	 * ConnectionManager.
 	 */
 	virtual void receiveSignal(cComponent *source, simsignal_t signalID, cObject *obj);
-
-	/**
-	 * @brief Returns the host's mobility module.
-	 */
-        virtual IMobility * getMobilityModule()
-        {
-            return MobilityAccess::get(this);
-        }
 };
 
 #endif
-

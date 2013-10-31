@@ -9,6 +9,7 @@
 
 #include <cassert>
 
+#include "IRadio.h"
 #include "DetailedRadioFrame.h"
 #include "PhyToMacControlInfo.h"
 #include "FWMath.h"
@@ -46,7 +47,7 @@ simtime_t BaseDecider::processSignal(DetailedRadioFrame* frame) {
 
 	simtime_t HandleAgain = notAgain;
 
-    if(phy->getNbRadioChannels() > 1 && frame->getChannel() != phy->getRadioChannel()) {
+    if(phy->getNbRadioChannels() > 1 && frame->getChannel() != dynamic_cast<IRadio*>(phy)->getRadioChannel()) {
         // we cannot synchronize on a frame on another channel.
         return notAgain;
     }

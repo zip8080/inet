@@ -25,12 +25,10 @@
  *              by:              $Author: willkomm $
  **************************************************************************/
 
-
+#include "InitStages.h"
 #include "DetailedRadioChannelAccess.h"
-
-#include <cassert>
-
 #include "FindModule.h"
+#include "ModuleAccess.h"
 #include "BaseConnectionManager.h"
 
 using std::endl;
@@ -52,10 +50,9 @@ BaseConnectionManager* DetailedRadioChannelAccess::getConnectionManager(const cM
 
 void DetailedRadioChannelAccess::initialize( int stage )
 {
-    BaseModule::initialize(stage);
-
-    if( stage == 0 ){
-        findHost()->subscribe(IMobility::mobilityStateChangedSignal, this);
+    RadioBase::initialize(stage);
+    if (stage == INITSTAGE_LOCAL){
+        findContainingNode(this)->subscribe(IMobility::mobilityStateChangedSignal, this);
 
         cc = getConnectionManager(getNic());
         if( cc == NULL ) error("Could not find ConnectionManager module");
@@ -134,12 +131,12 @@ simtime_t DetailedRadioChannelAccess::calculatePropagationDelay(const NicEntry* 
 	DetailedRadioChannelAccess *const receiverModule = nic->chAccess;
 	//const simtime_t_cref sStart         = simTime();
 
-	assert(senderModule);
-	assert(receiverModule);
+	ASSERT(senderModule);
+	ASSERT(receiverModule);
 
 	/** claim the Move pattern of the sender from the Signal */
-	Coord           sendersPos  = senderModule->getMobilityModule()->getCurrentPosition(/*sStart*/);
-	Coord           receiverPos = receiverModule->getMobilityModule()->getCurrentPosition(/*sStart*/);
+	Coord           sendersPos  = senderModule->getMobility()->getCurrentPosition(/*sStart*/);
+	Coord           receiverPos = receiverModule->getMobility()->getCurrentPosition(/*sStart*/);
 
 	// this time-point is used to calculate the distance between sending and receiving host
 	return receiverPos.distance(sendersPos) / SPEED_OF_LIGHT;

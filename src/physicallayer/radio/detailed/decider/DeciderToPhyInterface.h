@@ -4,12 +4,11 @@
  *
  */
 
-#ifndef DECIDER_TO_PHY_INTERFACE_H_
-#define DECIDER_TO_PHY_INTERFACE_H_
+#ifndef __INET_DECIDERTOPHYINTERFACE_H_
+#define __INET_DECIDERTOPHYINTERFACE_H_
 
 #include <vector>
 #include <list>
-#include <omnetpp.h>
 
 #include "INETDefs.h"
 
@@ -125,9 +124,6 @@ public:
 	 * Records a double into the scalar result file.
 	 */
 	virtual void recordScalar(const char *name, double value, const char *unit=NULL) = 0;
-
-	/** @brief Returns the channel currently used by the radio. */
-	virtual int getRadioChannel() const = 0;
 
 	/** @brief Returns the number of channels available in radio. */
 	virtual int getNbRadioChannels() const = 0;

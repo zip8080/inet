@@ -26,9 +26,6 @@ BasePhyLayer::BasePhyLayer()
 	: DetailedRadioChannelAccess()
 	, DeciderToPhyInterface()
 	, thermalNoise(NULL)
-    , radioMode(RADIO_MODE_OFF)
-    , radioChannelState(RADIO_CHANNEL_STATE_UNKNOWN)
-    , radioChannel(0)
 	, maxTXPower(0)
 	, sensitivity(0)
 	, recordStats(false)
@@ -36,8 +33,6 @@ BasePhyLayer::BasePhyLayer()
 	, radio(NULL)
 	, decider(NULL)
 	, analogueModels()
-	, upperLayerIn(-1)
-	, upperLayerOut(-1)
 	, radioSwitchingOverTimer(NULL)
 	, txOverTimer(NULL)
 	, headerLength(-1)
@@ -67,13 +62,6 @@ void BasePhyLayer::initialize(int stage) {
 	DetailedRadioChannelAccess::initialize(stage);
 
 	if (stage == 0) {
-		// if using sendDirect, make sure that messages arrive without delay
-		gate("radioIn")->setDeliverOnReceptionStart(true);
-
-		//get gate ids
-		upperLayerIn = findGate("upperLayerIn");
-		upperLayerOut = findGate("upperLayerOut");
-
 		//read simple ned-parameters
 		//	- initialize basic parameters
 		if(par("useThermalNoise").boolValue()) {
@@ -343,11 +331,11 @@ void BasePhyLayer::handleMessage(cMessage* msg) {
 		handleSelfMessage(msg);
 
     //controlmessages
-    } else if(msg->getArrivalGateId() == upperLayerIn && !dynamic_cast<cPacket *>(msg)) {
+    } else if(msg->getArrivalGate() == upperLayerIn && !dynamic_cast<cPacket *>(msg)) {
         handleUpperControlMessage(msg);
 
 	//MacPkts <- MacToPhyControlInfo
-	} else if(msg->getArrivalGateId() == upperLayerIn) {
+	} else if(msg->getArrivalGate() == upperLayerIn) {
 		handleUpperMessage(msg);
 
 	//AirFrames
@@ -397,7 +385,7 @@ void BasePhyLayer::handleAirFrameStartReceive(DetailedRadioFrame* frame) {
 
 	if(usePropagationDelay) {
 	    DetailedRadioSignal&   s     = frame->getSignal();
-		simtime_t delay = simTime() - s.getSendingStart();
+		simtime_t delay = simTime() - s.getTransmissionBeginTime();
 		s.setPropagationDelay(delay);
 	}
 	assert(frame->getSignal().getReceptionStart() == simTime());
@@ -663,8 +651,8 @@ void BasePhyLayer::filterSignal(DetailedRadioFrame* frame) {
 	assert(senderModule); assert(receiverModule);
 
 	/** claim the Move pattern of the sender from the Signal */
-	IMobility * sendersMobility  = senderModule   ? senderModule->getMobilityModule()   : NULL;
-	IMobility * receiverMobility = receiverModule ? receiverModule->getMobilityModule() : NULL;
+	IMobility * sendersMobility  = senderModule   ? senderModule->getMobility()   : NULL;
+	IMobility * receiverMobility = receiverModule ? receiverModule->getMobility() : NULL;
 
 	const Coord sendersPos  = sendersMobility  ? sendersMobility->getCurrentPosition(/*sStart*/) : NoMobiltyPos;
 	const Coord receiverPos = receiverMobility ? receiverMobility->getCurrentPosition(/*sStart*/): NoMobiltyPos;

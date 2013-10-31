@@ -8,7 +8,6 @@
 #ifndef PHYLAYER_H_
 #define PHYLAYER_H_
 
-#include "INETDefs.h"
 #include "BasePhyLayer.h"
 
 /**

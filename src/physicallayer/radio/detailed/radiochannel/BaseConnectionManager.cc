@@ -10,7 +10,7 @@ static const NicEntryDirect cEmptyNicDirect;
 static const NicEntryDebug  cEmptyNicDebug;
 
 BaseConnectionManager::BaseConnectionManager()
-  : cSimpleModule()
+  : RadioChannelBase()
   , nics()
   , sendDirect(false)
   , playgroundSize()
@@ -25,8 +25,7 @@ BaseConnectionManager::BaseConnectionManager()
 
 void BaseConnectionManager::initialize(int stage)
 {
-	//BaseModule::initialize(stage);
-
+	RadioChannelBase::initialize(stage);
 	if (stage == 0)
 	{
 		drawMIR = hasPar("drawMaxIntfDist")

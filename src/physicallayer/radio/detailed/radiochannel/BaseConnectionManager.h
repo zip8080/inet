@@ -5,9 +5,9 @@
 #include <vector>
 #include <string>
 
-#include "IRadioChannel.h"
 #include "INETDefs.h"
 #include "NicEntry.h"
+#include "RadioChannelBase.h"
 
 class DetailedRadioChannelAccess;
 
@@ -27,7 +27,7 @@ class DetailedRadioChannelAccess;
  * @author Christoph Sommer ("unregisterNic()"-method)
  * @sa ConnectionManagerAccess
  */
-class INET_API BaseConnectionManager : public cSimpleModule, public IRadioChannel
+class INET_API BaseConnectionManager : public RadioChannelBase
 {
 private:
 	/**
@@ -378,11 +378,7 @@ public:
 
 	Coord getPgs() { return playgroundSize; }
 
-    virtual void registerRadio(IRadio * radio) { } // TODO:
-
-    virtual void unregisterRadio(IRadio * radio) { } // TODO:
-
-    virtual void transmitRadioFrame(IRadio * radio, IRadioFrame * radioFrame) { } // TODO:
+    virtual void transmitRadioFrame(int id, IRadioFrame *radioFrame) { } // TODO:
 
 	/**
 	 * @brief Registers a nic to have its connections managed by ConnectionManager.
