@@ -30,6 +30,8 @@
  *
  * @ingroup phyLayer
  */
+// TODO: this class should represent the radio signal without reception details
+// TODO: move all reception related data into the corresponding radio frame
 class INET_API DetailedRadioSignal : public IRadioSignal {
 public:
 	/**
@@ -47,9 +49,9 @@ protected:
 	/** @brief Sender gate id, additional definition here because BasePhyLayer will do some selfMessages with AirFrame. */
 	int senderFromGateID;
 	/** @brief Receiver module id, additional definition here because BasePhyLayer will do some selfMessages with AirFrame. */
-	int receiverModuleID;
+	//int receiverModuleID;
 	/** @brief Receiver gate id, additional definition here because BasePhyLayer will do some selfMessages with AirFrame. */
-	int receiverToGateID;
+	//int receiverToGateID;
 	/** @brief The start of the signal transmission at the sender module.*/
 	simtime_t sendingStart;
 	/** @brief The duration of the signal transmission.*/
@@ -130,13 +132,13 @@ public:
 	 * @brief Returns the point in time when the sending of the Signal started
 	 * at the sender module.
 	 */
-	simtime_t_cref getSendingStart() const;
+	simtime_t getTransmissionBeginTime() const;
 
 	/**
 	 * @brief Returns the point in time when the sending of the Signal ended
 	 * at the sender module.
 	 */
-	simtime_t getSendingEnd() const;
+	simtime_t getTransmissionEndTime() const;
 
 	/**
 	 * @brief Returns the point in time when the receiving of the Signal started
@@ -266,14 +268,14 @@ public:
 	 * has not been sent/received yet, or if the module was deleted
 	 * in the meantime.
 	 */
-	cModule *getReceptionModule() const {return receiverModuleID < 0 ? NULL : simulation.getModule(receiverModuleID);}
+	//cModule *getReceptionModule() const {return receiverModuleID < 0 ? NULL : simulation.getModule(receiverModuleID);}
 
 	/**
 	 * Returns pointers to the gate from which the signal was sent and
 	 * on which gate it arrived. A NULL pointer is returned
 	 * for new (unsent) signal.
 	 */
-	cGate *getReceptionGate() const;
+	//cGate *getReceptionGate() const;
 
 	/**
 	 * Returns a pointer to the sender module. It returns NULL if the signal

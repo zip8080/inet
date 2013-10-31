@@ -24,7 +24,7 @@ import inet.linklayer.contract.ILinkLayer;
 
 
 //
-// Implements a trivial MAC layer for use in ~IdealNic.
+// Implements a trivial MAC layer for use in ~IdealWirelessNic.
 //
 // This module only provides encapsulation/decapsulation (into IdealMacFrame), 
 // but no real medium access protocol.
@@ -32,7 +32,7 @@ import inet.linklayer.contract.ILinkLayer;
 // Higher layer packets should have Ieee802Ctrl attached to them as
 // control info.
 //
-// See ~IdealNic for rationale and details.
+// See ~IdealWirelessNic for rationale and details.
 //
 simple IdealMac like ILinkLayer
 {

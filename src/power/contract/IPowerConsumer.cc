@@ -1,5 +1,5 @@
 //
-// Copyright (C) 2013 OpenSim Ltd
+// Copyright (C) 2013 OpenSim Ltd.
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public License
@@ -15,23 +15,4 @@
 // along with this program; if not, see <http://www.gnu.org/licenses/>.
 //
 
-package inet.physicallayer.radio.ideal;
-
-import inet.physicallayer.radio.common.RadioBase;
-
-//
-// Implements a unit disk radio for use in ~IdealWirelessNic.
-//
-// See ~IdealWirelessNic for rationale and details.
-//
-// See ~IdealRadioChannel, ~IdealMac, ~IdealWirelessNic
-//
-simple IdealRadio extends RadioBase
-{
-    parameters:
-        double bitrate @unit("bps");            // transmission speed [bit/sec]
-        double transmissionRange @unit("m");    // max. distance from sender where reception is possible
-        bool drawCoverage = default(true);      // draw the coverage area in Tkenv
-
-        @class(IdealRadio);
-}
+#include "IPowerConsumer.h"

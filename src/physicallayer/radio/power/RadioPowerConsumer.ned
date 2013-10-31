@@ -15,21 +15,22 @@
 // along with this program; if not, see <http://www.gnu.org/licenses/>.
 //
 
-package inet.physicallayer.radio.ideal;
+package inet.physicallayer.radio.power;
 
-import inet.physicallayer.radio.common.RadioChannelBase;
-
+import inet.power.contract.IPowerConsumer;
 
 //
-// ~IdealRadioChannel controller module for ~IdealRadio.
+// This module provides a radio power consumer model.
 //
-// ~IdealRadioChannel should have exactly one instance in every network model that
-// contains wireless nodes with ~IdealRadio. This module gets informed about the
-// location and movement of nodes, and determines which nodes are within
-// communication distance.
-//
-simple IdealRadioChannel extends RadioChannelBase
+simple RadioPowerConsumer like IPowerConsumer
 {
     parameters:
-        @class(IdealRadioChannel);
+        double sleepModePowerConsumption @unit(mW) = default(0mW);
+        double receiverModeFreeChannelPowerConsumption @unit(mW) = default(0mW);
+        double receiverModeBusyChannelPowerConsumption @unit(mW) = default(0mW);
+        double receiverModeReceivingPowerConsumption @unit(mW) = default(10mW);
+        double transmitterModeIdlePowerConsumption @unit(mW) = default(0mW);
+        double transmitterModeTransmittingPowerConsumption @unit(mW) = default(100mW);
+
+        @display("i=block/cogwheel_s");
 }

@@ -17,11 +17,9 @@
 // * part of:     framework implementation developed by tkn
 // **************************************************************************/
 
-
 package inet.physicallayer.radio.detailed.radiochannel;
 
-import inet.physicallayer.radio.contract.IRadioChannel;
-
+import inet.physicallayer.radio.common.RadioChannelBase;
 
 // Generic ConnectionMananger interface definition.
 moduleinterface IConnectionManager
@@ -55,7 +53,7 @@ moduleinterface IConnectionManager
 // @author Steffen Sroka, Daniel Willkomm, Karl Wessel
 // @see MobilityBase
 //
-simple DetailedRadioChannel like IRadioChannel, IConnectionManager
+simple DetailedRadioChannel extends RadioChannelBase like IConnectionManager
 {
     parameters:
         double playgroundSizeX @unit(m); // x size of the area the nodes are in (in meters)
@@ -76,5 +74,6 @@ simple DetailedRadioChannel like IRadioChannel, IConnectionManager
         // should the maximum interference distance be displayed for each node?
         bool drawMaxIntfDist = default(false);
 
+		@class(DetailedRadioChannel);
         @display("i=abstract/multicast");
 }

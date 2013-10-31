@@ -37,8 +37,6 @@ Define_Module(SimplifiedRadio);
 
 SimplifiedRadio::SimplifiedRadio()
 {
-    powerConsumerId = 0;
-    powerSource = NULL;
     obstacles = NULL;
     radioModel = NULL;
     receptionModel = NULL;
@@ -62,12 +60,6 @@ void SimplifiedRadio::initialize(int stage)
 
         // read parameters
         transmitterPower = par("transmitterPower");
-        sleepModePowerConsumption = par("sleepModePowerConsumption");
-        receiverModeFreeChannelPowerConsumption = par("receiverModeFreeChannelPowerConsumption");
-        receiverModeBusyChannelPowerConsumption = par("receiverModeBusyChannelPowerConsumption");
-        receiverModeReceivingPowerConsumption = par("receiverModeReceivingPowerConsumption");
-        transmitterModeIdlePowerConsumption = par("transmitterModeIdlePowerConsumption");
-        transmitterModeTransmittingPowerConsumption = par("transmitterModeTransmittingPowerConsumption");
         if (transmitterPower > (double) (getSimplifiedRadioChannelPar("pMax")))
             error("transmitterPower cannot be bigger than pMax in SimplifiedRadioChannel!");
         bitrate = par("bitrate");
@@ -137,10 +129,6 @@ void SimplifiedRadio::initialize(int stage)
                 receptionThreshold = receptionModel->calculateReceivedPower(transmitterPower, carrierFrequency, par("maxDistantReceptionThreshold").doubleValue());
             }
         }
-
-        powerSource = dynamic_cast<IPowerSource *>(hostModule->getSubmodule("powerSource"));
-        if (powerSource)
-            powerConsumerId = powerSource->addPowerConsumer(this);
 
         // radio model to handle frame length and reception success calculation (modulation, error correction etc.)
         std::string rModel = par("radioModel").stdstringValue();
@@ -835,8 +823,6 @@ void SimplifiedRadio::updateRadioChannelState()
         EV << "Changing radio channel state from " << getRadioChannelStateName(radioChannelState) << " to " << getRadioChannelStateName(newRadioChannelState) << ".\n";
         radioChannelState = newRadioChannelState;
         emit(radioChannelStateChangedSignal, newRadioChannelState);
-        if (powerSource)
-            powerSource->setPowerConsumption(powerConsumerId, getPowerConsumption());
     }
 }
 
@@ -957,36 +943,6 @@ double SimplifiedRadio::calcDistDoubleRay()
     double interfDistance = pow(transmitterPower/minReceivePower, 1.0 / 4);
 
     return interfDistance;
-}
-
-double SimplifiedRadio::getPowerConsumption()
-{
-    if (radioMode == RADIO_MODE_OFF)
-        return 0;
-    else if (radioMode == RADIO_MODE_SLEEP)
-        return sleepModePowerConsumption;
-    else if (radioMode == RADIO_MODE_RECEIVER) {
-        if (radioChannelState == RADIO_CHANNEL_STATE_FREE)
-            return receiverModeFreeChannelPowerConsumption;
-        else if (radioChannelState == RADIO_CHANNEL_STATE_BUSY)
-            return receiverModeBusyChannelPowerConsumption;
-        else if (radioChannelState == RADIO_CHANNEL_STATE_RECEIVING)
-            return receiverModeReceivingPowerConsumption;
-        else
-            throw cRuntimeError("Unkown radio channel state");
-    }
-    else if (radioMode == RADIO_MODE_TRANSMITTER) {
-        if (radioChannelState == RADIO_CHANNEL_STATE_FREE)
-            return transmitterModeIdlePowerConsumption;
-        else if (radioChannelState == RADIO_CHANNEL_STATE_TRANSMITTING)
-            return transmitterModeTransmittingPowerConsumption;
-        else
-            throw cRuntimeError("Unkown radio channel state");
-    }
-    else if (radioMode == RADIO_MODE_SWITCHING)
-        return 0;
-    else
-        throw cRuntimeError("Unkown radio mode");
 }
 
 void SimplifiedRadio::disconnectReceiver()

@@ -3,7 +3,7 @@
 #include <cassert>
 
 DetailedRadioSignal::DetailedRadioSignal(simtime_t_cref sendingStart, simtime_t_cref duration):
-	senderModuleID(-1), senderFromGateID(-1), receiverModuleID(-1), receiverToGateID(-1),
+	senderModuleID(-1), senderFromGateID(-1),// receiverModuleID(-1), receiverToGateID(-1),
 	sendingStart(sendingStart), duration(duration),
 	propagationDelay(0),
 	power(NULL), bitrate(NULL),
@@ -12,7 +12,7 @@ DetailedRadioSignal::DetailedRadioSignal(simtime_t_cref sendingStart, simtime_t_
 {}
 
 DetailedRadioSignal::DetailedRadioSignal(const DetailedRadioSignal & o):
-	senderModuleID(o.senderModuleID), senderFromGateID(o.senderFromGateID), receiverModuleID(o.receiverModuleID), receiverToGateID(o.receiverToGateID),
+	senderModuleID(o.senderModuleID), senderFromGateID(o.senderFromGateID),// receiverModuleID(o.receiverModuleID), receiverToGateID(o.receiverToGateID),
 	sendingStart(o.sendingStart), duration(o.duration),
 	propagationDelay(o.propagationDelay),
 	power(NULL), bitrate(NULL),
@@ -43,8 +43,8 @@ DetailedRadioSignal& DetailedRadioSignal::operator=(const DetailedRadioSignal& o
 	propagationDelay = o.propagationDelay;
 	senderModuleID   = o.senderModuleID;
 	senderFromGateID = o.senderFromGateID;
-	receiverModuleID = o.receiverModuleID;
-	receiverToGateID = o.receiverToGateID;
+	//receiverModuleID = o.receiverModuleID;
+	//receiverToGateID = o.receiverToGateID;
 
 	markRcvPowerOutdated();
 
@@ -90,8 +90,8 @@ DetailedRadioSignal& DetailedRadioSignal::operator=(const DetailedRadioSignal& o
 void DetailedRadioSignal::swap(DetailedRadioSignal& s) {
 	std::swap(senderModuleID,   s.senderModuleID);
 	std::swap(senderFromGateID, s.senderFromGateID);
-	std::swap(receiverModuleID, s.receiverModuleID);
-	std::swap(receiverToGateID, s.receiverToGateID);
+	//std::swap(receiverModuleID, s.receiverModuleID);
+	//std::swap(receiverToGateID, s.receiverToGateID);
 	std::swap(sendingStart,     s.sendingStart);
 	std::swap(duration,         s.duration);
 	std::swap(propagationDelay, s.propagationDelay);
@@ -129,11 +129,11 @@ DetailedRadioSignal::~DetailedRadioSignal()
 	}
 }
 
-simtime_t_cref DetailedRadioSignal::getSendingStart() const {
+simtime_t DetailedRadioSignal::getTransmissionBeginTime() const {
 	return sendingStart;
 }
 
-simtime_t DetailedRadioSignal::getSendingEnd() const {
+simtime_t DetailedRadioSignal::getTransmissionEndTime() const {
 	return sendingStart + duration;
 }
 
@@ -194,13 +194,13 @@ cGate *DetailedRadioSignal::getSendingGate() const
     return !mod ? NULL : mod->gate(senderFromGateID);
 }
 
-cGate *DetailedRadioSignal::getReceptionGate() const
-{
-    if (receiverToGateID < 0) return NULL;
-    cModule *const mod = getReceptionModule();
-    return !mod ? NULL : mod->gate(receiverToGateID);
-}
-
+//cGate *DetailedRadioSignal::getReceptionGate() const
+//{
+//    if (receiverToGateID < 0) return NULL;
+//    cModule *const mod = getReceptionModule();
+//    return !mod ? NULL : mod->gate(receiverToGateID);
+//}
+//
 void DetailedRadioSignal::setReceptionSenderInfo(const cMessage *const pMsg)
 {
 	if (!pMsg)
@@ -211,6 +211,6 @@ void DetailedRadioSignal::setReceptionSenderInfo(const cMessage *const pMsg)
 	senderModuleID   = pMsg->getSenderModuleId();
 	senderFromGateID = pMsg->getSenderGateId();
 
-	receiverModuleID = pMsg->getArrivalModuleId();
-	receiverToGateID = pMsg->getArrivalGateId();
+	//receiverModuleID = pMsg->getArrivalModuleId();
+	//receiverToGateID = pMsg->getArrivalGateId();
 }

@@ -20,8 +20,7 @@
 
 package inet.physicallayer.radio.simplified;
 
-import inet.physicallayer.radio.contract.IRadioChannel;
-
+import inet.physicallayer.radio.common.RadioChannelBase;
 
 //
 // ~SimplifiedRadioChannel has exactly one instance in every network model that
@@ -38,7 +37,7 @@ import inet.physicallayer.radio.contract.IRadioChannel;
 // @author Andras Varga (based on MF's SimplifiedRadioChannel by Steffen Sroka and Daniel Willkomm)
 // @see ~IMobility
 //
-simple SimplifiedRadioChannel like IRadioChannel
+simple SimplifiedRadioChannel extends RadioChannelBase
 {
     parameters:
         double pMax @unit("mW") = default(20mW); // maximum sending power used for this network (in mW)
@@ -47,7 +46,8 @@ simple SimplifiedRadioChannel like IRadioChannel
         double carrierFrequency @unit("Hz") = default(2.4GHz); // base carrier frequency of all the channels (in Hz)
         int numChannels = default(1); // number of radio channels (frequencies)
         string propagationModel @enum("FreeSpaceModel","TwoRayGroundModel","RiceModel","RayleighModel","NakagamiModel","LogNormalShadowingModel") = default("FreeSpaceModel");
+
+        @class(SimplifiedRadioChannel);
         @display("i=misc/sun");
         @labels(node);
 }
-
