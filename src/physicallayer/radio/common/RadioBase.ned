@@ -1,5 +1,5 @@
 //
-// Copyright (C) 2013 Andras Varga
+// Copyright (C) 2013 OpenSim Ltd.
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public License
@@ -20,7 +20,7 @@ package inet.physicallayer.radio.common;
 import inet.physicallayer.radio.contract.IRadio;
 
 //
-// Abstract base module for radio models.
+// This is an abstract base module for radio models.
 //
 simple RadioBase like IRadio
 {
