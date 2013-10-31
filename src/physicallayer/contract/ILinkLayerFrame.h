@@ -1,5 +1,5 @@
 //
-// Copyright (C) 2013 Andras Varga
+// Copyright (C) 2013 OpenSim Ltd.
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public License
@@ -18,10 +18,13 @@
 #ifndef __INET_ILINKLAYERFRAME_H_
 #define __INET_ILINKLAYERFRAME_H_
 
+#include "INETDefs.h"
+
 /**
- * This interface provides an abstraction for different link layer frames.
+ * This purely virtual interface provides an abstraction for different link layer frames.
  */
-class ILinkLayerFrame {
+class INET_API ILinkLayerFrame
+{
   public:
     virtual ~ILinkLayerFrame() { }
 };

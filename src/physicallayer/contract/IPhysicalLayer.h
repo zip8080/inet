@@ -1,5 +1,5 @@
 //
-// Copyright (C) 2013 Andras Varga
+// Copyright (C) 2013 OpenSim Ltd.
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public License
@@ -21,9 +21,10 @@
 #include "INETDefs.h"
 
 /**
- * This interface provides an abstraction for different physical layers.
+ * This purely virtual interface provides an abstraction for different physical layers.
  */
-class INET_API IPhysicalLayer {
+class INET_API IPhysicalLayer
+{
   public:
     virtual ~IPhysicalLayer() { }
 };
