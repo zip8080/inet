@@ -1,5 +1,5 @@
 //
-// Copyright (C) 2013 Andras Varga
+// Copyright (C) 2013 OpenSim Ltd.
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public License
@@ -18,13 +18,13 @@
 #ifndef __INET_ICABLEFRAME_H_
 #define __INET_ICABLEFRAME_H_
 
-#include "INETDefs.h"
 #include "IPhysicalLayerFrame.h"
 
 /**
- * This interface provides an abstraction for different cable frames.
+ * This purely virtual interface provides an abstraction for different cable frames.
  */
-class INET_API ICableFrame : public IPhysicalLayerFrame {
+class INET_API ICableFrame : public IPhysicalLayerFrame
+{
   public:
     virtual ~ICableFrame() { }
 };
