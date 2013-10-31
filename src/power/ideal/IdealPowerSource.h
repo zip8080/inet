@@ -1,5 +1,5 @@
 //
-// Copyright (C) 2013 Andras Varga
+// Copyright (C) 2013 OpenSim Ltd.
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public License
@@ -15,10 +15,9 @@
 // along with this program; if not, see <http://www.gnu.org/licenses/>.
 //
 
-#ifndef __INET_IDEALPowerSource_H
-#define __INET_IDEALPowerSource_H
+#ifndef __INET_IDEALPOWERSOURCE_H
+#define __INET_IDEALPOWERSOURCE_H
 
-#include "INETDefs.h"
 #include "PowerSourceBase.h"
 
 /**
