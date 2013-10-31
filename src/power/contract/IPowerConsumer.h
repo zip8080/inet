@@ -1,5 +1,5 @@
 //
-// Copyright (C) 2013 Andras Varga
+// Copyright (C) 2013 OpenSim Ltd.
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public License
@@ -21,7 +21,7 @@
 #include "INETDefs.h"
 
 /**
- * This interface provides an abstraction for different power consumers.
+ * This purely virtual interface provides an abstraction for different power consumers.
  *
  * @author Levente Meszaros
  */
@@ -30,7 +30,7 @@ class INET_API IPowerConsumer
   public:
     virtual ~IPowerConsumer() {}
 
-//    virtual const char * getName() = 0;
+//    virtual const char *getName() = 0;
 
     virtual double getPowerConsumption() = 0;
 };

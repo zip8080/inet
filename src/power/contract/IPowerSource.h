@@ -1,5 +1,5 @@
 //
-// Copyright (C) 2013 Andras Varga
+// Copyright (C) 2013 OpenSim Ltd.
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public License
@@ -15,14 +15,13 @@
 // along with this program; if not, see <http://www.gnu.org/licenses/>.
 //
 
-#ifndef __INET_IPowerSource_H
-#define __INET_IPowerSource_H
+#ifndef __INET_IPOWERSOURCE_H
+#define __INET_IPOWERSOURCE_H
 
-#include "INETDefs.h"
 #include "IPowerConsumer.h"
 
 /**
- * This interface provides an abstraction for different power sources.
+ * This purely virtual interface provides an abstraction for different power sources.
  *
  * @author Levente Meszaros
  */
@@ -43,15 +42,15 @@ class INET_API IPowerSource
     /**
      * Returns the power consumer for the provided index.
      */
-    virtual IPowerConsumer * getPowerConsumer(int index) = 0;
+    virtual IPowerConsumer *getPowerConsumer(int index) = 0;
 
     /**
-     * Registers a new power consumer and returns its id.
+     * Adds a new power consumer to the power source and returns its id.
      */
-    virtual int addPowerConsumer(IPowerConsumer * powerConsumer) = 0;
+    virtual int addPowerConsumer(IPowerConsumer *powerConsumer) = 0;
 
     /**
-     * Removes a previously registered power consumer with the provided index.
+     * Removes a previously added power consumer from this power source.
      */
     virtual void removePowerConsumer(int id) = 0;
 
