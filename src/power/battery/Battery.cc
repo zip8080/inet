@@ -1,5 +1,5 @@
 //
-// Copyright (C) 2013 Andras Varga
+// Copyright (C) 2013 OpenSim Ltd.
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public License
@@ -15,25 +15,10 @@
 // along with this program; if not, see <http://www.gnu.org/licenses/>.
 //
 
-#include <Battery.h>
-#include <cexception.h>
-#include <checkandcast.h>
-#include <cmessage.h>
-#include <cobjectfactory.h>
-#include <cpar.h>
-#include <cregistrationlist.h>
-#include <csimulation.h>
-#include <LifecycleController.h>
-#include <LifecycleOperation.h>
-#include <ModuleAccess.h>
-#include <NodeOperations.h>
-#include <onstartup.h>
-#include <regmacros.h>
-#include <simkerneldefs.h>
-#include <simtime.h>
-#include <simtime_t.h>
-#include <simutil.h>
-#include <stddef.h>
+#include "Battery.h"
+#include "LifecycleController.h"
+#include "NodeOperations.h"
+#include "ModuleAccess.h"
 
 Define_Module(Battery);
 

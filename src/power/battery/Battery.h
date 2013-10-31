@@ -1,5 +1,5 @@
 //
-// Copyright (C) 2013 Andras Varga
+// Copyright (C) 2013 OpenSim Ltd.
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public License
@@ -18,7 +18,6 @@
 #ifndef __INET_BATTERY_H
 #define __INET_BATTERY_H
 
-#include "INETDefs.h"
 #include "PowerSourceBase.h"
 
 /**
@@ -82,7 +81,7 @@ class INET_API Battery : public PowerSourceBase
   protected:
     virtual void initialize(int stage);
 
-    virtual void handleMessage(cMessage * message);
+    virtual void handleMessage(cMessage *message);
 
     virtual void updateResidualCapacity();
 

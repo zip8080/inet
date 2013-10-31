@@ -1,5 +1,5 @@
 //
-// Copyright (C) 2011 Andras Varga
+// Copyright (C) 2013 OpenSim Ltd.
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -20,7 +20,7 @@ package inet.power.battery;
 import inet.power.common.PowerSourceBase;
 
 //
-// This module implements a battery.
+// This module implements a voltage regulated battery.
 //
 // @author Levente Meszaros
 //
