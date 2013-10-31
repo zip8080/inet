@@ -1,5 +1,5 @@
 //
-// Copyright (C) 2013 Andras Varga
+// Copyright (C) 2013 OpenSim Ltd.
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public License
@@ -18,25 +18,25 @@
 #ifndef __INET_IRADIOSIGNAL_H_
 #define __INET_IRADIOSIGNAL_H_
 
-#include "INETDefs.h"
 #include "Coord.h"
 
 /**
- * This interface provides an abstraction for different radio signals.
+ * This purely virtual interface provides an abstraction for different radio signals.
  */
-class INET_API IRadioSignal {
+class INET_API IRadioSignal
+{
   public:
     virtual ~IRadioSignal() { }
 
 //    virtual Coord getTransmissionBeginPosition() const = 0;
-//    virtual simtime_t getTransmissionBeginTime() const = 0;
-//
+    virtual simtime_t getTransmissionBeginTime() const = 0;
+
 //    virtual Coord getTransmissionEndPosition() const = 0;
-//    virtual simtime_t getTransmissionEndTime() const = 0;
-//
-//    virtual void * getTransmissionPower() const = 0;
-//
-//    virtual void * getAttenuations() const = 0;
+    virtual simtime_t getTransmissionEndTime() const = 0;
+
+//    virtual void *getTransmissionPower() const = 0;
+
+//    virtual void *getAttenuations() const = 0;
 };
 
 #endif

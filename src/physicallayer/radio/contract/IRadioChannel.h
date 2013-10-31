@@ -1,5 +1,5 @@
 //
-// Copyright (C) 2013 Andras Varga
+// Copyright (C) 2013 OpenSim Ltd.
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public License
@@ -18,22 +18,32 @@
 #ifndef __INET_IRADIOCHANNEL_H_
 #define __INET_IRADIOCHANNEL_H_
 
-#include "INETDefs.h"
 #include "IRadio.h"
 #include "IRadioFrame.h"
 
 /**
- * This interface provides an abstraction for different radio channels.
+ * This purely virtual interface provides an abstraction for different radio channels.
  */
-class INET_API IRadioChannel {
+class INET_API IRadioChannel
+{
   public:
     virtual ~IRadioChannel() { }
 
-    virtual void registerRadio(IRadio * radio) = 0;
+    /**
+     * Adds a new radio to the radio channel and returns its id.
+     */
+    virtual int addRadio(IRadio *radio) = 0;
 
-    virtual void unregisterRadio(IRadio * radio) = 0;
+    /**
+     * Removes a previously added radio from the radio channel.
+     */
+    virtual void removeRadio(int id) = 0;
 
-    virtual void transmitRadioFrame(IRadio * radio, IRadioFrame * radioFrame) = 0;
+    /**
+     * Transmits a radio frame through the radio channel to all radios within
+     * interference distance.
+     */
+    virtual void transmitRadioFrame(int id, IRadioFrame *radioFrame) = 0;
 
 //    virtual std::vector<IRadioFrame *>& getOngoingTransmissions(int radioChannel) = 0;
 };

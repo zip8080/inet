@@ -1,5 +1,5 @@
 //
-// Copyright (C) 2013 Andras Varga
+// Copyright (C) 2013 OpenSim Ltd.
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public License
@@ -18,18 +18,18 @@
 #ifndef __INET_IRADIOFRAME_H_
 #define __INET_IRADIOFRAME_H_
 
-#include "INETDefs.h"
 #include "IPhysicalLayerFrame.h"
 #include "IRadioSignal.h"
 
 /**
- * This interface provides an abstraction for different radio frames.
+ * This purely virtual interface provides an abstraction for different radio frames.
  */
-class INET_API IRadioFrame : public IPhysicalLayerFrame {
+class INET_API IRadioFrame : public IPhysicalLayerFrame
+{
   public:
     virtual ~IRadioFrame() { }
 
-    virtual IRadioSignal * getRadioSignal() = 0;
+    virtual IRadioSignal *getRadioSignal() = 0;
 };
 
 #endif

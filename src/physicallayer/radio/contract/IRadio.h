@@ -1,5 +1,5 @@
 //
-// Copyright (C) 2013 Andras Varga
+// Copyright (C) 2013 OpenSim Ltd.
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public License
@@ -18,20 +18,20 @@
 #ifndef __INET_IRADIO_H_
 #define __INET_IRADIO_H_
 
-#include "INETDefs.h"
-#include "Coord.h"
+#include "IMobility.h"
 #include "IPhysicalLayer.h"
 
 /**
- * This interface provides an abstraction for different radios. This radio
- * interface represents a physical device that is capable of receiving and
- * transmitting radio signals. Simultaneous reception and transmission is not
- * supported. The radio has an operation mode, it's bound to a radio channel,
- * and it provides the state of the radio channel.
+ * This purely virtual interface provides an abstraction for different radios.
+ * It represents a physical device that is capable of receiving and transmitting
+ * radio signals. Simultaneous reception and transmission is not supported. The
+ * radio has an operation mode, it's bound to a radio channel, and it provides
+ * the state of the radio channel at its position.
  *
  * @author Levente Meszaros
  */
-class INET_API IRadio : IPhysicalLayer {
+class INET_API IRadio : IPhysicalLayer
+{
   public:
     /**
      * This signal is emitted every time the radio mode changes.
@@ -60,7 +60,7 @@ class INET_API IRadio : IPhysicalLayer {
         RADIO_MODE_SLEEP,       // reception or transmission isn't possible, power consumption is minimal, quick startup
         RADIO_MODE_RECEIVER,    // only reception is possible, low power consumption
         RADIO_MODE_TRANSMITTER, // only transmission is possible, high power consumption
-        // RADIO_MODE_TRANSCEIVER, // reception and transmission is possible simultaneously, high power consumption
+        // TODO: implement RADIO_MODE_TRANSCEIVER, // reception and transmission is possible simultaneously, high power consumption
         RADIO_MODE_SWITCHING    // switching from one mode to another
     };
 
@@ -92,7 +92,7 @@ class INET_API IRadio : IPhysicalLayer {
     /**
      * Returns the position of the radio.
      */
-    virtual Coord getRadioPosition() const = 0;
+    virtual IMobility *getMobility() const = 0;
 
     /**
      * Returns the gate of the radio that receives incoming radio frames.
