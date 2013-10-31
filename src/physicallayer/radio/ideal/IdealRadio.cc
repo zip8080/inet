@@ -16,7 +16,6 @@
 //
 
 #include "IdealRadio.h"
-
 #include "ModuleAccess.h"
 #include "NodeOperations.h"
 #include "NodeStatus.h"
@@ -25,16 +24,10 @@ Define_Module(IdealRadio);
 
 IdealRadio::IdealRadio()
 {
-    radioMode = RADIO_MODE_OFF;
-    radioChannelState = RADIO_CHANNEL_STATE_UNKNOWN;
-    radioChannel = 0;
     endTransmissionTimer = NULL;
     transmissionRange = 0;
     bitrate = 0;
     drawCoverage = false;
-    upperLayerOut = NULL;
-    upperLayerIn = NULL;
-    radioIn = NULL;
 }
 
 IdealRadio::~IdealRadio()
@@ -59,17 +52,10 @@ void IdealRadio::initialize(int stage)
     EV << "Initializing IdealRadio, stage = " << stage << endl;
     if (stage == INITSTAGE_LOCAL)
     {
-        upperLayerIn = gate("upperLayerIn");
-        upperLayerOut = gate("upperLayerOut");
-        radioIn = gate("radioIn");
-        radioIn->setDeliverOnReceptionStart(true);
         endTransmissionTimer = new cMessage("endTransmission");
         transmissionRange = par("transmissionRange").doubleValue();
         bitrate = par("bitrate").doubleValue();
         drawCoverage = par("drawCoverage");
-        WATCH(radioMode);
-        WATCH(radioChannelState);
-        WATCH(radioChannel);
     }
     else if (stage == INITSTAGE_LAST)
     {
@@ -141,7 +127,7 @@ IdealRadioFrame *IdealRadio::encapsulatePacket(cPacket *frame)
     radioFrame->setName(frame->getName());
     radioFrame->setTransmissionRange(transmissionRange);
     radioFrame->setDuration(radioFrame->getBitLength() / bitrate);
-    radioFrame->setTransmissionStartPosition(getRadioPosition());
+    radioFrame->setTransmissionStartPosition(getMobility()->getCurrentPosition());
     radioFrame->encapsulate(frame);
     return radioFrame;
 }
@@ -176,6 +162,7 @@ void IdealRadio::handleUpperFrame(cPacket *packet)
 
 void IdealRadio::handleCommand(cMessage *message)
 {
+    // TODO:
 }
 
 void IdealRadio::handleSelfMessage(cMessage *message)

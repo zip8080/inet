@@ -18,8 +18,6 @@
 #ifndef __INET_IDEALRADIO_H
 #define __INET_IDEALRADIO_H
 
-#include "INETDefs.h"
-#include "IRadio.h"
 #include "IdealRadioFrame.h"
 #include "IdealRadioChannelAccess.h"
 #include "ILifecycle.h"
@@ -31,16 +29,9 @@
  *
  * author: Zoltan Bojthe, Levente Meszaros
  */
-class INET_API IdealRadio : public IdealRadioChannelAccess, public IRadio, public ILifecycle
+class INET_API IdealRadio : public IdealRadioChannelAccess, public ILifecycle
 {
   protected:
-    /** IRadio */
-    //@{
-    RadioMode radioMode;
-    RadioChannelState radioChannelState;
-    int radioChannel;
-    //@}
-
     /** Timers */
     //@{
     cMessage *endTransmissionTimer;
@@ -55,33 +46,17 @@ class INET_API IdealRadio : public IdealRadioChannelAccess, public IRadio, publi
     bool drawCoverage;
     //@}
 
-    /** Gates */
-    //@{
-    cGate *upperLayerOut;
-    cGate *upperLayerIn;
-    cGate *radioIn;
-    //@}
-
   public:
     IdealRadio();
     virtual ~IdealRadio();
 
-    virtual Coord getRadioPosition() const { return mobility->getCurrentPosition(); }
-    virtual const cGate *getRadioGate() const { return gate("radioIn"); }
-
-    virtual RadioMode getRadioMode() const { return radioMode; }
     virtual void setRadioMode(RadioMode radioMode);
 
-    virtual RadioChannelState getRadioChannelState() const { return radioChannelState; }
-
-    virtual int getRadioChannel() const { return radioChannel; }
     virtual void setRadioChannel(int radioChannel);
 
     virtual int getTransmissionRange() const { return transmissionRange; }
 
   protected:
-    virtual int numInitStages() const { return NUM_INIT_STAGES; }
-
     virtual void initialize(int stage);
 
     virtual void handleMessage(cMessage *message);

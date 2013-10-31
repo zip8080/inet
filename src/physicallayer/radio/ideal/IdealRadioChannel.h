@@ -21,7 +21,7 @@
 #include "INETDefs.h"
 #include "Coord.h"
 #include "IRadio.h"
-#include "IRadioChannel.h"
+#include "RadioChannelBase.h"
 
 // Forward declarations
 class IdealRadioFrame;
@@ -35,7 +35,7 @@ class IdealRadio;
  *
  * author: Zoltan Bojthe, Levente Meszaros
  */
-class INET_API IdealRadioChannel : public cSimpleModule, public IRadioChannel
+class INET_API IdealRadioChannel : public RadioChannelBase
 {
   public:
     struct RadioEntry
@@ -67,11 +67,7 @@ class INET_API IdealRadioChannel : public cSimpleModule, public IRadioChannel
     IdealRadioChannel() : maxTransmissionRange(-1) { }
     virtual ~IdealRadioChannel() { }
 
-    virtual void registerRadio(IRadio * radio) { } // TODO:
-
-    virtual void unregisterRadio(IRadio * radio) { } // TODO:
-
-    virtual void transmitRadioFrame(IRadio * radio, IRadioFrame * radioFrame) { } // TODO:
+    virtual void transmitRadioFrame(int id, IRadioFrame *radioFrame) { } // TODO:
 
     /** Registers the given radio */
     virtual RadioEntry * registerRadio(cModule *radioModule);

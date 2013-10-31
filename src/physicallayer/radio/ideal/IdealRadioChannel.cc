@@ -22,7 +22,7 @@ Define_Module(IdealRadioChannel);
 
 std::ostream& operator<<(std::ostream& os, const IdealRadioChannel::RadioEntry& radioEntry)
 {
-    Coord pos = radioEntry.radio->getRadioPosition();
+    Coord pos = radioEntry.radio->getMobility()->getCurrentPosition();
     os << radioEntry.radioModule->getFullPath() << " (x=" << pos.x << ",y=" << pos.y << ")";
     return os;
 }
@@ -108,7 +108,7 @@ void IdealRadioChannel::sendToChannel(RadioEntry *srcRadio, IdealRadioFrame *rad
             continue;   // skip sender radio
         if (r->radio->getRadioMode() != IRadio::RADIO_MODE_RECEIVER)
             continue;   // skip disabled radio interfaces
-        double sqrdist = srcRadio->radio->getRadioPosition().sqrdist(r->radio->getRadioPosition());
+        double sqrdist = srcRadio->radio->getMobility()->getCurrentPosition().sqrdist(r->radio->getMobility()->getCurrentPosition());
         if (sqrdist <= sqrTransmissionRange)
         {
             // account for propagation delay, based on distance in meters

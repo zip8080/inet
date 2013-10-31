@@ -15,6 +15,7 @@
 // along with this program; if not, see <http://www.gnu.org/licenses/>.
 //
 
+#include "InitStages.h"
 #include "IdealRadioChannelAccess.h"
 #include "ModuleAccess.h"
 
@@ -31,12 +32,12 @@ IdealRadioChannelAccess::~IdealRadioChannelAccess()
 
 void IdealRadioChannelAccess::initialize(int stage)
 {
-    if (stage == 0)
+    RadioBase::initialize(stage);
+    if (stage == INITSTAGE_LOCAL)
     {
         node = findContainingNode(this, true);
-        mobility = check_and_cast<IMobility *>(node->getSubmodule("mobility"));
         idealRadioChannel = check_and_cast<IdealRadioChannel *>(simulation.getModuleByPath("radioChannel"));
-        radioChannelEntry = idealRadioChannel->registerRadio(this);
+        radioChannelEntry = idealRadioChannel->registerRadio((cModule *)this);
     }
 }
 

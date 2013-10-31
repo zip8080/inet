@@ -18,8 +18,7 @@
 #ifndef __INET_IDEALRADIOCHANNELACCESS_H
 #define __INET_IDEALRADIOCHANNELACCESS_H
 
-#include "INETDefs.h"
-#include "IMobility.h"
+#include "RadioBase.h"
 #include "IdealRadioChannel.h"
 
 /**
@@ -27,16 +26,15 @@
  *
  * author: Zoltan Bojthe, Levente Meszaros
  */
-class INET_API IdealRadioChannelAccess : public cSimpleModule
+class INET_API IdealRadioChannelAccess : public RadioBase
 {
   protected:
     cModule *node;
-    IMobility *mobility;
     IdealRadioChannel *idealRadioChannel;
     IdealRadioChannel::RadioEntry *radioChannelEntry;
 
   public:
-    IdealRadioChannelAccess() : node(NULL), mobility(NULL), idealRadioChannel(NULL), radioChannelEntry(NULL) { }
+    IdealRadioChannelAccess() : node(NULL), idealRadioChannel(NULL), radioChannelEntry(NULL) { }
     virtual ~IdealRadioChannelAccess();
 
   protected:

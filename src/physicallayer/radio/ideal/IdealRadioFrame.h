@@ -1,5 +1,5 @@
 //
-// Copyright (C) 2011 Andras Varga
+// Copyright (C) 2013 OpenSim Ltd.
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public License
@@ -15,11 +15,9 @@
 // along with this program; if not, see <http://www.gnu.org/licenses/>.
 //
 
-
 #ifndef __INET_IDEALRADIOFRAME_H_
 #define __INET_IDEALRADIOFRAME_H_
 
-#include "INETDefs.h"
 #include "IRadioFrame.h"
 #include "IdealRadioFrame_m.h"
 
