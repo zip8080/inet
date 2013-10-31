@@ -23,7 +23,7 @@
 
 #include "INETDefs.h"
 #include "Coord.h"
-#include "IRadioChannel.h"
+#include "RadioChannelBase.h"
 #include "ISimplifiedRadioChannel.h"
 
 // Forward declarations
@@ -62,7 +62,7 @@ struct ISimplifiedRadioChannel::RadioEntry {
  * @ingroup channelControl
  * @see ChannelAccess
  */
-class INET_API SimplifiedRadioChannel : public cSimpleModule, public IRadioChannel, public ISimplifiedRadioChannel
+class INET_API SimplifiedRadioChannel : public RadioChannelBase, public ISimplifiedRadioChannel
 {
   protected:
     typedef std::list<RadioEntry> RadioList;
@@ -117,11 +117,7 @@ class INET_API SimplifiedRadioChannel : public cSimpleModule, public IRadioChann
     SimplifiedRadioChannel();
     virtual ~SimplifiedRadioChannel();
 
-    virtual void registerRadio(IRadio * radio) { } // TODO:
-
-    virtual void unregisterRadio(IRadio * radio) { } // TODO:
-
-    virtual void transmitRadioFrame(IRadio * radio, IRadioFrame * radioFrame) { } // TODO:
+    virtual void transmitRadioFrame(int id, IRadioFrame *radioFrame) { } // TODO:
 
     /** Registers the given radio. If radioInGate==NULL, the "radioIn" gate is assumed */
     virtual RadioRef registerRadio(cModule *radioModule, cGate *radioInGate = NULL);

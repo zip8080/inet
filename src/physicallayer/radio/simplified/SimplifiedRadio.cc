@@ -19,45 +19,12 @@
 // along with this program; if not, see <http://www.gnu.org/licenses/>.
 //
 
-
-#include <cdisplaystring.h>
-#include <cenvir.h>
-#include <cexception.h>
-#include <cgate.h>
-#include <checkandcast.h>
-#include <clistener.h>
-#include <clog.h>
-#include <cobjectfactory.h>
-#include <cpar.h>
-#include <cregistrationlist.h>
-#include <csimulation.h>
-#include <cwatch.h>
-#include <cxmlelement.h>
-#include <Coord.h>
-#include <FWMath.h>
-#include <INETDefs.h>
-#include <ISimplifiedRadioChannel.h>
-#include <ModuleAccess.h>
-#include <NodeOperations.h>
-#include <NodeStatus.h>
-#include <onstartup.h>
-#include <PhyControlInfo_m.h>
-#include <regmacros.h>
-#include <Radio80211aControlInfo_m.h>
-#include <simkerneldefs.h>
-#include <simtime.h>
-#include <simtime_t.h>
-#include <simutil.h>
-#include <SimplifiedRadio.h>
-#include <cmath>
-#include <cstdlib>
-#include <iostream>
-#include <iterator>
-#include <list>
-#include <map>
-#include <string>
-#include <utility>
-#include <vector>
+#include "SimplifiedRadio.h"
+#include "ModuleAccess.h"
+#include "NodeOperations.h"
+#include "NodeStatus.h"
+#include "PhyControlInfo_m.h"
+#include "Radio80211aControlInfo_m.h"
 
 simsignal_t SimplifiedRadio::bitrateSignal = SIMSIGNAL_NULL;
 simsignal_t SimplifiedRadio::lossRateSignal = SIMSIGNAL_NULL;
@@ -67,11 +34,9 @@ simsignal_t SimplifiedRadio::changeLevelNoise = SIMSIGNAL_NULL;
 #define BASE_NOISE_LEVEL (noiseGenerator?noiseLevel+noiseGenerator->noiseLevel():noiseLevel)
 
 Define_Module(SimplifiedRadio);
+
 SimplifiedRadio::SimplifiedRadio()
 {
-    radioMode = RADIO_MODE_OFF;
-    radioChannelState = RADIO_CHANNEL_STATE_UNKNOWN;
-    radioChannel = 0;
     powerConsumerId = 0;
     powerSource = NULL;
     obstacles = NULL;
@@ -91,10 +56,6 @@ void SimplifiedRadio::initialize(int stage)
 
     if (stage == INITSTAGE_LOCAL)
     {
-        gate("radioIn")->setDeliverOnReceptionStart(true);
-
-        upperLayerIn = findGate("upperLayerIn");
-        upperLayerOut = findGate("upperLayerOut");
         endTransmissionTimer = new cMessage("endTransmission");
 
         getSensitivityList(par("SensitivityTable").xmlValue());
@@ -142,9 +103,6 @@ void SimplifiedRadio::initialize(int stage)
         numReceivedCorrectly = 0;
 
         WATCH(noiseLevel);
-        WATCH(radioMode);
-        WATCH(radioChannelState);
-        WATCH(radioChannel);
 
         obstacles = ObstacleControlAccess().getIfExists();
         if (obstacles) EV << "Found ObstacleControl" << endl;
@@ -285,7 +243,7 @@ void SimplifiedRadio::handleMessage(cMessage *msg)
 {
     if (radioMode == RADIO_MODE_SLEEP || radioMode == RADIO_MODE_OFF)
     {
-        if (msg->getArrivalGateId() == upperLayerIn || msg->isSelfMessage())  //XXX can we ensure we don't receive pk from upper in OFF state?? (race condition)
+        if (msg->getArrivalGate() == upperLayerIn || msg->isSelfMessage())  //XXX can we ensure we don't receive pk from upper in OFF state?? (race condition)
             throw cRuntimeError("Radio is turned off");
         else {
             EV << "Radio is turned off, dropping packet\n";
@@ -299,7 +257,7 @@ void SimplifiedRadio::handleMessage(cMessage *msg)
         this->updateDisplayString();
         return;
     }
-    if (msg->getArrivalGateId()==upperLayerIn && !msg->isPacket() /*FIXME XXX ENSURE REALLY PLAIN cMessage ARE SENT AS COMMANDS!!! && msg->getBitLength()==0*/)
+    if (msg->getArrivalGate() == upperLayerIn && !msg->isPacket() /*FIXME XXX ENSURE REALLY PLAIN cMessage ARE SENT AS COMMANDS!!! && msg->getBitLength()==0*/)
     {
         cObject *ctrl = msg->removeControlInfo();
         if (msg->getKind()==0)
@@ -309,7 +267,7 @@ void SimplifiedRadio::handleMessage(cMessage *msg)
         return;
     }
 
-    if (msg->getArrivalGateId() == upperLayerIn)
+    if (msg->getArrivalGate() == upperLayerIn)
     {
         SimplifiedRadioFrame *airframe = encapsulatePacket(PK(msg));
         handleUpperMsg(airframe);
@@ -763,8 +721,6 @@ void SimplifiedRadio::setRadioChannel(int channel)
 
     cModule *myHost = findContainingNode(this, true);
 
-    //cGate *radioGate = myHost->gate("radioIn");
-
     cGate* radioGate = this->gate("radioIn")->getPathStartGate();
 
     EV << "RadioGate :" << radioGate->getFullPath() << " " << radioGate->getFullName() << endl;
@@ -1061,8 +1017,6 @@ void SimplifiedRadio::connectReceiver()
     cc->enableReception(this->myRadioRef);
     cc->setRadioChannel(myRadioRef, radioChannel);
     cModule *myHost = findContainingNode(this, true);
-
-    //cGate *radioGate = myHost->gate("radioIn");
 
     cGate* radioGate = this->gate("radioIn")->getPathStartGate();
 

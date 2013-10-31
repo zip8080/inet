@@ -19,7 +19,6 @@
 #ifndef RADIO_H
 #define RADIO_H
 
-#include "IRadio.h"
 #include "SimplifiedRadioChannelAccess.h"
 #include "SimplifiedRadioFrame.h"
 #include "IPowerSource.h"
@@ -56,7 +55,7 @@
  *
  * @author Andras Varga, Levente Meszaros
  */
-class INET_API SimplifiedRadio : public SimplifiedRadioChannelAccess, public IRadio, public ILifecycle, public IPowerConsumer
+class INET_API SimplifiedRadio : public SimplifiedRadioChannelAccess, public ILifecycle, public IPowerConsumer
 {
   protected:
     typedef std::map<double,double> SensitivityList; // Sensitivity list
@@ -66,15 +65,8 @@ class INET_API SimplifiedRadio : public SimplifiedRadioChannelAccess, public IRa
     SimplifiedRadio();
     virtual ~SimplifiedRadio();
 
-    virtual Coord getRadioPosition() const { return radioPos; }
-    virtual const cGate *getRadioGate() const { return gate("radioIn"); }
-
-    virtual RadioMode getRadioMode() const { return radioMode; }
     virtual void setRadioMode(RadioMode radioMode);
 
-    virtual RadioChannelState getRadioChannelState() const { return radioChannelState; }
-
-    virtual int getRadioChannel() const { return radioChannel; }
     /**
      * Change transmitter and receiver to a new channel.
      * This method throws an error if the radio state is transmit.
@@ -194,16 +186,6 @@ class INET_API SimplifiedRadio : public SimplifiedRadioChannelAccess, public IRa
 
     /** Bitrate used to transmit messages */
     double bitrate;
-
-    RadioMode radioMode;
-    RadioChannelState radioChannelState;
-    int radioChannel;
-
-    /** @name Gate Ids */
-    //@{
-    int upperLayerOut;
-    int upperLayerIn;
-    //@}
 
     /**
      * Struct to store a pointer to the message, rcvdPower AND a SnrList,

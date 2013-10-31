@@ -24,7 +24,7 @@
 #include <list>
 #include <limits>
 
-#include "INETDefs.h"
+#include "RadioBase.h"
 #include "ISimplifiedRadioChannel.h"
 
 // Forward declarations
@@ -47,10 +47,9 @@ class SimplifiedRadioFrame;
  * @ingroup channelControl
  * @ingroup phyLayer
  */
-class INET_API SimplifiedRadioChannelAccess : public cSimpleModule, protected cListener
+class INET_API SimplifiedRadioChannelAccess : public RadioBase, protected cListener
 {
   protected:
-    static simsignal_t mobilityStateChangedSignal;
     ISimplifiedRadioChannel* cc;  // Pointer to the SimplifiedRadioChannel module
     ISimplifiedRadioChannel::RadioRef myRadioRef;  // Identifies this radio in the SimplifiedRadioChannel module
     cModule *hostModule;    // the host that contains this radio model
@@ -76,7 +75,7 @@ class INET_API SimplifiedRadioChannelAccess : public cSimpleModule, protected cL
     virtual void sendToChannel(SimplifiedRadioFrame *msg);
 
     virtual cPar& getSimplifiedRadioChannelPar(const char *parName) { return dynamic_cast<cModule *>(cc)->par(parName); }
-    const Coord& getRadioPosition() const { return radioPos; }
+    virtual Coord getRadioPosition() const { return radioPos; }
     cModule *getHostModule() const { return hostModule; }
 
     /** Register with SimplifiedRadioChannel and subscribe to hostPos*/
